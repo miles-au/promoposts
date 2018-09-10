@@ -1,0 +1,183 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import url('https://fonts.googleapis.com/css?family=Quicksand');
+
+//Color Palette:
+$sigBlue: #2d4059;
+$sigYellow: #ffb400;
+$sigGrey: #f6f6f6;
+$sigRed: #ea5455;
+
+/* universal */
+
+body {
+  padding-top: 60px;
+  background-color: $sigGrey;
+}
+
+section {
+  overflow: auto;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.center {
+  text-align: center;
+}
+
+.center h1 {
+  margin-bottom: 10px;
+}
+
+.btn, .btn-large, .btn-primary{
+  border: none;
+  border-radius: 0px;
+  background-color: $sigRed;
+  color: $sigGrey;
+
+  &:hover{
+  	background-color: $sigBlue;
+  }
+
+}
+
+header, .navbar-inverse, .navbar-fixed-top{
+	background-color: $sigBlue !important;
+}
+
+.navbar-nav, .navbar-right{
+	li, a{
+	  color: $sigGrey !important;
+
+	  &:hover{
+	    color: $sigYellow !important;
+	  }
+	}
+}
+
+.jumbotron{
+	background-color: $sigYellow;
+	border-radius: 0px !important;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	color: $sigBlue;
+
+	h1{
+	  font-size: 3.5em;
+	  font-weight: 600;
+	}
+	h2{
+	  font-size: 1.5em;
+	}
+}
+
+/* typography */
+
+a, h1, h2, h3, h4, h5, h6, ul, li, p, div,{
+	font-family: 'Quicksand', sans-serif;
+}
+
+h1 {
+  font-size: 3em;
+  letter-spacing: -2px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.2em;
+  letter-spacing: -1px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: normal;
+}
+
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+}
+
+/* header */
+
+#logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.7em;
+  color: $sigYellow;
+  letter-spacing: -1px;
+  padding-top: 9px;
+  font-weight: bold;
+}
+
+#logo:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+/*drop down*/
+.navbar-inverse .open a{
+    background-color: $sigGrey !important;
+    color: $sigBlue !important;
+}
+
+.dropdown-menu{
+  padding: 0px;
+  border-bottom: 1px solid $sigGrey;
+  border-left: 1px solid $sigGrey;
+  border-right: 1px solid $sigGrey;
+  border-top: none;
+  border-radius: 0px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+
+  li a{
+    background-color: $sigGrey !important;
+    color: $sigBlue !important;
+
+    &:hover{
+      background-color: $sigBlue !important;
+      color: $sigYellow !important;
+    }
+  }
+}
+
+#logOutBtn{
+  border-top: 1px solid $sigBlue;	
+}
+
+/* footer */
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid #eaeaea;
+  color: #777;
+
+  a {
+    color: $sigBlue;
+
+    &:hover {
+	  color: $sigYellow;
+    }
+  }
+
+  small {
+    float: left;
+    margin-left: 5%;
+  }
+
+  ul {
+	float: right;
+	list-style: none;
+	margin-right: 5%;
+  }
+
+  ul li {
+	float: left;
+	margin-left: 15px;
+  }
+
+}
