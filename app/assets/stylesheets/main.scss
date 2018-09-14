@@ -259,6 +259,8 @@ input {
 	background-color: transparent !important;
 	color: $sigRed;
 	font-weight: 700 !important;
+	border: 5px solid $sigRed;
+	border-radius: 0px;
 }
 
 .alert-success{
