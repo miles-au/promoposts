@@ -31,7 +31,6 @@ class SessionsController < ApplicationController
 
   def resend_activation
   	@user = User.find_by_email(params[:email])
-  	debugger
     if @user
       @user.resend_activation_email
       flash[:success] = "Activation email resent!"
