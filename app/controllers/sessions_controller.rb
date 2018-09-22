@@ -33,7 +33,7 @@ class SessionsController < ApplicationController
   	@user = User.find_by_email(params[:email])
     if @user
       @user.resend_activation_email
-      flash[:success] = "Activation email resent!"
+      flash[:success] = "Activation email resent! You should receive your link shortly."
       redirect_to root_url
     else
       flash[:danger] = 'Email is not asociated with any account, please sign up first.'
