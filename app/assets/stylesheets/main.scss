@@ -270,6 +270,23 @@ input {
 	font-weight: 700 !important;
 }
 
+.alert-info{
+	background-color: transparent !important;
+	color: $sigBlue;
+	border: 5px solid $sigBlue !important;
+	font-weight: 700 !important;
+}
+
+.alert-warning{
+	background-color: transparent !important;
+	color: $sigBlue;
+	border: 5px solid $sigBlue !important;
+	font-weight: 700 !important;
+	a{
+		color: $sigRed;
+	}
+}
+
 .field_with_errors {
   @extend .has-error;
   .form-control {

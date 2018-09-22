@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
       else
         message  = "Account not activated. "
         message += "Check your email for the activation link. "
-        message += "#{view_context.link_to('Click here to resend link', controller: "sessions", action: "resend_activation", email: user.email)}".html_safe
+        message += "#{view_context.link_to('Click here to resend link', sessions_resend_activation_path(email: user.email))}".html_safe
         flash[:warning] = message
         redirect_to root_url
       end
