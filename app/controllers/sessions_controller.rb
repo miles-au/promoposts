@@ -13,7 +13,8 @@ class SessionsController < ApplicationController
         redirect_back_or root_url
       else
         message  = "Account not activated. "
-        message += "Check your email for the activation link."
+        message += "Check your email for the activation link. "
+        message += "#{view_context.link_to('Click here to resend link', controller: "sessions", action: "resend_activation", email: user.email)}".html_safe
         flash[:warning] = message
         redirect_to root_url
       end
@@ -26,6 +27,19 @@ class SessionsController < ApplicationController
   def destroy
     log_out if logged_in?
     redirect_to root_url
+  end
+
+  def resend_activation
+  	@user = User.find_by_email(params[:email])
+  	debugger
+    if @user
+      @user.resend_activation_email
+      flash[:success] = "Activation email resent!"
+      redirect_to root_url
+    else
+      flash[:danger] = 'Email is not asociated with any account, please sign up first.'
+      redirect_to root_url
+    end
   end
 
 end
