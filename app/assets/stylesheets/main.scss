@@ -8,6 +8,14 @@ $sigYellow: #ffb400;
 $sigGrey: #f6f6f6;
 $sigRed: #ea5455;
 
+@mixin vertical-align($position: relative) {
+  position: $position;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
 /* universal */
 
 body {
@@ -360,6 +368,7 @@ input {
 .microposts {
   list-style: none;
   padding: 0;
+
   li {
     padding: 10px 0;
     border-top: 1px solid #e8e8e8;
@@ -367,6 +376,7 @@ input {
   .user {
     margin-top: 5em;
     padding-top: 0;
+    font-size: 1.5em;
   }
   .content {
     display: block;
@@ -385,18 +395,59 @@ input {
   .gravatar {
     float: left;
     margin-right: 10px;
-    margin-top: 5px;
+    margin-top: 10px;
+  }
+  .noPic{
+    display: none;
   }
 }
 
 .microposts-grid{
+  .section{
+    display: block;
+    clear: both;
+  }
   li{
     display: inline-block;
     width: 33%;
     vertical-align: top;
+    padding-right: 10px;
   }
   .content{
     vertical-align: top;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-left: 0px;
+
+    img{
+      width: 100%;
+      object-fit: cover;
+      padding: 0px;
+    }
+
+    .square{
+      padding-top: 100%;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .noPic{
+      display: block;
+      width: 100%;
+      background-color: $sigBlue;
+      color: $sigYellow;
+      font-size: 1.2em;
+      white-space: normal;
+      text-align: center;
+
+      strong{
+        margin: 10%;
+        margin-top: -50%;
+        display: block;
+        @include vertical-align;
+      }
+    }
   }
 }
 
