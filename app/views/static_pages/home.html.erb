@@ -11,4 +11,22 @@
 	</div>
 <% end %>
 
-<h1>Timeline</h1>
+<h1>Share a post</h1>
+
+<% if logged_in? %>
+  <div class="row">
+    <div class="post_block col-md-4">
+        <%= render 'shared/user_info_condensed' %>
+    </div>
+    <div class="post_block col-md-4">
+    	<%= render 'shared/micropost_form' %>
+    </div>
+
+  </div>
+<% end %>
+<div class="feed row">
+	<div class="col-md-12">
+	  <h3>Feed</h3>
+	  <%= render 'shared/feed' %>
+	</div>
+</div>

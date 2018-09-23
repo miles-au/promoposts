@@ -11,6 +11,12 @@ gem 'jquery-rails'
 gem 'faker'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
+gem 'carrierwave'
+gem 'mini_magick'
+gem "fog-google"
+gem "google-api-client"
+gem "mime-types"
+gem 'dotenv-rails'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
@@ -71,6 +77,7 @@ end
 
 group :production do
   gem 'pg', '0.18.4'
+  gem 'carrierwave-google-storage'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

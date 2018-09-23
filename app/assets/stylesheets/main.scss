@@ -76,9 +76,14 @@ header, .navbar-inverse, .navbar-fixed-top{
 
 /* typography */
 
-a, h1, h2, h3, h4, h5, h6, ul, li, p, div,{
+h1, h2, h3, h4, h5, h6, ul, li, p, div,{
 	font-family: 'Quicksand', sans-serif;
+  color: $sigBlue;
 }
+a{
+  font-family: 'Quicksand', sans-serif;
+}
+
 
 h1 {
   font-size: 3em;
@@ -221,6 +226,36 @@ aside {
   }
 }
 
+/* post form */
+
+.post_block{
+  padding: 10px 5px;
+
+  span{
+    display: inline-block;
+    margin-bottom: 3px;
+    margin-left: 10px;
+    line-height: 1;
+    vertical-align: top;
+  }
+
+  .wrapper{
+    text-align: right;
+  }
+
+  h1{
+    font-size: 1.4em;
+    text-align: left;
+    letter-spacing: -1px;
+    margin-bottom: 3px;
+    margin-top: 0px;
+  }
+
+  textarea{
+    margin-bottom: 3px;
+  }
+}
+
 .gravatar {
   float: left;
   margin-right: 10px;
@@ -317,6 +352,65 @@ input {
     overflow: auto;
     padding: 10px 0;
     border-bottom: 1px solid $gray-lighter;
+  }
+}
+
+/* microposts */
+
+.microposts {
+  list-style: none;
+  padding: 0;
+  li {
+    padding: 10px 0;
+    border-top: 1px solid #e8e8e8;
+  }
+  .user {
+    margin-top: 5em;
+    padding-top: 0;
+  }
+  .content {
+    display: block;
+    margin-left: 60px;
+    img {
+      display: block;
+      padding: 5px 0;
+    }
+  }
+  .timestamp {
+    color: grey;
+    display: block;
+    margin-left: 60px;
+    font-size: 0.8em;
+  }
+  .gravatar {
+    float: left;
+    margin-right: 10px;
+    margin-top: 5px;
+  }
+}
+
+.microposts-grid{
+  li{
+    display: inline-block;
+    width: 33%;
+    vertical-align: top;
+  }
+  .content{
+    vertical-align: top;
+  }
+}
+
+aside {
+  textarea {
+    height: 100px;
+    margin-bottom: 5px;
+  }
+}
+
+span.picture {
+  margin-top: 10px;
+  input {
+    border: 0;
   }
 }
 
