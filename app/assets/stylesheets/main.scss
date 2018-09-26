@@ -499,6 +499,22 @@ input {
   }
 }
 
+.micropost-full{
+  .content{
+    img{
+      width: 60%;
+      display: block;
+      clear: both;
+    }
+  }
+  .timestamp {
+    color: grey;
+    display: block;
+    margin-left: 60px;
+    font-size: 0.8em;
+  }
+}
+
 aside {
   textarea {
     height: 100px;

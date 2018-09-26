@@ -12,17 +12,20 @@
         <% end %>
     <% end %>
     </span>
-  <div class="section">
-    <span class="content">
-      <%= micropost.content %>
-      <% if micropost.picture? %>
-        <div class="square" style="background-image: url('<%= micropost.picture.url %>');">
-      <% end %>
-      <% if micropost.picture? == false %>
-      <div class="noPic square">
-        <span></span><strong>"<%= micropost.content %>"</strong>
+    <%= link_to(micropost) do %>
+      <div class="section">
+          <span class="content">
+            <%= micropost.content %>
+            <% if micropost.picture? %>
+              <div class="square" style="background-image: url('<%= micropost.picture.url %>');">
+              </div>
+            <% end %>
+            <% if micropost.picture? == false %>
+            <div class="noPic square">
+              <span></span><strong>"<%= micropost.content %>"</strong>
+            </div>
+            <% end %>
+          </span>
       </div>
-      <% end %>
-    </span>
-  </div>
+    <% end %>
 </li>
