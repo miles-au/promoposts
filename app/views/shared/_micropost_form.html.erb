@@ -5,6 +5,7 @@
   </div>
   <%= f.submit "Post", class: "btn btn-primary" %>
   <div class="picture">
+    <h5>Add an image (10mb max)</h5>
     <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
   </div>
 <% end %>
