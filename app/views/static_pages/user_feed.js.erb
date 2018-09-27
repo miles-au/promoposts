@@ -1,0 +1,12 @@
+$("#feed").html("<%= escape_javascript(render('shared/feed')) %>");
+console.log("user_feed");
+var tabs = document.getElementsByClassName('tab');
+
+for(var x = 0; x < tabs.length; x++){
+	if(tabs[x].classList.contains('tab-active')){
+		tabs[x].classList.remove('tab-active');
+	}
+}
+
+var userFeed = document.getElementById('userFeed');
+userFeed.classList.add('tab-active');

@@ -4,6 +4,7 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = users(:michael)
+    @other = users(:archer)
   end
 
   test "micropost interface (admin)" do
@@ -48,6 +49,36 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
   	# Visit different user (no delete links)
     get user_path(users(:archer))
     assert_select 'a', text: 'delete', count: 0
+  end
+
+  test "global feed and user feed appear correctly if logged in/not logged in" do
+    #logged in
+    log_in_as(@user)
+    assert is_logged_in?
+    follow_redirect!
+    assert_select "h3", "Your Feed"
+    assert_select "h3", "Global Feed"
+
+    #post content to test appearance on other feed
+    content = "Should not show up on user feed"
+    post microposts_path, params: { micropost: { content: content } }
+
+    #logged out
+    delete logout_path
+    follow_redirect!
+    assert_select "a[href='user_feed']", false
+    assert_select "h3", "Global Feed"
+
+    #log back in as other user
+    assert_match content, response.body
+    log_in_as(@other)
+    follow_redirect!
+    relationship = @other.active_relationships.find_by(followed_id: @user.id)
+    delete relationship_path(relationship)
+    assert_not @other.active_relationships.find_by(followed_id: @user.id)
+    get root_path
+    assert_no_match content, response.body
+
   end
 
 end

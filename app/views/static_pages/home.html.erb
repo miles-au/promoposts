@@ -13,6 +13,7 @@
 
 <h1>Share a post</h1>
 
+<!--form to create post-->
 <% if logged_in? %>
   <div class="row">
     <div class="post_block col-md-4">
@@ -24,9 +25,18 @@
 
   </div>
 <% end %>
+
+<!--feed-->
 <div class="feed row">
 	<div class="col-md-12">
-	  <h3>Feed</h3>
+	  <% if logged_in? %>
+		  <%= link_to(user_feed_path, remote: true) do %>
+		  	<h3 id="userFeed" class="tab tab-active">Your Feed</h3>
+		  <% end %>
+	  <% end %>
+	  <%= link_to(global_feed_path, remote: true) do %>
+	  	<h3 id="globalFeed" class="tab <% if !logged_in? %>tab-active<% end %>">Global Feed</h3>
+	  <% end %>
 	  <%= render 'shared/feed' %>
 	</div>
 </div>
