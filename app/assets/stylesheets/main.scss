@@ -399,6 +399,14 @@ input {
   margin-left: 0;
 }
 
+.categoryLabel{
+  display: inline-block;
+  padding-right: 30px;
+  margin-bottom: 15px;
+}
+
+
+
 /* Users index */
 
 .users {
@@ -409,6 +417,24 @@ input {
     padding: 10px 0;
     border-bottom: 1px solid $gray-lighter;
   }
+}
+
+.categoryTag{
+  display: inline-block;
+  padding: 0px 2px;
+  line-height: 1.2em;
+  vertical-align: top;
+  font-size: 0.9em;
+}
+
+.vendorTag{
+  background-color: $sigYellow;
+  color: $sigBlue;
+}
+
+.distributorTag{
+  background-color: $sigBlue;
+  color: $sigYellow;
 }
 
 /* microposts */

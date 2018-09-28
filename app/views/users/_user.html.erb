@@ -5,4 +5,7 @@
     | <%= link_to "delete", user, method: :delete,
                                   data: { confirm: "You sure?" } %>
   <% end %>
+  <% if user.category != "none"%>
+  	<p class="categoryTag <%= user.category.to_s %>Tag"><%= user.category.to_s %></p>
+  <% end %>
 </li>

@@ -4,7 +4,8 @@ User.create!(name:  "Example User",
              password_confirmation: "foobar",
              admin: true,
              activated: true,
-             activated_at: Time.zone.now)
+             activated_at: Time.zone.now,
+             category: "none")
 
 User.create!(name:  "Miles",
              email: "miles.d.au@gmail.com",
@@ -12,9 +13,21 @@ User.create!(name:  "Miles",
              password_confirmation: "foobar",
              admin: true,
              activated: true,
-             activated_at: Time.zone.now)
+             activated_at: Time.zone.now,
+             category: "none")
 
 99.times do |n|
+  num = 1
+  10.times do |i|
+    num = rand(1..3) 
+  end
+  if num == 1
+    cat = "distributor"
+  elsif num == 2
+    cat = "vendor"
+  else
+    cat = "none"
+  end
   name  = Faker::Name.name
   email = "example-#{n+1}@railstutorial.org"
   password = "password"
@@ -23,7 +36,8 @@ User.create!(name:  "Miles",
               password:              password,
               password_confirmation: password,
               activated: true,
-              activated_at: Time.zone.now)
+              activated_at: Time.zone.now,
+              category: cat)
 end
 
 users = User.order(:created_at).take(6)

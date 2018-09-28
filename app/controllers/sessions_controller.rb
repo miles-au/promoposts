@@ -4,6 +4,9 @@ class SessionsController < ApplicationController
   end
 
   def create
+    
+    raise request.env["omniauth.auth"].to_yaml
+
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
       if user.activated?

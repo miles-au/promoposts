@@ -1,6 +1,20 @@
 <%= form_for(@user) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
+  <%= f.label :category, "I am a:" %><br />
+  <div class="categoryLabel">
+  <%= f.label :category, "distributor" %>
+  <%= f.radio_button :category, "distributor", :checked => logged_in? && @user.category == "distributor" %>
+  </div>
+  <div class="categoryLabel">
+  <%= f.label :category, "vendor" %>
+  <%= f.radio_button :category, "vendor", :checked => logged_in? && @user.category == "vendor" %>
+  </div>
+  <div class="categoryLabel">
+  <%= f.label :category, "neither" %>
+  <%= f.radio_button :category, "none", :checked => logged_in? && @user.category == "none" %>
+  </div><br />
+
   <%= f.label :name, "Organization/Name"%>
   <%= f.text_field :name, class: 'form-control' %>
 

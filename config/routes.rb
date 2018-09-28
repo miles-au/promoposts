@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   get    '/login',   to: 'sessions#new'
   post   '/login',   to: 'sessions#create'
+  get '/auth/:provider/callback' => 'sessions#create'
   delete '/logout',  to: 'sessions#destroy'
 
   get 'sessions/resend_activation', to: 'sessions#resend_activation'

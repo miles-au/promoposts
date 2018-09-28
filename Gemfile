@@ -19,6 +19,7 @@ gem "google-api-client"
 gem "mime-types"
 gem 'dotenv-rails'
 gem 'carrierwave-google-storage'
+gem 'omniauth-facebook'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
