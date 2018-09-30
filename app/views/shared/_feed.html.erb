@@ -1,8 +1,6 @@
-<% if @feed_items.any? %>
 <div id="feed">
   <ol class="microposts microposts-grid">
     <%= render @feed_items %>
   </ol>
   <%= will_paginate @feed_items %>
 </div>
-<% end %>

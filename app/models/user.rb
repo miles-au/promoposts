@@ -107,6 +107,8 @@ class User < ApplicationRecord
     user.password = self.new_token
     user.name = auth['info']['name']
     user.category = "none"
+    user.activated = true
+    user.activated_at = Time.zone.now
     if User.find_by_email(user.email)
       user
     else
