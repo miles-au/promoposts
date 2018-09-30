@@ -101,6 +101,20 @@ class User < ApplicationRecord
     following.include?(other_user)
   end
 
+  def self.create_with_omniauth(auth)
+    user = find_or_create_by(uid: auth['uid'], provider:  auth['provider'])
+    user.email = "#{auth['uid']}@#{auth['provider']}.com"
+    user.password = self.new_token
+    user.name = auth['info']['name']
+    user.category = "none"
+    if User.find_by_email(user.email)
+      user
+    else
+      user.save!
+      user
+    end
+  end
+
   private
 
     # Converts email to all lower-case.

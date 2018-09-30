@@ -25,7 +25,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       post users_path, params: { user: { name:  "Example User",
                                          email: "user@example.com",
                                          password:              "password",
-                                         password_confirmation: "password" } }
+                                         password_confirmation: "password",
+                                         category: "vendor" } }
     end
     assert_equal 1, ActionMailer::Base.deliveries.size
     user = assigns(:user)

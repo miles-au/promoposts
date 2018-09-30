@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_28_225607) do
+ActiveRecord::Schema.define(version: 2018_09_29_153638) do
 
   create_table "microposts", force: :cascade do |t|
     t.text "content"
@@ -48,6 +48,8 @@ ActiveRecord::Schema.define(version: 2018_09_28_225607) do
     t.string "category"
     t.string "provider"
     t.string "uid"
+    t.string "oauth_token"
+    t.datetime "oauth_expires_at"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

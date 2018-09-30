@@ -4,7 +4,6 @@ class SessionsController < ApplicationController
   end
 
   def create
-
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
       if user.activated?
@@ -23,6 +22,13 @@ class SessionsController < ApplicationController
       flash.now[:danger] = 'Invalid email/password combination'
       render 'new'
     end
+  end
+
+  def facebook
+    @user = User.create_with_omniauth(request.env['omniauth.auth'])
+    log_in @user
+    flash[:success] = "Welcome to Promo Posts, #{@user.name}."
+    redirect_back_or root_url
   end
 
   def destroy
