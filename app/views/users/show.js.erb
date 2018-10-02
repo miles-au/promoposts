@@ -1,0 +1,7 @@
+<% if @microposts.next_page %>
+  $('#microPostsContainer').append("<%= j render @microposts %>");
+  $('.pagination').replaceWith("<%= j will_paginate @microposts %>");
+<% else %>
+  $('.pagination').remove();
+  $('#microPostsContainer').append("<hr><h3>end</h3");
+<% end %>

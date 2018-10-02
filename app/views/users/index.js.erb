@@ -1,0 +1,8 @@
+<% if @users.next_page %>
+  console.log("users next page")
+  $('#usersIndex').append("<%= j render @users %>");
+  $('.pagination').replaceWith("<%= j will_paginate @users %>");
+<% else %>
+  $('.pagination').remove();
+  $('#usersIndex').append("<hr><h3>end</h3");
+<% end %>

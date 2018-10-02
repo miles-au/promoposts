@@ -568,6 +568,12 @@ span.picture {
   color: $sigBlue;
 }
 
+#feed{
+  ul, ol, li, .pagination{
+    margin: 0px;
+  }
+}
+
 /* miscellaneous */
 
 .debug_dump {
@@ -576,4 +582,11 @@ span.picture {
   width: 100%;
   margin-top: 45px;
   @include box_sizing;
+}
+
+.pagination{
+  margin: 0px;
+  ul, ol, li{
+    display: none;
+  }
 }

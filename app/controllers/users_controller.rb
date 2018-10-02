@@ -9,12 +9,12 @@ class UsersController < ApplicationController
   end
 
   def index
-  	@users = User.where(activated: true).paginate(page: params[:page])
+  	@users = User.where(activated: true).paginate(:page => params[:page], :per_page => 20)
   end
 
   def show
     @user = User.find(params[:id])
-    @microposts = @user.microposts.paginate(page: params[:page])
+    @microposts = @user.microposts.paginate(page: params[:page], :per_page => 10)
     redirect_to root_url and return unless @user.activated == true
   end
 

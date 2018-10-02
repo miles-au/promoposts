@@ -1,14 +1,24 @@
 class StaticPagesController < ApplicationController
+
   def home
     if logged_in?
-      user_feed
+      @micropost = current_user.microposts.build
+      @feed_items = current_user.feed.paginate(:page => params[:page], :per_page => 9)
+      respond_to do |format| 
+          format.html { render :action => user_feed }  
+          format.js { render 'user_feed.js.erb' }
+      end
     else
-      global_feed
+      @feed_items = Micropost.all.paginate(:page => params[:page], :per_page => 9) #global feed
+      respond_to do |format| 
+          format.html { render :action => global_feed }  
+          format.js { render 'global_feed.js.erb' }
+      end
     end
   end
 
   def global_feed
-    @feed_items = Micropost.all.paginate(page: params[:page]) #global feed
+    @feed_items = Micropost.all.paginate(:page => params[:page], :per_page => 9) #global feed
     respond_to do |format|
       format.html
       format.js
@@ -16,8 +26,7 @@ class StaticPagesController < ApplicationController
   end
 
   def user_feed
-    @micropost  = current_user.microposts.build
-    @feed_items = current_user.feed.paginate(page: params[:page])
+    @feed_items = current_user.feed.paginate(:page => params[:page], :per_page => 9)
     respond_to do |format|
       format.html
       format.js

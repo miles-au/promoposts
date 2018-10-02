@@ -1,5 +1,4 @@
 $("#feed").html("<%= escape_javascript(render('shared/feed')) %>");
-console.log("user_feed");
 var tabs = document.getElementsByClassName('tab');
 
 for(var x = 0; x < tabs.length; x++){
@@ -10,3 +9,18 @@ for(var x = 0; x < tabs.length; x++){
 
 var userFeed = document.getElementById('userFeed');
 userFeed.classList.add('tab-active');
+
+var userFeedContainer = document.getElementById('userFeedContainer');
+var globalFeedContainer = document.getElementById('globalFeedContainer');
+globalFeedContainer.classList.add('hide');
+if(userFeedContainer.classList.contains('hide')){
+	userFeedContainer.classList.remove('hide');
+}
+
+<% if @feed_items.next_page %>
+  $('#userFeedContainer').append("<%= j render('shared/feed')%>");
+  $('.pagination').replaceWith("<%= j will_paginate @feed_items %>");
+<% else %>
+  $('.pagination').remove();
+  $('#userFeedContainer').append("<hr><h3>end</h3");
+<% end %>

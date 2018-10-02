@@ -28,15 +28,19 @@
 
 <!--feed-->
 <div class="feed row">
-	<div class="col-md-12">
+	<div id="feedContainer" class="col-md-12">
 	  <% if logged_in? %>
 		  <%= link_to(user_feed_path, remote: true) do %>
-		  	<h3 id="userFeed" class="tab tab-active">Your Feed</h3>
+			  	<h3 id="userFeed" class="tab tab-active">Your Feed</h3>
 		  <% end %>
 	  <% end %>
 	  <%= link_to(global_feed_path, remote: true) do %>
 	  	<h3 id="globalFeed" class="tab <% if !logged_in? %>tab-active<% end %>">Global Feed</h3>
 	  <% end %>
 	  <%= render 'shared/feed' %>
+	  <div id="userFeedContainer">
+	  </div>
+	  <div id="globalFeedContainer" class="hide">
+	  </div>
 	</div>
 </div>
