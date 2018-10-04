@@ -7,6 +7,7 @@ $sigBlue: #2d4059;
 $sigYellow: #ffb400;
 $sigGrey: #f6f6f6;
 $sigRed: #ea5455;
+$sigCadet: #437F97;
 
 @mixin vertical-align($position: relative) {
   position: $position;
@@ -94,6 +95,7 @@ h1, h2, h3, h4, h5, h6, ul, li, p, div,{
 }
 a{
   font-family: 'Quicksand', sans-serif;
+  color: $sigCadet;
 }
 
 
@@ -568,7 +570,7 @@ span.picture {
   color: $sigBlue;
 }
 
-#feed{
+.feed{
   ul, ol, li, .pagination{
     margin: 0px;
   }
@@ -589,4 +591,8 @@ span.picture {
   ul, ol, li{
     display: none;
   }
+}
+
+.hide{
+  display: none;
 }
