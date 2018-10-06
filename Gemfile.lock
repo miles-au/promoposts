@@ -324,6 +324,10 @@ GEM
       thor (>= 0.14, < 2.0)
     json (2.1.0)
     jwt (2.1.0)
+    koala (3.0.0)
+      addressable
+      faraday
+      json (>= 1.8)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -525,6 +529,7 @@ DEPENDENCIES
   guard-minitest (= 2.4.4)
   jbuilder (~> 2.5)
   jquery-rails
+  koala
   listen (>= 3.0.5, < 3.2)
   mime-types
   mini_magick

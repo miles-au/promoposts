@@ -110,12 +110,20 @@ class User < ApplicationRecord
     user.category = "none"
     user.activated = true
     user.activated_at = Time.zone.now
+    user.oauth_token = auth.credentials.token
+    if auth.credentials.expires
+      user.oauth_expires_at = Time.at(auth.credentials.expires_at)
+    end
     if User.find_by_email(user.email)
       user
     else
       user.save!
       user
     end
+  end
+
+  def facebook
+    @facebook ||= Koala::Facebook::API.new(oauth_token)
   end
 
   private
