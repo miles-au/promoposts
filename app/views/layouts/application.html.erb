@@ -7,7 +7,7 @@
     <% if controller_name == 'microposts' %>
       <%= render 'layouts/share_meta_tags' %>
     <% end %>
-    <meta property="fb:app_id" content="245007386156823" />
+    <meta property="fb:app_id" content="<%= ENV['FACEBOOK_KEY'] %>" />
   </head>
 
   <body>
