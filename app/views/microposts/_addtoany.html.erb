@@ -9,12 +9,10 @@
 <!-- AddToAny END -->
 
 <script>
-	$( document ).ready(function() {
-		var code = "<meta property='og:title' content='<%= @micropost.content %>' />" +
-					"<meta property='og:type' content='website' />" +
-					"<meta property='og:image' content='<%= asset_url(@micropost.picture) %>'/>" +
-					"<meta property='og:url' content='<%= micropost_url(@micropost) %>' />" +
-					"<meta property='og:description' content='<%= @micropost.content %>' />";
-		$('head').append(code);
-	});
+	var code = "<meta property='og:title' content='<%= @micropost.content %>' />" +
+				"<meta property='og:type' content='website' />" +
+				"<meta property='og:image' content='<%= asset_url(@micropost.picture) %>'/>" +
+				"<meta property='og:url' content='<%= micropost_url(@micropost) %>' />" +
+				"<meta property='og:description' content='<%= @micropost.content %>' />";
+	$('head').append(code);
 </script>
