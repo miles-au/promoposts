@@ -598,5 +598,8 @@ span.picture {
 }
 
 .a2a_kit{
-  margin: 10px;
+  margin: 10px 0;
+  a img{
+    background-color: $sigRed;
+  }
 }
