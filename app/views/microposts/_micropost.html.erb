@@ -18,11 +18,17 @@
             <%= micropost.content %>
             <% if micropost.picture? %>
               <div class="square" style="background-image: url('<%= micropost.picture.url %>');">
+                <div class="clickToShare">
+                  <p>Click to share!</p>
+                </div>
               </div>
             <% end %>
             <% if micropost.picture? == false %>
             <div class="noPic square">
               <span></span><strong>"<%= micropost.content %>"</strong>
+                <div class="clickToShare">
+                  <p>Click to share!</p>
+                </div>
             </div>
             <% end %>
           </span>

@@ -506,6 +506,11 @@ input {
       padding-top: 100%;
       background-size: cover;
       background-position: center;
+      position: relative;
+    }
+
+    .square:hover .clickToShare{
+      opacity: 1;
     }
 
     .noPic{
@@ -525,6 +530,19 @@ input {
       }
     }
   }
+}
+
+.clickToShare{
+  opacity: 0;
+  transition: .3s ease;
+  position: absolute;
+  bottom: 0px;
+  padding: 10px 10px 0px 10px;
+  left: 0px;
+  z-index: 100;
+  background-color: $sigYellow;
+  color: $sigBlue;
+  font-size: 14px;
 }
 
 .micropost-full{
@@ -576,6 +594,61 @@ span.picture {
   }
 }
 
+/* page display */
+
+.page-name{
+  display: inline-block;
+}
+
+.thumbnail-page{
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  padding: 0px;
+}
+
+.img-holder{
+  background-color: $sigBlue;
+  width: 32px;
+  height: 32px;
+  padding: 0px;
+  display: inline-block;
+}
+
+#shareContainer{
+  .SoMeIcon{
+    background-color: $sigBlue;
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    margin-bottom: 10px;
+    margin-right: 10px;
+  }
+  .img-holder{
+    display: inline-block;
+  }
+}
+
+#pagesContainer{
+  transition: .3s ease;
+  margin-bottom: 10px;  
+
+  h6{
+    display: inline-block;
+    clear: right;
+  }  
+  a{
+    text-decoration: none;
+  }
+  a:hover{
+    text-decoration: none;
+  }
+}
+
+.page-wrapper:hover{
+  border: 2px solid $sigYellow;
+}
+
 /* miscellaneous */
 
 .debug_dump {
@@ -601,5 +674,28 @@ span.picture {
   margin: 10px 0;
   a img{
     background-color: $sigRed;
+  }
+}
+
+.inactive{
+  display: none;
+}
+
+.fbLogin{
+  color: white;
+  background-color: #3b5998;
+  display: inline-block; 
+  padding: 5px;
+  padding-right: 10px;
+
+  img{
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+  }
+
+  h6{
+    color: white;
+    display: inline-block;
   }
 }

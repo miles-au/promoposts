@@ -1,5 +1,16 @@
 <div class="micropost-full">
-  <%= render 'addtoany' %>
+  <div id="shareContainer">
+    <h3>Share To:</h3>
+    <% if current_user %>
+      <%= link_to({:controller => "microposts", :action => "facebook_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon") do%>
+        <img src="https://static.addtoany.com/buttons/facebook.svg" style="background-color: #3b5998;">
+      <% end %>
+    <% else %>
+      <h6>Please log in to share this post</h6>
+    <% end %>
+    <div id="pagesContainer" class="inactive first">
+    </div>
+  </div>
   <div class="section">
     <%= link_to gravatar_for(@micropost.user, size: 50), @micropost.user %>
     <span class="user"><%= link_to @micropost.user.name, @micropost.user %></span>

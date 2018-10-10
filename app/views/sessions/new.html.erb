@@ -21,8 +21,6 @@
     <% end %>
 
     <p>New user? <%= link_to "Sign up now!", signup_path %></p>
-    <div class="fbLogin">
-      <%= link_to "Sign in with Facebook", "/auth/facebook", id: "sign_in" %>
-    </div>
+    <%= render 'shared/sign_in_with_fb' %>
   </div>
 </div>

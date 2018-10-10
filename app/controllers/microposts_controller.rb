@@ -8,7 +8,7 @@ class MicropostsController < ApplicationController
       flash[:success] = "Your promo post is live!"
       redirect_to root_url
     else
-      @feed_items = []
+      @feed_items = current_user.feed.paginate(:page => params[:page], :per_page => 9)
       render 'static_pages/home'
     end
   end
@@ -21,6 +21,50 @@ class MicropostsController < ApplicationController
 
   def show
     @micropost = Micropost.find(params[:id])
+  end
+
+  def facebook_sharable_pages
+    @user = User.find(params[:id])
+    @micropost = Micropost.find(params[:micropost])
+    if @user.oauth_token
+      @accounts = @user.facebook.get_connections("me", "accounts")
+    else
+      #create with facebook and merge accounts
+    end
+    respond_to do |format| 
+        format.html { render :action => user_feed }  
+        format.js { render 'facebook_sharable_pages.js.erb' }
+    end
+  end
+
+  def share_to_facebook
+
+    #share to facebook
+    @accounts = current_user.facebook.get_connection("me", "accounts")
+    @micropost = Micropost.find(params[:post_id])
+
+    @accounts.each do |page|
+      if page['id'].to_s == params[:page_id].to_s
+        @access_token = page['access_token']
+        @page_id = page['id']
+      end
+    end
+
+    @fb_page = Koala::Facebook::API.new(@access_token)
+
+    if @micropost.picture?
+      @fb_page.put_picture(@micropost.picture.path, 'image' ,{:message => @micropost.content})
+    elsif
+      @fb_page.put_connections(@page_id, "feed", :message => @micropost.content)
+    end
+
+    flash[:success] = "Posted to Facebook!"
+
+    #share to own page
+
+
+
+    redirect_to root_path
   end
 
   private

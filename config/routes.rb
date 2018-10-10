@@ -16,10 +16,12 @@ Rails.application.routes.draw do
 
   get '/auth/:provider/callback' => 'sessions#facebook'
   get 'auth/failure', to: redirect('/')
+  get 'microposts/facebook_sharable_pages'
   
   delete '/logout',  to: 'sessions#destroy'
 
   get 'sessions/resend_activation', to: 'sessions#resend_activation'
+  get 'microposts/share_to_facebook', to: 'microposts#share_to_facebook'
 
   resources :users do
     member do
