@@ -1,7 +1,7 @@
 <%= form_for(@user) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <%= f.label :category, "I am a:" %><br />
+  <%= f.label :category, "Category: I am a..." %><br />
   <div class="categoryLabel">
   <%= f.label :category, "distributor" %>
   <%= f.radio_button :category, "distributor", :checked => logged_in? && @user.category == "distributor" %>

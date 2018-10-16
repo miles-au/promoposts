@@ -407,7 +407,26 @@ input {
   margin-bottom: 15px;
 }
 
+.fb_autoshare_box{
+  label, input{
+    display: inline-block;
+    width: auto;
+  }
+}
 
+.fb-settings-wrapper{
+  display: block;
+  margin: 10px;
+
+  input, div, h6{
+    display: inline-block;
+    width: auto;
+  }
+
+  input{
+    margin: 0 20px;
+  }
+}
 
 /* Users index */
 

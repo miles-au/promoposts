@@ -1,0 +1,46 @@
+<h4>Automatically share Facebook posts to Promo Posts for the following pages:</h4>
+
+<%= form_for @account, url: accounts_edit_path(:user_id => current_user.id, :provider => "facebook"), html: {method: :post} do |f| %>
+  <% if logged_in? && current_user.oauth_token %>
+
+    <% @accounts = current_user.facebook.get_connection("me", "accounts") %>
+    <% @accounts.each do |page| %>
+
+      <div class="fb-settings-wrapper">
+      <!-- Setting link: Check to see if page exists-->
+      <% if account = Account.find_by_account_id(page['id']) %>
+
+        <% if account.user_id == current_user.id %>
+        <!-- User owns this subscription -->
+          <input name="unsubscribe_hidden[]" type="hidden" value="<%= page['id'] %>">
+          <input name="unsubscribe[]" type="checkbox" value="<%= page['id'] %>" checked="checked" id="account_unsubscribe">
+        <% else %>
+        <!-- Somebody else owns this subscription -->
+            <% otherUser = true %>
+            <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false, :disabled => true}, page['id'], "" %>
+        <% end %>
+
+      <% else %>
+      <!-- New subscription -->
+            <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page['id'], "" %>
+
+      <% end %>
+        <div class="img-holder">
+          <img class="thumbnail-page" src="https://graph.facebook.com/<%= page['id'] %>/picture"/>
+        </div>
+        <h6 class=""><%= page['name'] %></h6>
+        <% if otherUser %>
+          <h6>(A Promo Posts user already manages this page)</h6>
+        <% end %>
+      </div>
+
+    <% end %>
+
+  <% else %>
+    <h6> Connect your Facebook Account </h6>
+  <% end %>
+
+  <%= f.submit "Update Autoshare Settings", class: "btn btn-primary" %>
+
+<% end %>
+

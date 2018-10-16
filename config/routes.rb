@@ -23,6 +23,12 @@ Rails.application.routes.draw do
   get 'sessions/resend_activation', to: 'sessions#resend_activation'
   get 'microposts/share_to_facebook', to: 'microposts#share_to_facebook'
 
+  post '/webhooks_facebook' => 'webhooks#facebook', as: :facebook_webhooks
+  get '/webhooks_facebook' => 'webhooks#challenge', as: :challenge_webhooks
+
+  get '/accounts/edit'
+  post '/accounts/edit' => 'accounts#update'
+
   resources :users do
     member do
       get :following, :followers

@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_many :microposts, dependent: :destroy
+  has_many :accounts, dependent: :destroy
   has_many :active_relationships, class_name:  "Relationship",
                                   foreign_key: "follower_id",
                                   dependent:   :destroy
@@ -19,6 +20,7 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   validates :category, presence: true
+  serialize :fb_autoshare, Array
 
   # Returns the hash digest of the given string.
   def User.digest(string)
@@ -102,9 +104,10 @@ class User < ApplicationRecord
   end
 
   def self.create_with_omniauth(auth)
-    puts "AUTH: #{auth}"
+    #puts "AUTH: #{auth}"
+    #create the user
     user = find_or_create_by(uid: auth['uid'], provider:  auth['provider'])
-    user.email = "#{auth['uid']}@#{auth['provider']}.com"
+    #user.email = "#{auth['uid']}@#{auth['provider']}.com"
     user.password = self.new_token
     user.name = auth['info']['name']
     user.category = "none"
@@ -114,9 +117,12 @@ class User < ApplicationRecord
     if auth.credentials.expires
       user.oauth_expires_at = Time.at(auth.credentials.expires_at)
     end
-    if User.find_by_email(user.email)
+
+    #save/return the user
+    if User.find_by_oauth_token(user.oauth_token)
       user
     else
+      user.email = "#{auth['uid']}@#{auth['provider']}.com"
       user.save!
       user
     end

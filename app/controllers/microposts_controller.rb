@@ -61,7 +61,7 @@ class MicropostsController < ApplicationController
     flash[:success] = "Posted to Facebook!"
 
     #share to own page
-
+    
 
 
     redirect_to root_path

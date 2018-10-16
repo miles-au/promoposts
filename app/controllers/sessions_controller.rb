@@ -26,6 +26,10 @@ class SessionsController < ApplicationController
 
   def facebook
     @user = User.create_with_omniauth(request.env['omniauth.auth'])
+    if @user.facebook.get_object("me",fields:"email")['email']
+      @user.email = @user.facebook.get_object("me",fields:"email")['email']
+      @user.save!
+    end
     log_in @user
     flash[:success] = "Welcome to Promo Posts, #{@user.name}."
     redirect_back_or root_url

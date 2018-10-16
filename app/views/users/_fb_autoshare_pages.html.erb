@@ -1,0 +1,16 @@
+<h5>Automatically share Facebook posts to Promo Posts for the following pages:</h5>
+  <% if logged_in? && current_user.oauth_token %>
+    <% @accounts = current_user.facebook.get_connection("me", "accounts") %>
+    <% @accounts.each do |page| %>
+      <div class="fb-settings-wrapper">
+        <% sharing = current_user['fb_autoshare'].include?(page['id']) %>
+        <%= f.check_box :fb_autoshare, { :name => "user[fb_autoshare][]", :value => page['id'], :checked => sharing}, page['id'] ,"" %>
+        <div class="img-holder">
+          <img class="thumbnail-page" src="https://graph.facebook.com/<%= page['id'] %>/picture"/>
+        </div>
+        <h6 class=""><%= page['name'] %></h6>
+      </div>
+    <% end %>
+  <% else %>
+    <h6> Connect your Facebook Account </h6>
+  <% end %>

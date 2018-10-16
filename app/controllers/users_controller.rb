@@ -37,6 +37,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if @user.update_attributes(user_params)
       flash[:success] = "Profile updated"
+      @user.fb_autoshare
       redirect_to @user
     else
       render 'edit'
@@ -67,7 +68,7 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name, :email, :password,
-                                   :password_confirmation, :category)
+                                   :password_confirmation, :category, :fb_autoshare => [])
     end
 
     # Before filters
