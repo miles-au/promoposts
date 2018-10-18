@@ -1,16 +1,22 @@
 class MicropostsController < ApplicationController
-  before_action :logged_in_user, only: [:create, :destroy]
+  before_action :logged_in_user, only: [:create, :destroy, :new, :share_to_facebook,]
   before_action :correct_user,   only: :destroy
 
   def create
     @micropost = current_user.microposts.build(micropost_params)
+    if @micropost.content.blank?
+      @micropost.content = "<image only>"
+    end
     if @micropost.save
       flash[:success] = "Your promo post is live!"
       redirect_to root_url
     else
-      @feed_items = current_user.feed.paginate(:page => params[:page], :per_page => 9)
-      render 'static_pages/home'
+      render 'microposts/new'
     end
+  end
+
+  def new
+    @micropost = current_user.microposts.build
   end
 
   def destroy

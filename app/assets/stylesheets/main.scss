@@ -471,7 +471,7 @@ input {
   .user {
     margin-top: 5em;
     padding-top: 0;
-    font-size: 1.5em;
+    font-size: 1.3em;
   }
   .content {
     display: block;
@@ -504,7 +504,7 @@ input {
   }
   li{
     display: inline-block;
-    width: 33%;
+    width: 25%;
     vertical-align: top;
     padding-right: 10px;
   }
@@ -537,12 +537,12 @@ input {
       width: 100%;
       background-color: $sigBlue;
       color: $sigYellow;
-      font-size: 2em;
+      font-size: 1.2em;
       white-space: normal;
       text-align: center;
 
       strong{
-        margin: 10%;
+        margin: 5%;
         margin-top: -50%;
         display: block;
         @include vertical-align;
@@ -717,4 +717,8 @@ span.picture {
     color: white;
     display: inline-block;
   }
+}
+
+.top_icons{
+  display: inline-block;
 }

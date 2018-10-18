@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   get 'sessions/resend_activation', to: 'sessions#resend_activation'
   get 'microposts/share_to_facebook', to: 'microposts#share_to_facebook'
 
+  get 'microposts/new'
+
   post '/webhooks_facebook' => 'webhooks#facebook', as: :facebook_webhooks
   get '/webhooks_facebook' => 'webhooks#challenge', as: :challenge_webhooks
 
