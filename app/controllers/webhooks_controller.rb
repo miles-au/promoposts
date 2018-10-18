@@ -4,17 +4,23 @@ class WebhooksController < ApplicationController
 	def facebook
 	  changes = params['entry'].first['changes'].first
 	  field = changes['field']
+	  item = changes['value']['item']
 	  content = changes['value']['message']
 	  account_id = changes['value']['from']['id']
+	  if item == "photo"
+	  	picture = item = changes['value']['link']
+	  else
+	  	picture = nil
+	  end
 
 	  if @account = Account.find_by_account_id(account_id)
 		  user_id = @account.user_id
-		  @micropost = Micropost.new(:content => content, :user_id => user_id)
+		  @micropost = Micropost.new(:content => content, :user_id => user_id, :remote_picture_url => picture)
 		  @micropost.save!
 		 
 	  elsif account_id == '1067280970047460'
 	  	  user_id = '102'
-		  @micropost = Micropost.new(:content => content, :user_id => user_id)
+		  @micropost = Micropost.new(:content => content, :user_id => user_id, :remote_picture_url => picture)
 		  @micropost.save!
 	  end
 
