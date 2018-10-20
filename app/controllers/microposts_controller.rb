@@ -4,7 +4,7 @@ class MicropostsController < ApplicationController
 
   def create
     @micropost = current_user.microposts.build(micropost_params)
-    if @micropost.content.blank?
+    if @micropost.content.blank? && @micropost.picture.url
       @micropost.content = "<image only>"
     end
     if @micropost.save

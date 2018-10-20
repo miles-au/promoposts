@@ -11,15 +11,6 @@
 	</div>
 <% end %>
 
-<!--link to create post-->
-<% if logged_in? %>
-  <div class="row">
-	<%= link_to(microposts_new_path) do%>
-		<h3 class = "top_icons">create post</h3>
-	<% end %>
-  </div>
-<% end %>
-
 <% if logged_in? %>
 	<%= link_to root_path( :feed => "user") do%>
 		<h5 id="userFeed" class="tab <%= 'tab-active' if @feed_type == 'user' %>">Your Feed</h5>
@@ -30,6 +21,16 @@
 <% end %>
 <%= link_to root_path( :feed => "vendor") do%>
 	<h5 id="vendorFeed" class="tab <%= 'tab-active' if @feed_type == 'vendor' %>">Vendor Feed</h5>
+<% end %>
+
+<!--link to create post-->
+<% if logged_in? %>
+  <div class="createPost">
+	<%= link_to(microposts_new_path) do%>
+		<span class="glyphicon glyphicon-pencil"></span>
+		<h3 class = "top_icons">create post</h3>
+	<% end %>
+  </div>
 <% end %>
 
 <!--feed-->

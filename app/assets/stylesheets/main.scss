@@ -57,6 +57,50 @@ textarea {
   background-color: grey;
 }
 
+.follow-btn{
+  border: none;
+  border-radius: 0px;
+  background-color: $sigCadet;
+
+  div, span{
+    display: inline-block;
+    color: $sigGrey;
+    margin-left: 3px;
+  }
+  &:hover{
+    background-color: $sigRed;
+    div, span{
+      color: $sigGrey;
+    }
+  }
+}
+
+.unfollow-btn{
+  border: none;
+  border-radius: 0px;
+  background-color: grey;
+
+  div, span{
+    display: inline-block;
+    color: $sigGrey;
+    margin-left: 3px;
+  }
+  &:hover{
+    background-color: $sigRed;
+    color: $sigGrey;
+  }
+}
+
+.follow-large{
+  width: 150px;
+  height: 50px;
+  font-size: 1.5em;
+}
+
+.follow-small{
+  font-size: 0.9em;
+}
+
 header, .navbar-inverse, .navbar-fixed-top{
 	background-color: $sigBlue !important;
 }
@@ -89,7 +133,7 @@ header, .navbar-inverse, .navbar-fixed-top{
 
 /* typography */
 
-h1, h2, h3, h4, h5, h6, ul, li, p, div,{
+h1, h2, h3, h4, h5, h6, ul, li, p, div, span, body{
 	font-family: 'Bai Jamjuree', sans-serif;
   color: $sigBlue;
 }
@@ -317,12 +361,6 @@ aside {
   padding: 0;
 }
 
-#follow_form{
-  padding: 10px 0;
-  width: 150px;
-}
-
-
 /* forms */
 
 input, textarea, select, .uneditable-input {
@@ -437,6 +475,7 @@ input {
     overflow: auto;
     padding: 10px 0;
     border-bottom: 1px solid $gray-lighter;
+    font-size: 1.2em;
   }
 }
 
@@ -600,11 +639,39 @@ span.picture {
   font-weight: 800;
   background-color: $sigBlue;
   color: $sigYellow;
+
+  &:hover{
+    background-color: $sigGrey;
+    color: $sigBlue;
+  }
 }
 
 .tab-active{
   background-color: $sigYellow;
   color: $sigBlue;
+
+  &:hover{
+    background-color: $sigGrey;
+    color: $sigBlue;
+    text-decoration: none;
+  }
+}
+
+.createPost{
+  display: inline-block;
+  float: right;
+  margin-right: 100px; 
+
+  h3{
+    margin-left: 5px;
+  }
+
+  &:hover{
+    div, span, h3{
+      text-decoration: none;
+      color: $sigYellow;
+    }
+  }
 }
 
 .feed{

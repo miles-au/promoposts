@@ -1,6 +1,6 @@
 <%= form_for(current_user.active_relationships.build, remote: true) do |f| %>
   <div><%= hidden_field_tag :followed_id, @user.id %></div>
-  <%= button_tag(type: 'submit', class: "follow-btn follow-large") do %>
+  <%= button_tag(type: 'submit', class: "follow-btn follow-small") do %>
 	<span class="glyphicon glyphicon-plus"></span><div>follow</div>
   <% end %>
 <% end %>

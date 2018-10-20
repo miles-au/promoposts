@@ -11,7 +11,7 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@user)
     get root_path
     assert_select 'div.pagination'
-    assert_select 'input[type=file]'
+    #assert_select 'input[type=file]'
     # Invalid submission
     assert_no_difference 'Micropost.count' do
       post microposts_path, params: { micropost: { content: ""}}
@@ -56,8 +56,9 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@user)
     assert is_logged_in?
     follow_redirect!
-    assert_select "h3", "Your Feed"
-    assert_select "h3", "Global Feed"
+    assert_select "h5", "Your Feed"
+    assert_select "h5", "Global Feed"
+    assert_select "h5", "Vendor Feed"
 
     #post content to test appearance on other feed
     content = "Should not show up on user feed"
@@ -67,7 +68,7 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     delete logout_path
     follow_redirect!
     assert_select "a[href='user_feed']", false
-    assert_select "h3", "Global Feed"
+    assert_select "h5", "Global Feed"
 
     #log back in as other user
     assert_match content, response.body

@@ -12,6 +12,8 @@
         <% end %>
     <% end %>
     </span>
+    <% @user = micropost.user %>
+    <%= render 'shared/follow_form' if logged_in? && controller_name != "users" %>
     <%= link_to(micropost) do %>
       <div class="section">
           <span class="content">
