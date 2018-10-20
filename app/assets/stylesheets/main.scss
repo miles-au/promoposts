@@ -1,6 +1,6 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
-@import url('https://fonts.googleapis.com/css?family=Quicksand');
+@import url('https://fonts.googleapis.com/css?family=Bai+Jamjuree');
 
 //Color Palette:
 $sigBlue: #2d4059;
@@ -90,11 +90,11 @@ header, .navbar-inverse, .navbar-fixed-top{
 /* typography */
 
 h1, h2, h3, h4, h5, h6, ul, li, p, div,{
-	font-family: 'Quicksand', sans-serif;
+	font-family: 'Bai Jamjuree', sans-serif;
   color: $sigBlue;
 }
 a{
-  font-family: 'Quicksand', sans-serif;
+  font-family: 'Bai Jamjuree', sans-serif;
   color: $sigCadet;
 }
 
@@ -270,12 +270,12 @@ aside {
   }
 }
 
-.gravatar {
+.avatar {
   float: left;
   margin-right: 10px;
 }
 
-.gravatar_edit {
+.avatar_edit {
   margin-top: 15px;
 }
 
@@ -305,7 +305,7 @@ aside {
 .user_avatars {
   overflow: auto;
   margin-top: 10px;
-  .gravatar {
+  .avatar {
     margin: 1px 1px;
   }
   a {
@@ -487,7 +487,7 @@ input {
     margin-left: 60px;
     font-size: 0.8em;
   }
-  .gravatar {
+  .avatar {
     float: left;
     margin-right: 10px;
     margin-top: 10px;
@@ -721,4 +721,14 @@ span.picture {
 
 .top_icons{
   display: inline-block;
+}
+
+.avatar{
+  background-size: cover;
+  vertical-align: top;
+}
+
+.avatar-thumbnail{
+  height: 50px;
+  width: 50px;
 }

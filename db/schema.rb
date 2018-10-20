@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_14_202815) do
+ActiveRecord::Schema.define(version: 2018_10_19_010838) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "provider"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 2018_10_14_202815) do
     t.string "oauth_token"
     t.datetime "oauth_expires_at"
     t.string "fb_autoshare", default: "--- []\n"
+    t.string "picture"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

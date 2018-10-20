@@ -20,7 +20,9 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   validates :category, presence: true
-  serialize :fb_autoshare, Array
+
+  mount_uploader :picture, PictureUploader
+  validate  :picture_size
 
   # Returns the hash digest of the given string.
   def User.digest(string)
@@ -132,6 +134,14 @@ class User < ApplicationRecord
     @facebook ||= Koala::Facebook::API.new(oauth_token)
   end
 
+  def avatar
+    if self.picture.url
+      self.picture.url
+    else
+      return "/assets/avatar.png"
+    end
+  end
+
   private
 
     # Converts email to all lower-case.
@@ -148,6 +158,12 @@ class User < ApplicationRecord
       else
         update_columns(activation_digest: User.digest(activation_token))
       end   
+    end
+
+    def picture_size
+      if picture.size > 10.megabytes
+        errors.add(:picture, "should be less than 10MB")
+      end
     end
 
 end

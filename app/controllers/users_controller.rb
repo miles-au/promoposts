@@ -68,7 +68,7 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name, :email, :password,
-                                   :password_confirmation, :category, :fb_autoshare => [])
+                                   :password_confirmation, :category, :picture)
     end
 
     # Before filters

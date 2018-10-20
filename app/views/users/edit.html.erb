@@ -2,18 +2,11 @@
 <% provide(:button_text, "Save Changes") %>
 <h1>Update your profile</h1>
 
-
-
 <div class="row">
 	<div class="col-md-3">
-		<div class="gravatar_edit">
-		  <%= gravatar_for @user %>
-		  <a href="http://gravatar.com/emails" target="_blank" rel="noopener">change</a>
-		</div>
+		<div class="avatar" style="background-image: url('<%= current_user.avatar %>'); height: 150px; width: 150px; border: 2px solid $sigBlue;"></div>
 	</div>
 	<div class="col-md-6">
-
-	<%= render 'form' %>
-
+		<%= render 'form' %>
 	</div>
 </div>
