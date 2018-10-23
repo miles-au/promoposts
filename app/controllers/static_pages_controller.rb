@@ -1,22 +1,13 @@
 class StaticPagesController < ApplicationController
 
   def home
-=begin
-    if logged_in?
-      @feed_items = current_user.feed.paginate(:page => params[:page], :per_page => 9)
-      respond_to do |format| 
-          format.html { render :action => user_feed }  
-          format.js { render 'user_feed.js.erb' }
-      end
+    if cookies[:columns]
+      @columns = cookies[:columns]
     else
-      @feed_items = Micropost.all.paginate(:page => params[:page], :per_page => 9) #global feed
-      respond_to do |format| 
-          format.html { render :action => global_feed }  
-          format.js { render 'global_feed.js.erb' }
-      end
+      cookies[:columns] = "3"
+      @columns = cookies[:columns]
     end
 
-=end
     @feed_type = params[:feed]
     if @feed_type
       #go to specified feed
@@ -52,23 +43,14 @@ class StaticPagesController < ApplicationController
 
   end
 
-=begin
-  def global_feed
-    @feed_items = Micropost.all.paginate(:page => params[:page], :per_page => 9) #global feed
+  def change_grid_view
+    @columns = params["columns"]
+    cookies[:columns] = @columns
     respond_to do |format|
       format.html
       format.js
     end
   end
-
-  def user_feed
-    @feed_items = current_user.feed.paginate(:page => params[:page], :per_page => 9)
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
-=end    
 
   def help
   end

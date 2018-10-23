@@ -31,14 +31,13 @@ Rails.application.routes.draw do
   get '/accounts/edit'
   post '/accounts/edit' => 'accounts#update'
 
+  get 'static_pages/change_grid_view'
+
   resources :users do
     member do
       get :following, :followers
     end
   end
-
-  get 'global_feed' => "static_pages#global_feed"
-  get 'user_feed' => "static_pages#user_feed"
 
   resources :account_activations, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]

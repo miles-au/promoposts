@@ -1,4 +1,4 @@
-<li id="micropost-<%= micropost.id %>">
+<li id="micropost-<%= micropost.id %>" class="columns-<%= @columns %>">
   <div class="section">
     <div class="avatar avatar-thumbnail" style="background-image: url('<%= micropost.user.avatar %>');"></div>
     <span class="user"><%= link_to micropost.user.name, micropost.user %></span>
@@ -14,7 +14,7 @@
     </span>
     <% @user = micropost.user %>
     <%= render 'shared/follow_form' if logged_in? && controller_name != "users" %>
-    <%= link_to(micropost) do %>
+    <%= link_to({:controller => "microposts", :action => "show", :remote => true, :id => micropost.id, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary btn-lg'}, :class => "SoMeIcon") do%>
       <div class="section">
           <span class="content">
             <%= micropost.content %>

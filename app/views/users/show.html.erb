@@ -1,4 +1,12 @@
 <% provide(:title, @user.name) %>
+
+<!--modal-->
+  <div id="modal-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 75%;">
+      <div class="modal-content"></div>
+    </div>
+  </div>
+
 <div class="row">
   <aside class="col-md-4">
     <section class="user_info">
@@ -15,7 +23,7 @@
   <div class="col-md-8">
     <% if @user.microposts.any? %>
       <h3>Activity (<%= @user.microposts.count %>)</h3>
-      <ol id="microPostsContainer" class="microposts">
+      <ol id="microPostsContainer" class="microposts micropost-full">
         <%= render @microposts %>
       </ol>
       <%= will_paginate @microposts %>

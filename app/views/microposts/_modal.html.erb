@@ -1,0 +1,41 @@
+<div class="row">
+	<div class="col-md-8">
+		<div class="modal-header">
+			<h3 class="modal-title" id="myModalLabel">1. Edit your caption</h3>
+		</div>
+		<div class="modal-body">
+		  <div class="micropost-modal">
+			  <div class="section">
+			      <span class="content">
+			        <input type="textarea" value="<%= @micropost.content %>" autofocus/>
+			        <% if @micropost.picture? %>
+			        <%= link_to image_tag(@micropost.picture.url, alt: "promo post image") %>
+			        <% end %>
+			      </span>
+			  </div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="modal-header">
+			<h3 class="modal-title" id="myModalLabel">2. Share it!</h3>
+		</div>
+		<div id="shareContainer">
+		    <% if current_user %>
+		      <%= link_to({:controller => "microposts", :action => "facebook_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon") do%>
+		        <img src="https://static.addtoany.com/buttons/facebook.svg" style="background-color: #3b5998;">
+		      <% end %>
+		    <% else %>
+		      <%= link_to( "Please log in to share posts", login_path) %>
+		    <% end %>
+		    <div id="pagesContainer" class="inactive first">
+		    </div>
+		  </div>
+		  <div class="modal-footer">
+			<button class="btn btn-primary">Share</button>
+		</div>
+	</div>
+	<div class="col-md-1">
+		<button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
+	</div>
+</div>

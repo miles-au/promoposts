@@ -2,6 +2,8 @@ class MicropostsController < ApplicationController
   before_action :logged_in_user, only: [:create, :destroy, :new, :share_to_facebook,]
   before_action :correct_user,   only: :destroy
 
+  protect_from_forgery except: :show
+
   def create
     @micropost = current_user.microposts.build(micropost_params)
     if @micropost.content.blank? && @micropost.picture.url
@@ -27,6 +29,10 @@ class MicropostsController < ApplicationController
 
   def show
     @micropost = Micropost.find(params[:id])
+    respond_to do |format| 
+        format.html
+        format.js
+    end
   end
 
   def facebook_sharable_pages
@@ -38,7 +44,7 @@ class MicropostsController < ApplicationController
       #create with facebook and merge accounts
     end
     respond_to do |format| 
-        format.html { render :action => user_feed }  
+        format.html { redirect_to root_path , :notice => "Posted!" }  
         format.js { render 'facebook_sharable_pages.js.erb' }
     end
   end

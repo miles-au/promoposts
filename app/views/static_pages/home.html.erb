@@ -1,3 +1,10 @@
+<!--modal-->
+	<div id="modal-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document" style="width: 75%;">
+	    <div class="modal-content"></div>
+	  </div>
+	</div>
+
 <% if !logged_in? %>
 	<div class="center jumbotron">
 	  <h1>See it, share it.</h1>
@@ -11,17 +18,20 @@
 	</div>
 <% end %>
 
-<% if logged_in? %>
-	<%= link_to root_path( :feed => "user") do%>
-		<h5 id="userFeed" class="tab <%= 'tab-active' if @feed_type == 'user' %>">Your Feed</h5>
+<!--feeds-->
+<div style="display:inline-block;">
+	<% if logged_in? %>
+		<%= link_to root_path( :feed => "user") do%>
+			<h5 id="userFeed" class="tab <%= 'tab-active' if @feed_type == 'user' %>">Your Feed</h5>
+		<% end %>
 	<% end %>
-<% end %>
-<%= link_to root_path( :feed => "global") do%>
-	<h5 id="globalFeed" class="tab <%= 'tab-active' if @feed_type == 'global' %>">Global Feed</h5>
-<% end %>
-<%= link_to root_path( :feed => "vendor") do%>
-	<h5 id="vendorFeed" class="tab <%= 'tab-active' if @feed_type == 'vendor' %>">Vendor Feed</h5>
-<% end %>
+	<%= link_to root_path( :feed => "global") do%>
+		<h5 id="globalFeed" class="tab <%= 'tab-active' if @feed_type == 'global' %>">Global Feed</h5>
+	<% end %>
+	<%= link_to root_path( :feed => "vendor") do%>
+		<h5 id="vendorFeed" class="tab <%= 'tab-active' if @feed_type == 'vendor' %>">Vendor Feed</h5>
+	<% end %>
+</div>
 
 <!--link to create post-->
 <% if logged_in? %>
@@ -33,6 +43,28 @@
   </div>
 <% end %>
 
+<!--grid views-->
+<div id="grid-views">
+	<%= link_to({:controller => "static_pages", :action => "change_grid_view", :remote => true, :columns => "2"}) do%>
+		<img id="grid-view-icon-2" class="grid-view-icon-active <%= @columns == '2'? '':'hide' %>" src="/assets/grid-active-2.svg"/>
+	<% end %>
+	<%= link_to({:controller => "static_pages", :action => "change_grid_view", :remote => true, :columns => "2"}) do%>
+		<img id="grid-view-icon-2-dark" class="grid-view-icon <%= @columns == '2'? 'hide':'' %>" src="/assets/grid-dark-2.svg"/>
+	<% end %>
+	<%= link_to({:controller => "static_pages", :action => "change_grid_view", :remote => true, :columns => "3"}) do%>
+		<img id="grid-view-icon-3" class="grid-view-icon-active <%= @columns == '3'? '':'hide' %>" src="/assets/grid-active-3.svg"/>
+	<% end %>
+	<%= link_to({:controller => "static_pages", :action => "change_grid_view", :remote => true, :columns => "3"}) do%>
+		<img id="grid-view-icon-3-dark" class="grid-view-icon <%= @columns == '3'? 'hide':'' %>" src="/assets/grid-dark-3.svg"/>
+	<% end %>
+	<%= link_to({:controller => "static_pages", :action => "change_grid_view", :remote => true, :columns => "4"}) do%>
+		<img id="grid-view-icon-4" class="grid-view-icon-active <%= @columns == '4'? '':'hide' %>" src="/assets/grid-active-4.svg"/>
+	<% end %>
+	<%= link_to({:controller => "static_pages", :action => "change_grid_view", :remote => true, :columns => "4"}) do%>
+		<img id="grid-view-icon-4-dark" class="grid-view-icon <%= @columns == '4'? 'hide':'' %>" src="/assets/grid-dark-4.svg"/>
+	<% end %>
+</div>
+
 <!--feed-->
 <div class="feed row">
 	<div id="feedContainer" class="col-md-12">
@@ -41,5 +73,4 @@
 	  	  <hr><h3>end</h3>
 	  	</div>
 	</div>
-
 </div>

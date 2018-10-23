@@ -1,8 +1,8 @@
 <%= link_to(microposts_share_to_facebook_path(:page_id => page_id, :post_id => @micropost.id)) do %>
-<div class="page-wrapper">
-	<div class="img-holder">
-		<img class="thumbnail-page" src="https://graph.facebook.com/<%= page_id %>/picture"/>
+	<div class="page-wrapper">
+		<div class="img-holder">
+			<img class="thumbnail-page" src="https://graph.facebook.com/<%= page_id %>/picture"/>
+		</div>
+		<h6 class="page-name"><%= page_name %></h6>
 	</div>
-	<h6 class="page-name"><%= page_name %></h6>
-</div>
 <% end %>
