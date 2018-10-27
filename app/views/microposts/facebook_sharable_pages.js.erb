@@ -1,6 +1,6 @@
 if($('#pagesContainer').hasClass("inactive") && $('#pagesContainer').hasClass("first")){
 	<% @accounts.each do |page| %>
-	$('#pagesContainer').append("<%= escape_javascript render(:partial => 'page_display', :locals => { :page_name => page['name'], :page_id => page['id'], :post_id => @micropost.id }) %>");
+	$('#pagesContainer').append("<%= escape_javascript render(:partial => 'page_display', :locals => { :page_name => page['name'], :page_id => page['id']}) %>");
 	<% end %>
 	$('#pagesContainer').removeClass("inactive");
 	$('#pagesContainer').removeClass("first");

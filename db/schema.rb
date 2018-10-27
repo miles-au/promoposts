@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_19_010838) do
+ActiveRecord::Schema.define(version: 2018_10_24_023527) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "provider"
@@ -19,6 +19,17 @@ ActiveRecord::Schema.define(version: 2018_10_19_010838) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.integer "active_user_id"
+    t.integer "passive_user_id"
+    t.integer "micropost_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active_user_id", "passive_user_id"], name: "index_events_on_active_user_id_and_passive_user_id", unique: true
+    t.index ["active_user_id"], name: "index_events_on_active_user_id"
+    t.index ["passive_user_id"], name: "index_events_on_passive_user_id"
   end
 
   create_table "microposts", force: :cascade do |t|

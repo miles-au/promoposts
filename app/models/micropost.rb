@@ -6,11 +6,16 @@ class Micropost < ActiveRecord::Base
   validates :content, length: { maximum: 140 }
   validate  :picture_size
   validate :content_exists
+  has_many :events, dependent: :destroy
 
   self.per_page = 24
 
-  vendors = User.where("category=?", "vendor")
-  scope :vendors, -> { where("user_id in (?)", vendors.ids)}
+  after_save :create_event
+
+  def create_event
+    @event = Event.new(active_user_id: self.user_id, micropost_id: self.id)
+    @event.save!
+  end
 
   private
 

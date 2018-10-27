@@ -20,10 +20,10 @@ class StaticPagesController < ApplicationController
           end
 
         when "global"
-           @feed_items = Micropost.all.paginate(:page => params[:page])
+           @feed_items = Event.all.paginate(:page => params[:page])
 
          when "vendor"
-            @feed_items = Micropost.vendors.paginate(:page => params[:page])
+            @feed_items = Event.vendors.paginate(:page => params[:page])
       end
     else
       #render defaults
@@ -31,7 +31,7 @@ class StaticPagesController < ApplicationController
         @feed_items = current_user.feed.paginate(:page => params[:page])
         @feed_type = "user"
       else
-        @feed_items = Micropost.all.paginate(:page => params[:page])
+        @feed_items = Event.all.paginate(:page => params[:page])
         @feed_type = "global"
       end
     end

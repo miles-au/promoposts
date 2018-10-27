@@ -1,0 +1,14 @@
+<div class="action-wrapper columns-<%= @columns %>">
+	<% @active_user = User.find(event.active_user_id) %>
+
+<div class="avatar avatar-thumbnail" style="width: 25px; height: 25px;background-image: url('<%= @active_user.avatar %>');"></div>
+<span class="user" style="font-size: 1.1em;"><%= link_to @active_user.name, @active_user %></span>
+<% if event.passive_user_id %>
+	<span style="margin-left: 5px; font-size: 1em;">shared a post</span>
+<% else %>
+	<span style="margin-left: 5px; font-size: 1em;">created a post</span>
+<% end %>
+
+	<% @micropost = Micropost.find(event.micropost_id) %>
+	<%= render @micropost %>
+</div>

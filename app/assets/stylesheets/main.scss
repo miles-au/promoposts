@@ -529,7 +529,6 @@ input {
   .avatar {
     float: left;
     margin-right: 10px;
-    margin-top: 10px;
   }
   .noPic{
     display: none;
@@ -544,17 +543,11 @@ input {
   li{
     display: inline-block;
     vertical-align: top;
-    padding-right: 10px;
+    width: 95%;
+    padding-left: 4%;
+    border: none;
   }
-  .columns-2{
-    width: 50%;
-  }
-  .columns-3{
-    width: 33%;
-  }
-  .columns-4{
-    width: 25%;
-  }
+  
   .content{
     vertical-align: top;
     overflow: hidden;
@@ -761,8 +754,17 @@ span.picture {
   }
 }
 
-.page-wrapper:hover{
-  border: 2px solid $sigYellow;
+.page-wrapper{
+  input, .img-holder{
+    display: inline-block;
+  }
+  input{
+    width: 30px;
+
+    &:hover{
+      cursor: pointer;
+    }
+  }
 }
 
 /* miscellaneous */
@@ -844,5 +846,27 @@ span.picture {
   img{
     width: 30px;
     height: 30px;
+  }
+}
+
+.action-wrapper{
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.columns-2{
+  width: 50%;
+}
+.columns-3{
+  width: 33%;
+}
+.columns-4{
+  width: 25%;
+}
+
+#microPostsContainer{
+  .action-wrapper{
+    display: block;
+    margin-top: 5px;
   }
 }

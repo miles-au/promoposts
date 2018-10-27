@@ -11,6 +11,7 @@ class MicropostsController < ApplicationController
     end
     if @micropost.save
       flash[:success] = "Your promo post is live!"
+      @event = Event.new(active_user_id: current_user.id, micropost_id: @micropost.id)
       redirect_to root_url
     else
       render 'microposts/new'
@@ -28,6 +29,7 @@ class MicropostsController < ApplicationController
   end
 
   def show
+    @event = Event.new
     @micropost = Micropost.find(params[:id])
     respond_to do |format| 
         format.html
@@ -44,39 +46,44 @@ class MicropostsController < ApplicationController
       #create with facebook and merge accounts
     end
     respond_to do |format| 
-        format.html { redirect_to root_path , :notice => "Posted!" }  
+        format.html
         format.js { render 'facebook_sharable_pages.js.erb' }
     end
   end
 
   def share_to_facebook
-
     #share to facebook
     @accounts = current_user.facebook.get_connection("me", "accounts")
-    @micropost = Micropost.find(params[:post_id])
+    @micropost = Micropost.find(params['micropost_id'])
+    @message = params[:event]['message']
+    @pages = params[:event]['pages']
 
     @accounts.each do |page|
-      if page['id'].to_s == params[:page_id].to_s
+      if @pages.include?(page['id'])
+      #if page['id'].to_s == params[:page_id].to_s
         @access_token = page['access_token']
         @page_id = page['id']
+        fb_share_helper(@micropost, @page_id, @message, @access_token)
       end
     end
 
-    @fb_page = Koala::Facebook::API.new(@access_token)
+    #share to own page
+    @event = Event.new(active_user_id: current_user.id, passive_user_id: @micropost.user.id, micropost_id: @micropost.id)
+    @event.save!
 
-    if @micropost.picture?
-      @fb_page.put_picture(@micropost.picture.path, 'image' ,{:message => @micropost.content})
+    redirect_to root_path
+  end
+
+  def fb_share_helper(micropost, page_id, message, access_token)
+    fb_page = Koala::Facebook::API.new(access_token)
+
+    if micropost.picture?
+      fb_page.put_picture(micropost.picture.path, 'image' ,{:message => message})
     elsif
-      @fb_page.put_connections(@page_id, "feed", :message => @micropost.content)
+      fb_page.put_connections(page_id, "feed", :message => message)
     end
 
     flash[:success] = "Posted to Facebook!"
-
-    #share to own page
-    
-
-
-    redirect_to root_path
   end
 
   private

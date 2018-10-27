@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   post '/accounts/edit' => 'accounts#update'
 
   get 'static_pages/change_grid_view'
+  post '/microposts/share_to_facebook'
 
   resources :users do
     member do

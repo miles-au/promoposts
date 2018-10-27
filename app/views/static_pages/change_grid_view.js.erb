@@ -7,8 +7,8 @@ $("#grid-view-icon-<%= @columns %>-dark").addClass("hide");
 var percent = (100/<%= @columns %>);
 var str = percent + "%";
 
-$('.microposts-grid li').removeClass("columns-2");
-$('.microposts-grid li').removeClass("columns-3");
-$('.microposts-grid li').removeClass("columns-4");
+$('.action-wrapper').removeClass("columns-2");
+$('.action-wrapper').removeClass("columns-3");
+$('.action-wrapper').removeClass("columns-4");
 
-$('.microposts-grid li').addClass("columns-<%= @columns %>");
+$('.action-wrapper').addClass("columns-<%= @columns %>");
