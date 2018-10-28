@@ -9,7 +9,12 @@ class UsersController < ApplicationController
   end
 
   def index
-  	@users = User.where(activated: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => 20)
+    @searchTerm = params['search']
+    if @searchTerm
+      @users = User.where("activated = ? AND name LIKE ?", true, "#{@searchTerm}%").order(:name).where("name LIKE ?", "#{@searchTerm}%").paginate(:page => params[:page], :per_page => 20)
+    else
+      @users = User.where(activated: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => 20)
+    end
   end
 
   def show

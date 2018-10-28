@@ -1,10 +1,12 @@
 <%= form_for(@user) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <div>
-    <h5>Upload a new profile picture (10mb max)</h5>
-    <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
-  </div>
+  <% if logged_in? %>
+    <div>
+      <h5>Upload a new profile picture (10mb max)</h5>
+      <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
+    </div>
+  <% end %>
 
   <%= f.label :category, "Category: I am a..." %><br />
   <div class="categoryLabel">

@@ -4,5 +4,7 @@
   </ol>
   <% if @feed_items.any? %>
   	<%= will_paginate @feed_items %>
+  <% else %>
+  	<h4>There are no posts here! (Follow some people or create a post!)</h4>
   <% end %>
 </div>

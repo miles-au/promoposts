@@ -870,3 +870,16 @@ span.picture {
     margin-top: 5px;
   }
 }
+
+#usersIndexSearch{
+  div{
+    display: inline-block;
+  }
+  input{
+    display: inline-block;
+    width: 500px;
+  }
+  .btn{
+    width: 150px;
+  }
+}
