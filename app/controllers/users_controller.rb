@@ -19,7 +19,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    activity  = Event.where("active_user_id = :user_id", user_id: @user.id)
+    activity  = Event.where("user_id = :user_id", user_id: @user.id)
     @events = activity.paginate(page: params[:page], :per_page => 10)
     #@microposts = @user.microposts.paginate(page: params[:page], :per_page => 10)
     redirect_to root_url and return unless @user.activated == true

@@ -21,12 +21,12 @@
     </section>
   </aside>
   <div class="col-md-8">
-    <% if @actions %>
-      <h3>Activity (<%= @actions.count %>)</h3>
+    <% if @events %>
+      <h3>Activity (<%= @events.count %>)</h3>
       <ol id="microPostsContainer" class="microposts micropost-full">
-        <%= render @actions %>
+        <%= render @events %>
       </ol>
-      <%= will_paginate @actions %>
+      <%= will_paginate @events %>
     <% end %>
   </div>
 </div>

@@ -375,6 +375,9 @@ GEM
       rack (>= 1.6.2, < 3)
     omniauth-facebook (1.4.0)
       omniauth-oauth2 (~> 1.0.2)
+    omniauth-linkedin-oauth2 (0.2.5)
+      omniauth (~> 1.0)
+      omniauth-oauth2
     omniauth-oauth2 (1.0.2)
       oauth2 (~> 0.6.0)
       omniauth (~> 1.0)
@@ -538,6 +541,7 @@ DEPENDENCIES
   minitest-reporters
   omniauth
   omniauth-facebook
+  omniauth-linkedin-oauth2
   pg (= 0.18.4)
   popper_js
   puma (~> 3.11)

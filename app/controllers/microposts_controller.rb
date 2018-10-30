@@ -11,7 +11,7 @@ class MicropostsController < ApplicationController
     end
     if @micropost.save
       flash[:success] = "Your promo post is live!"
-      @event = Event.new(active_user_id: current_user.id, micropost_id: @micropost.id)
+      @event = Event.new(user_id: current_user.id, micropost_id: @micropost.id)
       redirect_to root_url
     else
       render 'microposts/new'
@@ -52,12 +52,14 @@ class MicropostsController < ApplicationController
   end
 
   def share_to_facebook
+
     #share to facebook
     @accounts = current_user.facebook.get_connection("me", "accounts")
     @micropost = Micropost.find(params['micropost_id'])
     @message = params[:event]['message']
     @pages = params[:event]['pages']
 
+=begin
     @accounts.each do |page|
       if @pages.include?(page['id'])
       #if page['id'].to_s == params[:page_id].to_s
@@ -66,9 +68,11 @@ class MicropostsController < ApplicationController
         fb_share_helper(@micropost, @page_id, @message, @access_token)
       end
     end
+=end
 
     #share to own page
-    @event = Event.new(active_user_id: current_user.id, passive_user_id: @micropost.user.id, micropost_id: @micropost.id)
+
+    @event = Event.new(user_id: current_user.id, passive_user_id: @micropost.user.id, micropost_id: @micropost.id)
     @event.save!
 
     redirect_to root_path

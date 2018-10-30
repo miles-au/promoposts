@@ -22,6 +22,7 @@ gem 'dotenv-rails'
 gem 'carrierwave-google-storage'
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'omniauth-linkedin-oauth2'
 gem "koala"
 gem "popper_js"
 # Use Puma as the app server

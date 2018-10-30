@@ -13,7 +13,7 @@ class Micropost < ActiveRecord::Base
   after_save :create_event
 
   def create_event
-    @event = Event.new(active_user_id: self.user_id, micropost_id: self.id)
+    @event = Event.new(user_id: self.user_id, micropost_id: self.id)
     @event.save!
   end
 

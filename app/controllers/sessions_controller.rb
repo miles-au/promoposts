@@ -1,6 +1,8 @@
 class SessionsController < ApplicationController
 
   def new
+    @state = SecureRandom.hex(10)
+    @client_id = ENV['LINKEDIN_CLIENT_ID']
   end
 
   def create
@@ -24,8 +26,24 @@ class SessionsController < ApplicationController
     end
   end
 
+  def callback
+    par = request.env['omniauth.params']
+    auth = request.env['omniauth.auth']
+    provider = auth['provider']
+
+    if par['intent'] == "sign_in"
+      #sign_in
+      @user = User.create_with_omniauth(auth)
+      log_in @user
+      flash[:success] = "Welcome to Promo Posts, #{@user.name}."
+      redirect_back_or root_url
+    else
+      #merge
+    end
+  end
+
   def facebook
-    @user = User.create_with_omniauth(request.env['omniauth.auth'])
+=begin
     if @user.facebook.get_object("me",fields:"email")['email']
       @user.email = @user.facebook.get_object("me",fields:"email")['email']
       @user.save!
@@ -33,6 +51,10 @@ class SessionsController < ApplicationController
     log_in @user
     flash[:success] = "Welcome to Promo Posts, #{@user.name}."
     redirect_back_or root_url
+=end
+  end
+
+  def linkedin
   end
 
   def destroy

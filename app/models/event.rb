@@ -3,7 +3,7 @@ class Event < ApplicationRecord
 	default_scope -> { order(created_at: :desc) }
 
 	vendors = User.where("category=?", "vendor")
-  	scope :vendors, -> { where("active_user_id in (?)", vendors.ids)}
+  	scope :vendors, -> { where("user_id in (?)", vendors.ids)}
 
   	attr_accessor :message
 

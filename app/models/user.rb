@@ -89,7 +89,7 @@ class User < ApplicationRecord
   def feed
     following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
     #Micropost.where("user_id IN (#{following_ids}) OR user_id = :user_id", user_id: id)
-    Event.where("active_user_id IN (#{following_ids}) OR active_user_id = :user_id", user_id: id)
+    Event.where("user_id IN (#{following_ids}) OR user_id = :user_id", user_id: id)
   end
 
   # Follows a user.
@@ -130,6 +130,10 @@ class User < ApplicationRecord
       user.save!
       user
     end
+  end
+
+  def self.authenticate_oauth(auth)
+    user = find_or_create_by(uid: auth['uid'], provider:  auth['provider'])
   end
 
   def facebook

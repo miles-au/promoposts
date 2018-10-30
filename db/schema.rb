@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_24_023527) do
+ActiveRecord::Schema.define(version: 2018_10_30_031211) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "provider"
@@ -22,14 +22,14 @@ ActiveRecord::Schema.define(version: 2018_10_24_023527) do
   end
 
   create_table "events", force: :cascade do |t|
-    t.integer "active_user_id"
+    t.integer "user_id"
     t.integer "passive_user_id"
     t.integer "micropost_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["active_user_id", "passive_user_id"], name: "index_events_on_active_user_id_and_passive_user_id", unique: true
-    t.index ["active_user_id"], name: "index_events_on_active_user_id"
     t.index ["passive_user_id"], name: "index_events_on_passive_user_id"
+    t.index ["user_id", "passive_user_id"], name: "index_events_on_user_id_and_passive_user_id"
+    t.index ["user_id"], name: "index_events_on_user_id"
   end
 
   create_table "microposts", force: :cascade do |t|
@@ -40,6 +40,19 @@ ActiveRecord::Schema.define(version: 2018_10_24_023527) do
     t.string "picture"
     t.index ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_microposts_on_user_id"
+  end
+
+  create_table "oauth_accounts", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "provider"
+    t.string "uid"
+    t.string "image_url"
+    t.string "profile_url"
+    t.string "access_token"
+    t.text "raw_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_oauth_accounts_on_user_id"
   end
 
   create_table "relationships", force: :cascade do |t|

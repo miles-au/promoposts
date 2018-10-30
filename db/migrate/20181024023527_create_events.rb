@@ -10,6 +10,6 @@ class CreateEvents < ActiveRecord::Migration[5.2]
     end
     add_index :events, :active_user_id
     add_index :events, :passive_user_id
-    add_index :events, [:active_user_id, :passive_user_id], unique: true
+    add_index :events, [:active_user_id, :passive_user_id]
   end
 end

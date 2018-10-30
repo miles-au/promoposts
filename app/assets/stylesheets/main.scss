@@ -511,10 +511,11 @@ input {
     margin-top: 5em;
     padding-top: 0;
     font-size: 1.3em;
+    vertical-align: top;
   }
   .content {
     display: block;
-    margin-left: 60px;
+    
     img {
       display: block;
       padding: 5px 0;
@@ -544,7 +545,7 @@ input {
     display: inline-block;
     vertical-align: top;
     width: 95%;
-    padding-left: 4%;
+
     border: none;
   }
   
@@ -606,6 +607,7 @@ input {
 
 .micropost-full{
   .content{
+    padding-top: 20px;
     img{
       width: 60%;
       display: block;
@@ -799,9 +801,8 @@ span.picture {
   display: none;
 }
 
-.fbLogin{
+.social-login{
   color: white;
-  background-color: #3b5998;
   display: inline-block; 
   padding: 5px;
   padding-right: 10px;
@@ -811,11 +812,17 @@ span.picture {
     height: 32px;
     display: inline-block;
   }
-
   h6{
     color: white;
     display: inline-block;
   }
+}
+
+.facebook-login{
+  background-color: #3b5998;
+}
+.linkedin-login{
+  background-color: #0077b5;
 }
 
 .top_icons{
@@ -828,8 +835,8 @@ span.picture {
 }
 
 .avatar-thumbnail{
-  height: 50px;
-  width: 50px;
+  height: 70px;
+  width: 70px;
 }
 
 .close{

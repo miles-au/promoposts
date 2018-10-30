@@ -14,9 +14,10 @@ Rails.application.routes.draw do
   get    '/login',   to: 'sessions#new'
   post   '/login',   to: 'sessions#create'
 
-  get '/auth/:provider/callback' => 'sessions#facebook'
-  get 'auth/failure', to: redirect('/')
   get 'microposts/facebook_sharable_pages'
+
+  get '/auth/:provider/callback', to: 'sessions#callback', as: 'sessions_callback'
+  get '/auth/failure', to: 'oauth#failure', as: 'oauth_failure'
   
   delete '/logout',  to: 'sessions#destroy'
 
