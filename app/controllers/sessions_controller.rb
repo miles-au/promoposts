@@ -28,30 +28,50 @@ class SessionsController < ApplicationController
 
   def callback
     par = request.env['omniauth.params']
-    auth = request.env['omniauth.auth']
-    provider = auth['provider']
+    @auth = request.env['omniauth.auth']
+    @provider = @auth['provider']
+    puts "STATE: #{par['state']}"
+
+    #verify state
 
     if par['intent'] == "sign_in"
       #sign_in
-      @user = User.create_with_omniauth(auth)
+      @user = User.create_with_omniauth(@auth)
+      create_accounts(@provider)
       log_in @user
       flash[:success] = "Welcome to Promo Posts, #{@user.name}."
       redirect_back_or root_url
+    elsif par['intent'] == "connect"
+      #connect
+      
+      create_accounts(@provider)
+      redirect_back_or root_url
     else
-      #merge
+      flash[:danger] = "We are experiencing technical difficulties, we apologize for the inconvenience."
+      redirect_to root_url
+    end
+
+  end
+
+  def create_accounts(provider)
+    case provider
+      when "facebook"
+        facebook
+      when "linkedin"
+        linkedin
+      else
+        flash[:danger] = "We are experiencing technical difficulties, we apologize for the inconvenience."
+        redirect_to root_url
     end
   end
 
   def facebook
-=begin
-    if @user.facebook.get_object("me",fields:"email")['email']
-      @user.email = @user.facebook.get_object("me",fields:"email")['email']
-      @user.save!
+    @accounts = @user.facebook.get_connection("me", "accounts")
+
+    @accounts.each do |page|
+      a = Account.find_or_create_by(:provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'])
+      a.save!
     end
-    log_in @user
-    flash[:success] = "Welcome to Promo Posts, #{@user.name}."
-    redirect_back_or root_url
-=end
   end
 
   def linkedin

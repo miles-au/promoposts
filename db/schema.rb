@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_30_031211) do
+ActiveRecord::Schema.define(version: 2018_11_01_032734) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "provider"
@@ -18,6 +18,9 @@ ActiveRecord::Schema.define(version: 2018_10_30_031211) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "access_token"
+    t.string "uid"
+    t.boolean "autoshare"
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
@@ -79,12 +82,11 @@ ActiveRecord::Schema.define(version: 2018_10_30_031211) do
     t.string "reset_digest"
     t.datetime "reset_sent_at"
     t.string "category"
-    t.string "provider"
-    t.string "uid"
-    t.string "oauth_token"
-    t.datetime "oauth_expires_at"
-    t.string "fb_autoshare", default: "--- []\n"
     t.string "picture"
+    t.string "fb_uid"
+    t.string "linkedin_uid"
+    t.string "fb_oauth_token"
+    t.string "linkedin_oauth_token"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

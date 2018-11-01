@@ -1,17 +1,10 @@
-<h4>Your connected social networks:</h4>
-<p>Tick the checkbox to enable autoshare</p>
+<h4>Automatically share Facebook posts to Promo Posts for the following pages:</h4>
 
 <%= form_for @account, url: accounts_edit_path(:user_id => current_user.id, :provider => "facebook"), html: {method: :post} do |f| %>
+  <% if logged_in? && current_user.oauth_token %>
 
-  <!--display Facebook pages-->
-  <p>facebook: </p>
-
-  <!--if logged_in and facebook accounts exist in user's name-->
-  <% if logged_in? && @fb_accounts%>
-
-    <% accounts = @fb_accounts %>
-    <% puts "FB ACCOUNTS: #{@fb_accounts}" %>
-    <% accounts.each do |page| %>
+    <% @accounts = current_user.facebook.get_connection("me", "accounts") %>
+    <% @accounts.each do |page| %>
 
       <div class="fb-settings-wrapper">
       <!-- Setting link: Check to see if page exists-->
@@ -45,15 +38,6 @@
 
   <% else %>
     <h6> Connect your Facebook Account </h6>
-  <% end %>
-
-  <!--display Linkedin pages-->
-  <p>linkedin: </p>
-
-  <!--if logged_in and linkedin accounts exist in user's name-->
-  <% if logged_in? && @linkedin_accounts%>
-
-
   <% end %>
 
   <%= f.submit "Update Autoshare Settings", class: "btn btn-primary" %>

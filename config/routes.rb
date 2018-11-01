@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   post   '/login',   to: 'sessions#create'
 
   get 'microposts/facebook_sharable_pages'
+  get 'microposts/linkedin_sharable_pages'
 
   get '/auth/:provider/callback', to: 'sessions#callback', as: 'sessions_callback'
   get '/auth/failure', to: 'oauth#failure', as: 'oauth_failure'

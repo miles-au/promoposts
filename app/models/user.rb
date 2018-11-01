@@ -108,36 +108,60 @@ class User < ApplicationRecord
   end
 
   def self.create_with_omniauth(auth)
-    #puts "AUTH: #{auth}"
-    #create the user
-    user = find_or_create_by(uid: auth['uid'], provider:  auth['provider'])
-    #user.email = "#{auth['uid']}@#{auth['provider']}.com"
+    #figure out which provider and create user
+
+    case auth['provider']
+      when "facebook"
+        user = User.find_or_initialize_by(fb_uid: auth['uid'])
+        user.fb_oauth_token = auth.credentials.token
+      when "linkedin"
+        user = User.find_or_initialize_by(linkedin_uid: auth['uid'])
+        user.linkedin_oauth_token = auth.credentials.token
+    end
+
     user.password = self.new_token
     user.name = auth['info']['name']
     user.category = "none"
     user.activated = true
     user.activated_at = Time.zone.now
-    user.oauth_token = auth.credentials.token
-    if auth.credentials.expires
-      user.oauth_expires_at = Time.at(auth.credentials.expires_at)
-    end
+    #user.oauth_token = auth.credentials.token
 
     #save/return the user
-    if User.find_by_oauth_token(user.oauth_token)
-      user
-    else
+    if user.new_record?
       user.email = "#{auth['uid']}@#{auth['provider']}.com"
       user.save!
       user
+    else
+      user
     end
   end
 
-  def self.authenticate_oauth(auth)
-    user = find_or_create_by(uid: auth['uid'], provider:  auth['provider'])
+  def facebook
+    puts "OAUTH: #{fb_oauth_token}"
+    @facebook ||= Koala::Facebook::API.new(self.fb_oauth_token)
   end
 
-  def facebook
-    @facebook ||= Koala::Facebook::API.new(oauth_token)
+  def linkedin
+    #send get request
+
+=begin
+    link = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=#{ENV['LINKEDIN_CLIENT_ID']}&redirect_uri=https://defae573.ngrok.io/auth/linkedin/callback&state=#{ENV['STATE']}&scope=r_basicprofile rw_company_admin"
+    url = URI.parse(link)
+    req = Net::HTTP::Get.new(url.to_s)
+    res = Net::HTTP.start(url.host, url.port) {|http|
+      http.request(req)
+    }
+    puts res.body
+=end
+
+    get_url = URI('https://www.linkedin.com/oauth/v2/authorization')
+    get_params = { "response_type" => "code", "client_id" => ENV['LINKEDIN_CLIENT_ID'], "redirect_uri" => "https://defae573.ngrok.io/auth/linkedin/callback", "state" => ENV['STATE'], "scope" => "r_basicprofile rw_company_admin" }
+    get_url.query = URI.encode_www_form(get_params)
+    y = Net::HTTP::Get.new(get_url)
+    puts "GET: #{Net::HTTP.get(get_url)}"
+    puts("URL: #{get_url}")
+    puts("LINKEDIN")
+    puts y.body # if y.is_a?(Net::HTTPSuccess)
   end
 
   def avatar
@@ -170,6 +194,9 @@ class User < ApplicationRecord
       if picture.size > 10.megabytes
         errors.add(:picture, "should be less than 10MB")
       end
+    end
+
+    def get_oauth_token
     end
 
 end

@@ -1,21 +1,40 @@
 class AccountsController < ApplicationController
 
   def edit
+  	#list all available accounts
   	@account = Account.new
+  	@user = current_user
+
+  	providers = ["facebook", "linkedin"]
+  	data = {}
+
+  	providers.each do |provider|
+  		@user.accounts.each do |account|
+  			if account['provider'] == provider
+  				data[provider] = {}
+  				data[provider][account.id] = account
+  			end
+  		end
+  	end
+
+  	@fb_accounts = data['facebook']
+  	@linkedin_accounts = data['linkedin']
+
   end
 
   def update
   	@account = Account.new
-
   	@user = User.find(params[:user_id])
 
   	if params[:subscribe]
 	  	subs = params[:subscribe]
 	  	subs.each do |page|
+	  		#if page exists
 	  		if !page.empty?
-				@account = Account.new(account_params)
-				@account.account_id = page
-				@account.save!
+
+				#@account = Account.new(account_params)
+				#@account.account_id = page
+				#@account.save!
 
 				#subscribe
 				page_token = @user.facebook.get_object(page, fields:"access_token")['access_token']
@@ -69,6 +88,9 @@ class AccountsController < ApplicationController
 	flash.now[:success] = "Updated autoshare preferences."
   	render 'edit'
 
+  end
+
+  def connect
   end
 
   private

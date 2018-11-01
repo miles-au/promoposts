@@ -5,4 +5,8 @@ class OauthController < ApplicationController
     redirect_to login_path
   end
 
+  def callback
+  	
+  end
+
 end
