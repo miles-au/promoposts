@@ -8,15 +8,19 @@ class AccountsController < ApplicationController
   	providers = ["facebook", "linkedin"]
   	data = {}
 
+
   	providers.each do |provider|
+  		data[provider] = []
   		@user.accounts.each do |account|
   			if account['provider'] == provider
-  				data[provider] = {}
-  				data[provider][account.id] = account
+  				data[provider].push(account)
   			end
   		end
   	end
 
+  	#data{{'facebook' => [account, account, account]}, {'linkedin' => [account, account, account]}}
+
+  	puts "DATA: #{data}"
   	@fb_accounts = data['facebook']
   	@linkedin_accounts = data['linkedin']
 
@@ -31,12 +35,10 @@ class AccountsController < ApplicationController
 	  	subs.each do |page|
 	  		#if page exists
 	  		if !page.empty?
-
-				#@account = Account.new(account_params)
-				#@account.account_id = page
-				#@account.save!
-
 				#subscribe
+				a = Account.find_by_account_id(page.to_s)
+				a.autoshare = true
+				a.save!
 				page_token = @user.facebook.get_object(page, fields:"access_token")['access_token']
 				url = 'https://graph.facebook.com/v3.1/'+ page +'/subscribed_apps'
 				x = Net::HTTP.post_form(URI.parse(url), {"access_token" => page_token})
@@ -48,6 +50,7 @@ class AccountsController < ApplicationController
 				get_url.query = URI.encode_www_form(get_params)
 				y = Net::HTTP.get_response(get_url)
 				puts y.body if y.is_a?(Net::HTTPSuccess)
+
 	  		end
 	  	end
 	end
@@ -60,9 +63,11 @@ class AccountsController < ApplicationController
 	  	hidden.each do |page|
 	  		# if unsubscribes don't exist (1 unsubscriber) or unsubscribers doesn't include the page (checkbox was empty)
 	  		if !unsubs || !unsubs.include?(page)
-				Account.find_by_account_id(page).destroy
 				
 				#unsubscribe
+				a = Account.find_by_account_id(page.to_s)
+				a.autoshare = false
+				a.save!
 				page_token = @user.facebook.get_object(page, fields:"access_token")['access_token']
 				url = 'https://graph.facebook.com/v3.1/'+ page +'/subscribed_apps'
 				uri = URI.parse(url)
@@ -85,8 +90,8 @@ class AccountsController < ApplicationController
 	  	end
 	end
 
-	flash.now[:success] = "Updated autoshare preferences."
-  	render 'edit'
+	flash[:success] = "Updated autoshare preferences."
+  	redirect_to '/accounts/edit'
 
   end
 
