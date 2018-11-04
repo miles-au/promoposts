@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   delete '/logout',  to: 'sessions#destroy'
 
   get 'sessions/resend_activation', to: 'sessions#resend_activation'
-  get 'microposts/share_to_facebook', to: 'microposts#share_to_facebook'
+  get 'microposts/share_to_socials', to: 'microposts#share_to_socials', as: 'share_to_socials'
 
   get 'microposts/new'
 
@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   post '/accounts/edit' => 'accounts#update'
 
   get 'static_pages/change_grid_view'
-  post '/microposts/share_to_facebook'
+  post '/microposts/share_to_socials'
 
   resources :users do
     member do

@@ -70,11 +70,12 @@ class SessionsController < ApplicationController
     @accounts = @user.facebook.get_connection("me", "accounts")
 
     @accounts.each do |page|
+      page_token = @user.facebook.get_page_access_token(page['id'])
       a = Account.find_by(:account_id => page['id'])
       if a
         a
       else
-        a = Account.new(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'])
+        a = Account.new(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => page_token, :uid => @auth['uid'])
         a.save
         a
       end

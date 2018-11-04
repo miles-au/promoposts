@@ -41,6 +41,23 @@ class MicropostsController < ApplicationController
     
   end
 
+  def share_to_socials
+    @user = current_user
+    micropost = Micropost.find(params['micropost_id'])
+    message = params[:event]['message']
+    pages = params[:event]['pages']
+    accounts = Account.where('account_id IN (?)', pages)
+
+    accounts.each do |page|
+      case page.provider
+        when "facebook"
+          share_to_facebook(micropost, page.account_id, message, page.access_token)
+        when "linkedin"
+          share_to_linkedin(micropost, page.account_id, message, page.access_token)
+      end
+    end
+  end
+
   def facebook_sharable_pages
     @user = User.find(params[:id])
     @micropost = Micropost.find(params[:micropost])
@@ -55,41 +72,26 @@ class MicropostsController < ApplicationController
     end
   end
 
-  def share_to_facebook
+  def share_to_facebook(micropost, page_id, message, access_token)
+    #get permissions
+    permissions = @user.facebook.get_connections('me', 'permissions')
 
-    #share to facebook
-    @accounts = current_user.facebook.get_connection("me", "accounts")
-    @micropost = Micropost.find(params['micropost_id'])
-    @message = params[:event]['message']
-    @pages = params[:event]['pages']
-
-    @accounts.each do |page|
-      if @pages.include?(page['id'])
-      #if page['id'].to_s == params[:page_id].to_s
-        @access_token = page['access_token']
-        @page_id = page['id']
-        fb_share_helper(@micropost, @page_id, @message, @access_token)
-      end
-    end
-
-    #share to own page
-
-    @event = Event.new(user_id: current_user.id, passive_user_id: @micropost.user.id, micropost_id: @micropost.id)
-    @event.save!
-
-    redirect_to root_path
-  end
-
-  def fb_share_helper(micropost, page_id, message, access_token)
     fb_page = Koala::Facebook::API.new(access_token)
 
     if micropost.picture?
       fb_page.put_picture(micropost.picture.path, 'image' ,{:message => message})
-    elsif
+    else
       fb_page.put_connections(page_id, "feed", :message => message)
     end
 
+    #share to own page
+
+    @event = Event.new(user_id: current_user.id, passive_user_id: micropost.user.id, micropost_id: micropost.id)
+    @event.save!
+
     flash[:success] = "Posted to Facebook!"
+
+    redirect_to root_path
   end
 
   def linkedin_sharable_pages
@@ -110,8 +112,25 @@ class MicropostsController < ApplicationController
     end
   end
 
-  def share_to_linkedin
+  def share_to_linkedin(micropost, page_id, message, access_token)
+    client = @user.linkedin
 
+    if micropost.picture?
+      response = client.add_company_share( page_id, :content => {:description => message, :'submitted-image-url' => micropost.picture.path})
+    else
+      response = client.add_company_share( page_id, :comment => message)
+    end
+    
+    puts "RESPONSE: #{response}"
+
+    #share to own page
+
+    @event = Event.new(user_id: current_user.id, passive_user_id: micropost.user.id, micropost_id: micropost.id)
+    @event.save!
+
+    flash[:success] = "Posted to LinkedIn!"
+
+    redirect_to root_path
   end
 
   def merge_linkedin

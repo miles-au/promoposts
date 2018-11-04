@@ -1,4 +1,4 @@
-<%= form_for @event, url: microposts_share_to_facebook_path(:id => current_user.id, :micropost_id => @micropost.id), html: {method: :post} do |f| %>
+<%= form_for @event, url: share_to_socials_path(:id => current_user.id, :micropost_id => @micropost.id), html: {method: :post} do |f| %>
 	<div class="row">
 		<div class="col-md-8">
 			<div class="modal-header">
