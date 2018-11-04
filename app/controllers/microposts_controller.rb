@@ -44,7 +44,7 @@ class MicropostsController < ApplicationController
   def facebook_sharable_pages
     @user = User.find(params[:id])
     @micropost = Micropost.find(params[:micropost])
-    if @user.oauth_token
+    if @user.fb_oauth_token
       @accounts = @user.facebook.get_connections("me", "accounts")
     else
       #create with facebook and merge accounts
@@ -93,13 +93,14 @@ class MicropostsController < ApplicationController
   end
 
   def linkedin_sharable_pages
-    @merge_url = generate_url('https://www.linkedin.com/oauth/v2/authorization', params = { "response_type" => "code", "client_id" => ENV['LINKEDIN_CLIENT_ID'], "redirect_uri" => "https://defae573.ngrok.io/auth/linkedin/callback", "state" => ENV['STATE'], "scope" => "r_basicprofile rw_company_admin" })
-
+    puts "linkedin_sharable_pages"
     @user = User.find(params[:id])
     @micropost = Micropost.find(params[:micropost])
-    if @user.oauth_token
-      #get linkedin accounts
-      @accounts = @user.linkedin.get_connections("me", "accounts")
+    puts "USER: #{@user}"
+    if @user.linkedin_oauth_token
+      puts "linkedin_oauth_token"
+      client = @user.linkedin
+      @accounts = client.company(is_admin: 'true').all
     else
       #create with facebook and merge accounts
     end

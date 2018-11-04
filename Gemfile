@@ -23,6 +23,7 @@ gem 'carrierwave-google-storage'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin'
+gem 'linkedin'
 gem "koala"
 gem "popper_js"
 # Use Puma as the app server

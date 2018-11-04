@@ -30,6 +30,7 @@ class SessionsController < ApplicationController
     par = request.env['omniauth.params']
     @auth = request.env['omniauth.auth']
     @provider = @auth['provider']
+    @code = params['oauth_verifier']
     puts "STATE: #{par['state']}"
 
     #verify state
@@ -81,6 +82,20 @@ class SessionsController < ApplicationController
   end
 
   def linkedin
+    client = @user.linkedin
+    @accounts = client.company(is_admin: 'true').all
+
+    @accounts.each do |page|
+      a = Account.find_by(:account_id => page.id)
+      if a
+        a
+      else
+        a = Account.new(:name => page.name, :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'])
+        a.save
+        a
+      end
+    end
+
   end
 
   def destroy

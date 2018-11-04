@@ -27,7 +27,6 @@
 			        <img src="https://static.addtoany.com/buttons/facebook.svg" style="background-color: #3b5998;">
 			      <% end %>
 			      <%= link_to({:controller => "microposts", :action => "linkedin_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon") do%>
-			      <%= #link_to(@linkedin_url, nil) do %>
 			        <img src="https://static.addtoany.com/buttons/linkedin.svg" style="background-color: #3b5998;">
 			      <% end %>
 			    <% else %>

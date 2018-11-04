@@ -37,10 +37,33 @@
   <!--display Linkedin pages-->
   <p>linkedin: </p>
 
-  <!--if logged_in and linkedin accounts exist in user's name-->
-  <% if logged_in? && @linkedin_accounts%>
+  <!--if logged_in and facebook accounts exist in user's name-->
+  <% if logged_in? && !@linkedin_accounts.empty?%>
+    <% puts "LINKEDIN ACCOUNTS: #{@linkedin_accounts}" %>
+    <% accounts = @linkedin_accounts %>
+    <% accounts.each do |page| %>
+      <div class="fb-settings-wrapper">
+        <% if page['autoshare'] %>
+          <!-- if autoshare is already turned on, unsubscribe -->
+          <input name="unsubscribe_hidden[]" type="hidden" value="<%= page['account_id'] %>">
+          <input name="unsubscribe[]" type="checkbox" value="<%= page['account_id'] %>" checked="checked" id="account_unsubscribe">
 
+        <% else %>
+          <!-- else, subscribe-->
+          <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page['account_id'], "" %>
+        <% end %>
+        <!--
+        <div class="img-holder">
+          <img class="thumbnail-page" src="https://graph.facebook.com/<%= page['account_id'] %>/picture"/>
+        </div>
+      -->
+        <h6 class=""><%= page['name'] %></h6>
+      </div>
 
+    <% end %>
+
+  <% else %>
+    <h6> Connect your Linkedin Account </h6>
   <% end %>
 
   <%= f.submit "Update Autoshare Settings", class: "btn btn-primary" %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_01_223403) do
+ActiveRecord::Schema.define(version: 2018_11_03_172802) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "provider"
@@ -88,6 +88,8 @@ ActiveRecord::Schema.define(version: 2018_11_01_223403) do
     t.string "linkedin_uid"
     t.string "fb_oauth_token"
     t.string "linkedin_oauth_token"
+    t.string "fb_oauth_secret"
+    t.string "linkedin_oauth_secret"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

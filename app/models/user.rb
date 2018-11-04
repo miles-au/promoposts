@@ -25,6 +25,10 @@ class User < ApplicationRecord
   mount_uploader :picture, PictureUploader
   validate  :picture_size
 
+  require 'rubygems'
+  require 'linkedin'
+
+
   # Returns the hash digest of the given string.
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
@@ -110,6 +114,8 @@ class User < ApplicationRecord
   def self.create_with_omniauth(auth)
     #figure out which provider and create user
 
+    puts "AUTH: #{auth}"
+
     case auth['provider']
       when "facebook"
         user = User.find_or_initialize_by(fb_uid: auth['uid'])
@@ -117,6 +123,7 @@ class User < ApplicationRecord
       when "linkedin"
         user = User.find_or_initialize_by(linkedin_uid: auth['uid'])
         user.linkedin_oauth_token = auth.credentials.token
+        #user.linkedin_oauth_secret = auth.credentials.secret
     end
 
     user.password = self.new_token
@@ -142,26 +149,11 @@ class User < ApplicationRecord
   end
 
   def linkedin
-    #send get request
-
-=begin
-    link = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=#{ENV['LINKEDIN_CLIENT_ID']}&redirect_uri=https://defae573.ngrok.io/auth/linkedin/callback&state=#{ENV['STATE']}&scope=r_basicprofile rw_company_admin"
-    url = URI.parse(link)
-    req = Net::HTTP::Get.new(url.to_s)
-    res = Net::HTTP.start(url.host, url.port) {|http|
-      http.request(req)
-    }
-    puts res.body
-=end
-
-    get_url = URI('https://www.linkedin.com/oauth/v2/authorization')
-    get_params = { "response_type" => "code", "client_id" => ENV['LINKEDIN_CLIENT_ID'], "redirect_uri" => "https://defae573.ngrok.io/auth/linkedin/callback", "state" => ENV['STATE'], "scope" => "r_basicprofile rw_company_admin" }
-    get_url.query = URI.encode_www_form(get_params)
-    y = Net::HTTP::Get.new(get_url)
-    puts "GET: #{Net::HTTP.get(get_url)}"
-    puts("URL: #{get_url}")
-    puts("LINKEDIN")
-    puts y.body # if y.is_a?(Net::HTTPSuccess)
+    puts "OAUTH: #{linkedin_oauth_token}"
+    #client = LinkedIn::Client.new( self.linkedin_oauth_token, self.linkedin_oauth_secret)
+    @linkedin = LinkedIn::Client.new( ENV['LINKEDIN_CLIENT_ID'], ENV['LINKEDIN_CLIENT_SECRET'])
+    @linkedin.authorize_from_access(ENV['LINKED_APP_KEY'])
+    @linkedin
   end
 
   def avatar
