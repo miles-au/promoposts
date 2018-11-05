@@ -8,7 +8,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
             token_params: { parse: :json }
 
 	 provider :linkedin, ENV['LINKEDIN_CLIENT_ID'], ENV['LINKEDIN_CLIENT_SECRET'],
-	 		:scope => 'w_share rw_company_admin r_basicprofile',
+	 		:scope => 'w_share rw_company_admin r_basicprofile mgw_w_media rw_organization',
 	 		:fields => ['id', 'first-name', 'last-name'],
 	 		:state => ENV['STATE']
  end

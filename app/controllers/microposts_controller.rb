@@ -113,10 +113,13 @@ class MicropostsController < ApplicationController
   end
 
   def share_to_linkedin(micropost, page_id, message, access_token)
+    #get permissions
+
     client = @user.linkedin
+    picture = root_url + micropost.picture.url
 
     if micropost.picture?
-      response = client.add_company_share( page_id, :content => {:description => message, :'submitted-image-url' => micropost.picture.path})
+      response = client.add_company_share( page_id, :content => {:title => message, :'submitted-url' => picture})
     else
       response = client.add_company_share( page_id, :comment => message)
     end
