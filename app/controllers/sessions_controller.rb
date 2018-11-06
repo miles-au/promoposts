@@ -44,8 +44,9 @@ class SessionsController < ApplicationController
       redirect_back_or root_url
     elsif par['intent'] == "connect"
       #connect
-      
+      @user = User.connect_accounts(@auth, current_user.id)
       create_accounts(@provider)
+      flash[:success] = "Your #{@provider} account has been connected, #{@user.name}."
       redirect_back_or root_url
     else
       flash[:danger] = "We are experiencing technical difficulties, we apologize for the inconvenience."
@@ -71,7 +72,7 @@ class SessionsController < ApplicationController
 
     @accounts.each do |page|
       page_token = @user.facebook.get_page_access_token(page['id'])
-      a = Account.find_by(:account_id => page['id'])
+      a = Account.find_by(:account_id => page['id'],:user_id => @user.id)
       if a
         a
       else

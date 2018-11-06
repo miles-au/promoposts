@@ -143,6 +143,22 @@ class User < ApplicationRecord
     end
   end
 
+  def self.connect_accounts(auth, id)
+    puts "AUTH: #{auth}"
+
+    user = User.find(id)
+    case auth['provider']
+      when "facebook"
+        user.fb_oauth_token = auth.credentials.token
+      when "linkedin"
+        user.linkedin_oauth_token = auth.credentials.token
+        #user.linkedin_oauth_secret = auth.credentials.secret
+    end
+
+    user
+
+  end
+
   def facebook
     puts "OAUTH: #{fb_oauth_token}"
     @facebook ||= Koala::Facebook::API.new(self.fb_oauth_token)
