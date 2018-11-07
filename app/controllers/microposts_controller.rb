@@ -54,6 +54,8 @@ class MicropostsController < ApplicationController
           share_to_facebook(micropost, page.account_id, message, page.access_token)
         when "linkedin"
           share_to_linkedin(micropost, page.account_id, message, page.access_token)
+        when "instagram"
+          share_to_instagram(micropost, page.account_id, message, page.access_token)
       end
     end
   end
@@ -136,29 +138,49 @@ class MicropostsController < ApplicationController
     redirect_to root_path
   end
 
-  def merge_linkedin
-    #send get request
-
 =begin
-    link = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=#{ENV['LINKEDIN_CLIENT_ID']}&redirect_uri=https://defae573.ngrok.io/auth/linkedin/callback&state=#{ENV['STATE']}&scope=r_basicprofile rw_company_admin"
-    url = URI.parse(link)
-    req = Net::HTTP::Get.new(url.to_s)
-    res = Net::HTTP.start(url.host, url.port) {|http|
-      http.request(req)
-    }
-    puts res.body
-=end
-
-    get_url = URI('https://www.linkedin.com/oauth/v2/authorization')
-    get_params = { "response_type" => "code", "client_id" => ENV['LINKEDIN_CLIENT_ID'], "redirect_uri" => "https://defae573.ngrok.io/auth/linkedin/callback", "state" => ENV['STATE'], "scope" => "r_basicprofile rw_company_admin" }
-    get_url.query = URI.encode_www_form(get_params)
-    y = Net::HTTP::Get.new(get_url)
-    puts "GET: #{Net::HTTP.get(get_url)}"
-    puts("URL: #{get_url}")
-    puts("LINKEDIN")
-    puts y.body # if y.is_a?(Net::HTTPSuccess)
-
+  def instagram_sharable_pages
+    puts "instagram_sharable_pages"
+    @user = User.find(params[:id])
+    @micropost = Micropost.find(params[:micropost])
+    puts "USER: #{@user}"
+    if @user.instagram_oauth_token
+      puts "instagram_oauth_token"
+      client = @user.instagram
+      @account = client
+    else
+      #create with facebook and merge accounts
+    end
+    respond_to do |format| 
+        format.html
+        format.js { render 'instagram_sharable_pages.js.erb' }
+    end
   end
+
+  def share_to_instagram(micropost, page_id, message, access_token)
+    #get permissions
+
+    client = @user.instagram
+    picture = root_url + micropost.picture.url
+
+    if micropost.picture?
+      response = client.add_company_share( page_id, :content => {:title => message, :'submitted-url' => picture})
+    else
+      response = client.add_company_share( page_id, :comment => message)
+    end
+    
+    puts "RESPONSE: #{response}"
+
+    #share to own page
+
+    @event = Event.new(user_id: current_user.id, passive_user_id: micropost.user.id, micropost_id: micropost.id)
+    @event.save!
+
+    flash[:success] = "Posted to LinkedIn!"
+
+    redirect_to root_path
+  end
+=end
 
   def generate_url(url, params = {})
     uri = URI(url)

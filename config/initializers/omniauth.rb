@@ -11,4 +11,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
 	 		:scope => 'w_share rw_company_admin r_basicprofile ',
 	 		:fields => ['id', 'first-name', 'last-name'],
 	 		:state => ENV['STATE']
+
+	 provider :instagram, ENV['INSTAGRAM_CLIENT_ID'], ENV['INSTAGRAM_CLIENT_SECRET']
+
  end

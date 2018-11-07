@@ -1,0 +1,13 @@
+if($('#pagesContainer').hasClass("inactive") && $('#pagesContainer').hasClass("first")){
+	<% if @micropost['picture'] %>
+		$('#pagesContainer').append("<%= escape_javascript render(:partial => 'page_display', :locals => { :page_name => @account.user.full_name, :page_id => @account.user.id}) %>");
+	<% else %>
+		$('#pagesContainer').append("<h5>picture required for instagram</h5>");
+	<% end %>
+	$('#pagesContainer').removeClass("inactive");
+	$('#pagesContainer').removeClass("first");
+}else if($('#pagesContainer').hasClass("inactive")){
+	$('#pagesContainer').removeClass("inactive");
+}else{
+	$('#pagesContainer').addClass("inactive");
+}

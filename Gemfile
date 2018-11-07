@@ -23,6 +23,9 @@ gem 'carrierwave-google-storage'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin'
+gem 'omniauth-twitter'
+gem 'omniauth-instagram'
+gem "instagram", :git => 'git://github.com/Instagram/instagram-ruby-gem.git'
 gem 'linkedin'
 gem "koala"
 gem "popper_js"

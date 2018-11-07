@@ -61,9 +61,8 @@ class SessionsController < ApplicationController
         facebook
       when "linkedin"
         linkedin
-      else
-        flash[:danger] = "We are experiencing technical difficulties, we apologize for the inconvenience."
-        redirect_to root_url
+      when "instagram"
+        instagram
     end
   end
 
@@ -97,7 +96,19 @@ class SessionsController < ApplicationController
         a
       end
     end
+  end
 
+  def instagram
+    client = @user.instagram
+
+    a = Account.find_by(:account_id => client.user.id)
+    if a
+      a
+    else
+      a = Account.new(:name => client.user.full_name, :account_id => client.user.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'])
+        a.save
+        a
+    end
   end
 
   def destroy

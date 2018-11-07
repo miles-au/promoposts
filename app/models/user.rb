@@ -124,6 +124,9 @@ class User < ApplicationRecord
         user = User.find_or_initialize_by(linkedin_uid: auth['uid'])
         user.linkedin_oauth_token = auth.credentials.token
         #user.linkedin_oauth_secret = auth.credentials.secret
+      when "instagram"
+        user = User.find_or_initialize_by(instagram_uid: auth['uid'])
+        user.instagram_oauth_token = auth.credentials.token
     end
 
     user.password = self.new_token
@@ -150,11 +153,16 @@ class User < ApplicationRecord
     case auth['provider']
       when "facebook"
         user.fb_oauth_token = auth.credentials.token
+        user.fb_uid = auth.uid
       when "linkedin"
         user.linkedin_oauth_token = auth.credentials.token
         #user.linkedin_oauth_secret = auth.credentials.secret
+        user.linkedin_uid = auth.uid
+      when "instagram"
+        user.instagram_oauth_token = auth.credentials.token
+        user.instagram_uid = auth.uid
     end
-
+    user.save
     user
 
   end
@@ -170,6 +178,11 @@ class User < ApplicationRecord
     @linkedin = LinkedIn::Client.new( ENV['LINKEDIN_CLIENT_ID'], ENV['LINKEDIN_CLIENT_SECRET'])
     @linkedin.authorize_from_access(ENV['LINKED_APP_KEY'])
     @linkedin
+  end
+
+  def instagram
+    puts "OAUTH: #{instagram_oauth_token}"
+    client = Instagram.client(:access_token => self.instagram_oauth_token)
   end
 
   def avatar
