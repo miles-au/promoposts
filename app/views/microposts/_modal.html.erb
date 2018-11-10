@@ -29,6 +29,9 @@
 			      <%= link_to({:controller => "microposts", :action => "linkedin_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon") do%>
 			        <img src="https://static.addtoany.com/buttons/linkedin.svg" style="background-color: #3b5998;">
 			      <% end %>
+			      <%= link_to({:controller => "microposts", :action => "buffer_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon") do%>
+			        <img src="https://static.addtoany.com/buttons/linkedin.svg" style="background-color: #3b5998;">
+			      <% end %>
 			    <% else %>
 			      <%= link_to( "Please log in to share posts", login_path) %>
 			    <% end %>

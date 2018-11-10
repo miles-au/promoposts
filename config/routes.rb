@@ -16,7 +16,8 @@ Rails.application.routes.draw do
 
   get 'microposts/facebook_sharable_pages'
   get 'microposts/linkedin_sharable_pages'
-  get 'microposts/instagram_sharable_pages'
+  #get 'microposts/instagram_sharable_pages'
+  get 'microposts/buffer_sharable_pages'
 
   get '/auth/:provider/callback', to: 'sessions#callback', as: 'sessions_callback'
   get '/auth/failure', to: 'oauth#failure', as: 'oauth_failure'

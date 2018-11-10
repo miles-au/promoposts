@@ -44,7 +44,7 @@ class MicropostsController < ApplicationController
   def share_to_socials
     @user = current_user
     micropost = Micropost.find(params['micropost_id'])
-    message = params[:event]['message']
+    @post_message = params[:event]['message']
     pages = params[:event]['pages']
     accounts = Account.where('account_id IN (?)', pages)
     buffer_profiles = []
@@ -52,18 +52,18 @@ class MicropostsController < ApplicationController
     accounts.each do |page|
       case page.provider
         when "facebook"
-          share_to_facebook(micropost, page.account_id, message, page.access_token)
+          share_to_facebook(micropost, page.account_id, post_message, page.access_token)
         when "linkedin"
-          share_to_linkedin(micropost, page.account_id, message, page.access_token)
+          share_to_linkedin(micropost, page.account_id, page.access_token)
         when "instagram"
-          share_to_instagram(micropost, page.account_id, message, page.access_token)
+          share_to_instagram(micropost, page.account_id, post_message, page.access_token)
         when "buffer"
           buffer_profiles.push(page.account_id)
       end
     end
 
     if !buffer_profiles.empty?
-      share_to_buffer(micropost, buffer_profiles, message)
+      share_to_buffer(micropost, buffer_profiles, post_message)
     end
 
   end
@@ -122,16 +122,16 @@ class MicropostsController < ApplicationController
     end
   end
 
-  def share_to_linkedin(micropost, page_id, message, access_token)
+  def share_to_linkedin(micropost, page_id,  access_token)
     #get permissions
 
     client = @user.linkedin
 
     if micropost.picture.url
       picture = root_url + micropost.picture.url
-      response = client.add_company_share( page_id, :content => {:title => message, :'submitted-url' => picture})
+      response = client.add_company_share( page_id, :content => {:title => @post_message, :'submitted-url' => picture})
     else
-      response = client.add_company_share( page_id, :comment => message)
+      response = client.add_company_share( page_id, :comment => @post_message)
     end
     
     puts "RESPONSE: #{response}"
@@ -216,10 +216,9 @@ class MicropostsController < ApplicationController
     
     if micropost.picture.url
       picture = root_url + micropost.picture.url
-      debugger
-      response = client.create_update(:body => {:profile_ids => profiles, :text => message, :now => true, :media => {:photo => picture}})
+      response = client.create_update(:profile_ids => profiles, :text => message, :now => true, :media => {:photo => picture})
     else
-      response = client.create_update(:body => {:profile_ids => profiles, :text => message, :now => true} )
+      response = client.create_update(:profile_ids => profiles, :text => message, :now => true )
     end
     
     puts "RESPONSE: #{response}"
