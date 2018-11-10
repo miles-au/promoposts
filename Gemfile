@@ -27,7 +27,9 @@ gem 'omniauth-twitter'
 gem 'omniauth-instagram'
 gem "instagram", :git => 'git://github.com/Instagram/instagram-ruby-gem.git'
 gem 'linkedin'
-gem "koala"
+gem 'koala'
+gem 'buffer'
+gem 'omniauth-buffer2'
 gem "popper_js"
 # Use Puma as the app server
 gem 'puma', '~> 3.11'

@@ -127,10 +127,14 @@ class User < ApplicationRecord
       when "instagram"
         user = User.find_or_initialize_by(instagram_uid: auth['uid'])
         user.instagram_oauth_token = auth.credentials.token
+      when "buffer"
+        user = User.find_or_initialize_by(buffer_uid: auth['uid'])
+        user.buffer_oauth_token = auth.credentials.token
+        user.name = auth.extra.raw_info.name
     end
 
     user.password = self.new_token
-    user.name = auth['info']['name']
+    user.name ||= auth['info']['name']
     user.category = "none"
     user.activated = true
     user.activated_at = Time.zone.now
@@ -161,6 +165,9 @@ class User < ApplicationRecord
       when "instagram"
         user.instagram_oauth_token = auth.credentials.token
         user.instagram_uid = auth.uid
+      when "buffer"
+        user.buffer_oauth_token = auth.credentials.token
+        user.buffer_uid = auth.uid
     end
     user.save
     user
@@ -183,6 +190,11 @@ class User < ApplicationRecord
   def instagram
     puts "OAUTH: #{instagram_oauth_token}"
     client = Instagram.client(:access_token => self.instagram_oauth_token)
+  end
+
+  def buffer
+    puts "OAUTH: #{buffer_oauth_token}"
+    @buffer = Buffer::Client.new(self.buffer_oauth_token)
   end
 
   def avatar

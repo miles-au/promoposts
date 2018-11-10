@@ -74,6 +74,44 @@
     <% end %>
   <% end %>
 
+
+
+
+  <!--display Buffer pages-->
+  <p>buffer: </p>
+
+  <!--if logged_in and linkedin accounts exist in user's name-->
+  <% if logged_in? && current_user.buffer_uid%>
+    <% puts "BUFFER ACCOUNTS: #{@buffer_accounts}" %>
+    <% accounts = @buffer_accounts %>
+    <% accounts.each do |page| %>
+      <div class="fb-settings-wrapper">
+        <!--
+        <% if page['autoshare'] %>
+          <input name="unsubscribe_hidden[]" type="hidden" value="<%= page['account_id'] %>">
+          <input name="unsubscribe[]" type="checkbox" value="<%= page['account_id'] %>" checked="checked" id="account_unsubscribe">
+
+        <% else %>
+          <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page['account_id'], "" %>
+        <% end %>
+        -->
+
+        <!--
+        <div class="img-holder">
+          <img class="thumbnail-page" src="https://graph.facebook.com/<%= page['account_id'] %>/picture"/>
+        </div>
+      -->
+        <h6 class=""><%= page['name'] %></h6>
+      </div>
+
+    <% end %>
+
+  <% else %>
+    <%= link_to("/auth/buffer?intent=connect") do%>
+      <h6> Connect your Buffer Account </h6>
+    <% end %>
+  <% end %>
+
   <%= f.submit "Update Autoshare Settings", class: "btn btn-primary" %>
 
 <% end %>

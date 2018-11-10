@@ -63,6 +63,8 @@ class SessionsController < ApplicationController
         linkedin
       when "instagram"
         instagram
+      when "buffer"
+        buffer
     end
   end
 
@@ -73,7 +75,7 @@ class SessionsController < ApplicationController
       page_token = @user.facebook.get_page_access_token(page['id'])
       a = Account.find_by(:account_id => page['id'],:user_id => @user.id)
       if a
-        a
+        a.update(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => page_token, :uid => @auth['uid'])
       else
         a = Account.new(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => page_token, :uid => @auth['uid'])
         a.save
@@ -89,7 +91,7 @@ class SessionsController < ApplicationController
     @accounts.each do |page|
       a = Account.find_by(:account_id => page.id)
       if a
-        a
+        a.update(:name => page.name, :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'])
       else
         a = Account.new(:name => page.name, :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'])
         a.save
@@ -103,12 +105,29 @@ class SessionsController < ApplicationController
 
     a = Account.find_by(:account_id => client.user.id)
     if a
-      a
+      a.update(:name => client.user.full_name, :account_id => client.user.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'])
     else
       a = Account.new(:name => client.user.full_name, :account_id => client.user.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'])
         a.save
         a
     end
+  end
+
+  def buffer
+    client = @user.buffer
+    @accounts = client.profiles
+
+    @accounts.each do |page|
+      a = Account.find_by(:account_id => page.id)
+      if a
+        a.update(:name => "#{page.service_username} | #{page.service} - #{page.service_type}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'])
+      else
+        a = Account.new(:name => "#{page.service_username} | #{page.service} - #{page.service_type}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'])
+        a.save
+        a
+      end
+    end
+
   end
 
   def destroy

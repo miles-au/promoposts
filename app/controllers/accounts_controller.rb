@@ -5,7 +5,7 @@ class AccountsController < ApplicationController
   	@account = Account.new
   	@user = current_user
 
-  	providers = ["facebook", "linkedin", "instagram"]
+  	providers = ["facebook", "linkedin", "instagram", "buffer"]
   	data = {}
 
 
@@ -24,6 +24,7 @@ class AccountsController < ApplicationController
   	@fb_accounts = data['facebook']
   	@linkedin_accounts = data['linkedin']
   	@instagram_accounts = data['instagram']
+  	@buffer_accounts = data['buffer']
 
   end
 
