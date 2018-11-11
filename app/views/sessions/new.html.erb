@@ -1,5 +1,5 @@
-<% provide(:title, "Log in") %>
-<h1>Log in</h1>
+<% provide(:title, "Email log in") %>
+<h1>Email Log In</h1>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
@@ -21,9 +21,6 @@
     <% end %>
 
     <p>New user? <%= link_to "Sign up now!", signup_path %></p>
-    <%= render 'shared/sign_in_with_fb' %>
-    <%= render 'shared/sign_in_with_linkedin' %>
-    <%= render 'shared/sign_in_with_buffer' %>
 
   </div>
 </div>

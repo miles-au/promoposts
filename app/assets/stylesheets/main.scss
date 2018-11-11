@@ -803,9 +803,9 @@ span.picture {
 
 .social-login{
   color: white;
-  display: inline-block; 
-  padding: 5px;
-  padding-right: 10px;
+  display: block; 
+  padding: 5px 10px;
+  margin: 10px;
 
   img{
     width: 32px;
@@ -813,6 +813,7 @@ span.picture {
     display: inline-block;
   }
   h6{
+    margin: 0 5px;
     color: white;
     display: inline-block;
   }
@@ -823,6 +824,12 @@ span.picture {
 }
 .linkedin-login{
   background-color: #0077b5;
+}
+.buffer-login{
+  background-color: #323b43;
+}
+.email-login{
+  background-color: $sigCadet;
 }
 
 .top_icons{

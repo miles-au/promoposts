@@ -1,8 +1,6 @@
 class SessionsController < ApplicationController
 
   def new
-    @state = SecureRandom.hex(10)
-    @client_id = ENV['LINKEDIN_CLIENT_ID']
   end
 
   def create
@@ -47,7 +45,7 @@ class SessionsController < ApplicationController
       @user = User.connect_accounts(@auth, current_user.id)
       create_accounts(@provider)
       flash[:success] = "Your #{@provider} account has been connected, #{@user.name}."
-      redirect_back_or root_url
+      redirect_back_or accounts_edit_path
     else
       flash[:danger] = "We are experiencing technical difficulties, we apologize for the inconvenience."
       redirect_to root_url

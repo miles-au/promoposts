@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   get    '/login',   to: 'sessions#new'
   post   '/login',   to: 'sessions#create'
 
+  get '/social_login', to: 'sessions#social_new'
+
   get 'microposts/facebook_sharable_pages'
   get 'microposts/linkedin_sharable_pages'
   #get 'microposts/instagram_sharable_pages'
