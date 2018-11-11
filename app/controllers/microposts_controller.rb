@@ -128,8 +128,7 @@ class MicropostsController < ApplicationController
     client = @user.linkedin
 
     if micropost.picture.url
-      picture = root_url + micropost.picture.url
-      response = client.add_company_share( page_id, :content => {:title => message, :'submitted-url' => picture})
+      response = client.add_company_share( page_id, :content => {:'title' => message, :'submitted-url' => micropost.picture.url})
     else
       response = client.add_company_share( page_id, :comment => message)
     end

@@ -21,6 +21,7 @@ gem "mime-types"
 gem 'dotenv-rails'
 gem 'carrierwave-google-storage'
 gem 'omniauth'
+gem 'omniauth-buffer2'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin'
 gem 'omniauth-twitter'
@@ -29,7 +30,6 @@ gem "instagram", :git => 'git://github.com/Instagram/instagram-ruby-gem.git'
 gem 'linkedin'
 gem 'koala'
 gem 'buffer'
-gem 'omniauth-buffer2'
 gem "popper_js"
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
