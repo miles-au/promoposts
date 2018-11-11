@@ -47,8 +47,8 @@ textarea {
   color: $sigGrey;
 
   &:hover{
-  	background-color: $sigBlue;
-  	color: $sigYellow;
+    background-color: $sigBlue;
+    color: $sigYellow;
   }
 
 }
@@ -102,39 +102,39 @@ textarea {
 }
 
 header, .navbar-inverse, .navbar-fixed-top{
-	background-color: $sigBlue !important;
+  background-color: $sigBlue !important;
 }
 
 .navbar-nav, .navbar-right{
-	li, a{
-	  color: $sigGrey !important;
+  li, a{
+    color: $sigGrey !important;
 
-	  &:hover{
-	    color: $sigYellow !important;
-	  }
-	}
+    &:hover{
+      color: $sigYellow !important;
+    }
+  }
 }
 
 .jumbotron{
-	background-color: $sigYellow;
-	border-radius: 0px !important;
-	padding-top: 20px;
-	padding-bottom: 20px;
-	color: $sigBlue;
+  background-color: $sigYellow;
+  border-radius: 0px !important;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: $sigBlue;
 
-	h1{
-	  font-size: 3.5em;
-	  font-weight: 600;
-	}
-	h2{
-	  font-size: 1.5em;
-	}
+  h1{
+    font-size: 3.5em;
+    font-weight: 600;
+  }
+  h2{
+    font-size: 1.5em;
+  }
 }
 
 /* typography */
 
 h1, h2, h3, h4, h5, h6, ul, li, p, div, span, body{
-	font-family: 'Bai Jamjuree', sans-serif;
+  font-family: 'Bai Jamjuree', sans-serif;
   color: $sigBlue;
 }
 a{
@@ -209,7 +209,7 @@ p {
 }
 
 #logOutBtn{
-  border-top: 1px solid $sigBlue;	
+  border-top: 1px solid $sigBlue; 
 }
 
 /* footer */
@@ -224,7 +224,7 @@ footer {
     color: $sigBlue;
 
     &:hover {
-	  color: $sigYellow;
+    color: $sigYellow;
     }
   }
 
@@ -234,14 +234,14 @@ footer {
   }
 
   ul {
-	float: right;
-	list-style: none;
-	margin-right: 5%;
+  float: right;
+  list-style: none;
+  margin-right: 5%;
   }
 
   ul li {
-	float: left;
-	margin-left: 15px;
+  float: left;
+  margin-left: 15px;
   }
 
 }
@@ -377,9 +377,9 @@ input {
 #error_explanation {  
   color: $sigRed;
   .alert{
-  	border-radius: 0px;
-  	border: 5px solid $sigRed;
-  	
+    border-radius: 0px;
+    border: 5px solid $sigRed;
+    
   }
   ul {
     margin: 0 0 30px 0;
@@ -387,35 +387,35 @@ input {
 }
 
 .alert-danger{
-	background-color: transparent !important;
-	color: $sigRed;
-	font-weight: 700 !important;
-	border: 5px solid $sigRed;
-	border-radius: 0px;
+  background-color: transparent !important;
+  color: $sigRed;
+  font-weight: 700 !important;
+  border: 5px solid $sigRed;
+  border-radius: 0px;
 }
 
 .alert-success{
-	background-color: transparent !important;
-	color: $sigBlue;
-	border: 5px solid $sigBlue !important;
-	font-weight: 700 !important;
+  background-color: transparent !important;
+  color: $sigBlue;
+  border: 5px solid $sigBlue !important;
+  font-weight: 700 !important;
 }
 
 .alert-info{
-	background-color: transparent !important;
-	color: $sigBlue;
-	border: 5px solid $sigBlue !important;
-	font-weight: 700 !important;
+  background-color: transparent !important;
+  color: $sigBlue;
+  border: 5px solid $sigBlue !important;
+  font-weight: 700 !important;
 }
 
 .alert-warning{
-	background-color: transparent !important;
-	color: $sigBlue;
-	border: 5px solid $sigBlue !important;
-	font-weight: 700 !important;
-	a{
-		color: $sigRed;
-	}
+  background-color: transparent !important;
+  color: $sigBlue;
+  border: 5px solid $sigBlue !important;
+  font-weight: 700 !important;
+  a{
+    color: $sigRed;
+  }
 }
 
 .field_with_errors {
