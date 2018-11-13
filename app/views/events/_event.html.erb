@@ -2,12 +2,18 @@
 	<% @active_user = User.find(event.user_id) %>
 
 <div class="avatar avatar-thumbnail" style="width: 25px; height: 25px;background-image: url('<%= @active_user.avatar %>');"></div>
-<span class="user" style="font-size: 1.1em;"><%= link_to @active_user.name, @active_user %></span>
-<% if event.passive_user_id %>
-	<span style="margin-left: 5px; font-size: 1em;">shared a post</span>
-<% else %>
-	<span style="margin-left: 5px; font-size: 1em;">created a post</span>
-<% end %>
+	<span class="user" style="font-size: 1.1em;"><%= link_to @active_user.name, @active_user %></span>
+	<% if event.passive_user_id %>
+		<span style="margin-left: 5px; font-size: 1em;">shared to social media</span>
+		<% if current_user %>
+		    <% if current_user.id == event.user_id || current_user.admin? %>
+		      <%= link_to "delete", event, method: :delete,
+		                                       data: { confirm: "You sure?" } %>
+		    <% end %>
+		<% end %>
+	<% else %>
+		<span style="margin-left: 5px; font-size: 1em;">created a post</span>
+	<% end %>
 
 	<% @micropost = Micropost.find(event.micropost_id) %>
 	<%= render @micropost %>
