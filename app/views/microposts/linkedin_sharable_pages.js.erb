@@ -1,11 +1,16 @@
-if($('#pagesContainer').hasClass("inactive") && $('#pagesContainer').hasClass("first")){
-	<% @accounts.each do |page| %>
-	$('#pagesContainer').append("<%= escape_javascript render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id}) %>");
+if($('#linkedin-pages-container').hasClass("inactive") && $('#linkedin-pages-container').hasClass("first")){
+	<% if @accounts %>
+		<% @accounts.each do |page| %>
+			$('#linkedin-pages-container').append("<%= escape_javascript render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id}) %>");
+		<% end %>
+	<% else %>
+			$('#linkedin-pages-container').append("<%= escape_javascript render(:partial => 'shared/connect_account', :locals => { :provider => 'linkedin'}) %>");
 	<% end %>
-	$('#pagesContainer').removeClass("inactive");
-	$('#pagesContainer').removeClass("first");
-}else if($('#pagesContainer').hasClass("inactive")){
-	$('#pagesContainer').removeClass("inactive");
+
+	$('#linkedin-pages-container').removeClass("inactive");
+	$('#linkedin-pages-container').removeClass("first");
+}else if($('#linkedin-pages-container').hasClass("inactive")){
+	$('#linkedin-pages-container').removeClass("inactive");
 }else{
-	$('#pagesContainer').addClass("inactive");
+	$('#linkedin-pages-container').addClass("inactive");
 }

@@ -1,11 +1,16 @@
-if($('#pagesContainer').hasClass("inactive") && $('#pagesContainer').hasClass("first")){
-	<% @accounts.each do |page| %>
-		$('#pagesContainer').append("<%= escape_javascript render(:partial => 'page_display', :locals => { :page_name => page['name'], :page_id => page.account_id}) %>");
+if($('#fb-pages-container').hasClass("inactive") && $('#fb-pages-container').hasClass("first")){
+	<% if @accounts %>
+		<% @accounts.each do |page| %>
+			$('#fb-pages-container').append("<%= escape_javascript render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id}) %>");
+		<% end %>
+	<% else %>
+			$('#fb-pages-container').append("<%= escape_javascript render(:partial => 'shared/connect_account', :locals => { :provider => 'facebook'}) %>");
 	<% end %>
-	$('#pagesContainer').removeClass("inactive");
-	$('#pagesContainer').removeClass("first");
-}else if($('#pagesContainer').hasClass("inactive")){
-	$('#pagesContainer').removeClass("inactive");
+
+	$('#fb-pages-container').removeClass("inactive");
+	$('#fb-pages-container').removeClass("first");
+}else if($('#fb-pages-container').hasClass("inactive")){
+	$('#fb-pages-container').removeClass("inactive");
 }else{
-	$('#pagesContainer').addClass("inactive");
+	$('#fb-pages-container').addClass("inactive");
 }

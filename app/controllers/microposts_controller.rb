@@ -48,8 +48,10 @@ class MicropostsController < ApplicationController
     pages = params[:event]['pages']
     accounts = Account.where('account_id IN (?)', pages)
     buffer_profiles = []
+    post_to_providers = []
 
     accounts.each do |page|
+      post_to_providers << page.provider
       case page.provider
         when "facebook"
           share_to_facebook(micropost, page.account_id, message, page.access_token)
@@ -66,6 +68,17 @@ class MicropostsController < ApplicationController
       share_to_buffer(micropost, buffer_profiles, message)
     end
 
+    #create event
+    @event = Event.new(user_id: current_user.id, passive_user_id: micropost.user.id, micropost_id: micropost.id)
+    @event.save!
+
+    #create flash message
+    post_to_providers = post_to_providers.uniq
+    provider_map = post_to_providers.map(&:inspect).join(', ')
+    provider_string = provider_map.gsub!('"', '')
+    flash[:success] = "Posted to: #{provider_string}"
+
+    redirect_to root_path
   end
 
   def facebook_sharable_pages
@@ -93,15 +106,6 @@ class MicropostsController < ApplicationController
     else
       fb_page.put_connections(page_id, "feed", :message => message)
     end
-
-    #share to own page
-
-    @event = Event.new(user_id: current_user.id, passive_user_id: micropost.user.id, micropost_id: micropost.id)
-    @event.save!
-
-    flash[:success] = "Posted to Facebook!"
-
-    redirect_to root_path
   end
 
   def linkedin_sharable_pages
@@ -134,15 +138,6 @@ class MicropostsController < ApplicationController
     end
     
     puts "RESPONSE: #{response}"
-
-    #share to own page
-
-    @event = Event.new(user_id: current_user.id, passive_user_id: micropost.user.id, micropost_id: micropost.id)
-    @event.save!
-
-    flash[:success] = "Posted to LinkedIn!"
-
-    redirect_to root_path
   end
 
 =begin
@@ -183,7 +178,7 @@ class MicropostsController < ApplicationController
     @event = Event.new(user_id: current_user.id, passive_user_id: micropost.user.id, micropost_id: micropost.id)
     @event.save!
 
-    flash[:success] = "Posted to LinkedIn!"
+    flash[:success] = "Posted to Instagram!"
 
     redirect_to root_path
   end
@@ -222,15 +217,6 @@ class MicropostsController < ApplicationController
     end
     
     puts "RESPONSE: #{response}"
-
-    #share to own page
-
-    @event = Event.new(user_id: current_user.id, passive_user_id: micropost.user.id, micropost_id: micropost.id)
-    @event.save!
-
-    flash[:success] = "Posts sent to Buffer!"
-
-    redirect_to root_path
   end
 
   def generate_url(url, params = {})

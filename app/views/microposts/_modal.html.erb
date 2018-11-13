@@ -23,20 +23,24 @@
 			</div>
 			<div id="shareContainer">
 			    <% if current_user %>
-			      <%= link_to({:controller => "microposts", :action => "facebook_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon") do%>
-			        <img src="https://static.addtoany.com/buttons/facebook.svg" style="background-color: #3b5998;">
+			      <%= link_to({:controller => "microposts", :action => "facebook_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon facebook-login") do%>
+			        <img src="assets/facebook.svg">
 			      <% end %>
-			      <%= link_to({:controller => "microposts", :action => "linkedin_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon") do%>
-			        <img src="https://static.addtoany.com/buttons/linkedin.svg" style="background-color: #3b5998;">
+			      <div id="fb-pages-container" class="inactive first">
+			      </div>
+			      <%= link_to({:controller => "microposts", :action => "linkedin_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon linkedin-login") do%>
+			        <img src="assets/linkedin.svg">
 			      <% end %>
-			      <%= link_to({:controller => "microposts", :action => "buffer_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon") do%>
-			        <img src="https://static.addtoany.com/buttons/linkedin.svg" style="background-color: #3b5998;">
+			      <div id="linkedin-pages-container" class="inactive first">
+			      </div>
+			      <%= link_to({:controller => "microposts", :action => "buffer_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon buffer-login") do%>
+			        <img src="assets/buffer.svg">
 			      <% end %>
+			      <div id="buffer-pages-container" class="inactive first">
+			      </div>
 			    <% else %>
 			      <%= link_to( "Please log in to share posts", login_path) %>
 			    <% end %>
-			    <div id="pagesContainer" class="inactive first">
-			    </div>
 			  </div>
 			  <div class="modal-footer">
 				<%= f.submit "Share", class: "btn btn-primary" %>

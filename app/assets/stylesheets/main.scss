@@ -728,7 +728,6 @@ span.picture {
 
 #shareContainer{
   .SoMeIcon{
-    background-color: $sigBlue;
     width: 32px;
     height: 32px;
     display: block;
@@ -737,6 +736,10 @@ span.picture {
   }
   .img-holder{
     display: inline-block;
+  }
+  img{
+    padding: 5%;
+    width: 100%;
   }
 }
 
