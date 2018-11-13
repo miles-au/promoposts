@@ -8,5 +8,8 @@
 	</div>
 	<div class="col-md-6">
 		<%= render 'form' %>
+		<%= link_to(current_user, method: :delete, data: { confirm: "Are you sure?" })do %>
+			<button class="btn btn-greyed" style="width: 100%; margin-top: 50px;">Delete Your Account</button>
+		<% end %>
 	</div>
 </div>
