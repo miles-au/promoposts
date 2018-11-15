@@ -1,4 +1,10 @@
 <%= form_for @event, url: share_to_socials_path(:id => current_user.id, :micropost_id => @micropost.id), html: {method: :post} do |f| %>
+	<div style="margin: 0px; text-align: right;">
+		<%= link_to @micropost, :data=> {:current_user_id => current_user.id, :micropost_id => @micropost_id}, :class => "link_to_post" do %>
+			<span class="glyphicon glyphicon-link"></span><p>Link to Post</p>
+		<% end %>
+		<button type="button" class="close" data-dismiss="modal" ><span class="glyphicon glyphicon-remove"></span></button>
+	</div>
 	<div class="row">
 		<div class="col-md-8">
 			<div class="modal-header">
@@ -10,7 +16,7 @@
 				      <span class="content">
 				      	<%= f.text_field :message, :value => @micropost.content %>
 				        <% if @micropost.picture? %>
-				        	<%= link_to image_tag(@micropost.picture.url, alt: "promo post image") %>
+				        	<img src="<%= @micropost.picture.url %>", alt="promo post picture" />
 				        <% end %>
 				      </span>
 				  </div>
@@ -47,7 +53,7 @@
 			</div>
 		</div>
 		<div class="col-md-1">
-			<button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
+			
 		</div>
 	</div>
 <% end %>

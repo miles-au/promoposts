@@ -28,7 +28,7 @@ class MicropostsController < ApplicationController
     redirect_to root_url
   end
 
-  def show
+  def view
     @event = Event.new
     @micropost = Micropost.find(params[:id])
     respond_to do |format| 
@@ -36,6 +36,12 @@ class MicropostsController < ApplicationController
         format.js
     end
     
+  end
+
+  def show
+    @event = Event.new
+    @micropost = Micropost.find(params[:id])
+    @user = @micropost.user
   end
 
   def share_to_socials

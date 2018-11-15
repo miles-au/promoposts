@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   get 'microposts/share_to_socials', to: 'microposts#share_to_socials', as: 'share_to_socials'
 
   get 'microposts/new'
+  get 'microposts/view', to: 'microposts#view'
 
   post '/webhooks_facebook' => 'webhooks#facebook', as: :facebook_webhooks
   get '/webhooks_facebook' => 'webhooks#challenge', as: :challenge_webhooks

@@ -1,0 +1,85 @@
+<%= form_for @event, url: share_to_socials_path(:id => params['current_user_id'], :micropost_id => params['micropost_id']), html: {method: :post} do |f| %>
+	<div class="avatar avatar-thumbnail" style="background-image: url('<%= @micropost.user.avatar %>'); display: inline-block;"></div>
+	<div style="display: inline-block;">
+		<h4 class="user"><%= link_to @micropost.user.name, @micropost.user %></h4>
+		<% if current_user %>
+			<%= render 'shared/follow_form' %>
+		<% end %>
+		<span class="timestamp" style="display: block;">
+	      Posted <%= time_ago_in_words(@micropost.created_at) %> ago.
+	  	</span>
+	      <% if current_user %>
+	        <% if current_user?(@micropost.user) || current_user.admin? %>
+	          <%= link_to "delete", @micropost, method: :delete,
+	                                           data: { confirm: "You sure?" } %>
+	        <% end %>
+	    <% end %>
+	</div>
+
+	<% if current_user %>
+    
+		<div class="row">
+			<div class="col-md-9">
+				<h3>1. Edit your caption</h3>
+				<hr>
+				  <div class="section">
+				      <span class="content">
+				      	<%= f.text_field :message, :value => @micropost.content %>
+				        <% if @micropost.picture? %>
+				        	<img src="<%= @micropost.picture.url %>", alt="promo post picture" width="100%"/>
+				        <% end %>
+				      </span>
+				  </div>
+			</div>
+			<div class="col-md-3">
+				<h3>2. Share it!</h3>
+				<hr>
+				<div id="shareContainer">
+				    <% if current_user %>
+				      <%= link_to({:controller => "microposts", :action => "facebook_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon facebook-login") do%>
+				        <img src="<%= ActionController::Base.helpers.asset_path('facebook.svg')%>">
+				      <% end %>
+				      <div id="fb-pages-container" class="inactive first">
+				      </div>
+				      <%= link_to({:controller => "microposts", :action => "linkedin_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon linkedin-login") do%>
+				        <img src="<%= ActionController::Base.helpers.asset_path('linkedin.svg')%>">
+				      <% end %>
+				      <div id="linkedin-pages-container" class="inactive first">
+				      </div>
+				      <%= link_to({:controller => "microposts", :action => "buffer_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon buffer-login") do%>
+				        <img src="<%= ActionController::Base.helpers.asset_path('buffer.svg')%>">
+				      <% end %>
+				      <div id="buffer-pages-container" class="inactive first">
+				      </div>
+				    <% else %>
+				      <%= link_to( "Please log in to share posts", login_path) %>
+				    <% end %>
+				  </div>
+				  <div class="modal-footer">
+					<%= f.submit "Share", class: "btn btn-primary" %>
+				</div>
+			</div>
+		</div>
+
+	<% else %>
+
+		<div class="row">
+			<div class="col-md-9">
+				  <div class="section">
+				      <span class="content">
+				      	<p><%= @micropost.content %></p>
+				        <% if @micropost.picture? %>
+				        	<img src="<%= @micropost.picture.url %>", alt="promo post picture" width="100%"/>
+				        <% end %>
+				      </span>
+				  </div>
+			</div>
+			<div class="col-md-3">
+				<h4><%= link_to "Log in", login_path %> to share this post</h4>
+			</div>
+		</div>
+
+
+	<% end %>
+
+<% end %>

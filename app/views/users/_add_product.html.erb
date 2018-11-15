@@ -13,7 +13,7 @@
 	  <% end %>
 	</div>
 	<div class="modal-body">
-	  <%= f.label :title, :value => 'Product Title: ' %>
+	  <%= f.label :title, :value => 'Product Title*: ' %>
 	  <%= f.text_field :title, :value => @product.title, :id => 'product_title', :maxlength => 150 %>
 	  <%= f.label :url, :value => 'Product link: ' %>
 	  <%= f.text_field :url, :value => @product.url, :maxlength => 300 %>
@@ -25,10 +25,10 @@
 	  <%= f.submit "Update", class: "btn btn-primary" %>
 	  <% if params['product_id'] %>
 		<%= link_to users_delete_product_path(:product_id => @product.id) do%>
-			<div class="btn btn-greyed" style="display: block; margin: 5px 0;">Delete</div>
+			<div id="submit-product-btn" class="btn btn-greyed" style="display: block; margin: 5px 0;">Delete</div>
 		<% end %>
 	  <% end %>
-	  
+	  <div id="product-missing-fields" class="btn btn-greyed hidden" style="display: block; margin: 5px 0;">Missing required fields</div>
 	</div>
 <% end %>
 
@@ -39,4 +39,26 @@
       alert('Maximum file size is 5MB. Please choose a smaller file.');
     }
   });
+
+  /*
+  $('#product_title').bind('change', function() {
+    var str_length = this.value.length;
+    console.log(str_length);
+    if(str_length > 0){
+    	all_fields();
+    }else{
+    	missing_fields();
+    }
+
+  });
+
+  function missing_fields(){
+  	$('#submit-product-btn').addClass('hidden');
+  	$('#product-missing-fields').removeClass('hidden');
+  }
+  function all_fields(){
+  	$('#submit-product-btn').removeClass('hidden');
+  	$('#product-missing-fields').addClass('hidden');
+  }
+  */
 </script>

@@ -41,15 +41,19 @@
         
         <%= render @products %>
 
-        <% if @products.count < 10 && @user == current_user %>
-          <%=link_to({:controller => "users", :action => "add_product", :user_id => current_user.id, :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary btn-lg'},) do%>
-            <div class="product">
-              <div class="addProduct">
-                <p class="productInnerText"><span class="glyphicon glyphicon-plus" style="line-height: 150px;"></span></p>
+        <% if @user == current_user %>
+          <% if @products.count < 10 %>
+            <%=link_to({:controller => "users", :action => "add_product", :user_id => current_user.id, :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary btn-lg'},) do%>
+              <div class="product">
+                <div class="addProduct">
+                  <p class="productInnerText"><span class="glyphicon glyphicon-plus" style="line-height: 150px;"></span></p>
+                </div>
               </div>
-            </div>
-            <h6 style="text-align: center; margin-bottom: 30px;">Add up to 10 products</h6>
-          <% end %> 
+              <h6 style="text-align: center; margin-bottom: 30px;">Add up to 10 products</h6>
+            <% end %> 
+          <% else %>
+              <h6>You've reached your limit of 10 products</h6>
+          <% end %>
         <% end %>
     </div>
   </aside>

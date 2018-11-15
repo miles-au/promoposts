@@ -639,6 +639,26 @@ input {
   }
 }
 
+.link_to_post{
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+  span{
+    display: inline-block;
+    margin: 0px 10px;
+  }
+  p{
+    display: inline-block;
+  }
+
+  &:hover{
+    span, p{
+      color: $sigCadet;
+    }
+  }
+
+}
+
 aside {
   textarea {
     height: 100px;

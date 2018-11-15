@@ -15,30 +15,21 @@
     <% @user = micropost.user %>
     <% if logged_in? %>
       <%= render 'shared/follow_form' if controller_name != "users" %>
-      <%=link_to({:controller => "microposts", :action => "show", :remote => true, :id => micropost.id, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary btn-lg'}, :class => "SoMeIcon") do%>
+      <%=link_to({:controller => "microposts", :action => "view", :remote => true, :id => micropost.id, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary btn-lg'}, :class => "SoMeIcon") do%>
           <div class="section">
             <span class="content">
               <%= micropost.content %>
               <% if micropost.picture? %>
                 <div class="square" style="background-image: url('<%= micropost.picture.url %>');">
                   <div class="clickToShare">
-                    <% if logged_in? %>
                       <p>Click to share!</p>
-                    <% else %>
-                      <p>Login to share!</p>
-                    <% end %>
                   </div>
                 </div>
-              <% end %>
-              <% if micropost.picture? == false %>
+              <% else %>
               <div class="noPic square">
                 <span></span><strong>"<%= micropost.content %>"</strong>
                   <div class="clickToShare">
-                    <% if logged_in? %>
                       <p>Click to share!</p>
-                    <% else %>
-                      <p>Login to share!</p>
-                    <% end %>
                   </div>
               </div>
               <% end %>
@@ -46,34 +37,27 @@
         </div>
       <% end %>
     <% else %>
-      <div class="section">
-            <span class="content">
-              <%= micropost.content %>
-              <% if micropost.picture? %>
-                <div class="square" style="background-image: url('<%= micropost.picture.url %>');">
-                  <div class="clickToShare">
-                    <% if logged_in? %>
-                      <p>Click to share!</p>
-                    <% else %>
-                      <p>Login to share!</p>
-                    <% end %>
+      <%= link_to(@micropost) do%>
+        <div class="section">
+              <span class="content">
+                <%= micropost.content %>
+                <% if micropost.picture? %>
+                  <div class="square" style="background-image: url('<%= micropost.picture.url %>');">
+                    <div class="clickToShare">
+                        <p>Login to share!</p>
+                    </div>
                   </div>
+                <% else %>
+                <div class="noPic square">
+                  <span></span><strong>"<%= micropost.content %>"</strong>
+                    <div class="clickToShare">
+                        <p>Login to share!</p>
+                    </div>
                 </div>
-              <% end %>
-              <% if micropost.picture? == false %>
-              <div class="noPic square">
-                <span></span><strong>"<%= micropost.content %>"</strong>
-                  <div class="clickToShare">
-                    <% if logged_in? %>
-                      <p>Click to share!</p>
-                    <% else %>
-                      <p>Login to share!</p>
-                    <% end %>
-                  </div>
-              </div>
-              <% end %>
-            </span>
-        </div>
+                <% end %>
+              </span>
+          </div>
+        <% end %>
     <% end %>
 
 </li>
