@@ -7,6 +7,12 @@
     </div>
   </div>
 
+<% if @user == current_user %>
+  <%= link_to(edit_user_path) do%>
+  <span class='glyphicon glyphicon-pencil'></span><p style="display: inline-block; margin-left: 5px;">edit my profile</p>
+  <% end %>
+<% end %>
+
 <div class="row">
   <aside class="col-md-3">
     <section class="user_info">
@@ -21,7 +27,7 @@
     </section>
   </aside>
   <div class="col-md-9" style="height: 300px;">
-    <div id="coverPhoto">
+    <div id="coverPhoto" style="background-image: url('<%= @user.cover_photo %>'); background-position: center; background-size: cover;">
     </div>
   </div>
 </div>
@@ -35,14 +41,14 @@
         
         <%= render @products %>
 
-        <% if @products.count < 5 && @user == current_user %>
+        <% if @products.count < 10 && @user == current_user %>
           <%=link_to({:controller => "users", :action => "add_product", :user_id => current_user.id, :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary btn-lg'},) do%>
             <div class="product">
               <div class="addProduct">
                 <p class="productInnerText"><span class="glyphicon glyphicon-plus" style="line-height: 150px;"></span></p>
               </div>
             </div>
-            <h6 style="text-align: center; margin-bottom: 30px;">Add a top product</h6>
+            <h6 style="text-align: center; margin-bottom: 30px;">Add up to 10 products</h6>
           <% end %> 
         <% end %>
     </div>

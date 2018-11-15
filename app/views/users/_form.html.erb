@@ -6,6 +6,10 @@
       <h5>Upload a new profile picture (10mb max)</h5>
       <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
     </div>
+    <div>
+      <h5>Upload a new cover photo (10mb max)</h5>
+      <%= f.file_field :cover_photo, accept: 'image/jpeg,image/gif,image/png' %>
+    </div>
   <% end %>
 
   <%= f.label :category, "Category: I am a..." %><br />

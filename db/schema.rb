@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_14_050649) do
+ActiveRecord::Schema.define(version: 2018_11_15_170157) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "provider"
@@ -103,6 +103,7 @@ ActiveRecord::Schema.define(version: 2018_11_14_050649) do
     t.string "instagram_uid"
     t.string "buffer_oauth_token"
     t.string "buffer_uid"
+    t.string "cover_photo"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

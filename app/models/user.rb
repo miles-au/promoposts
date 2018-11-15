@@ -24,6 +24,7 @@ class User < ApplicationRecord
   validates :category, presence: true
 
   mount_uploader :picture, PictureUploader
+  mount_uploader :cover_photo, PictureUploader
   validate  :picture_size
 
   require 'rubygems'
@@ -226,7 +227,10 @@ class User < ApplicationRecord
 
     def picture_size
       if picture.size > 10.megabytes
-        errors.add(:picture, "should be less than 10MB")
+        errors.add(:picture, "Profile picture should be less than 10MB")
+      end
+      if cover_photo.size > 10.megabytes
+        errors.add(:picture, "Cover photo should be less than 10MB")
       end
     end
 
