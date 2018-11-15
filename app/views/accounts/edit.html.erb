@@ -1,116 +1,124 @@
 <h4>Your connected social networks:</h4>
-<p>Tick the checkbox to enable autoshare</p>
 
 <%= form_for @account, url: accounts_edit_path(:user_id => current_user.id, :provider => "facebook"), html: {method: :post} do |f| %>
 
+<p>&nbsp;</p>
   <!--display Facebook pages-->
-  <p>facebook: </p>
+  <h4 class="facebook-login social-login"><img src='<%= ActionController::Base.helpers.asset_path('facebook.svg')%>'/> Your Facebook accounts: </h4>
+  <div class="social-accounts-wrap">
 
-  <!--if logged_in and facebook accounts exist in user's name-->
-  <% if logged_in? && current_user.fb_uid%>
-    <% puts "FB ACCOUNTS: #{@fb_accounts}" %>
-    <% accounts = @fb_accounts %>
-    <% accounts.each do |page| %>
-      <div class="fb-settings-wrapper">
-        <% if page['autoshare'] %>
-          <!-- if autoshare is already turned on, unsubscribe -->
-          <input name="unsubscribe_hidden[]" type="hidden" value="<%= page['account_id'] %>">
-          <input name="unsubscribe[]" type="checkbox" value="<%= page['account_id'] %>" checked="checked" id="account_unsubscribe">
+    <!--if logged_in and facebook accounts exist in user's name-->
+    <% if logged_in? && @fb_accounts.count > 0 %>
+      <p>Tick the checkbox to enable autoshare. <%= link_to "What is autoshare?", what_is_autoshare_path %></p>
+      <% accounts = @fb_accounts %>
+      <% accounts.each do |page| %>
+        <div class="fb-settings-wrapper">
+          <% if page['autoshare'] %>
+            <!-- if autoshare is already turned on, unsubscribe -->
+            <input name="unsubscribe_hidden[]" type="hidden" value="<%= page['account_id'] %>">
+            <input name="unsubscribe[]" type="checkbox" value="<%= page['account_id'] %>" checked="checked" id="account_unsubscribe">
 
-        <% else %>
-          <!-- else, subscribe-->
-          <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page['account_id'], "" %>
-        <% end %>
+          <% else %>
+            <!-- else, subscribe-->
+            <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page['account_id'], "" %>
+          <% end %>
 
-        <div class="img-holder">
-          <img class="thumbnail-page" src="https://graph.facebook.com/<%= page['account_id'] %>/picture"/>
+          <div class="img-holder">
+            <img class="thumbnail-page" src="https://graph.facebook.com/<%= page['account_id'] %>/picture"/>
+          </div>
+          <h5 class="page-name"><%= page['name'] %></h5>
         </div>
-        <h6 class=""><%= page['name'] %></h6>
-      </div>
 
-    <% end %>
+      <% end %>
 
-  <% else %>
-    <%= link_to("/auth/facebook?intent=connect") do%>
-      <h6> Connect your Facebook Account </h6>
+    <% else %>
+      <%= link_to "/auth/facebook?intent=connect", :class => 'connect_link' do%>
+        <span class="glyphicon glyphicon-transfer"></span><h5> Connect your Facebook Account </h5>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
 
 
 
 
   <!--display Linkedin pages-->
-  <p>linkedin: </p>
+  <h4 class="linkedin-login social-login"><img src='<%= ActionController::Base.helpers.asset_path('linkedin.svg')%>'/> Your LinkedIn accounts: </h4>
+  <div class="social-accounts-wrap">
 
-  <!--if logged_in and linkedin accounts exist in user's name-->
-  <% if logged_in? && current_user.linkedin_uid%>
-    <% puts "LINKEDIN ACCOUNTS: #{@linkedin_accounts}" %>
-    <% accounts = @linkedin_accounts %>
-    <% accounts.each do |page| %>
-      <div class="fb-settings-wrapper">
-        <!--
-        <% if page['autoshare'] %>
-          <input name="unsubscribe_hidden[]" type="hidden" value="<%= page['account_id'] %>">
-          <input name="unsubscribe[]" type="checkbox" value="<%= page['account_id'] %>" checked="checked" id="account_unsubscribe">
+    <!--if logged_in and linkedin accounts exist in user's name-->
+    <% if logged_in? && @linkedin_accounts.count > 0 %>
+      <% accounts = @linkedin_accounts %>
+      <% accounts.each do |page| %>
+        <div class="fb-settings-wrapper">
+          <!--
+          <% if page['autoshare'] %>
+            <input name="unsubscribe_hidden[]" type="hidden" value="<%= page['account_id'] %>">
+            <input name="unsubscribe[]" type="checkbox" value="<%= page['account_id'] %>" checked="checked" id="account_unsubscribe">
 
-        <% else %>
-          <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page['account_id'], "" %>
-        <% end %>
+          <% else %>
+            <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page['account_id'], "" %>
+          <% end %>
+          -->
+
+          <!--
+          <div class="img-holder">
+            <img class="thumbnail-page" src="https://graph.facebook.com/<%= page['account_id'] %>/picture"/>
+          </div>
         -->
-
-        <!--
-        <div class="img-holder">
-          <img class="thumbnail-page" src="https://graph.facebook.com/<%= page['account_id'] %>/picture"/>
+          <h5 class="page-name"><%= page['name'] %></h5>
         </div>
-      -->
-        <h6 class=""><%= page['name'] %></h6>
-      </div>
 
+      <% end %>
+
+    <% else %>
+      <%= link_to "/auth/linkedin?intent=connect", :class => 'connect_link' do%>
+        <span class="glyphicon glyphicon-transfer"></span><h5> Connect your Linkedin Account </h5>
+      <% end %>
     <% end %>
 
-  <% else %>
-    <%= link_to("/auth/linkedin?intent=connect") do%>
-      <h6> Connect your Linkedin Account </h6>
-    <% end %>
-  <% end %>
+  </div>
 
 
 
 
   <!--display Buffer pages-->
-  <p>buffer: </p>
+  <h4 class="buffer-login social-login"><img src='<%= ActionController::Base.helpers.asset_path('buffer.svg')%>'/> Your Buffer accounts: </h4>
+  <div class="social-accounts-wrap">
 
-  <!--if logged_in and linkedin accounts exist in user's name-->
-  <% if logged_in? && current_user.buffer_uid%>
-    <% puts "BUFFER ACCOUNTS: #{@buffer_accounts}" %>
-    <% accounts = @buffer_accounts %>
-    <% accounts.each do |page| %>
-      <div class="fb-settings-wrapper">
-        <!--
-        <% if page['autoshare'] %>
-          <input name="unsubscribe_hidden[]" type="hidden" value="<%= page['account_id'] %>">
-          <input name="unsubscribe[]" type="checkbox" value="<%= page['account_id'] %>" checked="checked" id="account_unsubscribe">
+    <!--if logged_in and buffer accounts exist in user's name-->
+    <% if logged_in? && @buffer_accounts.count > 0 %>
+      <% accounts = @buffer_accounts %>
+      <% accounts.each do |page| %>
+        <div class="fb-settings-wrapper">
+          <!--
+          <% if page['autoshare'] %>
+            <input name="unsubscribe_hidden[]" type="hidden" value="<%= page['account_id'] %>">
+            <input name="unsubscribe[]" type="checkbox" value="<%= page['account_id'] %>" checked="checked" id="account_unsubscribe">
 
-        <% else %>
-          <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page['account_id'], "" %>
-        <% end %>
+          <% else %>
+            <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page['account_id'], "" %>
+          <% end %>
+          -->
+
+          <!--
+          <div class="img-holder">
+            <img class="thumbnail-page" src="https://graph.facebook.com/<%= page['account_id'] %>/picture"/>
+          </div>
         -->
-
-        <!--
-        <div class="img-holder">
-          <img class="thumbnail-page" src="https://graph.facebook.com/<%= page['account_id'] %>/picture"/>
+          <h5 class="page-name"><%= page['name'] %></h5>
         </div>
-      -->
-        <h6 class=""><%= page['name'] %></h6>
-      </div>
 
+      <% end %>
+
+    <% else %>
+      <%= link_to "/auth/buffer?intent=connect", :class => 'connect_link' do%>
+        <span class="glyphicon glyphicon-transfer"></span><h5> Connect your Buffer Account </h5>
+      <% end %>
     <% end %>
 
-  <% else %>
-    <%= link_to("/auth/buffer?intent=connect") do%>
-      <h6> Connect your Buffer Account </h6>
-    <% end %>
-  <% end %>
+  </div>
+
+  <p>&nbsp;</p>
 
   <%= f.submit "Update Autoshare Settings", class: "btn btn-primary" %>
 

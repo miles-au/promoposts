@@ -58,4 +58,7 @@ class StaticPagesController < ApplicationController
   def contact
   end
 
+  def what_is_autoshare
+  end
+
 end

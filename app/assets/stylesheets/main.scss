@@ -461,6 +461,10 @@ input {
   }
 }
 
+.social-accounts-wrap{
+  margin-left: 50px;
+}
+
 /* Users index */
 
 .users {
@@ -753,7 +757,6 @@ span.picture {
 
 #coverPhoto{
   background-color: $sigYellow;
-  height: 100%;
   width: 100%;
   color: $sigBlue;
 }
@@ -951,5 +954,19 @@ span.picture {
   }
   .btn{
     width: 150px;
+  }
+}
+
+.connect_link{
+  span, h5{
+    color: $sigCadet;
+    display: inline-block;
+    margin-left: 10px;
+  }
+
+  &:hover{
+    span, h5{
+      color: $sigYellow;
+    }
   }
 }

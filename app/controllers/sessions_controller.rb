@@ -29,7 +29,7 @@ class SessionsController < ApplicationController
     @auth = request.env['omniauth.auth']
     @provider = @auth['provider']
     @code = params['oauth_verifier']
-    puts "STATE: #{par['state']}"
+    #puts "STATE: #{par['state']}"
 
     #verify state
 

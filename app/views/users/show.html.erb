@@ -14,27 +14,19 @@
 <% end %>
 
 <div class="row">
-  <aside class="col-md-3">
+  <div class="col-md-3">
     <section class="user_info">
       <h1>
         <div class="avatar" style="background-image: url('<%= @user.avatar %>'); height: 150px; width: 150px; background-position: center; margin: 0 auto;"></div>
         <span style="text-align: center; display: block;"><%= @user.name %></span>
       </h1>
     </section>
-    <section class="stats">
+    <div class="stats">
       <%= render 'shared/stats' %>
       <%= render 'follow_form' if logged_in? %>
-    </section>
-  </aside>
-  <div class="col-md-9" style="height: 300px;">
-    <div id="coverPhoto" style="background-image: url('<%= @user.cover_photo %>'); background-position: center; background-size: cover;">
     </div>
-  </div>
-</div>
 
-<div class="row">
-  <aside class="col-md-3">
-    <div id="topTen">
+  <div id="topTen">
       <% if @products.count > 0 || @user == current_user %>
         <h4 id="topPicksTitle">My Top Picks: </h4>
       <% end %>
@@ -56,8 +48,13 @@
           <% end %>
         <% end %>
     </div>
-  </aside>
-  <div class="col-md-9">
+
+
+  </div>
+  <div class="col-md-9" style="height: 300px;">
+    <div id="coverPhoto" style="background-image: url('<%= @user.cover_photo %>'); background-position: center; background-size: cover; height: <%= @user.cover_photo? ? '100' : '0' %>%;">
+    </div>
+
     <% if @events %>
       <h3>Activity (<%= @events.count %>)</h3>
       <ol id="microPostsContainer" class="microposts micropost-full">
@@ -65,5 +62,6 @@
       </ol>
       <%= will_paginate @events %>
     <% end %>
+
   </div>
 </div>

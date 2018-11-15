@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get '/privacy_policy', to: 'static_pages#privacy_policy'
   get '/cookie_policy', to: 'static_pages#cookie_policy'
   get '/terms', to: 'static_pages#terms'
+  get '/what_is_autoshare', to: 'static_pages#what_is_autoshare'
 
   get  '/signup',  to: 'users#new'
 

@@ -112,12 +112,12 @@ class MicropostsController < ApplicationController
   end
 
   def linkedin_sharable_pages
-    puts "linkedin_sharable_pages"
+    #puts "linkedin_sharable_pages"
     @user = User.find(params[:id])
     @micropost = Micropost.find(params[:micropost])
-    puts "USER: #{@user}"
+    #puts "USER: #{@user}"
     if @user.linkedin_oauth_token
-      puts "linkedin_oauth_token"
+      #puts "linkedin_oauth_token"
       client = @user.linkedin
       @accounts = Account.where(:provider => "linkedin", :user_id => @user.id)
     else
@@ -140,7 +140,7 @@ class MicropostsController < ApplicationController
       response = client.add_company_share( page_id, :comment => message)
     end
     
-    puts "RESPONSE: #{response}"
+    #puts "RESPONSE: #{response}"
   end
 
 =begin
@@ -189,12 +189,12 @@ class MicropostsController < ApplicationController
 
 
   def buffer_sharable_pages
-    puts "buffer_sharable_pages"
+    #puts "buffer_sharable_pages"
     @user = User.find(params[:id])
     @micropost = Micropost.find(params[:micropost])
-    puts "USER: #{@user}"
+    #puts "USER: #{@user}"
     if @user.buffer_oauth_token
-      puts "buffer_oauth_token"
+      #puts "buffer_oauth_token"
       client = @user.buffer
       @accounts = Account.where(:provider => "buffer", :user_id => @user.id)
     else
@@ -219,7 +219,7 @@ class MicropostsController < ApplicationController
       response = client.create_update(:body => {:profile_ids => profiles, :text => message, :now => true} )
     end
     
-    puts "RESPONSE: #{response}"
+    #puts "RESPONSE: #{response}"
   end
 
   def generate_url(url, params = {})

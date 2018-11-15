@@ -82,7 +82,7 @@ class UsersController < ApplicationController
   end
 
   def submit_product
-    puts "PARAMS: #{params}"
+    #puts "PARAMS: #{params}"
     product_id = params['product']['product_id']
     user = User.find(params['user_id'])
     title = params['product']['title']

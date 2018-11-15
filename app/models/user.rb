@@ -116,7 +116,7 @@ class User < ApplicationRecord
   def self.create_with_omniauth(auth)
     #figure out which provider and create user
 
-    puts "AUTH: #{auth}"
+    #puts "AUTH: #{auth}"
 
     case auth['provider']
       when "facebook"
@@ -153,7 +153,7 @@ class User < ApplicationRecord
   end
 
   def self.connect_accounts(auth, id)
-    puts "AUTH: #{auth}"
+    #puts "AUTH: #{auth}"
 
     user = User.find(id)
     case auth['provider']
@@ -177,12 +177,12 @@ class User < ApplicationRecord
   end
 
   def facebook
-    puts "OAUTH: #{fb_oauth_token}"
+    #puts "OAUTH: #{fb_oauth_token}"
     @facebook ||= Koala::Facebook::API.new(self.fb_oauth_token)
   end
 
   def linkedin
-    puts "OAUTH: #{linkedin_oauth_token}"
+    #puts "OAUTH: #{linkedin_oauth_token}"
     #client = LinkedIn::Client.new( self.linkedin_oauth_token, self.linkedin_oauth_secret)
     @linkedin = LinkedIn::Client.new( ENV['LINKEDIN_CLIENT_ID'], ENV['LINKEDIN_CLIENT_SECRET'])
     @linkedin.authorize_from_access(ENV['LINKED_APP_KEY'])
@@ -190,12 +190,12 @@ class User < ApplicationRecord
   end
 
   def instagram
-    puts "OAUTH: #{instagram_oauth_token}"
+    #puts "OAUTH: #{instagram_oauth_token}"
     client = Instagram.client(:access_token => self.instagram_oauth_token)
   end
 
   def buffer
-    puts "OAUTH: #{buffer_oauth_token}"
+    #puts "OAUTH: #{buffer_oauth_token}"
     @buffer = Buffer::Client.new(self.buffer_oauth_token)
   end
 
