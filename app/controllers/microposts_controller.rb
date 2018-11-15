@@ -36,9 +36,6 @@ class MicropostsController < ApplicationController
         format.js
     end
     
-    #linkedin url
-    @linkedin_url = generate_url('https://www.linkedin.com/oauth/v2/authorization', "response_type" => "code", "client_id" => ENV['LINKEDIN_CLIENT_ID'], "redirect_uri" => "https://defae573.ngrok.io/auth/linkedin/callback", "state" => ENV['STATE'], "scope" => "r_basicprofile rw_company_admin" )
-    
   end
 
   def share_to_socials

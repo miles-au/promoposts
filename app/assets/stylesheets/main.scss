@@ -314,11 +314,6 @@ aside {
   }
 }
 
-.avatar {
-  float: left;
-  margin-right: 10px;
-}
-
 .avatar_edit {
   margin-top: 15px;
 }
@@ -703,6 +698,44 @@ span.picture {
   ul, ol, li, .pagination{
     margin: 0px;
   }
+}
+
+.topTen{
+
+}
+
+#topPicksTitle{
+  background-color: $sigYellow;
+  padding: 5px;
+}
+
+.product{
+  width: 150px;
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+  margin: 0 auto;
+}
+
+.addProduct{
+  text-align: center;
+  background-color: $sigYellow;
+
+  span{
+    color: $sigBlue;
+  }
+}
+
+.productInnerText{
+  display: block;
+  font-size: 5em;
+}
+
+#coverPhoto{
+  background-color: $sigYellow;
+  height: 100%;
+  width: 100%;
+  color: $sigBlue;
 }
 
 /* page display */

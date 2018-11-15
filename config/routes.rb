@@ -43,6 +43,11 @@ Rails.application.routes.draw do
   get 'static_pages/change_grid_view'
   post '/microposts/share_to_socials'
 
+  get 'users/add_product' => 'users#add_product'
+  post 'users/add_product' => 'users#submit_product'
+
+  get 'users/delete_product' => 'users#delete_product'
+
   resources :users do
     member do
       get :following, :followers

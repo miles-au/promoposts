@@ -1,0 +1,42 @@
+<%= form_for @product, url: users_add_product_path(:user_id => params['user_id']), html: {method: :post} do |f| %>
+<% if params['product_id'] %>
+	<% @product = Product.find(params['product_id']) %>
+	<%= f.hidden_field :product_id, :value => @product.id %>
+<% end %>
+
+	<div class="modal-header">
+	  <button type="button" class="close" data-dismiss="modal">x</button>
+	  <% if params['product_id'] %>
+	  	<h4 class="modal-title" id="myModalLabel">Edit Product</h4>
+	  <% else %>
+	  	<h4 class="modal-title" id="myModalLabel">Add a Product</h4>
+	  <% end %>
+	</div>
+	<div class="modal-body">
+	  <%= f.label :title, :value => 'Product Title: ' %>
+	  <%= f.text_field :title, :value => @product.title, :id => 'product_title', :maxlength => 150 %>
+	  <%= f.label :url, :value => 'Product link: ' %>
+	  <%= f.text_field :url, :value => @product.url, :maxlength => 300 %>
+	  <%= f.label :picture, :value => 'Picture: ' %>
+	  <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png', :id => 'product_picture' %>
+
+	</div>
+	<div class="modal-footer">
+	  <%= f.submit "Update", class: "btn btn-primary" %>
+	  <% if params['product_id'] %>
+		<%= link_to users_delete_product_path(:product_id => @product.id) do%>
+			<div class="btn btn-greyed" style="display: block; margin: 5px 0;">Delete</div>
+		<% end %>
+	  <% end %>
+	  
+	</div>
+<% end %>
+
+<script type="text/javascript">
+  $('#product_picture').bind('change', function() {
+    var size_in_megabytes = this.files[0].size/1024/1024;
+    if (size_in_megabytes > 5) {
+      alert('Maximum file size is 5MB. Please choose a smaller file.');
+    }
+  });
+</script>

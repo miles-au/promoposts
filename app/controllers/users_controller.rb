@@ -23,6 +23,7 @@ class UsersController < ApplicationController
     activity  = Event.where("user_id = :user_id", user_id: @user.id)
     @events = activity.paginate(page: params[:page], :per_page => 10)
     #@microposts = @user.microposts.paginate(page: params[:page], :per_page => 10)
+    @products = Product.where("user_id = :user_id", user_id: @user.id)
     redirect_to root_url and return unless @user.activated == true
   end
 
@@ -71,6 +72,44 @@ class UsersController < ApplicationController
     @user  = User.find(params[:id])
     @users = @user.followers.paginate(page: params[:page])
     render 'show_follow'
+  end
+
+  def add_product
+    @product = Product.new
+    respond_to do |format| 
+        format.html
+        format.js
+    end
+  end
+
+  def submit_product
+    puts "PARAMS: #{params}"
+    product_id = params['product']['product_id']
+    user = User.find(params['user_id'])
+    title = params['product']['title']
+    url = params['product']['url']
+    picture = params['product']['picture']
+
+    #if product_id exists
+    if product_id
+      product = Product.find(product_id)
+      product.title = title
+      product.url = url
+      product.picture = picture
+      product.save!
+    #else
+    else
+      product = Product.new(:user_id => user.id, :title => title, :url => url, :picture => picture)
+      product.save!
+    end
+    
+    redirect_to user
+  end
+
+  def delete_product
+    product = Product.find(params['product_id'])
+    product.destroy!
+    redirect_to current_user
   end
 
   private
