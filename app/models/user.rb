@@ -30,7 +30,6 @@ class User < ApplicationRecord
   require 'rubygems'
   require 'linkedin'
 
-
   # Returns the hash digest of the given string.
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
@@ -116,22 +115,22 @@ class User < ApplicationRecord
   def self.create_with_omniauth(auth)
     #figure out which provider and create user
 
-    #puts "AUTH: #{auth}"
+    encrypted_token = User.encrypt_value(auth.credentials.token)
 
     case auth['provider']
       when "facebook"
         user = User.find_or_initialize_by(fb_uid: auth['uid'])
-        user.fb_oauth_token = auth.credentials.token
+        user.fb_oauth_token = encrypted_token
       when "linkedin"
         user = User.find_or_initialize_by(linkedin_uid: auth['uid'])
-        user.linkedin_oauth_token = auth.credentials.token
+        user.linkedin_oauth_token = encrypted_token
         #user.linkedin_oauth_secret = auth.credentials.secret
       when "instagram"
         user = User.find_or_initialize_by(instagram_uid: auth['uid'])
-        user.instagram_oauth_token = auth.credentials.token
+        user.instagram_oauth_token = encrypted_token
       when "buffer"
         user = User.find_or_initialize_by(buffer_uid: auth['uid'])
-        user.buffer_oauth_token = auth.credentials.token
+        user.buffer_oauth_token = encrypted_token
         user.name = auth.extra.raw_info.name
     end
 
@@ -155,20 +154,22 @@ class User < ApplicationRecord
   def self.connect_accounts(auth, id)
     #puts "AUTH: #{auth}"
 
+    encrypted_token = User.encrypt_value(auth.credentials.token)
+
     user = User.find(id)
     case auth['provider']
       when "facebook"
-        user.fb_oauth_token = auth.credentials.token
+        user.fb_oauth_token = encrypted_token
         user.fb_uid = auth.uid
       when "linkedin"
-        user.linkedin_oauth_token = auth.credentials.token
+        user.linkedin_oauth_token = encrypted_token
         #user.linkedin_oauth_secret = auth.credentials.secret
         user.linkedin_uid = auth.uid
       when "instagram"
-        user.instagram_oauth_token = auth.credentials.token
+        user.instagram_oauth_token = encrypted_token
         user.instagram_uid = auth.uid
       when "buffer"
-        user.buffer_oauth_token = auth.credentials.token
+        user.buffer_oauth_token = encrypted_token
         user.buffer_uid = auth.uid
     end
     user.save
@@ -177,26 +178,25 @@ class User < ApplicationRecord
   end
 
   def facebook
-    #puts "OAUTH: #{fb_oauth_token}"
-    @facebook ||= Koala::Facebook::API.new(self.fb_oauth_token)
+    decrypted_token = User.decrypt_value(self.fb_oauth_token)
+    @facebook ||= Koala::Facebook::API.new(decrypted_token)
   end
 
   def linkedin
-    #puts "OAUTH: #{linkedin_oauth_token}"
-    #client = LinkedIn::Client.new( self.linkedin_oauth_token, self.linkedin_oauth_secret)
+    #decrypted_token = decrypt_value(self.fb_oauth_token)
     @linkedin = LinkedIn::Client.new( ENV['LINKEDIN_CLIENT_ID'], ENV['LINKEDIN_CLIENT_SECRET'])
     @linkedin.authorize_from_access(ENV['LINKED_APP_KEY'])
     @linkedin
   end
 
   def instagram
-    #puts "OAUTH: #{instagram_oauth_token}"
-    client = Instagram.client(:access_token => self.instagram_oauth_token)
+    decrypted_token = User.decrypt_value(self.instagram_oauth_token)
+    client = Instagram.client(:access_token => decrypted_token)
   end
 
   def buffer
-    #puts "OAUTH: #{buffer_oauth_token}"
-    @buffer = Buffer::Client.new(self.buffer_oauth_token)
+    decrypted_token = User.decrypt_value(self.buffer_oauth_token)
+    @buffer = Buffer::Client.new(decrypted_token)
   end
 
   def avatar
@@ -234,7 +234,19 @@ class User < ApplicationRecord
       end
     end
 
-    def get_oauth_token
+    def self.encrypt_value(val)
+      # salt = ENV['SALT'] # We save the value of: SecureRandom.random_bytes(64)
+      key = [ENV['KEY']].pack('H*')
+      crypt = ActiveSupport::MessageEncryptor.new(key)
+      encrypted_data = crypt.encrypt_and_sign(val)
+      encrypted_data
+    end
+
+    def self.decrypt_value(val)
+      key = [ENV['KEY']].pack('H*')
+      crypt = ActiveSupport::MessageEncryptor.new(key)
+      decrypted_data = crypt.decrypt_and_verify(val)
+      decrypted_data
     end
 
 end
