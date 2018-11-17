@@ -41,7 +41,8 @@ class AccountsController < ApplicationController
 				a = Account.find_by_account_id(page.to_s)
 				a.autoshare = true
 				a.save!
-				page_token = @user.facebook.get_object(page, fields:"access_token")['access_token']
+				#page_token = @user.facebook.get_object(page, fields:"access_token")['access_token']
+				page_token = Account.get_token(a.access_token)
 				url = 'https://graph.facebook.com/v3.1/'+ page +'/subscribed_apps'
 				x = Net::HTTP.post_form(URI.parse(url), {"access_token" => page_token})
 				puts x.body
@@ -70,7 +71,8 @@ class AccountsController < ApplicationController
 				a = Account.find_by_account_id(page.to_s)
 				a.autoshare = false
 				a.save!
-				page_token = @user.facebook.get_object(page, fields:"access_token")['access_token']
+				#page_token = @user.facebook.get_object(page, fields:"access_token")['access_token']
+				page_token = Account.get_token(a.access_token)
 				url = 'https://graph.facebook.com/v3.1/'+ page +'/subscribed_apps'
 				uri = URI.parse(url)
 			    http = Net::HTTP.new(uri.host, uri.port)

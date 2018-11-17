@@ -57,11 +57,11 @@ class MicropostsController < ApplicationController
       post_to_providers << page.provider
       case page.provider
         when "facebook"
-          share_to_facebook(micropost, page.account_id, message, page.access_token)
+          share_to_facebook(micropost, page.account_id, message, Account.get_token(page.access_token))
         when "linkedin"
-          share_to_linkedin(micropost, page.account_id, message, page.access_token)
+          share_to_linkedin(micropost, page.account_id, message, Account.get_token(page.access_token))
         when "instagram"
-          share_to_instagram(micropost, page.account_id, message, page.access_token)
+          share_to_instagram(micropost, page.account_id, message, Account.get_token(page.access_token))
         when "buffer"
           buffer_profiles.push(page.account_id)
       end

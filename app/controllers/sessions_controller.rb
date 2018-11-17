@@ -71,6 +71,7 @@ class SessionsController < ApplicationController
 
     @accounts.each do |page|
       page_token = @user.facebook.get_page_access_token(page['id'])
+      encrypted_token = Account.set_token(page_token)
       picture_url = "https://graph.facebook.com/#{page['id']}/picture"
       if !picture_url
         picture_url = ActionController::Base.helpers.asset_path('page.svg')
@@ -78,9 +79,9 @@ class SessionsController < ApplicationController
 
       a = Account.find_by(:account_id => page['id'],:user_id => @user.id)
       if a
-        a.update(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => page_token, :uid => @auth['uid'], :picture => picture_url)
+        a.update(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
       else
-        a = Account.new(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => page_token, :uid => @auth['uid'], :picture => picture_url)
+        a = Account.new(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
         a.save
         a
       end
@@ -92,15 +93,17 @@ class SessionsController < ApplicationController
     @accounts = client.company(is_admin: 'true').all
 
     @accounts.each do |page|
+      page_token = @auth.credentials.token
+      encrypted_token = Account.set_token(page_token)
       picture_url = client.company(id:"#{page.id}:(id,name,square-logo-url)").square_logo_url
       if !picture_url
         picture_url = ActionController::Base.helpers.asset_path('page.svg')
       end
       a = Account.find_by(:account_id => page.id)
       if a
-        a.update(:name => page.name, :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'], :picture => picture_url)
+        a.update(:name => page.name, :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
       else
-        a = Account.new(:name => page.name, :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'], :picture => picture_url)
+        a = Account.new(:name => page.name, :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
         a.save
         a
       end
@@ -125,6 +128,8 @@ class SessionsController < ApplicationController
     @accounts = client.profiles
 
     @accounts.each do |page|
+      page_token = @auth.credentials.token
+      encrypted_token = Account.set_token(page_token)
       if page.service == 'facebook' && page.service_type == 'profile'
         #facebook profiles currently not served
         a = Account.find_by(:account_id => page.id)
@@ -136,9 +141,9 @@ class SessionsController < ApplicationController
         end
         a = Account.find_by(:account_id => page.id)
         if a
-          a.update(:name => "#{page.service_username} | #{page.service} - #{page.service_type}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'], :picture => picture_url)
+          a.update(:name => "#{page.service_username} | #{page.service} - #{page.service_type}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
         else
-          a = Account.new(:name => "#{page.service_username} | #{page.service} - #{page.service_type}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'], :picture => picture_url)
+          a = Account.new(:name => "#{page.service_username} | #{page.service} - #{page.service_type}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
           a.save
           a
         end
