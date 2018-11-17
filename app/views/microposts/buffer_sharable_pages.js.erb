@@ -1,7 +1,7 @@
 if($('#buffer-pages-container').hasClass("inactive") && $('#buffer-pages-container').hasClass("first")){
 	<% if @accounts %>
 		<% @accounts.each do |page| %>
-			$('#buffer-pages-container').append("<%= escape_javascript render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id}) %>");
+			$('#buffer-pages-container').append("<%= escape_javascript render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id, :page_picture => page.picture}) %>");
 		<% end %>
 	<% else %>
 			$('#buffer-pages-container').append("<%= escape_javascript render(:partial => 'shared/connect_account', :locals => { :provider => 'buffer'}) %>");

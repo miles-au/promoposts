@@ -1,7 +1,7 @@
 if($('#linkedin-pages-container').hasClass("inactive") && $('#linkedin-pages-container').hasClass("first")){
 	<% if @accounts %>
 		<% @accounts.each do |page| %>
-			$('#linkedin-pages-container').append("<%= escape_javascript render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id}) %>");
+			$('#linkedin-pages-container').append("<%= escape_javascript render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id, :page_picture => page.picture}) %>");
 		<% end %>
 	<% else %>
 			$('#linkedin-pages-container').append("<%= escape_javascript render(:partial => 'shared/connect_account', :locals => { :provider => 'linkedin'}) %>");

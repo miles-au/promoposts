@@ -24,7 +24,7 @@
           <% end %>
 
           <div class="img-holder">
-            <img class="thumbnail-page" src="https://graph.facebook.com/<%= page['account_id'] %>/picture"/>
+            <img class="thumbnail-page" src="<%= page.picture %>"/>
           </div>
           <h5 class="page-name"><%= page['name'] %></h5>
         </div>
@@ -60,11 +60,9 @@
           <% end %>
           -->
 
-          <!--
           <div class="img-holder">
-            <img class="thumbnail-page" src="https://graph.facebook.com/<%= page['account_id'] %>/picture"/>
+            <img class="thumbnail-page" src="<%= page.picture %>"/>
           </div>
-        -->
           <h5 class="page-name"><%= page['name'] %></h5>
         </div>
 
@@ -100,11 +98,9 @@
           <% end %>
           -->
 
-          <!--
           <div class="img-holder">
-            <img class="thumbnail-page" src="https://graph.facebook.com/<%= page['account_id'] %>/picture"/>
+            <img class="thumbnail-page" src="<%= page.picture %>"/>
           </div>
-        -->
           <h5 class="page-name"><%= page['name'] %></h5>
         </div>
 

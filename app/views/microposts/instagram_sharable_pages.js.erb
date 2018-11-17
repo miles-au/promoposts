@@ -1,6 +1,6 @@
 if($('#pagesContainer').hasClass("inactive") && $('#pagesContainer').hasClass("first")){
 	<% if @micropost['picture'] %>
-		$('#pagesContainer').append("<%= escape_javascript render(:partial => 'page_display', :locals => { :page_name => @account.user.full_name, :page_id => @account.user.id}) %>");
+		$('#pagesContainer').append("<%= escape_javascript render(:partial => 'page_display', :locals => { :page_name => @account.user.full_name, :page_id => @account.user.id, :page_picture => @account.picture}) %>");
 	<% else %>
 		$('#pagesContainer').append("<h5>picture required for instagram</h5>");
 	<% end %>
