@@ -30,6 +30,7 @@ class SessionsController < ApplicationController
     @provider = @auth['provider']
     @code = params['oauth_verifier']
     #puts "STATE: #{par['state']}"
+    puts "STATE: #{@state}"
 
     #verify state
 
