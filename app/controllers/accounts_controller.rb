@@ -19,8 +19,7 @@ class AccountsController < ApplicationController
   	end
 
   	#data{{'facebook' => [account, account, account]}, {'linkedin' => [account, account, account]}}
-
-  	puts "DATA: #{data}"
+  	
   	@fb_accounts = data['facebook']
   	@linkedin_accounts = data['linkedin']
   	@instagram_accounts = data['instagram']

@@ -18,10 +18,12 @@ class WebhooksController < ApplicationController
 		  @micropost = Micropost.new(:content => content, :user_id => user_id, :remote_picture_url => picture)
 		  @micropost.save!
 		 
+	  #testing purposes
 	  elsif account_id == '1067280970047460'
-	  	  user_id = '102'
+	  	  user_id = '1'
 		  @micropost = Micropost.new(:content => content, :user_id => user_id, :remote_picture_url => picture)
 		  @micropost.save!
+
 	  end
 
 	  head :ok and return

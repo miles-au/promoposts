@@ -50,6 +50,8 @@ Rails.application.routes.draw do
 
   get 'users/delete_product' => 'users#delete_product'
 
+  post 'delete_data', to: 'users#delete_data'
+
   resources :users do
     member do
       get :following, :followers
