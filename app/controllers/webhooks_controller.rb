@@ -1,5 +1,6 @@
 class WebhooksController < ApplicationController
 	protect_from_forgery :except => :facebook
+	protect_from_forgery :except => :delete_data
 
 	def facebook
 	  changes = params['entry'].first['changes'].first
@@ -40,5 +41,44 @@ class WebhooksController < ApplicationController
 
 		  redirect_to root_url
 	end
+
+	def unauthorize_facebook
+		signed_request = params['signed_request']
+	    payload = signed_request.split(".")[1]
+	    payload += '=' * (4 - payload.length.modulo(4))
+
+	    decoded_json = Base64.decode64(payload)
+	    signed_data = JSON.parse(decoded_json)
+
+	    user_id = signed_data['user_id']
+	    user = User.find_by(:fb_uid => user_id)
+
+	    render :json => { message: "Unauthorize request received"}
+	    
+	end
+
+	def delete_data
+	    signed_request = params['signed_request']
+	    payload = signed_request.split(".")[1]
+	    payload += '=' * (4 - payload.length.modulo(4))
+
+	    decoded_json = Base64.decode64(payload)
+	    signed_data = JSON.parse(decoded_json)
+
+	    user_id = signed_data['user_id']
+	    user = User.find_by(:fb_uid => user_id)
+
+	    ticket = Ticket.new(:message => "Your data delete request has been completed.")
+	    ticket.save!
+
+	    status_url = "#{request.base_url}#{ticket_path(:id => ticket.id)}"
+
+	    user.fb_uid = nil
+	    user.fb_oauth_token = nil
+	    user.save!
+
+	    render :json => { url: status_url, confirmation_code: ticket.id}
+
+	  end
 
 end

@@ -50,7 +50,8 @@ Rails.application.routes.draw do
 
   get 'users/delete_product' => 'users#delete_product'
 
-  post 'delete_data', to: 'users#delete_data'
+  post 'delete_data', to: 'webhooks#delete_data'
+  post 'unauthorize_facebook', to: 'webhooks#unauthorize_facebook'
 
   resources :users do
     member do
@@ -63,4 +64,5 @@ Rails.application.routes.draw do
   resources :microposts,          only: [:create, :destroy, :show]
   resources :relationships,       only: [:create, :destroy]
   resources :events,              only: [:destroy]
+  resources :tickets,          only: [:create, :destroy, :show]
 end

@@ -111,10 +111,6 @@ class UsersController < ApplicationController
     redirect_to current_user
   end
 
-  def delete_data
-    
-  end
-
   private
 
     def user_params
