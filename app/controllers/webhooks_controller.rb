@@ -68,6 +68,11 @@ class WebhooksController < ApplicationController
 	    user_id = signed_data['user_id']
 	    user = User.find_by(:fb_uid => user_id)
 
+	    accounts = Accounts.where("user_id = ?", user.id)
+	    accounts.each do |page|
+	    	page.destroy!
+	    end
+
 	    ticket = Ticket.new(:message => "Your data delete request has been completed.")
 	    ticket.save!
 
@@ -79,6 +84,6 @@ class WebhooksController < ApplicationController
 
 	    render :json => { url: status_url, confirmation_code: ticket.id}
 
-	  end
+	end
 
 end

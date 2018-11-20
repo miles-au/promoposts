@@ -19,11 +19,26 @@ class AccountsController < ApplicationController
   	end
 
   	#data{{'facebook' => [account, account, account]}, {'linkedin' => [account, account, account]}}
-  	
-  	@fb_accounts = data['facebook']
-  	@linkedin_accounts = data['linkedin']
-  	@instagram_accounts = data['instagram']
-  	@buffer_accounts = data['buffer']
+  	if @user.fb_uid
+  		@fb_accounts = data['facebook']
+  	else
+  		@fb_accounts = []
+  	end
+  	if @user.linkedin_uid
+  		@linkedin_accounts = data['linkedin']
+  	else
+  		@linkedin_accounts = []
+  	end
+  	if @user.instagram_uid
+  		@instagram_accounts = data['instagram']
+  	else
+  		@instagram_accounts = []
+  	end
+  	if @user.buffer_uid
+  		@buffer_accounts = data['buffer']
+  	else
+  		@buffer_accounts = []
+  	end
 
   end
 
@@ -93,12 +108,29 @@ class AccountsController < ApplicationController
 	  	end
 	end
 
-	flash[:success] = "Updated autoshare preferences."
+	flash[:success] = "Updated account preferences."
   	redirect_to '/accounts/edit'
 
   end
 
   def connect
+  end
+
+  def disconnect
+  	provider = params['provider']
+  	user = current_user
+
+  	case provider
+  	  when "facebook"
+        User.unauthorize_facebook(user)
+      when "linkedin"
+        User.unauthorize_linkedin(user)
+      when "buffer"
+  		User.unauthorize_buffer(user)
+  	end
+
+  	flash[:success] = "Disconnected #{provider} account."
+  	redirect_to '/accounts/edit'
   end
 
   private

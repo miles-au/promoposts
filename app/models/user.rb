@@ -117,19 +117,38 @@ class User < ApplicationRecord
 
     encrypted_token = User.encrypt_value(auth.credentials.token)
 
+    #find user by email first
+    user = User.find_by(:email => "#{auth['uid']}@#{auth['provider']}.com")
+
     case auth['provider']
       when "facebook"
-        user = User.find_or_initialize_by(fb_uid: auth['uid'])
+        if user
+          user.fb_uid = auth['uid']
+        else
+          user = User.find_or_initialize_by(fb_uid: auth['uid'])
+        end
         user.fb_oauth_token = encrypted_token
       when "linkedin"
-        user = User.find_or_initialize_by(linkedin_uid: auth['uid'])
+        if user
+          user.linkedin_uid = auth['uid']
+        else
+          user = User.find_or_initialize_by(linkedin_uid: auth['uid'])
+        end
         user.linkedin_oauth_token = encrypted_token
         #user.linkedin_oauth_secret = auth.credentials.secret
       when "instagram"
-        user = User.find_or_initialize_by(instagram_uid: auth['uid'])
+        if user
+          user.instagram_uid = auth['uid']
+        else
+          user = User.find_or_initialize_by(instagram_uid: auth['uid'])
+        end
         user.instagram_oauth_token = encrypted_token
       when "buffer"
-        user = User.find_or_initialize_by(buffer_uid: auth['uid'])
+        if user
+          user.buffer_uid = auth['uid']
+        else
+          user = User.find_or_initialize_by(buffer_uid: auth['uid'])
+        end
         user.buffer_oauth_token = encrypted_token
         user.name = auth.extra.raw_info.name
     end
@@ -144,11 +163,11 @@ class User < ApplicationRecord
     #save/return the user
     if user.new_record?
       user.email = "#{auth['uid']}@#{auth['provider']}.com"
-      user.save!
-      user
-    else
-      user
     end
+
+    user.save!
+    user
+
   end
 
   def self.connect_accounts(auth, id)
@@ -174,12 +193,18 @@ class User < ApplicationRecord
     end
     user.save
     user
-
   end
 
   def facebook
     decrypted_token = User.decrypt_value(self.fb_oauth_token)
     @facebook ||= Koala::Facebook::API.new(decrypted_token)
+  end
+
+  def self.unauthorize_facebook(user)
+    user.facebook.delete_object("me/permissions")
+    user.fb_uid = nil
+    user.fb_oauth_token = nil
+    user.save!
   end
 
   def linkedin
@@ -189,14 +214,31 @@ class User < ApplicationRecord
     @linkedin
   end
 
+  def self.unauthorize_linkedin(user)
+    user.linkedin_uid = nil
+    user.linkedin_oauth_token = nil
+    user.save!
+  end
+
   def instagram
     decrypted_token = User.decrypt_value(self.instagram_oauth_token)
     client = Instagram.client(:access_token => decrypted_token)
   end
 
+  def self.unauthorize_instagram
+    
+  end
+
   def buffer
     decrypted_token = User.decrypt_value(self.buffer_oauth_token)
     @buffer = Buffer::Client.new(decrypted_token)
+  end
+
+  def self.unauthorize_buffer(user)
+    #POST https://api.bufferapp.com/1/user/deauthorize.json
+    user.buffer_uid = nil
+    user.buffer_oauth_token = nil
+    user.save!
   end
 
   def avatar

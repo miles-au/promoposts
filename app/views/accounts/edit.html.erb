@@ -31,6 +31,10 @@
 
       <% end %>
 
+      <%= link_to accounts_disconnect_path(:provider => 'facebook'), :class => "connect_link" do %>
+        <h5> Disconnect your Facebook Account </h5>
+      <% end %>
+
     <% else %>
       <%= link_to "/auth/facebook?intent=connect", :class => 'connect_link' do%>
         <span class="glyphicon glyphicon-transfer"></span><h5> Connect your Facebook Account </h5>
@@ -68,9 +72,13 @@
 
       <% end %>
 
+      <%= link_to accounts_disconnect_path(:provider => 'linkedin'), :class => "connect_link" do %>
+        <h5> Disconnect your LinkedIn Account </h5>
+      <% end %>
+
     <% else %>
       <%= link_to "/auth/linkedin?intent=connect", :class => 'connect_link' do%>
-        <span class="glyphicon glyphicon-transfer"></span><h5> Connect your Linkedin Account </h5>
+        <span class="glyphicon glyphicon-transfer"></span><h5> Connect your LinkedIn Account </h5>
       <% end %>
     <% end %>
 
@@ -104,6 +112,10 @@
           <h5 class="page-name"><%= page['name'] %></h5>
         </div>
 
+      <% end %>
+
+      <%= link_to accounts_disconnect_path(:provider => 'buffer'), :class => "connect_link" do %>
+        <h5> Disconnect your Buffer Account </h5>
       <% end %>
 
     <% else %>

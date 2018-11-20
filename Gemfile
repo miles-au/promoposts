@@ -30,6 +30,7 @@ gem "instagram", :git => 'git://github.com/Instagram/instagram-ruby-gem.git'
 gem 'linkedin'
 gem 'koala'
 gem 'buffer'
+#gem "buffer-app", :git => "git://github.com/kaneda/buffer-ruby", :tag => "v1.2"
 gem "popper_js"
 # Use Puma as the app server
 gem 'puma', '~> 3.11'

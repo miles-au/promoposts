@@ -53,6 +53,8 @@ Rails.application.routes.draw do
   post 'delete_data', to: 'webhooks#delete_data'
   post 'unauthorize_facebook', to: 'webhooks#unauthorize_facebook'
 
+  get  "accounts/disconnect", to: "accounts#disconnect"
+
   resources :users do
     member do
       get :following, :followers
