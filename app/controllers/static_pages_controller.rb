@@ -20,10 +20,17 @@ class StaticPagesController < ApplicationController
           end
 
         when "global"
-           @feed_items = Event.all.paginate(:page => params[:page])
+          @feed_items = Event.all.paginate(:page => params[:page])
 
-         when "vendor"
-            @feed_items = Event.vendors.paginate(:page => params[:page])
+        when "vendor"
+          @feed_items = Event.vendors.paginate(:page => params[:page])
+
+        when 'questions'
+          @feed_items = Event.questions.paginate(:page => params[:page])
+
+        when 'products_discussion'
+          @feed_items = Event.products_discussions.paginate(:page => params[:page])
+
       end
     else
       #render defaults
@@ -35,7 +42,7 @@ class StaticPagesController < ApplicationController
         @feed_type = "global"
       end
     end
-
+    
     respond_to do |format|
       format.html
       format.js

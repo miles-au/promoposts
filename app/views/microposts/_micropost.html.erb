@@ -12,6 +12,16 @@
         <% end %>
     <% end %>
     </span>
+
+    <% case micropost.category %>
+      <% when 'question' %>
+        <% bgcolor = 'yellowBack' %>
+      <% when 'products_discussion' %>
+        <% bgcolor = 'cadetBack' %>
+      <% else %>
+        <% bgcolor = 'blueBack' %>
+    <% end %>
+
     <% @user = micropost.user %>
     <% if logged_in? %>
       <%= render 'shared/follow_form' if controller_name != "users" %>
@@ -26,7 +36,7 @@
                   </div>
                 </div>
               <% else %>
-              <div class="noPic square">
+              <div class="noPic square <%= bgcolor %>">
                 <span></span><strong>"<%= micropost.content %>"</strong>
                   <div class="clickToShare">
                       <p>Click to share!</p>
@@ -48,7 +58,7 @@
                     </div>
                   </div>
                 <% else %>
-                <div class="noPic square">
+                <div class="noPic square <%= bgcolor %>">
                   <span></span><strong>"<%= micropost.content %>"</strong>
                     <div class="clickToShare">
                         <p>Login to share!</p>

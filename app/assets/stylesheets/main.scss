@@ -575,8 +575,6 @@ input {
     .noPic{
       display: block;
       width: 100%;
-      background-color: $sigBlue;
-      color: $sigYellow;
       font-size: 1.2em;
       white-space: normal;
       text-align: center;
@@ -589,6 +587,21 @@ input {
       }
     }
   }
+}
+
+.blueBack{
+  background-color: $sigBlue;
+  color: $sigYellow;
+}
+
+.cadetBack{
+  background-color: $sigCadet;
+  color: $sigGrey;
+}
+
+.yellowBack{
+  background-color: $sigYellow;
+  color: $sigBlue;
 }
 
 .clickToShare{

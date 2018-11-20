@@ -215,6 +215,7 @@ class User < ApplicationRecord
   end
 
   def self.unauthorize_linkedin(user)
+    #disconnect linkedin
     user.linkedin_uid = nil
     user.linkedin_oauth_token = nil
     user.save!
