@@ -57,6 +57,14 @@ textarea {
   background-color: grey;
 }
 
+#product-missing-fields{
+  background-color: grey;
+  width: 100%;
+  color: $sigGrey;
+  padding: 5px;
+  text-align: center;
+}
+
 .follow-btn{
   border: none;
   border-radius: 0px;
