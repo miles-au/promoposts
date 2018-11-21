@@ -12,8 +12,11 @@ class UsersController < ApplicationController
   def index
     @searchTerm = params['search']
     if @searchTerm
-      #@users = User.where("activated = ? AND name LIKE ?", true, "%#{@searchTerm}%").paginate(:page => params[:page], :per_page => 20)
-      @users = User.where("activated = ? AND name LIKE ?", true, "%#{@searchTerm}%").order(:name).where("name LIKE ?", "%#{@searchTerm}%").paginate(:page => params[:page], :per_page => 20)
+      if Rails.env.production?
+        @users = User.where("activated = ? AND name ILIKE ?", true, "%#{@searchTerm}%").order(:name).where("name ILIKE ?", "%#{@searchTerm}%").paginate(:page => params[:page], :per_page => 20)
+      else
+        @users = User.where("activated = ? AND name LIKE ?", true, "%#{@searchTerm}%").order(:name).where("name LIKE ?", "%#{@searchTerm}%").paginate(:page => params[:page], :per_page => 20)
+      end
     else
       @users = User.where(activated: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => 20)
     end
