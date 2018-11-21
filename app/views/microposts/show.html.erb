@@ -1,85 +1,141 @@
-<%= form_for @event, url: share_to_socials_path(:id => params['current_user_id'], :micropost_id => params['micropost_id']), html: {method: :post} do |f| %>
-	<div class="avatar avatar-thumbnail" style="background-image: url('<%= @micropost.user.avatar %>'); display: inline-block;"></div>
-	<div style="display: inline-block;">
-		<h4 class="user"><%= link_to @micropost.user.name, @micropost.user %></h4>
-		<% if current_user %>
-			<%= render 'shared/follow_form' %>
-		<% end %>
-		<span class="timestamp" style="display: block;">
-	      Posted <%= time_ago_in_words(@micropost.created_at) %> ago.
-	  	</span>
-	      <% if current_user %>
-	        <% if current_user?(@micropost.user) || current_user.admin? %>
-	          <%= link_to "delete", @micropost, method: :delete,
-	                                           data: { confirm: "You sure?" } %>
-	        <% end %>
-	    <% end %>
-	</div>
-
-	<% if current_user %>
-    
-		<div class="row">
-			<div class="col-md-9">
-				<h3>1. Edit your caption</h3>
-				<hr>
+<%= form_for @event, url: share_to_socials_path(:id => current_user.id, :micropost_id => @micropost.id), html: {method: :post} do |f| %>
+	<div class="row">
+		<div class="col-md-8">
+				<h3>1. Edit your text</h3>
 				  <div class="section">
 				      <span class="content">
-				      	<%= f.text_field :message, :value => @micropost.content %>
-				        <% if @micropost.picture? %>
-				        	<img src="<%= @micropost.picture.url %>", alt="promo post picture" width="100%"/>
-				        <% end %>
-				      </span>
-				  </div>
-			</div>
-			<div class="col-md-3">
-				<h3>2. Share it!</h3>
-				<hr>
-				<div id="shareContainer">
-				    <% if current_user %>
-				      <%= link_to({:controller => "microposts", :action => "facebook_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon facebook-login") do%>
-				        <img src="<%= ActionController::Base.helpers.asset_path('facebook.svg')%>">
-				      <% end %>
-				      <div id="fb-pages-container" class="inactive first">
-				      </div>
-				      <%= link_to({:controller => "microposts", :action => "linkedin_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon linkedin-login") do%>
-				        <img src="<%= ActionController::Base.helpers.asset_path('linkedin.svg')%>">
-				      <% end %>
-				      <div id="linkedin-pages-container" class="inactive first">
-				      </div>
-				      <%= link_to({:controller => "microposts", :action => "buffer_sharable_pages", :id => current_user.id, :micropost => @micropost.id, remote: true}, :class => "SoMeIcon buffer-login") do%>
-				        <img src="<%= ActionController::Base.helpers.asset_path('buffer.svg')%>">
-				      <% end %>
-				      <div id="buffer-pages-container" class="inactive first">
-				      </div>
-				    <% else %>
-				      <%= link_to( "Please log in to share posts", login_path) %>
-				    <% end %>
-				  </div>
-				  <div class="modal-footer">
-					<%= f.submit "Share", class: "btn btn-primary" %>
-				</div>
-			</div>
-		</div>
-
-	<% else %>
-
-		<div class="row">
-			<div class="col-md-9">
-				  <div class="section">
-				      <span class="content">
+				      	<%= f.text_field :message, :id => "inputText" %>
+				      	<div class="btn" id="useOriginalText">Use/Edit Original Text</div>
 				      	<p><%= @micropost.content %></p>
 				        <% if @micropost.picture? %>
-				        	<img src="<%= @micropost.picture.url %>", alt="promo post picture" width="100%"/>
+				        	<img src="<%= @micropost.picture.url %>", alt="promo post picture" />
 				        <% end %>
 				      </span>
 				  </div>
-			</div>
-			<div class="col-md-3">
-				<h4><%= link_to "Log in", login_path %> to share this post</h4>
+		</div>
+		<div class="col-md-4">
+				<h3>2. Share it!</h3>
+			<div id="shareContainer">
+			    <% if current_user %>
+			    	<span class="SoMeIcon">
+			    		<img class="facebook-login" src="<%= ActionController::Base.helpers.asset_path('facebook.svg')%>">
+			    	</span>
+			    	<% if !@fbaccounts.empty? %>
+						<% @fbaccounts.each do |page| %>
+							<%= render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id, :page_picture => page.picture}) %>
+						<% end %>
+					<% else %>
+						<% if current_user.fb_uid %>
+							<h6>No sharable pages available.</h6>
+						<% else %>
+							<%= render(:partial => 'shared/connect_account', :locals => { :provider => 'facebook'}) %>
+						<% end %>
+					<% end %>
+					<span class="SoMeIcon">
+			    		<img class="linkedin-login" src="<%= ActionController::Base.helpers.asset_path('linkedin.svg')%>">
+			    	</span>
+			    	<% if !@linkedinaccounts.empty? %>
+						<% @linkedinaccounts.each do |page| %>
+							<%= render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id, :page_picture => page.picture}) %>
+						<% end %>
+					<% else %>
+						<% if current_user.linkedin_uid %>
+							<h6>No sharable pages available.</h6>
+						<% else %>
+							<%= render(:partial => 'shared/connect_account', :locals => { :provider => 'linkedin'}) %>
+						<% end %>
+					<% end %>
+					<span class="SoMeIcon">
+			    		<img class="buffer-login" src="<%= ActionController::Base.helpers.asset_path('buffer.svg')%>">
+			    	</span>
+					<% if !@bufferaccounts.empty? %>
+						<% @bufferaccounts.each do |page| %>
+							<%= render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id, :page_picture => page.picture}) %>
+						<% end %>
+					<% else %>
+						<% if current_user.buffer_uid %>
+							<h6>No sharable pages available.</h6>
+						<% else %>
+							<%= render(:partial => 'shared/connect_account', :locals => { :provider => 'buffer'}) %>
+						<% end %>
+					<% end %>
+
+			    <% else %>
+			      <%= link_to( "Please log in to share posts", login_path) %>
+			    <% end %>
+			  </div>
+			  <div>
+				<%= f.submit "Share", class: "btn btn-primary hidden", id: "share-button" %>
+				<div id="micropost-missing-fields" class="" style="display: block; margin: 5px 0;">Share</div>
+				<ul style="text-align: left;">
+					<li id="missing-text">Missing text</li>
+					<li id="missing-pages">Missing pages to share to</li>
+				</ul>
 			</div>
 		</div>
-
-
-	<% end %>
-
+		<div class="col-md-1">
+			
+		</div>
+	</div>
 <% end %>
+
+<script>
+	$('#useOriginalText').click(function() {
+	  $( "#inputText" ).val("<%= @micropost.content %>");
+	  check_fields();
+	});
+
+	$("#inputText").on("change keyup paste", function(){
+		check_fields();
+	})
+
+	$("#product_link").on("change keyup paste", function(){
+		check_fields();
+	})
+
+	function check_fields(){
+		text = document.getElementById("inputText");
+		var str_length = text.value.length;
+
+		var checkboxes = document.getElementsByName('event[pages][]');
+		var pageChecked = false;
+
+		for(var i = 0; i < checkboxes.length; i++) {
+		    if(checkboxes[i].type.toLowerCase() == 'checkbox') {
+		        if(checkboxes[i].checked == true){
+		        	pageChecked = true;
+		        }
+		    }
+		}
+
+		if(str_length > 0 && pageChecked == true){
+			all_fields();
+		}else{
+			missing_fields(str_length, pageChecked);
+		}
+	}
+
+	function missing_fields(str_length, pageChecked){
+		if(str_length > 0){
+			$('#missing-text').addClass('hidden');
+		}else{
+			$('#missing-text').removeClass('hidden');
+		}
+
+		if(pageChecked){
+			$('#missing-pages').addClass('hidden');
+		}else{
+			$('#missing-pages').removeClass('hidden');
+		}
+
+		$('#share-button').addClass('hidden');
+		$('#micropost-missing-fields').removeClass('hidden');
+	}
+	function all_fields(){
+		$('#missing-text').addClass('hidden');
+		$('#missing-pages').addClass('hidden');
+		$('#share-button').removeClass('hidden');
+		$('#micropost-missing-fields').addClass('hidden');
+	}
+
+</script>

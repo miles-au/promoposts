@@ -31,17 +31,26 @@ class MicropostsController < ApplicationController
   def view
     @event = Event.new
     @micropost = Micropost.find(params[:id])
+
+    @fbaccounts = Account.where(:provider => "facebook", :user_id => current_user.id)
+    @linkedinaccounts = Account.where(:provider => "linkedin", :user_id => current_user.id)
+    @bufferaccounts = Account.where(:provider => "buffer", :user_id => current_user.id)
+
     respond_to do |format| 
         format.html
         format.js
     end
-    
   end
 
   def show
     @event = Event.new
     @micropost = Micropost.find(params[:id])
     @user = @micropost.user
+
+    @fbaccounts = Account.where(:provider => "facebook", :user_id => current_user.id)
+    @linkedinaccounts = Account.where(:provider => "linkedin", :user_id => current_user.id)
+    @bufferaccounts = Account.where(:provider => "buffer", :user_id => current_user.id)
+
   end
 
   def share_to_socials

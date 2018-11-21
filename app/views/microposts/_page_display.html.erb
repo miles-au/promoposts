@@ -1,5 +1,5 @@
 <div class="page-wrapper">
-	<%= check_box_tag("event[pages][]", value = page_id, checked = false, options = {})%>
+	<%= check_box_tag("event[pages][]", value = page_id, checked = false,options = { :onchange => "check_fields()"})%>
 
 	<div class="img-holder">
 		<img class="thumbnail-page" src="<%= page_picture %>"/>

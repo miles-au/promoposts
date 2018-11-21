@@ -1,10 +1,14 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container">
-    <%= link_to "promo posts", root_path, id: "logo" %>
+    
+    <%= link_to root_path, id: "logo", style: 'display: inline-block;' do %>
+      <%= image_tag asset_path('logo.svg'), id: 'logo-pic', style: "width: 40px; display: inline-block;" %>
+      <h3 style="display: inline-block;">promo posts</h3>
+    <% end %>
     <nav>
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to "Home",   root_path %></li>
-        <li><%= link_to "Help",   help_path %></li>
+        <!--<li><%= link_to "Help",   help_path %></li>-->
         <% if logged_in? %>
           <li><%= link_to "Users", users_path %></li>
           <li class="dropdown">

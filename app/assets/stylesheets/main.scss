@@ -57,7 +57,7 @@ textarea {
   background-color: grey;
 }
 
-#product-missing-fields{
+#product-missing-fields, #micropost-missing-fields{
   background-color: grey;
   width: 100%;
   color: $sigGrey;
@@ -179,13 +179,24 @@ p {
   font-size: 1.7em;
   color: $sigYellow;
   letter-spacing: -1px;
-  padding-top: 9px;
   font-weight: bold;
-}
-
-#logo:hover {
-  color: #fff;
+  padding-bottom: 5px;
   text-decoration: none;
+
+  h3{
+    color: $sigYellow;
+    text-decoration: none;
+    margin: 10px;
+  }
+
+  &:hover {
+    text-decoration: none;
+
+    h3{
+      color: #fff;
+      text-decoration: none;
+    }
+  }
 }
 
 /*drop down*/
