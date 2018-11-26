@@ -3,9 +3,11 @@ class StaticPagesController < ApplicationController
   def home
     if cookies[:columns]
       @columns = cookies[:columns]
+      @boot_columns = 12/@columns.to_i
     else
       cookies[:columns] = "3"
       @columns = cookies[:columns]
+      @boot_columns = 12/@columns.to_i
     end
 
     @feed_type = params[:feed]
@@ -53,6 +55,7 @@ class StaticPagesController < ApplicationController
   def change_grid_view
     @columns = params["columns"]
     cookies[:columns] = @columns
+    @boot_columns = 12/@columns.to_i
     respond_to do |format|
       format.html
       format.js

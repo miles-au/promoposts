@@ -1,11 +1,11 @@
-<header class="navbar navbar-fixed-top navbar-inverse">
+<header class="navbar navbar-fixed-top navbar-inverse" >
   <div class="container">
     
     <%= link_to root_path, id: "logo", style: 'display: inline-block;' do %>
       <%= image_tag asset_path('logo.svg'), id: 'logo-pic', style: "width: 40px; display: inline-block;" %>
       <h3 style="display: inline-block;">promo posts</h3>
     <% end %>
-    <nav>
+    <nav id="mainNav">
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to "Home",   root_path %></li>
         <!--<li><%= link_to "Help",   help_path %></li>-->
@@ -29,5 +29,31 @@
         <% end %>
       </ul>
     </nav>
+
+    <nav id="mobileNav">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown" style="display: block;">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="float: right;">
+            <span class="glyphicon glyphicon-menu-hamburger" style="float: right; font-size: 1.2em;"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><%= link_to "Home",   root_path %></li>
+            <!--<li><%= link_to "Help",   help_path %></li>-->
+            <% if logged_in? %>
+              <li><%= link_to "Users", users_path %></li>
+              <li><%= link_to "Profile", current_user %></li>
+              <li><%= link_to "Settings", edit_user_path(current_user) %></li>
+              <li><%= link_to "Accounts", accounts_edit_path(:id => current_user) %></li>
+              <li>
+                <%= link_to "Log out", logout_path, method: :delete %>
+              </li>
+            <% else %>
+              <li><%= link_to "Log in", social_login_path %></li>
+            <% end %>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
   </div>
 </header>

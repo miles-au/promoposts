@@ -7,8 +7,8 @@ $("#grid-view-icon-<%= @columns %>-dark").addClass("hide");
 var percent = (100/<%= @columns %>);
 var str = percent + "%";
 
-$('.action-wrapper').removeClass("columns-2");
-$('.action-wrapper').removeClass("columns-3");
-$('.action-wrapper').removeClass("columns-4");
+$('.action-wrapper').removeClass("col-md-6");
+$('.action-wrapper').removeClass("col-md-4");
+$('.action-wrapper').removeClass("col-md-3");
 
-$('.action-wrapper').addClass("columns-<%= @columns %>");
+$('.action-wrapper').addClass("col-md-<%= @boot_columns %>");

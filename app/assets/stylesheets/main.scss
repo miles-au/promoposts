@@ -114,7 +114,7 @@ header, .navbar-inverse, .navbar-fixed-top{
 }
 
 .navbar-nav, .navbar-right{
-  li, a{
+  li, a, span{
     color: $sigGrey !important;
 
     &:hover{
@@ -337,6 +337,9 @@ aside {
   margin-top: 15px;
 }
 
+#avatarBacking{
+  background-color: $sigGrey;
+}
 .stats {
   overflow: auto;
   margin-top: 0;
@@ -371,8 +374,32 @@ aside {
   }
 }
 
+#user_display{
+  h1{
+    font-size: 2.2em;
+  }
+  .avatar{
+      height: 150px;
+      width: 150px;
+      background-position: center;
+      margin: 0 auto;
+    }
+}
+
 .users.follow {
   padding: 0;
+}
+
+#user_display{
+  display: inline-block;
+  width: 200px;
+}
+
+#coverPhoto{
+  padding-top: 25%;
+  width: calc( 100% - 250px );
+  display: inline-block;
+  vertical-align: top;
 }
 
 /* forms */
@@ -675,6 +702,10 @@ input {
   }
 }
 
+.modal-dialog{
+  width: 75%;
+}
+
 .link_to_post{
   display: inline-block;
   vertical-align: middle;
@@ -736,10 +767,17 @@ span.picture {
 .createPost{
   display: inline-block;
   float: right;
-  margin-right: 100px; 
+  margin-right: 100px;
+  margin-top: 10px; 
+  border: 2px solid $sigBlue;
+  padding: 5px 7px;
+
+  a{
+    text-decoration: none;
+  }
 
   h3{
-    margin-left: 5px;
+    margin: 0px;
   }
 
   &:hover{
@@ -756,8 +794,20 @@ span.picture {
   }
 }
 
-.topTen{
+#topTen{
+  width: 200px;
+  display: inline-block;
+}
 
+#activity{
+ width: calc( 100% - 250px ); 
+ display: inline-block;
+ vertical-align: top;
+ padding: 10px;
+
+ h3{
+  margin: 0px;
+ }
 }
 
 #topPicksTitle{
@@ -771,11 +821,17 @@ span.picture {
   background-size: cover;
   background-position: center;
   margin: 0 auto;
+  span{
+    line-height: 150px;
+  }
 }
 
 .addProduct{
   text-align: center;
   background-color: $sigYellow;
+  background-size: cover;
+  height: 150px;
+  background-position: center;
 
   span{
     color: $sigBlue;
@@ -785,12 +841,6 @@ span.picture {
 .productInnerText{
   display: block;
   font-size: 5em;
-}
-
-#coverPhoto{
-  background-color: $sigYellow;
-  width: 100%;
-  color: $sigBlue;
 }
 
 /* page display */
@@ -998,6 +1048,186 @@ span.picture {
   &:hover{
     span, h5{
       color: $sigYellow;
+    }
+  }
+}
+
+
+
+//MOBILE RESPONSIVE CODE
+
+#mobileNav{
+  display: none;
+  .navbar-nav, .navbar-right{
+  li, a, span{
+      background-color: $sigBlue !important;
+      color: $sigGrey !important;
+
+      &:hover{
+        color: $sigYellow !important;
+      }
+    }
+  }
+  .dropdown-menu{
+    border: none;
+  }
+}
+
+#mainNav{
+  display: block;  
+}
+
+
+@media (max-width: 768px){
+
+//home page
+  .jumbotron{
+    color: $sigBlue;
+    width: 100%;
+
+    h1{
+      font-size: 3.5em;
+      font-weight: 600;
+    }
+    h2{
+      font-size: 1.5em;
+    }
+  }
+  .container{
+    width: 100%;
+    padding: 0px;
+  }
+  #createPostBtn{
+    display: inline-block;
+    width: 100vw;
+  }
+
+  .modal-dialog{
+    width: calc(100% - 20px);
+  }
+
+//navigation
+  #mobileNav{
+    display: block;
+    .dropdown-menu{
+      text-align: center;
+      width: 100vw;
+      a{
+        font-size: 2em;
+        padding: 20px 0px;
+      }
+    }
+    ul{
+      
+    }
+  }
+  #mainNav{
+    display: none;
+  }
+  #grid-views{
+    display: none;
+  }
+  #feedContainer{
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .row{
+    margin: 0px;
+  }
+  .microposts-grid{
+    li{
+      width: 100%;
+    }
+  }
+  .content{
+    width: 100%;
+    text-indent: 15px;
+    strong{
+      text-indent: 0px;
+    }
+  }
+  .action-wrapper{
+    width: 100%;
+  }
+  .createPost{
+    float: left;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+  }
+  #usersIndexSearch{
+    padding: 0px 10px;
+
+    div{
+      display: inline-block;
+    }
+    input{
+      display: inline-block;
+      width: 100%;
+    }
+    .btn{
+      width: 100%;
+    }
+  }
+  .navbar-right{
+    margin: 0px;
+  }
+  .dropdown-menu{
+    float: right !important;
+  }
+
+//profile
+  #coverPhoto{
+    width: 100vw;
+  }
+  #user_display{
+    position: absolute;
+    width: auto;
+
+    .avatar{
+      border: 2px solid $sigGrey;
+      display: inline-block;
+      width: 20vw;
+      height: 20vw;
+    }
+    h1{
+      padding: 2px;
+      background-color: $sigGrey;
+      display: inline-block;
+      font-size: 2em;
+      margin: 5px;
+    }
+  }
+  #activity{
+    width: 100vw;
+  }
+  .micropost-full{
+    .square{
+      padding-top: 100% !important;
+    }
+  }
+  #topTen{
+    width: 100%;
+    .product{
+      width: 100vw;
+      height: 100vw;
+      span{
+        line-height: 100vw;
+      }
+      .addProduct{
+        height: 100vw;
+      }
+    }
+    h6{
+      font-size: 1.4em;
+    }
+  }
+}
+
+@media (max-width: 415px){
+  #user_display{
+    h1{
+      font-size: 1.5em;
     }
   }
 }

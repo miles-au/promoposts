@@ -1,8 +1,4 @@
-<div class="wrapper">
-	<span>
-		<h1><%= link_to current_user.name, current_user %></h1>
-	</span>
-	<span>
-		<%= link_to gravatar_for(current_user, size: 50), current_user %>
-	</span>
-</div>
+<div class="avatar" style="background-image: url('<%= current_user.avatar %>'); width: 100px; padding-top: 100px; display: inline-block;"></div>
+<h1 style="display: inline-block;">
+  <span style="text-align: center; display: block;"><%= current_user.name %></span>
+</h1>

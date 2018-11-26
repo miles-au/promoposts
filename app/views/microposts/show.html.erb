@@ -25,7 +25,7 @@
 					      	<div class="btn" id="useOriginalText">Use/Edit Original Text</div>
 					      	<p><%= @micropost.content %></p>
 					        <% if @micropost.picture? %>
-					        	<img src="<%= @micropost.picture.url %>", alt="promo post picture" />
+					        	<img style="width: 100%;" src="<%= @micropost.picture.url %>", alt="promo post picture" />
 					        <% end %>
 					      </span>
 					  </div>
@@ -112,7 +112,7 @@
 					      <span class="content">
 					      	<h3><%= @micropost.content %></h3>
 					        <% if @micropost.picture? %>
-					        	<img src="<%= @micropost.picture.url %>", alt="promo post picture" />
+					        	<img style="width: 100%;" src="<%= @micropost.picture.url %>", alt="promo post picture" />
 					        <% end %>
 					      </span>
 					  </div>

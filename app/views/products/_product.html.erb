@@ -1,9 +1,9 @@
 <%= link_to product.url, :target => "_blank" do %>
 	<div class="product">
 		<% if product.picture.url %>
-		  <div class="addProduct" style="background-image: url('<%= product.picture.url %>'); background-size: cover; height: 150px; background-position: center;"></div>
+		  <div class="addProduct" style="background-image: url('<%= product.picture.url %>');"></div>
 		<% else %>
-		  <div class="addProduct" style="background-image: url('<%= ActionController::Base.helpers.asset_path("picture.svg")%>');  background-size: cover; height: 150px; background-position: center;"></div>
+		  <div class="addProduct" style="background-image: url('<%= ActionController::Base.helpers.asset_path("picture.svg")%>');"></div>
 		<% end %>
 	</div>
 	<h6 style="text-align: center; margin-bottom: 30px;">

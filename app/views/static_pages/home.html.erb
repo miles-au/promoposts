@@ -1,13 +1,13 @@
 <!--modal-->
 	<div id="modal-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" role="document" style="width: 75%;">
+	  <div class="modal-dialog" role="document">
 	    <div class="modal-content"></div>
 	  </div>
 	</div>
 
 <% if !logged_in? %>
 	<div class="center jumbotron">
-	  <h1>See it, share it.</h1>
+	  <h1>See it, Share it.</h1>
 
 	  <h2>
 	    Promotional products content shared in seconds
@@ -41,12 +41,13 @@
 
 <!--link to create post-->
 <% if logged_in? %>
-  <div class="createPost">
-	<%= link_to(microposts_new_path) do%>
-		<span class="glyphicon glyphicon-pencil"></span>
-		<h3 class = "top_icons">create post</h3>
+  
+	<%= link_to microposts_new_path, :id => "createPostBtn" do%>
+		<div class="createPost">
+			<span class="glyphicon glyphicon-pencil"></span>
+			<h3 class = "top_icons">create post</h3>
+		</div>
 	<% end %>
-  </div>
 <% end %>
 
 <!--grid views-->
