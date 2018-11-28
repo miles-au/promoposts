@@ -157,7 +157,7 @@ class MicropostsController < ApplicationController
     puts "TOKEN: #{token}"
 
     if micropost.picture.url
-      share = {:content => {:'title' => message, :'submitted-url' => "#{request.domain}#{micropost.picture.url}"}, visibility: {code: "anyone"} }.to_json
+      share = {:content => {:'title' => message, :'submitted-url' => micropost.picture.url}, visibility: {code: "anyone"} }.to_json
     else
       share = {comment: message, visibility: {code: "anyone"} }.to_json
     end
