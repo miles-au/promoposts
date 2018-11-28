@@ -32,6 +32,8 @@ class SessionsController < ApplicationController
     @provider = @auth['provider']
     @code = params['oauth_verifier']
 
+    par_code = params['code']
+
     if par['intent'] == "sign_in"
       #sign_in
       @user = User.create_with_omniauth(@auth)
@@ -53,10 +55,21 @@ class SessionsController < ApplicationController
   end
 
   def oauth2
-    oauth = LinkedIn::OAuth2.new
-    url = "#{oauth.auth_code_url}"
+    provider = params['provider']
+    puts "PROVIDER: #{provider}"
 
-    redirect_to url
+    case provider
+      when "linkedin"
+        oauth = LinkedIn::OAuth2.new
+        url = "#{oauth.auth_code_url}"
+        redirect_to url
+      when "buffer"
+        
+      else
+        redirect_back_or root_url
+    end
+
+    
   end
 
   def outh2_callback

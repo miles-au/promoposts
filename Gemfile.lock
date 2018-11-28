@@ -593,6 +593,7 @@ DEPENDENCIES
   omniauth-facebook
   omniauth-instagram
   omniauth-linkedin-oauth2
+  omniauth-oauth2
   omniauth-twitter
   pg (= 0.18.4)
   popper_js

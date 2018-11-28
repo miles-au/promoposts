@@ -206,6 +206,8 @@ class User < ApplicationRecord
         user = User.find(id)
         user.linkedin_uid = uid
         user.linkedin_oauth_token = encrypted_token
+      when "buffer"
+        
     end
 
     user.save
@@ -232,6 +234,8 @@ class User < ApplicationRecord
           user = User.find_or_initialize_by(linkedin_uid: uid)
         end
         user.linkedin_oauth_token = encrypted_token
+      when "buffer"
+
     end
 
     user.password = self.new_token

@@ -82,7 +82,7 @@
       <% if current_user.linkedin_uid %>
         <h6>No sharable pages available.</h6>
       <% else %>
-          <%= link_to sessions_oauth2_path, class: 'connect_link' do%>
+          <%= link_to sessions_oauth2_path(:provider => 'linkedin'), class: 'connect_link' do%>
             <span class="glyphicon glyphicon-transfer" style="display: inline-block;"></span><h5 style="display: inline-block; margin-left: 5px;">Connect your LinkedIn account </h5>
           <% end %>
       <% end %>
