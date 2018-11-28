@@ -66,7 +66,10 @@ class SessionsController < ApplicationController
 
     if current_user
       #already signed in
-
+      #connect with oauth
+      @user = User.connect_accounts_oauth2(provider, code, current_user.id)
+      create_accounts(provider)
+      flash[:success] = "Your #{@provider} account has been connected, #{@user.name}."
       redirect_back_or accounts_edit_path
     else
       #connecting an account

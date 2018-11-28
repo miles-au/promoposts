@@ -194,6 +194,24 @@ class User < ApplicationRecord
     user
   end
 
+  def self.connect_accounts_oauth2(provider, code, id)
+    case provider
+      when "linkedin"
+        oauth = LinkedIn::OAuth2.new
+        access_token = oauth.get_access_token(code)
+        encrypted_token = User.encrypt_value(access_token)
+        api = LinkedIn::API.new(access_token)
+        uid = api.profile.id
+
+        user = User.find(id)
+        user.linkedin_uid = uid
+        user.linkedin_oauth_token = encrypted_token
+    end
+
+    user.save
+    user
+  end
+
   def self.create_with_oauth2(provider, code)
     #find user by email first
     #user = User.find_by(:email => "#{auth['uid']}@#{provider}.com")
