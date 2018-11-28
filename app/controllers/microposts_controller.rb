@@ -181,16 +181,6 @@ class MicropostsController < ApplicationController
     elsif update
       @post_success << 'LinkedIn'
     end
-    
-
-=begin
-    client = @user.linkedin
-    if micropost.picture.url
-      response = client.add_company_share( page_id, :content => {:'title' => message, :'submitted-url' => micropost.picture.url})
-    else
-      response = client.add_company_share( page_id, :comment => message )
-    end
-=end
 
   end
 

@@ -39,9 +39,7 @@
       <% if current_user.fb_uid %>
         <h6>No sharable pages available.</h6>
       <% else %>
-        <%= link_to "/auth/facebook?intent=connect", :class => 'connect_link' do%>
-          <span class="glyphicon glyphicon-transfer"></span><h5> Connect your Facebook Account </h5>
-        <% end %>
+        <%= render(:partial => 'shared/connect_account', :locals => { :provider => 'facebook'}) %>
       <% end %>
     <% end %>
   </div>
@@ -84,9 +82,9 @@
       <% if current_user.linkedin_uid %>
         <h6>No sharable pages available.</h6>
       <% else %>
-        <%= link_to "/auth/linkedin?intent=connect", :class => 'connect_link' do%>
-          <span class="glyphicon glyphicon-transfer"></span><h5> Connect your LinkedIn Account </h5>
-        <% end %>
+          <%= link_to sessions_oauth2_path, class: 'connect_link' do%>
+            <span class="glyphicon glyphicon-transfer" style="display: inline-block;"></span><h5 style="display: inline-block; margin-left: 5px;">Connect your LinkedIn account </h5>
+          <% end %>
       <% end %>
 
     <% end %>
@@ -131,9 +129,7 @@
       <% if current_user.buffer_uid %>
         <h6>No sharable pages available.</h6>
       <% else %>
-        <%= link_to "/auth/buffer?intent=connect", :class => 'connect_link' do%>
-          <span class="glyphicon glyphicon-transfer"></span><h5> Connect your Buffer Account </h5>
-        <% end %>
+        <%= render(:partial => 'shared/connect_account', :locals => { :provider => 'buffer'}) %>
       <% end %>
     <% end %>
 
