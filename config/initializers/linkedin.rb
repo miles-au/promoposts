@@ -5,7 +5,7 @@ LinkedIn.configure do |config|
   if Rails.env.development?
   	config.redirect_uri  = "https://d72ac182.ngrok.io/oauth2/linkedin?provider=linkedin"
   else
-  	config.redirect_uri  = "https://promoposts.net/oauth2/linkedin?provider=linkedin"
+  	config.redirect_uri  = "https://www.promoposts.net/oauth2/linkedin?provider=linkedin"
   end
   
 end
