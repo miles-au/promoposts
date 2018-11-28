@@ -1,8 +1,13 @@
 class MicropostsController < ApplicationController
-  before_action :logged_in_user, only: [:create, :destroy, :new, :share_to_facebook,]
+  before_action :logged_in_user, only: [:create, :destroy, :new, :share_to_facebook]
   before_action :correct_user,   only: :destroy
 
   protect_from_forgery except: :show
+
+  require 'uri'
+  require 'net/http'
+  require 'net/https'
+  require 'json'
 
   def create
     @micropost = current_user.microposts.build(micropost_params)
@@ -63,15 +68,15 @@ class MicropostsController < ApplicationController
     pages = params[:event]['pages']
     accounts = Account.where('account_id IN (?)', pages)
     buffer_profiles = []
-    post_to_providers = []
+    @post_success = []
+    @post_failure = []
 
     accounts.each do |page|
-      post_to_providers << page.provider
       case page.provider
         when "facebook"
           share_to_facebook(micropost, page.account_id, message, Account.get_token(page.access_token))
         when "linkedin"
-          share_to_linkedin(micropost, page.account_id, message, Account.get_token(page.access_token))
+          share_to_linkedin(micropost, page.account_id, message)
         when "instagram"
           share_to_instagram(micropost, page.account_id, message, Account.get_token(page.access_token))
         when "buffer"
@@ -88,9 +93,10 @@ class MicropostsController < ApplicationController
     @event.save!
 
     #create flash message
-    post_to_providers = post_to_providers.uniq
-    provider_map = post_to_providers.map(&:inspect).join(', ')
-    provider_string = provider_map.gsub!('"', '')
+    @post_success = @post_success.uniq
+    @post_failure = @post_failure.uniq
+    success_map = @post_success.map(&:inspect).join(', ')
+    provider_string = success_map.gsub!('"', '')
     flash[:success] = "Posted to: #{provider_string}"
 
     redirect_to root_path
@@ -121,6 +127,9 @@ class MicropostsController < ApplicationController
     else
       fb_page.put_connections(page_id, "feed", :message => message)
     end
+
+    #did the post succeed?
+    @post_success << 'Facebook'
   end
 
   def linkedin_sharable_pages
@@ -141,18 +150,48 @@ class MicropostsController < ApplicationController
     end
   end
 
-  def share_to_linkedin(micropost, page_id, message, access_token)
-    #get permissions
+  def share_to_linkedin(micropost, page_id, message)
 
+    puts "SHARE TO LINKEDIN"
+    token = User.get_token(current_user.linkedin_oauth_token).token
+    puts "TOKEN: #{token}"
+
+    if micropost.picture.url
+      share = {:content => {:'title' => message, :'submitted-url' => "#{request.domain}#{micropost.picture.url}"}, visibility: {code: "anyone"} }.to_json
+    else
+      share = {comment: message, visibility: {code: "anyone"} }.to_json
+    end
+
+    header = { "Content-Type" => "application/json", 'Host' => 'api.linkedin.com', 'Connection' => 'Keep-Alive', 'Authorization' => "Bearer #{token}" }
+
+    uri = URI("https://api.linkedin.com/v1/companies/#{page_id}/shares?format=json")
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    #req = Net::HTTP::Post.new(uri.path, :initheader => { Host: 'api.linkedin.com', Connection: 'Keep-Alive', Authorization: "Bearer #{token}"})
+    req = Net::HTTP::Post.new(uri.path, header)
+    req.body = share
+    res = http.request(req)
+    puts "RESPONSE: #{res.body}"
+    puts "Response #{res.code} #{res.message}: #{res.body}"
+    error = res.body['error']
+    update = res.body['update']
+    
+    if error
+      @post_failure << 'LinkedIn'
+    elsif update
+      @post_success << 'LinkedIn'
+    end
+    
+
+=begin
     client = @user.linkedin
-
     if micropost.picture.url
       response = client.add_company_share( page_id, :content => {:'title' => message, :'submitted-url' => micropost.picture.url})
     else
-      response = client.add_company_share( page_id, :comment => message)
+      response = client.add_company_share( page_id, :comment => message )
     end
-    
-    #puts "RESPONSE: #{response}"
+=end
+
   end
 
 =begin
@@ -232,6 +271,7 @@ class MicropostsController < ApplicationController
     end
     
     #puts "RESPONSE: #{response}"
+    @post_success << 'Buffer'
   end
 
   def generate_url(url, params = {})

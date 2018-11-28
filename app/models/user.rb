@@ -28,7 +28,7 @@ class User < ApplicationRecord
   validate  :picture_size
 
   require 'rubygems'
-  require 'linkedin'
+  #require 'linkedin'
 
   # Returns the hash digest of the given string.
   def User.digest(string)
@@ -135,7 +135,6 @@ class User < ApplicationRecord
           user = User.find_or_initialize_by(linkedin_uid: auth['uid'])
         end
         user.linkedin_oauth_token = encrypted_token
-        #user.linkedin_oauth_secret = auth.credentials.secret
       when "instagram"
         if user
           user.instagram_uid = auth['uid']
@@ -153,16 +152,16 @@ class User < ApplicationRecord
         user.name = auth.extra.raw_info.name
     end
 
-    user.password = self.new_token
+    user.password ||= self.new_token
     user.name ||= auth['info']['name']
-    user.category = "none"
     user.activated = true
-    user.activated_at = Time.zone.now
+    user.activated_at ||= Time.zone.now
     #user.oauth_token = auth.credentials.token
 
     #save/return the user
     if user.new_record?
       user.email = "#{auth['uid']}@#{auth['provider']}.com"
+      user.category = "none"
     end
 
     user.save!
@@ -195,6 +194,44 @@ class User < ApplicationRecord
     user
   end
 
+  def self.create_with_oauth2(provider, code)
+    #find user by email first
+    #user = User.find_by(:email => "#{auth['uid']}@#{provider}.com")
+
+    case provider
+      when "linkedin"
+        oauth = LinkedIn::OAuth2.new
+        access_token = oauth.get_access_token(code)
+        encrypted_token = User.encrypt_value(access_token)
+        api = LinkedIn::API.new(access_token)
+        uid = api.profile.id
+
+        user = User.find_by(:email => "#{uid}@#{provider}.com")
+
+        if user
+          user.linkedin_uid = uid
+        else
+          user = User.find_or_initialize_by(linkedin_uid: uid)
+        end
+        user.linkedin_oauth_token = encrypted_token
+    end
+
+    user.password = self.new_token
+    user.name ||= "#{api.profile.first_name} #{api.profile.last_name}"
+    user.activated = true
+    user.activated_at ||= Time.zone.now
+    #user.oauth_token = auth.credentials.token
+
+    #save/return the user
+    if user.new_record?
+      user.email = "#{uid}@#{provider}.com"
+      user.category = "none"
+    end
+
+    user.save!
+    user
+  end
+
   def facebook
     decrypted_token = User.decrypt_value(self.fb_oauth_token)
     @facebook ||= Koala::Facebook::API.new(decrypted_token)
@@ -208,10 +245,8 @@ class User < ApplicationRecord
   end
 
   def linkedin
-    #decrypted_token = decrypt_value(self.fb_oauth_token)
-    @linkedin = LinkedIn::Client.new( ENV['LINKEDIN_CLIENT_ID'], ENV['LINKEDIN_CLIENT_SECRET'])
-    @linkedin.authorize_from_access(ENV['LINKED_APP_KEY'])
-    @linkedin
+    decrypted_token = User.decrypt_value(self.linkedin_oauth_token)
+    @linkedin = LinkedIn::API.new(decrypted_token)
   end
 
   def self.unauthorize_linkedin(user)
@@ -248,6 +283,10 @@ class User < ApplicationRecord
     else
       return "/assets/avatar.png"
     end
+  end
+
+  def self.get_token(val)
+    decrypt_value(val)
   end
 
   private

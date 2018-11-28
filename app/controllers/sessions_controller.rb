@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  protect_from_forgery except: :oauth2
+  protect_from_forgery except: :callback
 
   def new
   end
@@ -29,10 +31,6 @@ class SessionsController < ApplicationController
     @auth = request.env['omniauth.auth']
     @provider = @auth['provider']
     @code = params['oauth_verifier']
-    #puts "STATE: #{par['state']}"
-    puts "STATE: #{@state}"
-
-    #verify state
 
     if par['intent'] == "sign_in"
       #sign_in
@@ -52,6 +50,32 @@ class SessionsController < ApplicationController
       redirect_to root_url
     end
 
+  end
+
+  def oauth2
+    oauth = LinkedIn::OAuth2.new
+    url = "#{oauth.auth_code_url}"
+
+    redirect_to url
+  end
+
+  def outh2_callback
+    code = params['code']
+    provider = params['provider']
+    error = params['error'] unless params['error'].nil?
+
+    if current_user
+      #already signed in
+
+      redirect_back_or accounts_edit_path
+    else
+      #connecting an account
+      @user = User.create_with_oauth2(provider, code)
+      create_accounts(provider)
+      log_in @user
+      flash[:success] = "Welcome to Promo Posts, #{@user.name}."
+      redirect_back_or root_url
+    end
   end
 
   def create_accounts(provider)
@@ -93,20 +117,20 @@ class SessionsController < ApplicationController
     client = @user.linkedin
     @accounts = client.company(is_admin: 'true').all
 
-    @accounts.each do |page|
-      page_token = @auth.credentials.token
-      encrypted_token = Account.set_token(page_token)
-      picture_url = client.company(id:"#{page.id}:(id,name,square-logo-url)").square_logo_url
-      if !picture_url
-        picture_url = ActionController::Base.helpers.asset_path('page.svg')
-      end
-      a = Account.find_by(:account_id => page.id)
-      if a
-        a.update(:name => page.name, :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
-      else
-        a = Account.new(:name => page.name, :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
-        a.save
-        a
+    if @accounts
+      @accounts.each do |page|
+        picture_url = client.company(id:"#{page.id}:(id,name,square-logo-url)").square_logo_url
+        if !picture_url
+          picture_url = ActionController::Base.helpers.asset_path('page.svg')
+        end
+        a = Account.find_by(:account_id => page.id)
+        if a
+          a.update(:name => page.name, :account_id => page.id , :provider => "linkedin", :user_id => @user.id, :autoshare => false, :picture => picture_url)
+        else
+          a = Account.new(:name => page.name, :account_id => page.id , :provider => "linkedin", :user_id => @user.id, :autoshare => false, :picture => picture_url)
+          a.save
+          a
+        end
       end
     end
   end

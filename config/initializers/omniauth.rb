@@ -7,13 +7,16 @@ Rails.application.config.middleware.use OmniAuth::Builder do
             :display => "popup",
             token_params: { parse: :json }
 
-	 provider :linkedin, ENV['LINKEDIN_CLIENT_ID'], ENV['LINKEDIN_CLIENT_SECRET'],
-	 		:scope => 'w_share rw_company_admin r_basicprofile ',
-	 		:fields => ['id', 'first-name', 'last-name'],
-	 		:state => ENV['STATE']
+	provider :instagram, ENV['INSTAGRAM_CLIENT_ID'], ENV['INSTAGRAM_CLIENT_SECRET']
 
-	 provider :instagram, ENV['INSTAGRAM_CLIENT_ID'], ENV['INSTAGRAM_CLIENT_SECRET']
-
-	 provider :buffer, ENV['BUFFER_CLIENT_ID'], ENV['BUFFER_CLIENT_SECRET']
+	provider :buffer, ENV['BUFFER_CLIENT_ID'], ENV['BUFFER_CLIENT_SECRET']
 
  end
+
+=begin
+OAUTH1
+
+	 provider :linkedin, ENV['LINKEDIN_CLIENT_ID'], ENV['LINKEDIN_CLIENT_SECRET'],
+	 		:scope => 'w_share rw_company_admin r_basicprofile ',
+	 		:fields => ['id', 'first-name', 'last-name']
+=end

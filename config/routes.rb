@@ -25,8 +25,13 @@ Rails.application.routes.draw do
   #get 'microposts/instagram_sharable_pages'
   get 'microposts/buffer_sharable_pages'
 
+  #oauth 1
   get '/auth/:provider/callback', to: 'sessions#callback', as: 'sessions_callback'
   get '/auth/failure', to: 'oauth#failure', as: 'oauth_failure'
+
+  #oauth 2
+  get '/sessions/oauth2', to: 'sessions#oauth2'
+  get '/oauth2/:provider', to: 'sessions#outh2_callback'
   
   delete '/logout',  to: 'sessions#destroy'
 

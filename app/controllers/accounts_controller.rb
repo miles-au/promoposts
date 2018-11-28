@@ -71,9 +71,9 @@ class AccountsController < ApplicationController
 
 	  		end
 	  	end
-	end
+	  end
 
-	if params[:unsubscribe] || params[:unsubscribe_hidden]
+	  if params[:unsubscribe] || params[:unsubscribe_hidden]
 	  	hidden = params[:unsubscribe_hidden] #submits all
 	  	unsubs = params[:unsubscribe] #submits the same thing as hidden if checked
 
@@ -107,9 +107,9 @@ class AccountsController < ApplicationController
 
 	  		end
 	  	end
-	end
+	  end
 
-	flash[:success] = "Updated account preferences."
+	  flash[:success] = "Updated account preferences."
   	redirect_to '/accounts/edit'
 
   end
