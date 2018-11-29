@@ -95,9 +95,37 @@ class MicropostsController < ApplicationController
     #create flash message
     @post_success = @post_success.uniq
     @post_failure = @post_failure.uniq
+
+    #if post success includes buffer
+    if @post_success.include? 'Buffer'
+      
+    end
+
     success_map = @post_success.map(&:inspect).join(', ')
+    failure_map = @post_failure.map(&:inspect).join(', ')
     provider_string = success_map.gsub!('"', '')
-    flash[:success] = "Posted to: #{provider_string}"
+    fail_string = failure_map.gsub!('"', '')
+    puts "POST_SUCCESS: #{@post_success}"
+
+    if @post_failure.empty? && @post_success.empty?
+      flash[:warning] = "No posts"
+    elsif @post_failure.empty?
+      if @post_success.include?('Buffer')
+        flash_text = "Posted to: #{provider_string} | #{view_context.link_to('Click here to open Buffer.', 'https://buffer.com', target: '_blank')}".html_safe
+        flash[:success] = flash_text
+      else
+        flash[:success] = "Posted to: #{provider_string}"
+      end
+    else
+      if @post_success.include?('buffer')
+        flash_text = "Posted to: #{provider_string} | Failed post: #{fail_string} | #{view_context.link_to('Click here to open Buffer.', 'https://buffer.com')}".html_safe
+        flash[:success] = flash_text
+      else
+        flash[:success] = "Posted to: #{provider_string} | Failed posts: #{fail_string}"
+      end
+    end
+
+
 
     redirect_to root_path
   end

@@ -205,7 +205,7 @@ class SessionsController < ApplicationController
       flash[:success] = "Activation email resent! You should receive your link shortly."
       redirect_to root_url
     else
-      flash[:danger] = 'Email is not asociated with any account, please sign up first.'
+      flash[:danger] = 'Email is not associated with any account, please sign up first.'
       redirect_to root_url
     end
   end
