@@ -52,6 +52,8 @@ class MicropostsController < ApplicationController
   def show
     @event = Event.new
     @micropost = Micropost.find(params[:id])
+    @comment = Comment.new
+    @comments = Comment.where(:micropost_id => @micropost.id, :head => nil)
     @user = @micropost.user
 
     if logged_in?
@@ -89,7 +91,7 @@ class MicropostsController < ApplicationController
     end
 
     #create event
-    @event = Event.new(user_id: current_user.id, passive_user_id: micropost.user.id, micropost_id: micropost.id)
+    @event = Event.new(user_id: current_user.id, passive_user_id: micropost.user.id, micropost_id: micropost.id, contribution: 'share')
     @event.save!
 
     #create flash message

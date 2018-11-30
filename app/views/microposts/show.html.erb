@@ -90,7 +90,9 @@
 			</div>
 		</div>
 	<% end %>
+
 <% else %>
+
 	<div style="display: inline-block;">
     	<div class="avatar avatar-thumbnail" style="background-image: url('<%= @micropost.user.avatar %>');"></div>
   	</div>
@@ -124,6 +126,9 @@
 			</div>
 		</div>
 <% end %>
+<%= render 'shared/comment_form' %>
+<p>&nbsp;</p>
+<%= render @comments %>
 
 <% if current_user %>
 <script>

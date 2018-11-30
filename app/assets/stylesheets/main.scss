@@ -793,6 +793,19 @@ span.picture {
   }
 }
 
+.comment{
+  .avatar{
+    display: inline-block;
+  }
+  border-left: 1px solid $sigBlue;
+}
+
+.comment_message{
+  font-size: 1.4em;
+  display: inline-block;
+  padding-left: 15px;
+}
+
 #topTen{
   width: 200px;
   display: inline-block;
@@ -983,6 +996,11 @@ span.picture {
 .avatar-thumbnail{
   height: 70px;
   width: 70px;
+}
+
+.avatar-mini{
+  height: 35px;
+  width: 35px;
 }
 
 .close{
@@ -1220,6 +1238,11 @@ span.picture {
     h6{
       font-size: 1.4em;
     }
+  }
+  .comment_message{
+    font-size: 1.4em;
+    display: block;
+    padding-left: 15px;
   }
 }
 

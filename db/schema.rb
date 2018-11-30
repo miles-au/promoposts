@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_20_191445) do
+ActiveRecord::Schema.define(version: 2018_11_30_042338) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "provider"
@@ -26,12 +26,24 @@ ActiveRecord::Schema.define(version: 2018_11_20_191445) do
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.string "message"
+    t.integer "head"
+    t.integer "tail"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "score"
+    t.integer "micropost_id"
+  end
+
   create_table "events", force: :cascade do |t|
     t.integer "user_id"
     t.integer "passive_user_id"
     t.integer "micropost_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "contribution"
     t.index ["passive_user_id"], name: "index_events_on_passive_user_id"
     t.index ["user_id", "passive_user_id"], name: "index_events_on_user_id_and_passive_user_id"
     t.index ["user_id"], name: "index_events_on_user_id"

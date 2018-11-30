@@ -1,0 +1,23 @@
+<div style="<%= @head ? 'padding-left: 20px;' : '' %> margin-bottom: 10px;" id='<%= @head ? "reply-#{@head.id}" : '' %>'>
+  <%= form_for(@comment) do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+
+    <div class="field">
+      <%= f.label :message, "Leave a comment:" %>
+      <%= f.text_area :message, placeholder: "Type in a comment..." %>
+    </div>
+    
+    <%= f.hidden_field :user_id, :value => @user.id %>
+
+    <% if @head %>
+      <%= f.hidden_field :micropost_id, :value => @head.micropost_id %>
+      <%= f.hidden_field :head, :value => @head.id %>
+    <% else %>
+      <%= f.hidden_field :micropost_id, :value => @micropost.id %>
+    <% end %>
+
+    <%= f.hidden_field :score, :value => 0 %>
+
+    <%= f.submit "Post Comment", class: "btn btn-primary" %>
+  <% end %>
+</div>

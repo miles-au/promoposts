@@ -10,7 +10,7 @@
           <%= link_to "delete", micropost, method: :delete,
                                            data: { confirm: "You sure?" } %>
         <% end %>
-    <% end %>
+      <% end %>
     </span>
 
     <% case micropost.category %>
@@ -28,7 +28,7 @@
       <%=link_to({:controller => "microposts", :action => "view", :remote => true, :id => micropost.id, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary btn-lg'}, :class => "SoMeIcon") do%>
           <div class="section">
             <span class="content">
-              <%= micropost.content %>
+              <p style="font-size: 1.4em;"><%= micropost.content %></p>
               <% if micropost.picture? %>
                 <div class="square" style="background-image: url('<%= micropost.picture.url %>');">
                   <div class="clickToShare">
@@ -50,7 +50,7 @@
       <%= link_to(@micropost) do%>
         <div class="section">
               <span class="content">
-                <%= micropost.content %>
+                <p style="font-size: 1.4em;"><%= micropost.content %></p>
                 <% if micropost.picture? %>
                   <div class="square" style="background-image: url('<%= micropost.picture.url %>');">
                     <div class="clickToShare">
@@ -69,5 +69,7 @@
           </div>
         <% end %>
     <% end %>
-
+    <%= link_to @micropost, :data=> {:current_user_id => current_user.id, :micropost_id => @micropost_id} do %>
+      <p><%= pluralize( @micropost.comments.count, 'Comment' ) %></p>
+    <% end %>
 </li>

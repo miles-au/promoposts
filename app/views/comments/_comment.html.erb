@@ -1,0 +1,23 @@
+<div class="comment" id="comment-<%= comment.id %>" style="<%= comment.head ? 'padding-left: 50px;' : 'border: none;' %>">
+  <div class="avatar avatar-mini" style="background-image: url('<%= comment.user.avatar %>');"></div>
+  <div style="display: inline-block;">
+    <span class="user"><%= link_to comment.user.name, comment.user %></span>
+    <div class="timestamp">
+      Posted <%= time_ago_in_words(comment.created_at) %> ago.
+      <% if current_user %>
+      <span style="font-size: 0.8em;">
+        <%= link_to "reply", { :controller => :comments, :action => :reply, :remote => true, :head => comment, :micropost => comment.micropost} %>
+        <% if current_user?(comment.user) || current_user.admin? %>
+          <%= link_to "delete", comment, method: :delete, data: { confirm: "You sure?" } %>
+        <% end %>
+      </span>
+      <% end %>
+    </div>
+  </div>
+  <div style="background-color: white; padding: 0px 5px;">
+    <p><%= simple_format(comment.message) %></p>
+  </div>
+
+  <%= render Comment.where(:head => comment.id) %>
+
+</div>

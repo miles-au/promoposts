@@ -1,0 +1,7 @@
+if( $("#comment-<%= @head.id %>").hasClass('open')){
+	$("#comment-<%= @head.id %>").removeClass("open");
+	$("#reply-<%= @head.id %>").remove();
+}else{
+	$("#comment-<%= @head.id %>").append("<%= j render('shared/comment_form') %>" );
+	$("#comment-<%= @head.id %>").addClass("open");
+}

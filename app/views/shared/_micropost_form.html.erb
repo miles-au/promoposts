@@ -18,7 +18,8 @@
     <%= f.text_area :content, placeholder: "Compose new post..." %>
   </div>
   <div class="picture">
-    <h5>Add an image (10mb max)</h5>
+    <span style="display: inline-block; font-size: 1.2em;" class="glyphicon glyphicon-picture"></span>
+    <p style="display: inline-block; text-align: top;">Add an image (10mb max)</p>
     <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
   </div>
   <%= f.submit "Post", class: "btn btn-primary" %>

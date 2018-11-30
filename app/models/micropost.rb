@@ -7,13 +7,14 @@ class Micropost < ActiveRecord::Base
   validate  :picture_size
   validate :content_exists
   has_many :events, dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   self.per_page = 24
 
   after_save :create_event
 
   def create_event
-    @event = Event.new(user_id: self.user_id, micropost_id: self.id)
+    @event = Event.new(user_id: self.user_id, micropost_id: self.id, contribution: 'create')
     @event.save!
   end
 

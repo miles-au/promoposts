@@ -60,6 +60,8 @@ Rails.application.routes.draw do
 
   get  "accounts/disconnect", to: "accounts#disconnect"
 
+  get 'comments/reply', to: 'comments#reply'
+
   resources :users do
     member do
       get :following, :followers
@@ -68,8 +70,10 @@ Rails.application.routes.draw do
 
   resources :account_activations, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]
-  resources :microposts,          only: [:create, :destroy, :show]
+  resources :microposts,          only: [:create, :destroy, :show, :update]
   resources :relationships,       only: [:create, :destroy]
   resources :events,              only: [:destroy]
-  resources :tickets,          only: [:create, :destroy, :show]
+  resources :tickets,             only: [:create, :destroy, :show]
+  resources :comments
+
 end
