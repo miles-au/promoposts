@@ -23,52 +23,29 @@
     <% end %>
 
     <% @user = micropost.user %>
-    <% if logged_in? %>
-      <%= render 'shared/follow_form' if controller_name != "users" %>
-      <%=link_to({:controller => "microposts", :action => "view", :remote => true, :id => micropost.id, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary btn-lg'}, :class => "SoMeIcon") do%>
-          <div class="section">
-            <span class="content">
-              <p style="font-size: 1.4em;"><%= micropost.content %></p>
-              <% if micropost.picture? %>
-                <div class="square" style="background-image: url('<%= micropost.picture.url %>');">
-                  <div class="clickToShare">
-                      <p>Click to share!</p>
-                  </div>
-                </div>
-              <% else %>
-              <div class="noPic square <%= bgcolor %>">
-                <span></span><strong>"<%= micropost.content %>"</strong>
-                  <div class="clickToShare">
-                      <p>Click to share!</p>
-                  </div>
-              </div>
-              <% end %>
-            </span>
-        </div>
+
+    <% if micropost.shareable%>
+      <% if logged_in? %>
+        <% clickable = 'click' %>
+      <% else %>
+        <% clickable = 'login' %>
       <% end %>
     <% else %>
-      <%= link_to(@micropost) do%>
-        <div class="section">
-              <span class="content">
-                <p style="font-size: 1.4em;"><%= micropost.content %></p>
-                <% if micropost.picture? %>
-                  <div class="square" style="background-image: url('<%= micropost.picture.url %>');">
-                    <div class="clickToShare">
-                        <p>Login to share!</p>
-                    </div>
-                  </div>
-                <% else %>
-                <div class="noPic square <%= bgcolor %>">
-                  <span></span><strong>"<%= micropost.content %>"</strong>
-                    <div class="clickToShare">
-                        <p>Login to share!</p>
-                    </div>
-                </div>
-                <% end %>
-              </span>
-          </div>
-        <% end %>
+      <% clickable = '' %>
     <% end %>
+
+    <%= render 'shared/follow_form' if controller_name != "users" && logged_in? %>
+
+    <% if logged_in? && micropost.shareable %>
+      <%=link_to({:controller => "microposts", :action => "view", :remote => true, :id => micropost.id, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'}, :class => "SoMeIcon") do %>
+        <%= render :partial => 'microposts/content', :locals => {:picture_url => micropost.picture.url, :content => micropost.content, :clickable => clickable, :shareable => micropost.shareable, :bgcolor => bgcolor} %>
+      <% end %>
+    <% else %>
+      <%=link_to(@micropost) do %>
+        <%= render :partial => 'microposts/content', :locals => {:picture_url => micropost.picture.url, :content => micropost.content, :clickable => clickable, :shareable => micropost.shareable, :bgcolor => bgcolor} %>
+      <% end %>
+    <% end %>
+
     <%= link_to @micropost, :data=> {:micropost_id => @micropost_id} do %>
       <p><%= pluralize( @micropost.comments.count, 'Comment' ) %></p>
     <% end %>

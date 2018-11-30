@@ -650,7 +650,7 @@ input {
 }
 
 .clickToShare{
-  opacity: 0;
+  opacity: 0.8;
   transition: .3s ease;
   position: absolute;
   bottom: 0px;
@@ -660,6 +660,13 @@ input {
   background-color: $sigYellow;
   color: $sigBlue;
   font-size: 14px;
+}
+
+.clickToView{
+  background-color: $sigBlue !important;
+  p{
+    color: $sigGrey !important;
+  }
 }
 
 .micropost-full{

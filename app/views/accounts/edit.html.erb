@@ -9,7 +9,7 @@
 
     <!--if logged_in and facebook accounts exist in user's name-->
     <% if logged_in? && @fb_accounts.count > 0 %>
-      <p>Tick the checkbox to enable autoshare. <%= link_to "What is autoshare?", what_is_autoshare_path %><br>Click 'Update Autoshare Settings' at the bottom to save changes.</p>
+      <p>Tick the checkbox to enable autoshare. <%= link_to "What is autoshare?", what_is_autoshare_path %><br><span style="font-size: 0.8em;">Autoshares via Facebook will show up on your page, but will not be shareable by other Promo Posts members to their own platforms.</span></p>
       <% accounts = @fb_accounts %>
       <% accounts.each do |page| %>
         <div class="fb-settings-wrapper">
@@ -30,6 +30,10 @@
         </div>
 
       <% end %>
+
+      <p>&nbsp;</p>
+
+      <%= f.submit "Update Autoshare Settings", class: "btn btn-primary" %>
 
       <%= link_to accounts_disconnect_path(:provider => 'facebook'), :class => "connect_link" do %>
         <h5> Disconnect your Facebook Account </h5>
@@ -135,9 +139,7 @@
 
   </div>
 
-  <p>&nbsp;</p>
-
-  <%= f.submit "Update Autoshare Settings", class: "btn btn-primary" %>
+  
 
 <% end %>
 

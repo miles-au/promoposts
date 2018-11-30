@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_30_042338) do
+ActiveRecord::Schema.define(version: 2018_11_30_181904) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "provider"
@@ -56,6 +56,8 @@ ActiveRecord::Schema.define(version: 2018_11_30_042338) do
     t.datetime "updated_at", null: false
     t.string "picture"
     t.string "category"
+    t.string "source"
+    t.boolean "shareable", default: false
     t.index ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_microposts_on_user_id"
   end

@@ -1,0 +1,17 @@
+<div class="section">
+  <span class="content">
+    <p style="font-size: 1.4em;"><%= content %></p>
+
+    <% if picture_url %>
+      <div class="square" style="background-image: url('<%= picture_url %>');">
+          <%= render :partial => 'shared/click_to_share', :locals => {:btn_title => clickable, :shareable => shareable} %>
+      </div>
+    <% else %>
+      <div class="noPic square <%= bgcolor %>">
+      <span></span><strong>"<%= content %>"</strong>
+        <%= render :partial => 'shared/click_to_share', :locals => {:btn_title => clickable, :shareable => shareable} %>
+      </div>
+    <% end %>
+
+  </span>
+</div>

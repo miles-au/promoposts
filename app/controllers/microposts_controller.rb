@@ -303,7 +303,7 @@ class MicropostsController < ApplicationController
   private
 
     def micropost_params
-      params.require(:micropost).permit(:content, :picture, :category)
+      params.require(:micropost).permit(:content, :picture, :category, :shareable)
     end
 
     def correct_user

@@ -1,6 +1,5 @@
-<% if logged_in? %>
+<% if current_user %>
 	<%= form_for @event, url: share_to_socials_path(:id => current_user.id, :micropost_id => @micropost.id), html: {method: :post} do |f| %>
-
 		<div style="display: inline-block;">
 	    	<div class="avatar avatar-thumbnail" style="background-image: url('<%= @micropost.user.avatar %>');"></div>
 	  	</div>
@@ -19,7 +18,6 @@
 
 		<div class="row">
 			<div class="col-md-8">
-				<% if @micropost.shareable %>
 					<h3>1. Edit your text</h3>
 					  <div class="section">
 					      <span class="content">
@@ -31,17 +29,10 @@
 					        <% end %>
 					      </span>
 					  </div>
-			  	<% else %>
-			  		<p><%= @micropost.content %></p>
-			  		<% if @micropost.picture? %>
-			        	<img style="width: 100%;" src="<%= @micropost.picture.url %>", alt="promo post picture" />
-			        <% end %>
-			  	<% end %>
 			</div>
 			<div class="col-md-4">
-				<% if @micropost.shareable %>
 					<h3>2. Share it!</h3>
-					<div id="shareContainer">
+				<div id="shareContainer">
 				    	<span class="SoMeIcon">
 				    		<img class="facebook-login" src="<%= ActionController::Base.helpers.asset_path('facebook.svg')%>">
 				    	</span>
@@ -84,31 +75,58 @@
 								<%= render(:partial => 'shared/connect_account', :locals => { :provider => 'buffer'}) %>
 							<% end %>
 						<% end %>
-				  	</div>
-				  	<div>
-						<%= f.submit "Share", class: "btn btn-primary hidden", id: "share-button" %>
-						<div id="micropost-missing-fields" class="" style="display: block; margin: 5px 0;">Share</div>
-						<ul style="text-align: left;">
-							<li id="missing-text">Missing text</li>
-							<li id="missing-pages">Missing pages to share to</li>
-						</ul>
-					</div>
-				<% else %>
-					<h4> Sharing for this post is turned off </h4>
-				<% end %>
-
+				  </div>
+				  <div>
+					<%= f.submit "Share", class: "btn btn-primary hidden", id: "share-button" %>
+					<div id="micropost-missing-fields" class="" style="display: block; margin: 5px 0;">Share</div>
+					<ul style="text-align: left;">
+						<li id="missing-text">Missing text</li>
+						<li id="missing-pages">Missing pages to share to</li>
+					</ul>
+				</div>
 			</div>
 			<div class="col-md-1">
 				
 			</div>
 		</div>
 	<% end %>
-<% else %>
-	<%= render 'show_visitor' %>
-<% end %>
 
-<% if current_user %>
 	<%= render 'shared/comment_form' %>
+
+<% else %>
+
+	<div style="display: inline-block;">
+    	<div class="avatar avatar-thumbnail" style="background-image: url('<%= @micropost.user.avatar %>');"></div>
+  	</div>
+  	<div style="display: inline-block;">
+	  	<h3 class="user" style="display: block;"><%= link_to @micropost.user.name, @micropost.user %></h3>
+	  	<span class="timestamp">
+	      Posted <%= time_ago_in_words(@micropost.created_at) %> ago.
+	      <% if current_user %>
+	        <% if current_user?(@micropost.user) || current_user.admin? %>
+	          <%= link_to "delete", @micropost, method: :delete,
+	                                           data: { confirm: "You sure?" } %>
+	        <% end %>
+	      <% end %>
+	    </span>
+	</div>
+	<div class="row">
+			<div class="col-md-8">
+					  <div class="section">
+					      <span class="content">
+					      	<h3><%= @micropost.content %></h3>
+					        <% if @micropost.picture? %>
+					        	<img style="width: 100%;" src="<%= @micropost.picture.url %>", alt="promo post picture" />
+					        <% end %>
+					      </span>
+					  </div>
+			</div>
+			<div class="col-md-4">
+				<h3><%= link_to "Log In", login_path %> to share this post.</h3>
+			</div>
+			<div class="col-md-1">
+			</div>
+		</div>
 <% end %>
 
 <p>&nbsp;</p>
