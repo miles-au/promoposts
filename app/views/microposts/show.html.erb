@@ -91,6 +91,8 @@
 		</div>
 	<% end %>
 
+	<%= render 'shared/comment_form' %>
+
 <% else %>
 
 	<div style="display: inline-block;">
@@ -126,7 +128,6 @@
 			</div>
 		</div>
 <% end %>
-<%= render 'shared/comment_form' %>
 <p>&nbsp;</p>
 <%= render @comments %>
 

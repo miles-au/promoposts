@@ -69,7 +69,7 @@
           </div>
         <% end %>
     <% end %>
-    <%= link_to @micropost, :data=> {:current_user_id => current_user.id, :micropost_id => @micropost_id} do %>
+    <%= link_to @micropost, :data=> {:micropost_id => @micropost_id} do %>
       <p><%= pluralize( @micropost.comments.count, 'Comment' ) %></p>
     <% end %>
 </li>
