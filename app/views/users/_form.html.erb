@@ -29,14 +29,17 @@
   <%= f.label :name, "Organization/Name"%>
   <%= f.text_field :name, class: 'form-control' %>
 
-  <%= f.label :email %>
-  <%= f.email_field :email, class: 'form-control' %>
+  
+  <% if @user.verify_email %>
+    <%= f.label :email %>
+    <%= f.email_field :email, class: 'form-control' %>
+    
+    <%= f.label :password %>
+    <%= f.password_field :password, class: 'form-control' %>
 
-  <%= f.label :password %>
-  <%= f.password_field :password, class: 'form-control' %>
-
-  <%= f.label :password_confirmation %>
-  <%= f.password_field :password_confirmation, class: 'form-control' %>
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation, class: 'form-control' %>
+  <% end %>
 
   <%= f.submit yield(:button_text), class: "btn btn-primary" %>
 <% end %>

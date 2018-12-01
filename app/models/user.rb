@@ -64,6 +64,13 @@ class User < ApplicationRecord
     update_columns(activated: true, activated_at: Time.zone.now)
   end
 
+  # Verify an email.
+  def self.verify_email(user_id)
+    user = User.find(user_id)
+    user.verify_email = true
+    user.save
+  end
+
   # Sends activation email.
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
