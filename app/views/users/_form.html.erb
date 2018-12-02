@@ -40,9 +40,12 @@
     <%= f.password_field :password_confirmation, class: 'form-control' %>
   <% end %>
 
-  <%= f.label :slug, "Custom url slug" %>
+  <%= f.label :slug, "Profile Url" %>
   <input type="textbox" class="form-control" placeholder="<%= @user.slug %>" id="slug-input" maxlength='75' />
-  <%= f.text_field :slug, class: 'form-control', readonly: true, id: "real-slug" %>
+  <div>
+    <p style="display: inline-block; ">www.promoposts.net/</p>
+    <%= f.text_field :slug, class: 'form-control', readonly: true, id: "real-slug", style: 'display: inline-block; width: auto;' %>
+  </div>
 
   <%= f.submit yield(:button_text), class: "btn btn-primary" %>
 <% end %>
