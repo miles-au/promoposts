@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_01_205910) do
+ActiveRecord::Schema.define(version: 2018_12_01_221557) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "provider"
@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(version: 2018_12_01_205910) do
     t.string "buffer_uid"
     t.string "cover_photo"
     t.boolean "verify_email", default: false
+    t.string "slug"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

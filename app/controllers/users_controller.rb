@@ -23,7 +23,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = User.find_by_slug(params[:id]) || User.find(params[:id])
     activity  = Event.where("user_id = :user_id", user_id: @user.id)
     @events = activity.paginate(page: params[:page], :per_page => 10)
     #@microposts = @user.microposts.paginate(page: params[:page], :per_page => 10)
@@ -120,7 +120,7 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name, :email, :password,
-                                   :password_confirmation, :category, :picture, :cover_photo, :verify_email)
+                                   :password_confirmation, :category, :picture, :cover_photo, :verify_email, :slug)
     end
 
     # Before filters

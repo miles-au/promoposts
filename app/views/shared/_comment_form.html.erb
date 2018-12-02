@@ -4,7 +4,7 @@
 
     <div class="field">
       <%= f.label :message, "Leave a comment:" %>
-      <%= f.text_area :message, placeholder: "Type in a comment..." %>
+      <%= f.text_area :message, placeholder: "Type in a comment...", :maxlength => 2500 %>
     </div>
     
     <%= f.hidden_field :user_id, :value => @user.id %>

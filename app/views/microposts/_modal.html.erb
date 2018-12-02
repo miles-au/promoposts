@@ -14,7 +14,7 @@
 			  <div class="micropost-modal">
 				  <div class="section">
 				      <span class="content">
-				      	<%= f.text_field :message, :id => "inputText" %>
+				      	<%= f.text_field :message, :id => "inputText", :maxlength => 240 %>
 				      	<div class="btn" id="useOriginalText">Use/Edit Original Text</div>
 				      	<p><%= @micropost.content %></p>
 				        <% if @micropost.picture? %>

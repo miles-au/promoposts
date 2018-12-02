@@ -28,7 +28,6 @@
 
   <%= f.label :name, "Organization/Name"%>
   <%= f.text_field :name, class: 'form-control' %>
-
   
   <% if @user.verify_email %>
     <%= f.label :email %>
@@ -41,5 +40,21 @@
     <%= f.password_field :password_confirmation, class: 'form-control' %>
   <% end %>
 
+  <%= f.label :slug, "Custom url slug" %>
+  <input type="textbox" class="form-control" placeholder="<%= @user.slug %>" id="slug-input" maxlength='75' />
+  <%= f.text_field :slug, class: 'form-control', readonly: true, id: "real-slug" %>
+
   <%= f.submit yield(:button_text), class: "btn btn-primary" %>
 <% end %>
+
+<script>
+  $("#slug-input").on("change keyup paste", function(){
+    result = $("#slug-input").val();
+    if(result == ""){
+      result = "<%= @user.slug %>";
+    }else{
+      result = result.replace( /[^\w]/g, '_' );
+    }
+    $("#real-slug").val(result);
+  })
+</script>

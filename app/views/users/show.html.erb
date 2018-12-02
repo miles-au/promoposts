@@ -108,6 +108,9 @@
 
   $( document ).ready(function() {
     togglePanel();
+    
+    history.pushState(null, '<%= :title %>', '/users/<%= @user.slug %>');
+
   });
   
 </script>
