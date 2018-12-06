@@ -131,6 +131,8 @@ class SessionsController < ApplicationController
 
   def linkedin
     client = @user.linkedin
+
+    #check company pages
     @accounts = client.company(is_admin: 'true').all
 
     if @accounts
@@ -149,6 +151,23 @@ class SessionsController < ApplicationController
         end
       end
     end
+
+    #check profile
+    picture_url = client.profile( fields: ['picture-urls::(original)']).picture_urls.all.first
+    if !picture_url
+      picture_url = ActionController::Base.helpers.asset_path('page.svg')
+    end
+    profile_id = client.profile.id
+    a = Account.find_by(:account_id => profile_id)
+    if a
+      a.update(:name => "#{client.profile.first_name} #{client.profile.last_name} | profile", :account_id => profile_id , :provider => "linkedin", :user_id => @user.id, :autoshare => false, :picture => picture_url)
+    else
+      a = Account.new(:name => "#{client.profile.first_name} #{client.profile.last_name} | profile", :account_id => profile_id , :provider => "linkedin", :user_id => @user.id, :autoshare => false, :picture => picture_url)
+      a.save
+      a
+    end
+
+
   end
 
   def instagram

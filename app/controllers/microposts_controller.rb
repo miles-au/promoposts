@@ -182,9 +182,17 @@ class MicropostsController < ApplicationController
 
   def share_to_linkedin(micropost, page_id, message)
 
-    puts "SHARE TO LINKEDIN"
+    client = @user.linkedin
+    accounts = client.company(is_admin: 'true').all.pluck(:id)
+
+    #is this a profile or company page?
+    if accounts.include?(page_id)
+      uri = URI("https://api.linkedin.com/v1/companies/#{page_id}/shares?format=json")
+    else
+      uri = URI("https://api.linkedin.com/v1/people/~/shares?format=json")
+    end
+
     token = User.get_token(current_user.linkedin_oauth_token).token
-    puts "TOKEN: #{token}"
 
     if micropost.picture.url
       share = {:content => {:'title' => message, :'submitted-url' => micropost.picture.url}, visibility: {code: "anyone"} }.to_json
@@ -193,8 +201,7 @@ class MicropostsController < ApplicationController
     end
 
     header = { "Content-Type" => "application/json", 'Host' => 'api.linkedin.com', 'Connection' => 'Keep-Alive', 'Authorization' => "Bearer #{token}" }
-
-    uri = URI("https://api.linkedin.com/v1/companies/#{page_id}/shares?format=json")
+    
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     #req = Net::HTTP::Post.new(uri.path, :initheader => { Host: 'api.linkedin.com', Connection: 'Keep-Alive', Authorization: "Bearer #{token}"})
@@ -203,13 +210,12 @@ class MicropostsController < ApplicationController
     res = http.request(req)
     puts "RESPONSE: #{res.body}"
     puts "Response #{res.code} #{res.message}: #{res.body}"
-    error = res.body['error']
     update = res.body['update']
     
-    if error
-      @post_failure << 'LinkedIn'
-    elsif update
+    if update
       @post_success << 'LinkedIn'
+    else
+      @post_failure << 'LinkedIn'
     end
 
   end
