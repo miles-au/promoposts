@@ -33,6 +33,15 @@ class StaticPagesController < ApplicationController
         when 'products_discussion'
           @feed_items = Event.products_discussions.paginate(:page => params[:page])
 
+        when 'search'
+          query = params[:search]
+
+          if Rails.env.production?
+            @feed_items = Event.joins(:micropost).where("content ILIKE '%#{query}%'").reorder("content ILIKE '#{query}%' DESC").paginate(:page => params[:page])
+          else
+            @feed_items = Event.joins(:micropost).where("content LIKE '%#{query}%'").reorder("content LIKE '#{query}%' DESC").paginate(:page => params[:page])
+          end 
+
       end
     else
       #render defaults

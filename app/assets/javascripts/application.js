@@ -19,6 +19,12 @@
 //= require_tree .
 
 $(document).ready(function () {
-if (window.location.href.indexOf('#_=_') > 0) {
-	window.location = window.location.href.replace(/#.*/, '');
-}});
+	if (window.location.href.indexOf('#_=_') > 0) {
+		window.location = window.location.href.replace(/#.*/, '');
+	}
+	 
+});
+
+function show_tooltips(){
+	$('[data-toggle="tooltip"]').tooltip({html: true});
+}

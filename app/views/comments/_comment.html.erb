@@ -1,7 +1,10 @@
-<div class="comment" id="comment-<%= comment.id %>" style="<%= comment.head ? 'padding-left: 50px;' : 'border: none;' %>">
+<div class="comment" id="comment-<%= comment.id %>" style="<%= comment.head ? 'padding-left: 25px;' : 'border: none;' %>">
   <div class="avatar avatar-mini" style="background-image: url('<%= comment.user.avatar %>');"></div>
   <div style="display: inline-block;">
-    <span class="user"><%= link_to comment.user.name, comment.user %></span>
+    <span class="user" style="font-size: 1.2em;"><%= link_to comment.user.name, comment.user %></span>
+    <div style="display: inline-block; text-align: left;">
+      <%= render :partial => 'shared/accolades', :locals => {:category => @user.category} %>
+    </div>
     <div class="timestamp">
       Posted <%= time_ago_in_words(comment.created_at) %> ago.
       <% if current_user %>
@@ -21,3 +24,7 @@
   <%= render Comment.where(:head => comment.id) %>
 
 </div>
+
+<script>
+  show_tooltips();
+</script>

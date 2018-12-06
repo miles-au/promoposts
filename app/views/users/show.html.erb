@@ -24,6 +24,9 @@
     <h1>
       <span style="text-align: left; display: block;"><%= @user.name %></span>
     </h1>
+    <div style="display: inline-block; text-align: left;">
+      <%= render :partial => 'shared/accolades', :locals => {:category => @user.category} %>
+    </div>
   </section>
 <!--
   <div class="stats">

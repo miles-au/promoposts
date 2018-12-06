@@ -6,6 +6,7 @@
 	  	</div>
 	  	<div style="display: inline-block;">
 		  	<h3 class="user" style="display: block;"><%= link_to @micropost.user.name, @micropost.user %></h3>
+        	<%= render :partial => 'shared/accolades', :locals => {:category => @user.category} %>
 		  	<span class="timestamp">
 		      Posted <%= time_ago_in_words(@micropost.created_at) %> ago.
 		      <% if current_user %>
@@ -116,6 +117,8 @@
 
 <% if current_user %>
 <script>
+	show_tooltips();
+	
 	$('#useOriginalText').click(function() {
 	  $( "#inputText" ).val("<%= @micropost.content %>");
 	  check_fields();

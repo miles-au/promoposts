@@ -18,6 +18,16 @@
 	</div>
 <% end %>
 
+<!--search-->
+<div id="searchBar">
+	<span class="glyphicon glyphicon-search" ></span>
+	<%= form_tag root_path, :method => 'get', id: 'searchPosts' do %>
+	  <%= text_field_tag :search, params[:search], :placeholder => 'Search posts' %>
+	  <%= hidden_field_tag :feed , "search" %>
+	  <%= submit_tag "go", :name => nil, class: 'search-btn' %>
+	<% end %>
+</div>
+
 <!--feeds-->
 <div style="display:inline-block;">
 	<% if logged_in? %>

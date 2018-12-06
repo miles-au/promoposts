@@ -1,9 +1,11 @@
+<% @user = micropost.user %>
+
 <li id="micropost-<%= micropost.id %>" >
   <div>
     <div class="avatar avatar-thumbnail" style="background-image: url('<%= micropost.user.avatar %>');"></div>
     <span class="user"><%= link_to micropost.user.name, micropost.user %></span>
   </div>
-  <span class="timestamp">
+    <span class="timestamp" style="">
       Posted <%= time_ago_in_words(micropost.created_at) %> ago.
       <% if current_user %>
         <% if current_user?(micropost.user) || current_user.admin? %>
@@ -22,8 +24,6 @@
         <% bgcolor = 'blueBack' %>
     <% end %>
 
-    <% @user = micropost.user %>
-
     <% if micropost.shareable%>
       <% if logged_in? %>
         <% clickable = 'click' %>
@@ -34,6 +34,7 @@
       <% clickable = '' %>
     <% end %>
 
+    <%= render :partial => 'shared/accolades', :locals => {:category => @user.category} %>
     <%= render 'shared/follow_form' if controller_name != "users" && logged_in? %>
 
     <% if logged_in? && micropost.shareable %>
@@ -50,3 +51,7 @@
       <p><%= pluralize( @micropost.comments.count, 'Comment' ) %></p>
     <% end %>
 </li>
+
+<script>
+  show_tooltips();
+</script>

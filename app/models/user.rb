@@ -321,6 +321,17 @@ class User < ApplicationRecord
     decrypt_value(val)
   end
 
+  def self.search(query)
+
+    if Rails.env.production?
+      results = User.where("name ILIKE '%#{query}%'").reorder("name ILIKE '#{query}%' DESC")
+    else
+      results = User.where("name LIKE '%#{query}%'").reorder("name LIKE '#{query}%' DESC ")
+    end 
+    
+    results
+  end
+
   private
 
     # Converts email to all lower-case.

@@ -53,6 +53,17 @@ textarea {
 
 }
 
+.search-btn{
+  background-color: $sigRed;
+  color: $sigGrey;
+  border: none;
+
+  &:hover{
+    background-color: $sigYellow;
+    color: $sigBlue;
+  } 
+}
+
 .btn-greyed{
   background-color: grey;
 }
@@ -69,6 +80,7 @@ textarea {
   border: none;
   border-radius: 0px;
   background-color: $sigCadet;
+  display: inline-block;
 
   div, span{
     display: inline-block;
@@ -1006,8 +1018,8 @@ span.picture {
 }
 
 .avatar-mini{
-  height: 35px;
-  width: 35px;
+  height: 45px;
+  width: 45px;
 }
 
 .close{
@@ -1049,6 +1061,16 @@ span.picture {
   }
 }
 
+#searchBar{
+  span, form{
+    display: inline-block;
+    margin-left: 10px;
+  }
+  input{
+    width: auto;
+  }
+}
+
 #usersIndexSearch{
   div{
     display: inline-block;
@@ -1076,7 +1098,27 @@ span.picture {
   }
 }
 
+.tooltip{
+  opacity: 1 !important;
 
+  .tooltip-inner{
+    background-color: $sigYellow !important;
+    color: $sigBlue !important;
+    opacity: 1;
+  }
+  .tooltip-arrow{
+    border-top-color: $sigYellow !important;
+  }
+}
+
+.accolades{
+  height: 30px;
+  div{
+    img{
+      height: 100%;
+    }
+  }
+}
 
 //MOBILE RESPONSIVE CODE
 
