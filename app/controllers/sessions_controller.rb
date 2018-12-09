@@ -2,7 +2,12 @@ class SessionsController < ApplicationController
   protect_from_forgery except: :oauth2
   protect_from_forgery except: :callback
 
+  before_action :logged_out_user, only: [:new, :social_new]
+
   def new
+  end
+
+  def social_new
   end
 
   def create

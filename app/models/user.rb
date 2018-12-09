@@ -11,17 +11,20 @@ class User < ApplicationRecord
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
   has_many :products, dependent: :destroy
+  has_one :accolade, dependent: :destroy
 
   attr_accessor :remember_token, :activation_token, :reset_token
   before_save   :downcase_email
   before_create :create_activation_digest
-  before_create :set_slug_default
+  after_create :set_slug_default
+  after_create :create_accolades
+
 
   validates :name,  presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
-  VALID_SLUG_REGEX = /\A[-\w.]+\z/i
-  validates :slug, presence: true, format: { with: VALID_SLUG_REGEX }, uniqueness: { case_sensitive: false }
+  #VALID_SLUG_REGEX = /\A[-\w.]+\z/i
+  #validates :slug, format: { with: VALID_SLUG_REGEX }, uniqueness: { case_sensitive: false }, length: { maximum: 75 }
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   validates :category, presence: true
@@ -376,6 +379,12 @@ class User < ApplicationRecord
 
     def set_slug_default
       self.slug = self.id
+      self.save!
+    end
+
+    def create_accolades
+      accolades = Accolade.new(user_id: self.id)
+      accolades.save!
     end
 
 end

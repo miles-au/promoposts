@@ -10,7 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_01_221557) do
+ActiveRecord::Schema.define(version: 2018_12_07_020017) do
+
+  create_table "accolades", force: :cascade do |t|
+    t.integer "user_id"
+    t.boolean "newcomer", default: true
+  end
 
   create_table "accounts", force: :cascade do |t|
     t.string "provider"

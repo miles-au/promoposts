@@ -149,6 +149,47 @@ header, .navbar-inverse, .navbar-fixed-top{
   h2{
     font-size: 1.5em;
   }
+
+  .btn-discourage{
+    background-color: $sigBlue;
+    color: $sigGrey;
+
+    &:hover{
+      background-color: $sigGrey;
+      color: $sigBlue;
+    }
+  }
+  .btn-encourage{
+    background-color: $sigRed;
+    color: $sigGrey;
+
+    &:hover{
+      background-color: $sigGrey;
+      color: $sigBlue;
+    }
+  }
+}
+
+#quickstart-wizard{
+  text-align: center;
+  border: 5px solid $sigBlue;
+  margin-bottom: 10px;
+  span{
+    padding: 20px 10px 10px 10px;
+    font-size: 2em;
+  }
+  h3{
+    margin-top: 0px;
+  }
+}
+
+#decline-wizard{
+  margin: 0px -20px 0px 0px;
+  padding: 0px;
+  float: right;
+  display: block;
+  clear: both;
+  font-size: 0.9em;
 }
 
 /* typography */
@@ -1291,6 +1332,35 @@ span.picture {
     font-size: 1.4em;
     display: block;
     padding-left: 15px;
+  }
+  #quickstart-wizard{
+    padding: 5px !important;
+    text-align: left;
+
+    span{
+      display: inline-block;
+      vertical-align: top;
+      padding: 0px 15px;
+    }
+    h3{
+      vertical-align: top;
+      display: inline-block;
+      width: 70%;
+    }
+    a{
+      display: inline-block;
+    }
+  }
+  #quickstart-subtitle{
+    display: none;
+  }
+  #decline-wizard{
+    margin: 0px;
+    padding: 0px;
+    float: right;
+    display: block;
+    clear: both;
+    font-size: 0.9em;
   }
 }
 

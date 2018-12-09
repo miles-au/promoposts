@@ -62,6 +62,8 @@ Rails.application.routes.draw do
 
   get 'comments/reply', to: 'comments#reply'
 
+  get '/decline_wizard', to: 'static_pages#decline_wizard', as: 'decline_wizard'
+
   resources :users do
     member do
       get :following, :followers

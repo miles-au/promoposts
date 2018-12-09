@@ -29,7 +29,7 @@
   <%= f.label :name, "Organization/Name"%>
   <%= f.text_field :name, class: 'form-control' %>
   
-  <% if @user.verify_email %>
+  <% if @user.verify_email || !current_user %>
     <%= f.label :email %>
     <%= f.email_field :email, class: 'form-control' %>
     
@@ -40,24 +40,30 @@
     <%= f.password_field :password_confirmation, class: 'form-control' %>
   <% end %>
 
-  <%= f.label :slug, "Profile Url" %>
-  <input type="textbox" class="form-control" placeholder="<%= @user.slug %>" id="slug-input" maxlength='75' />
-  <div>
-    <p style="display: inline-block; ">www.promoposts.net/</p>
-    <%= f.text_field :slug, class: 'form-control', readonly: true, id: "real-slug", style: 'display: inline-block; width: auto;' %>
-  </div>
+  <% if current_user %>
+    <%= f.label :slug, "Profile Url" %>
+    <input type="textbox" class="form-control" placeholder="<%= @user.slug %>" id="slug-input" maxlength='75' />
+    <div>
+      <p style="display: inline-block; ">www.promoposts.net/</p>
+      <%= f.text_field :slug, class: 'form-control', readonly: true, id: "real-slug", style: 'display: inline-block; width: auto;' %>
+    </div>
+  <% else %>
+    <%= f.hidden_field :slug, :value => SecureRandom.hex(64) %>
+  <% end %>
 
   <%= f.submit yield(:button_text), class: "btn btn-primary" %>
 <% end %>
 
 <script>
-  $("#slug-input").on("change keyup paste", function(){
-    result = $("#slug-input").val();
-    if(result == ""){
-      result = "<%= @user.slug %>";
-    }else{
-      result = result.replace( /[^\w]/g, '_' );
-    }
-    $("#real-slug").val(result);
-  })
+  <% if current_user %>
+    $("#slug-input").on("change keyup paste", function(){
+      result = $("#slug-input").val();
+      if(result == ""){
+        result = "<%= @user.slug %>";
+      }else{
+        result = result.replace( /[^\w]/g, '_' );
+      }
+      $("#real-slug").val(result);
+    })
+  <% end %>
 </script>

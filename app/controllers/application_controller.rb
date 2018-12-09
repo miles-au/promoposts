@@ -13,5 +13,14 @@ class ApplicationController < ActionController::Base
         redirect_to social_login_url
       end
     end
+
+    # Confirms a logged-in user.
+    def logged_out_user
+      unless !logged_in?
+        store_location
+        flash[:success] = "You are currently logged in."
+        redirect_to root_path
+      end
+    end
   
 end

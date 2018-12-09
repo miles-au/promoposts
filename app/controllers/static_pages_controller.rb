@@ -53,6 +53,16 @@ class StaticPagesController < ApplicationController
         @feed_type = "global"
       end
     end
+
+    if current_user
+      if current_user.picture.url && current_user.accounts.count > 0 && current_user.microposts.count > 0
+        current_user.accolade.newcomer = false
+        current_user.accolade.save!
+      end
+      if current_user.accolade.newcomer
+        @newcomer = current_user
+      end
+    end
     
     respond_to do |format|
       format.html
@@ -68,6 +78,19 @@ class StaticPagesController < ApplicationController
     respond_to do |format|
       format.html
       format.js
+    end
+  end
+
+  def wizard
+    @user = current_user
+  end
+
+  def decline_wizard
+    current_user.accolade.newcomer = false
+    current_user.accolade.save!
+    respond_to do |format|
+      format.html
+      format.js { flash.now[:success] = "Yer a wizard, #{current_user.name}." }
     end
   end
 

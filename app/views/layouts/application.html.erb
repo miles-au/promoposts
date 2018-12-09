@@ -14,8 +14,11 @@
   <body>
     <%= render 'layouts/header' %>
     <div class="container">
-      <% flash.each do |message_type, message| %>
-        <%= content_tag :div, message.html_safe, :class => "alert alert-#{message_type}" %>
+      <div id="flash_wrapper">
+        <%= render 'shared/flash' %>
+      </div>
+      <% if logged_in? %>
+        <%= render 'shared/quickstart_wizard' %>
       <% end %>
       <%= yield %>
       <%= render 'layouts/footer' %>

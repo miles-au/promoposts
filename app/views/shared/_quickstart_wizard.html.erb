@@ -1,0 +1,26 @@
+<% if current_user.accolade.newcomer %>
+
+	<div class='row' id="quickstart-wizard" style="padding: 5px 40px;">
+		<div class="col-md-3 col-sm-12">
+			<h2 style="font-size: 2em; text-align: left; margin-bottom: 5px;"><strong>Quickstart Wizard</strong></h2>
+			<p style="text-align: left;" id="quickstart-subtitle">Welcome to<br>Promo Posts!</p>
+		</div>
+		<div class="col-md-3 col-sm-12">
+			<span class="glyphicon glyphicon-<%= current_user.picture.url ? 'check' : 'unchecked' %>"></span>
+			<h3><%= link_to "1. Upload a profile picture", edit_user_path(:id => current_user.id) %></h3>
+		</div>
+		<div class="col-md-3 col-sm-12">
+			<span class="glyphicon glyphicon-<%= current_user.accounts.count > 0 ? 'check' : 'unchecked' %>"></span>
+			<h3><%= link_to "2. Connect a social media account", accounts_edit_path(:id => current_user.id) %></h3>
+		</div>
+		<div class="col-md-3 col-sm-12">
+			<span class="glyphicon glyphicon-<%= current_user.microposts.count > 0 ? 'check' : 'unchecked' %>"></span>
+			<h3><%= link_to "3. Create a post", microposts_new_path %></h3>
+		</div>
+		<p id="decline-wizard"><%= link_to decline_wizard_path, :remote => true do %>
+  			no thanks, I <em>am</em> the wizard
+  			<% end %>
+  		</p>
+	</div>
+	
+<% end %>
