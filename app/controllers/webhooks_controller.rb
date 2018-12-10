@@ -21,7 +21,7 @@ class WebhooksController < ApplicationController
 		 
 	  #testing purposes
 	  elsif account_id == '1067280970047460'
-	  	  user_id = '104'
+	  	  user_id = User.find_by_name('Miles').id
 		  @micropost = Micropost.new(:content => content, :user_id => user_id, :remote_picture_url => picture)
 		  @micropost.save!
 
