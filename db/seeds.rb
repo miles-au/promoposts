@@ -1,20 +1,24 @@
-User.create!(name:  "Example User",
-             email: "example@railstutorial.org",
-             password:              "foobar",
-             password_confirmation: "foobar",
-             admin: true,
-             activated: true,
-             activated_at: Time.zone.now,
-             category: "none")
+unless User.find_by( email: "example@railstutorial.org" )
+  User.create!(name:  "Example User",
+               email: "example@railstutorial.org",
+               password:              "foobar",
+               password_confirmation: "foobar",
+               admin: true,
+               activated: true,
+               activated_at: Time.zone.now,
+               category: "none")
+end
 
-User.create!(name:  "Miles",
-             email: "miles.d.au@gmail.com",
-             password:              "foobar",
-             password_confirmation: "foobar",
-             admin: true,
-             activated: true,
-             activated_at: Time.zone.now,
-             category: "none")
+unless User.find_by( email: "miles.d.au@gmail.com" )
+  User.create!(name:  "Miles",
+               email: "miles.d.au@gmail.com",
+               password:              "foobar",
+               password_confirmation: "foobar",
+               admin: true,
+               activated: true,
+               activated_at: Time.zone.now,
+               category: "none")
+end
 
 99.times do |n|
   num = 1
@@ -31,13 +35,15 @@ User.create!(name:  "Miles",
   name  = Faker::Name.name
   email = "example-#{n+1}@railstutorial.org"
   password = "password"
-  User.create!(name:  name,
-              email: email,
-              password:              password,
-              password_confirmation: password,
-              activated: true,
-              activated_at: Time.zone.now,
-              category: cat)
+  unless User.find_by( email: email )
+    User.create!(name:  name,
+                email: email,
+                password:              password,
+                password_confirmation: password,
+                activated: true,
+                activated_at: Time.zone.now,
+                category: cat)
+  end
 end
 
 users = User.order(:created_at).take(6)
