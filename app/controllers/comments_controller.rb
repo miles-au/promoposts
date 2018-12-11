@@ -1,4 +1,7 @@
 class CommentsController < ApplicationController
+  before_action :logged_in_user, only: [:create, :reply]
+  before_action :correct_or_admin_user,   only: [:destroy]
+
   def create
     @comment = params[:comment]
     @micropost = Micropost.find(@comment['micropost_id'])
@@ -15,13 +18,10 @@ class CommentsController < ApplicationController
         category = 'post'
         recipient = @micropost.user
       end
-      @micropost.user.send_comment_mailer(recipient, @micropost, @comment.message, category, current_user)
 
-=begin
-      if recipient.verify_email
+      if recipient.verify_email && recipient.setting.email_for_replies
         @micropost.user.send_comment_mailer(recipient, @micropost, @comment.message, category, current_user)
       end
-=end
 
       redirect_to @micropost
     else

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_07_020017) do
+ActiveRecord::Schema.define(version: 2018_12_11_184211) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -97,6 +97,11 @@ ActiveRecord::Schema.define(version: 2018_12_07_020017) do
     t.index ["followed_id"], name: "index_relationships_on_followed_id"
     t.index ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true
     t.index ["follower_id"], name: "index_relationships_on_follower_id"
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.boolean "email_for_replies", default: true
+    t.string "user_id"
   end
 
   create_table "tickets", force: :cascade do |t|

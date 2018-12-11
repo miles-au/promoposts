@@ -12,12 +12,14 @@ class User < ApplicationRecord
   has_many :followers, through: :passive_relationships, source: :follower
   has_many :products, dependent: :destroy
   has_one :accolade, dependent: :destroy
+  has_one :setting, dependent: :destroy
 
   attr_accessor :remember_token, :activation_token, :reset_token
   before_save   :downcase_email
   before_create :create_activation_digest
   after_create :set_slug_default
   after_create :create_accolades
+  after_create :create_setting
 
 
   validates :name,  presence: true, length: { maximum: 50 }
@@ -389,6 +391,11 @@ class User < ApplicationRecord
     def create_accolades
       accolades = Accolade.new(user_id: self.id)
       accolades.save!
+    end
+
+    def create_setting
+      settings = Setting.new(user_id: self.id)
+      settings.save!
     end
 
 end

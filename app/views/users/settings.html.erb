@@ -1,0 +1,15 @@
+<h1>settings</h1>
+
+<%= form_for @setting, url: update_user_settings_path, html: {method: :post} do |f| %>
+	
+	<h3>Receive email notifications when: </h3>
+    <%= f.check_box :email_for_replies, {style: "display: inline-block; width: auto;"} %>
+    <%= f.label :email_for_replies, "Someone replies to your comment or post", style: "display: inline-block;" %>
+
+    <%= f.submit "Update Settings", class: "btn btn-primary" %>
+<% end %>
+
+
+<%= link_to(current_user, method: :delete, data: { confirm: "Are you sure you want to delete your account?" })do %>
+	<button class="btn btn-greyed" style="width: 100%; margin-top: 50px;">Delete Your Account</button>
+<% end %>

@@ -17,8 +17,9 @@
             </a>
             <ul class="dropdown-menu">
               <li><%= link_to "Profile", current_user %></li>
-              <li><%= link_to "Settings", edit_user_path(current_user) %></li>
+              <li><%= link_to "Edit Profile", edit_user_path(current_user) %></li>
               <li><%= link_to "Accounts", accounts_edit_path(:id => current_user) %></li>
+              <li><%= link_to "Settings", user_settings_path(:id => current_user) %></li>
               <li>
                 <%= link_to "Log out", logout_path, method: :delete %>
               </li>
