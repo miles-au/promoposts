@@ -17,9 +17,6 @@ class UsersController < ApplicationController
 
       @users = User.search(@search).paginate(:page => params[:page], :per_page => 20)
 
-      puts "SORT"
-      puts "#{@users}"
-
     else
       
       @users = User.where(activated: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => 20)
@@ -38,7 +35,6 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    puts "SLUG: #{@user.slug}"
     if @user.save
       @user.send_activation_email
       flash[:info] = "Please check your email to activate your account."

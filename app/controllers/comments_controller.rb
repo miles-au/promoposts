@@ -8,6 +8,21 @@ class CommentsController < ApplicationController
       flash[:success] = "Your comment is posted."
       @event = Event.new(user_id: current_user.id, passive_user_id: @micropost.user_id, micropost_id: @micropost.id, contribution: 'comment')
       @event.save!
+      if @comment.head
+        category = 'comment'
+        recipient = Comment.find(@comment.head).user
+      else
+        category = 'post'
+        recipient = @micropost.user
+      end
+      @micropost.user.send_comment_mailer(recipient, @micropost, @comment.message, category, current_user)
+
+=begin
+      if recipient.verify_email
+        @micropost.user.send_comment_mailer(recipient, @micropost, @comment.message, category, current_user)
+      end
+=end
+
       redirect_to @micropost
     else
       puts 'FAILED'

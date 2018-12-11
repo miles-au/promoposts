@@ -6,10 +6,13 @@
 Somebody commented on your <%= @category %>!
 </p>
 
-<h3 style="text-align: center;">'<%= @message %>'<br> - <%= @commenter.name %></h3>
+<h3 style='text-align: center;'>
+	'<%= @message %>'<br>
+	- <%= @commenter.name %>
+</h3>
 
 <div class='email-cta' style="padding: 15px; width: 80%; text-align: center; background-color: #ea5455; margin: 0 auto;">
-	<%= link_to "Click here to see comment.", micropost_url(@micropost.id), :style => 'color: white; text-decoration: none;' %>
+	<%= link_to "Click here to see the post.", micropost_url(:id => @micropost.id), :style => 'color: white; text-decoration: none;', target: "_blank" %>
 </div>
 
 <p>

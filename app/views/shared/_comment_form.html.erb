@@ -7,7 +7,7 @@
       <%= f.text_area :message, placeholder: "Type in a comment...", :maxlength => 2500 %>
     </div>
     
-    <%= f.hidden_field :user_id, :value => @user.id %>
+    <%= f.hidden_field :user_id, :value => @current_user.id %>
 
     <% if @head %>
       <%= f.hidden_field :micropost_id, :value => @head.micropost_id %>
