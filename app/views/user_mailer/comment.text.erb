@@ -1,0 +1,11 @@
+<p>Hey <%= @user.name %>,</p>
+
+<p>
+Somebody commented on your <%= @category %>!
+</p>
+
+<p>'<%= message %>'</p>
+
+<p>Click the link below to see the post!</p>
+
+<%= micropost_url(@micropost.id) %>

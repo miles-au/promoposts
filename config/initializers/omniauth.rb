@@ -7,9 +7,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
             :display => "popup",
             token_params: { parse: :json }
 
-	provider :instagram, ENV['INSTAGRAM_CLIENT_ID'], ENV['INSTAGRAM_CLIENT_SECRET']
+	#provider :instagram, ENV['INSTAGRAM_CLIENT_ID'], ENV['INSTAGRAM_CLIENT_SECRET']
 
-	provider :buffer, ENV['BUFFER_CLIENT_ID'], ENV['BUFFER_CLIENT_SECRET']
+	provider :buffer, ENV['BUFFER_CLIENT_ID'], ENV['BUFFER_CLIENT_SECRET'], token_params: { parse: :json }
 
  end
 

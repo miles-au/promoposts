@@ -17,4 +17,13 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.password_reset(user)
   end
 
+  def comment
+    user = User.first
+    micropost = Micropost.first
+    message = 'test comment'
+    category = "post"
+    commenter = User.second
+    UserMailer.comment(user, micropost, message, category, commenter)
+  end
+
 end

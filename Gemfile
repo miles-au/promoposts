@@ -32,7 +32,6 @@ gem "linkedin-oauth2"
 gem 'koala'
 gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'buffer', :github => 'bufferapp/buffer-ruby'
-#gem "buffer-app", :git => "git://github.com/kaneda/buffer-ruby", :tag => "v1.2"
 gem "popper_js"
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
