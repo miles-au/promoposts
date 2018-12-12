@@ -17,6 +17,8 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.password_reset(user)
   end
 
+  # Preview this email at
+  # http://localhost:3000/rails/mailers/user_mailer/comment
   def comment
     user = User.first
     micropost = Micropost.first
@@ -24,6 +26,15 @@ class UserMailerPreview < ActionMailer::Preview
     category = "post"
     commenter = User.second
     UserMailer.comment(user, micropost, message, category, commenter)
+  end
+
+  # Preview this email at
+  # http://localhost:3000/rails/mailers/user_mailer/contacted
+  def contacted
+    email = "testemail@promoposts.net"
+    subject = "Test Email Subject"
+    message = "Testing email message"
+    UserMailer.contacted(email, subject, message)
   end
 
 end

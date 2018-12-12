@@ -98,6 +98,23 @@ class StaticPagesController < ApplicationController
   end
 
   def contact
+    @contact = Contact.new(:email => "", :subject => "", :message => "")
+  end
+
+  def contacted
+    email = params[:contact][:email]
+    subject = params[:contact][:subject]
+    message = params[:contact][:message]
+
+    puts "PARAMS: #{email}, #{subject}, #{message}"
+    @contact = Contact.new(:email => email, :subject => subject, :message => message)
+    if @contact.valid?
+      @contact.send_mailer(email, subject, message)
+      flash[:success] = "Message sent! Thank you for contacting us."
+      redirect_to contact_path
+    else
+      render 'contact'
+    end
   end
 
   def what_is_autoshare

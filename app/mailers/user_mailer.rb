@@ -22,4 +22,10 @@ class UserMailer < ApplicationMailer
   def subscribe(user)
   end
 
+  def contacted(email, subject, message)
+    @message = message
+    @email = email
+    mail to: 'contact@promoposts.net', subject: subject
+  end
+
 end
