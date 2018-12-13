@@ -43,9 +43,9 @@ class SessionsController < ApplicationController
       #sign_in
       @user = User.create_with_omniauth(@auth)
       create_accounts(@provider)
-      log_in @user
       flash[:success] = "Welcome to Promo Posts, #{@user.name}."
-      redirect_to root_url
+      log_in @user
+      redirect_back_or root_url
     elsif par['intent'] == "connect"
       #connect
       @user = User.connect_accounts(@auth, current_user.id)
