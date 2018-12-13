@@ -28,4 +28,10 @@ class UserMailer < ApplicationMailer
     mail to: 'contact@promoposts.net', subject: subject
   end
 
+  def verify_email(user, email)
+    @user = user
+    @email = email
+    mail to: email, subject: "Promo Posts - Email Verification"
+  end
+
 end

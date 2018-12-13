@@ -37,4 +37,10 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.contacted(email, subject, message)
   end
 
+  def verify_email
+    user = User.first
+    email = "testemail@promoposts.net"
+    UserMailer.verify_email(user, email)
+  end
+
 end

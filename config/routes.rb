@@ -68,6 +68,8 @@ Rails.application.routes.draw do
 
   get '/decline_wizard', to: 'static_pages#decline_wizard', as: 'decline_wizard'
 
+  get '/account_activations/:id/edit', to: 'account_activations#update_email', as: 'update_email'
+
   resources :users do
     member do
       get :following, :followers

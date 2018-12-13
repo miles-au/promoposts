@@ -89,6 +89,12 @@ class User < ApplicationRecord
     UserMailer.account_activation(self).deliver_now
   end
 
+  def send_verify_email(email)
+    create_activation_digest
+    puts "EMAIL: #{email}"
+    UserMailer.verify_email(self, email).deliver_now
+  end
+
   def send_comment_mailer(user, micropost, message, category, commenter)
     UserMailer.comment(user, micropost, message, category, commenter).deliver_now
   end

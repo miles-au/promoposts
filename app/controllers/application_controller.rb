@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
     def logged_out_user
       unless !logged_in?
         store_location
-        flash[:success] = "You are currently logged in."
+        flash[:success] = "You are logged in."
         redirect_to root_path
       end
     end

@@ -45,7 +45,7 @@ class SessionsController < ApplicationController
       create_accounts(@provider)
       log_in @user
       flash[:success] = "Welcome to Promo Posts, #{@user.name}."
-      redirect_back_or root_url
+      redirect_to root_url
     elsif par['intent'] == "connect"
       #connect
       @user = User.connect_accounts(@auth, current_user.id)

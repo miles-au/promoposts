@@ -50,9 +50,25 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
+
+    oldEmail = @user.email
+    newEmail = params[:user][:email]
+
+    if params[:user][:email].empty?
+      params[:user][:email] = @user.email
+    end
+
     if @user.update_attributes(user_params)
-      flash[:success] = "Profile updated"
-      redirect_to @user
+      if oldEmail != @user.email
+        @user.email = oldEmail
+        @user.save
+        @user.send_verify_email(newEmail)
+        flash[:success] = "Profile updated, please check your email to verify your email address."
+        redirect_to @user
+      else
+        flash[:success] = "Profile updated"
+        redirect_to @user
+      end
     else
       render 'edit'
     end

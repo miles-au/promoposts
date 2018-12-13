@@ -1,0 +1,5 @@
+Hi <%= @user.name %>,
+
+Welcome to the Promo Posts! Please click the link below to verify your email.:
+
+<%= update_email_url(@user.activation_token, email: @email, user_id: @user.id) %>

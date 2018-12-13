@@ -29,16 +29,18 @@
   <%= f.label :name, "Organization/Name"%>
   <%= f.text_field :name, class: 'form-control' %>
   
+  <%= f.label :email %>
   <% if @user.verify_email || !current_user %>
-    <%= f.label :email %>
     <%= f.email_field :email, class: 'form-control' %>
-    
-    <%= f.label :password %>
-    <%= f.password_field :password, class: 'form-control' %>
-
-    <%= f.label :password_confirmation %>
-    <%= f.password_field :password_confirmation, class: 'form-control' %>
+  <% else %>
+    <%= f.email_field :email, class: 'form-control', value: '' %>
   <% end %>
+
+  <%= f.label :password %>
+  <%= f.password_field :password, class: 'form-control' %>
+
+  <%= f.label :password_confirmation %>
+  <%= f.password_field :password_confirmation, class: 'form-control' %>
 
   <% if current_user %>
     <%= f.label :slug, "Profile Url" %>
