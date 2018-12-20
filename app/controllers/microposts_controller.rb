@@ -94,6 +94,11 @@ class MicropostsController < ApplicationController
     @event = Event.new(user_id: current_user.id, passive_user_id: micropost.user.id, micropost_id: micropost.id, contribution: 'share')
     @event.save!
 
+    #create notification
+    @notification = Notification.new(:user_id => micropost.user_id, :message => "#{@user.name} shared your post.", :url => micropost_url(micropost) )
+    @notification.save!
+
+
     #create flash message
     @post_success = @post_success.uniq
     @post_failure = @post_failure.uniq

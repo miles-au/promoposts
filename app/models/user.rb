@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
   has_many :products, dependent: :destroy
+  has_many :notifications, dependent: :destroy
   has_one :accolade, dependent: :destroy
   has_one :setting, dependent: :destroy
 
@@ -345,6 +346,16 @@ class User < ApplicationRecord
     end 
     
     results
+  end
+
+  def notifications_today
+    notifications = Notification.where( 'user_id = ? AND created_at > ?', self.id, 1.day.ago)
+    return notifications
+  end
+
+  def unread_notifications
+    notifications = Notification.where( 'user_id = ? AND read = ?', self.id, false)
+    return notifications
   end
 
   private

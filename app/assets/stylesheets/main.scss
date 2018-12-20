@@ -127,10 +127,10 @@ header, .navbar-inverse, .navbar-fixed-top{
 
 .navbar-nav, .navbar-right{
   li, a, span{
-    color: $sigGrey !important;
+    color: $sigGrey;
 
     &:hover{
-      color: $sigYellow !important;
+      color: $sigYellow;
     }
   }
 }
@@ -253,29 +253,62 @@ p {
 }
 
 /*drop down*/
-.navbar-inverse .open a{
+.navbar .open a{
     background-color: $sigGrey !important;
     color: $sigBlue !important;
+    white-space: normal !important;
+    span{
+      color: $sigBlue;
+    }
+}
+
+.dropdown-backdrop{
+  margin-top: 50px;
+}
+
+.has_notifications{
+  color: $sigYellow !important;
+}
+
+.notification-bullet{
+  list-style: none;
+  border-bottom: 1px solid $sigBlue;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: $sigGrey;
+}
+
+.btn-group{
+  padding-top: 15px;
+  position: static;
 }
 
 .dropdown-menu{
   padding: 0px;
-  border-bottom: 1px solid $sigGrey;
-  border-left: 1px solid $sigGrey;
-  border-right: 1px solid $sigGrey;
-  border-top: none;
+  width: 300px;
+  border-bottom: 3px solid $sigBlue;
+  border-left: 3px solid $sigBlue;
+  border-right: 3px solid $sigBlue;
+  border-top: 3px solid $sigGrey;
+  margin-top: 3px;
   border-radius: 0px;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
+  max-height: calc(100vh - 50px);
+  overflow: scroll;
 
   li a{
-    background-color: $sigGrey !important;
-    color: $sigBlue !important;
+    background-color: $sigGrey;
+    color: $sigBlue;
+  }
 
-    &:hover{
-      background-color: $sigBlue !important;
-      color: $sigYellow !important;
+  li a:hover{
+    background-color: $sigBlue !important;
+    color: $sigYellow !important;
+    span{
+      color: $sigYellow;
     }
   }
 }
@@ -1188,6 +1221,10 @@ span.picture {
 @media (max-width: 768px){
 
 //home page
+  #logo {
+    z-index: 9999;
+    position: fixed;
+  }
   .jumbotron{
     color: $sigBlue;
     width: 100%;
@@ -1222,6 +1259,9 @@ span.picture {
       a{
         font-size: 2em;
         padding: 20px 0px;
+        display: block;
+        background-color: $sigBlue;
+        color: $sigYellow;
       }
     }
     ul{
@@ -1278,6 +1318,13 @@ span.picture {
   }
   .navbar-right{
     margin: 0px;
+  }
+  .navbar .open a{
+    background-color: $sigBlue !important;
+    color: $sigYellow !important;
+    span{
+      color: $sigYellow;
+    }
   }
   .dropdown-menu{
     float: right !important;

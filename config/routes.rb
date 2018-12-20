@@ -70,6 +70,10 @@ Rails.application.routes.draw do
 
   get '/account_activations/:id/edit', to: 'account_activations#update_email', as: 'update_email'
 
+  get '/notifications/all', to: 'notifications#all'
+
+  get '/notifications', to: 'notifications#mark_read'
+
   resources :users do
     member do
       get :following, :followers

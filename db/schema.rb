@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_12_213839) do
+ActiveRecord::Schema.define(version: 2018_12_20_170355) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -73,6 +73,15 @@ ActiveRecord::Schema.define(version: 2018_12_12_213839) do
     t.boolean "shareable", default: false
     t.index ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_microposts_on_user_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.string "user_id"
+    t.string "message"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "read", default: false
   end
 
   create_table "oauth_accounts", force: :cascade do |t|

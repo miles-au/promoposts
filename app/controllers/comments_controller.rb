@@ -11,13 +11,25 @@ class CommentsController < ApplicationController
       flash[:success] = "Your comment is posted."
       @event = Event.new(user_id: current_user.id, passive_user_id: @micropost.user_id, micropost_id: @micropost.id, contribution: 'comment')
       @event.save!
+      @notification = Notification.new()
+
+
       if @comment.head
+        #this is a reply to comment
         category = 'comment'
         recipient = Comment.find(@comment.head).user
+        @notification.user_id = Comment.find(@comment.head).user_id
+        @notification.message = "#{current_user.name} replied to your comment."
       else
+        #this is a comment on post
         category = 'post'
         recipient = @micropost.user
+        @notification.user_id = @micropost.user_id
+        @notification.message = "#{current_user.name} commented on your post."
       end
+
+      @notification.url = micropost_url(@micropost)
+      @notification.save!
 
       if recipient.verify_email && recipient.setting.email_for_replies
         @micropost.user.send_comment_mailer(recipient, @micropost, @comment.message, category, current_user)
