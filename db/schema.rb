@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_20_170355) do
+ActiveRecord::Schema.define(version: 2019_01_02_234350) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -119,6 +119,8 @@ ActiveRecord::Schema.define(version: 2018_12_20_170355) do
   create_table "settings", force: :cascade do |t|
     t.boolean "email_for_replies", default: true
     t.string "user_id"
+    t.boolean "email_when_followed", default: true
+    t.boolean "email_when_new_question", default: false
   end
 
   create_table "tickets", force: :cascade do |t|

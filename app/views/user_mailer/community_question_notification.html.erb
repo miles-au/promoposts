@@ -1,0 +1,10 @@
+<p>Hey <%= @user.name %>,</p>
+
+<p>Can you answer a question one of our users asked?</p>
+
+<h3 style='text-align: center;'>
+	'<%= @micropost.content %>'<br>
+	- <%= @micropost.user.name %>
+</h3>
+
+<%= link_to "Click here to go to this post.", @micropost %>

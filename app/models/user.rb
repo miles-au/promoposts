@@ -100,6 +100,14 @@ class User < ApplicationRecord
     UserMailer.comment(user, micropost, message, category, commenter).deliver_now
   end
 
+  def send_followed_email(follower)
+    UserMailer.followed_email(self, follower).deliver_now
+  end
+
+  def send_community_question_email(micropost)
+    UserMailer.community_question_notification(self, micropost).deliver_now
+  end
+
   # Sets the password reset attributes.
   def create_reset_digest
     self.reset_token = User.new_token

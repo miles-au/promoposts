@@ -1,11 +1,13 @@
-<p>Hey <%= @user.name %>,</p>
+Hey <%= @user.name %>,
 
-<p>
-Somebody commented on your <%= @category %>!
-</p>
+<% if @category == 'post' %>
+	Somebody commented on your post!
+<% else %>
+	Somebody replied to your comment!
+<% end %>
 
-<p>'<%= @message %>' - <%= @commenter.name %></p>
+'<%= @message %>' - <%= @commenter.name %>
 
-<p>Click the link below to see the post!</p>
+Click the link below to see the post!
 
 <%= micropost_url(@micropost.id) %>

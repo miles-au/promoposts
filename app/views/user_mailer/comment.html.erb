@@ -1,10 +1,14 @@
-<img src="<%= ActionController::Base.helpers.asset_path('email-logo.png')%>" style="width: 100%;">
-
 <p>Hey <%= @user.name %>,</p>
 
-<p>
-Somebody commented on your <%= @category %>!
-</p>
+<% if @category == 'post' %>
+	<p>
+		Somebody commented on your post!
+	</p>
+<% else %>
+	<p>
+		Somebody replied to your comment!
+	</p>
+<% end %>
 
 <h3 style='text-align: center;'>
 	'<%= @message %>'<br>
@@ -13,13 +17,4 @@ Somebody commented on your <%= @category %>!
 
 <div class='email-cta' style="padding: 15px; width: 80%; text-align: center; background-color: #ea5455; margin: 0 auto;">
 	<%= link_to "Click here to see the post.", micropost_url(:id => @micropost.id), :style => 'color: white; text-decoration: none;', target: "_blank" %>
-</div>
-
-<p>
-	The Promo Posts Team<br>
-	<%= link_to 'www.promoposts.net', 'https://www.promoposts.net', target: "_blank" %>
-</p>
-
-<div style="background-color: #2d4059; width: 100%;">
-	<p style="color: #f6f6f6; font-size: 0.8em; padding: 20px;">Promo Posts is a social platform made specifically for the promotional products industry. Engage with the community for product ideas, sales tips, and other general questions. Check out what other features Promo Posts has to offer at <%= link_to 'www.promoposts.net', 'https://www.promoposts.net', target: "_blank", style: 'color: #f6f6f6' %></p>
 </div>

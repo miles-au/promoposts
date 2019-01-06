@@ -15,8 +15,8 @@ class AccountActivationsController < ApplicationController
   end
 
   def update_email
+    puts "PARAMS: #{params}"
     user = User.find(params[:user_id])
-    puts "ACTIVATION: #{:activation}"
     if user && user.authenticated?(:activation, params[:id])
       user.activate
       user.email = params[:email]

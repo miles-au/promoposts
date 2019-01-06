@@ -23,7 +23,7 @@ class UserMailerPreview < ActionMailer::Preview
     user = User.first
     micropost = Micropost.first
     message = 'test comment'
-    category = "post"
+    category = "comment"
     commenter = User.second
     UserMailer.comment(user, micropost, message, category, commenter)
   end
@@ -37,10 +37,29 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.contacted(email, subject, message)
   end
 
+  # Preview this email at
+  # http://localhost:3000/rails/mailers/user_mailer/verify_email
   def verify_email
     user = User.first
+    user.activation_token = "1234"
     email = "testemail@promoposts.net"
     UserMailer.verify_email(user, email)
+  end
+
+  # Preview this email at
+  # http://localhost:3000/rails/mailers/user_mailer/followed_email
+  def followed_email
+    recipient = User.first
+    follower = User.second
+    UserMailer.followed_email(recipient, follower)
+  end
+
+  # Preview this email at
+  # http://localhost:3000/rails/mailers/user_mailer/community_question_notification
+  def community_question_notification
+    recipient = User.first
+    micropost = Micropost.first
+    UserMailer.community_question_notification(recipient, micropost)
   end
 
 end

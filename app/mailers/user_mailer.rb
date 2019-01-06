@@ -1,5 +1,6 @@
 class UserMailer < ApplicationMailer
 
+
   def account_activation(user)
     @user = user
     mail to: user.email, subject: "Promo Posts - Account activation"
@@ -32,6 +33,18 @@ class UserMailer < ApplicationMailer
     @user = user
     @email = email
     mail to: email, subject: "Promo Posts - Email Verification"
+  end
+
+  def followed_email(recipient, follower)
+    @recipient = recipient
+    @follower = follower
+    mail to: recipient.email, subject: "Promo Posts - You have a new follower!"
+  end
+
+  def community_question_notification(recipient, micropost)
+    @user = recipient
+    @micropost = micropost
+    mail to: @user.email, subject: "Promo Posts - Can you answer this question?"
   end
 
 end

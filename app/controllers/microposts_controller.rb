@@ -17,9 +17,19 @@ class MicropostsController < ApplicationController
     if @micropost.save
       flash[:success] = "Your promo post is live!"
       @event = Event.new(user_id: current_user.id, micropost_id: @micropost.id)
+      if @micropost.category == 'question'
+        question_notification_emails
+      end
       redirect_to root_url
     else
       render 'microposts/new'
+    end
+  end
+
+  def question_notification_emails
+    @users = User.joins(:setting).where("email_when_new_question = ?", true)
+    @users.each do |user|
+      user.send_community_question_email(@micropost)
     end
   end
 

@@ -7,7 +7,7 @@ class SettingsController < ApplicationController
 
     if @setting.save
       flash[:success] = "Settings updated"
-      redirect_to @user
+      redirect_to user_settings_path(:id => current_user)
     else
       flash[:success] = "Sorry, we are unable to update your settings"
       redirect_to user_settings_path(:id => current_user)
@@ -18,7 +18,7 @@ class SettingsController < ApplicationController
   private
 
   	def settings_params
-      params.require(:setting).permit(:email_for_replies, :user_id)
+      params.require(:setting).permit(:email_for_replies, :email_when_followed, :email_when_new_question, :user_id)
     end
 
 end
