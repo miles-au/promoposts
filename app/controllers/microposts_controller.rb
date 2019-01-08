@@ -29,7 +29,9 @@ class MicropostsController < ApplicationController
   def question_notification_emails
     @users = User.joins(:setting).where("email_when_new_question = ?", true)
     @users.each do |user|
-      user.send_community_question_email(@micropost)
+      if user != @micropost.user
+        user.send_community_question_email(@micropost)
+      end
     end
   end
 

@@ -1,16 +1,21 @@
 <h1>settings</h1>
 
 <%= form_for @setting, url: update_user_settings_path, html: {method: :post} do |f| %>
-	
-	<h3>Receive email notifications when: </h3>
-    <%= f.check_box :email_for_replies, {style: "display: inline-block; width: auto;"} %>
-    <%= f.label :email_for_replies, "Someone replies to your comment or post", style: "display: inline-block;" %>
-    <br>
-    <%= f.check_box :email_when_followed, {style: "display: inline-block; width: auto;"} %>
-    <%= f.label :email_when_followed, "Someone follows you", style: "display: inline-block;" %>
-    <br>
-    <%= f.check_box :email_when_new_question, {style: "display: inline-block; width: auto;"} %>
-    <%= f.label :email_when_new_question, "Someone posts a question", style: "display: inline-block;" %>
+
+	<div class="<%= current_user.verify_email ? '' : 'email-notif-disabled' %>" >
+		<% if !current_user.verify_email %>
+			<%= link_to 'Click here to enter your email and get email notifications.', edit_user_path(current_user) %>
+		<% end %>
+		<h3>Receive email notifications when: </h3>
+	    <%= f.check_box :email_for_replies, {style: "display: inline-block; width: auto;", disabled: !current_user.verify_email} %>
+	    <%= f.label :email_for_replies, "Someone replies to your comment or post", style: "display: inline-block;" %>
+	    <br>
+	    <%= f.check_box :email_when_followed, {style: "display: inline-block; width: auto;", disabled: !current_user.verify_email} %>
+	    <%= f.label :email_when_followed, "Someone follows you", style: "display: inline-block;" %>
+	    <br>
+	    <%= f.check_box :email_when_new_question, {style: "display: inline-block; width: auto;", disabled: !current_user.verify_email } %>
+	    <%= f.label :email_when_new_question, "Someone posts a question", style: "display: inline-block;" %>
+	</div>
 
     <%= f.submit "Update Settings", class: "btn btn-primary" %>
 <% end %>

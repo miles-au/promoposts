@@ -64,10 +64,10 @@ class UsersController < ApplicationController
         @user.save
         @user.send_verify_email(newEmail)
         flash[:success] = "Profile updated, please check your email to verify your email address."
-        redirect_to @user
+        redirect_to edit_user_path(@user)
       else
         flash[:success] = "Profile updated"
-        redirect_to @user
+        redirect_to edit_user_path(@user)
       end
     else
       render 'edit'

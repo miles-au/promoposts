@@ -31,7 +31,8 @@ class CommentsController < ApplicationController
       @notification.url = micropost_url(@micropost)
       @notification.save!
 
-      if recipient.verify_email && recipient.setting.email_for_replies
+      #if recepient has valid email, gave permissions to email them, and this is not a reply to their own comment
+      if recipient.verify_email && recipient.setting.email_for_replies && recipient != current_user
         @micropost.user.send_comment_mailer(recipient, @micropost, @comment.message, category, current_user)
       end
 

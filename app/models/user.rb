@@ -96,16 +96,23 @@ class User < ApplicationRecord
     UserMailer.verify_email(self, email).deliver_now
   end
 
+  #notification emails
   def send_comment_mailer(user, micropost, message, category, commenter)
-    UserMailer.comment(user, micropost, message, category, commenter).deliver_now
+    if self.verify_email
+      UserMailer.comment(user, micropost, message, category, commenter).deliver_now
+    end
   end
 
   def send_followed_email(follower)
-    UserMailer.followed_email(self, follower).deliver_now
+    if self.verify_email
+      UserMailer.followed_email(self, follower).deliver_now
+    end
   end
 
   def send_community_question_email(micropost)
-    UserMailer.community_question_notification(self, micropost).deliver_now
+    if self.verify_email
+      UserMailer.community_question_notification(self, micropost).deliver_now
+    end
   end
 
   # Sets the password reset attributes.
