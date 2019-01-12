@@ -139,6 +139,37 @@ class UsersController < ApplicationController
     @setting = @user.setting
   end
 
+  def unsubscribe_email
+    @user = User.find(params[:id])
+    @email = @user.email
+    @digest = params[:code]
+
+    if @digest != @user.activation_digest
+      flash[:danger] = "Invalid unsubscribe link"
+      redirect_to root_url
+    end
+  end
+
+  def unsubscribe_email_action
+    puts "PARAMS: #{params}"
+    user = User.find(params[:id])
+    @email = user.email
+    digest = params[:code]
+
+    if digest != user.activation_digest
+      flash[:danger] = "Invalid unsubscribe link"
+    else
+      @settings = user.setting
+      @settings.email_for_replies = false
+      @settings.email_when_followed = false
+      @settings.email_when_new_question = false
+      @settings.save!
+      flash[:success] = "#{@email} has been unsubscribed from email notifications."
+    end
+
+    redirect_to root_url
+  end
+
   private
 
     def user_params

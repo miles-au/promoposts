@@ -46,6 +46,10 @@ textarea {
   background-color: $sigRed;
   color: $sigGrey;
 
+  a{
+    color: $sigGrey;
+  }
+
   &:hover{
     background-color: $sigBlue;
     color: $sigYellow;

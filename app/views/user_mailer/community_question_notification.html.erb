@@ -1,3 +1,6 @@
+<% provide(:user, @user.id.to_s) %>
+<% provide(:digest, @user.activation_digest) %>
+
 <p>Hey <%= @user.name %>,</p>
 
 <p>Can you answer a question one of our users asked?</p>

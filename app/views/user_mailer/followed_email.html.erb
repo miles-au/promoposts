@@ -1,3 +1,6 @@
+<% provide(:user, @user.id.to_s) %>
+<% provide(:digest, @user.activation_digest) %>
+
 <h3><%= @follower.name %> is now following you!</h3>
 
 <%= link_to 'Click here to check out their profile.', @follower %>

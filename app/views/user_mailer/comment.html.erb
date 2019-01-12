@@ -1,3 +1,6 @@
+<% provide(:user, @user.id.to_s) %>
+<% provide(:digest, @user.activation_digest) %>
+
 <p>Hey <%= @user.name %>,</p>
 
 <% if @category == 'post' %>

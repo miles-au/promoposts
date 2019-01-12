@@ -36,7 +36,7 @@ class UserMailer < ApplicationMailer
   end
 
   def followed_email(recipient, follower)
-    @recipient = recipient
+    @user = recipient
     @follower = follower
     mail to: recipient.email, subject: "Promo Posts - You have a new follower!"
   end

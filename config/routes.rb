@@ -59,6 +59,9 @@ Rails.application.routes.draw do
   get 'users/:id/settings', to: 'users#settings', as: :user_settings
   post 'users/:id/settings', to: 'settings#update_settings', as: :update_user_settings
 
+  get 'unsubscribe_email', to: 'users#unsubscribe_email'
+  post 'unsubscribe_email', to: 'users#unsubscribe_email_action'
+
   post 'delete_data', to: 'webhooks#delete_data'
   post 'unauthorize_facebook', to: 'webhooks#unauthorize_facebook'
 
