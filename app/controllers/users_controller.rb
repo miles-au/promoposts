@@ -182,7 +182,12 @@ class UsersController < ApplicationController
     # Confirms the correct user.
     def correct_user
       @user = User.find(params[:id])
-      redirect_to(root_url) unless current_user?(@user)
+      if !current_user?(@user)
+        message = "currently logged in as #{current_user.name}. Not you? "
+        message += "#{view_context.link_to('Log out.', log_out)}".html_safe
+        flash[:warning] = message
+        redirect_to(root_url)
+      end
     end
 
     # Confirms an admin user.
