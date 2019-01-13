@@ -54,6 +54,7 @@ class StaticPagesController < ApplicationController
       end
     end
 
+    #newcomer accolade
     if current_user
       if current_user.picture.url && current_user.accounts.count > 0 && current_user.microposts.count > 0
         current_user.accolade.newcomer = false
@@ -63,6 +64,8 @@ class StaticPagesController < ApplicationController
         @newcomer = current_user
       end
     end
+
+    #sponsored posts
     
     respond_to do |format|
       format.html

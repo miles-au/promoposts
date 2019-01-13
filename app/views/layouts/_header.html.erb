@@ -11,8 +11,8 @@
         <% if logged_in? %>
           <!--notifications-->
           <li>
-            <%= link_to url_for({:controller => "notifications", :action => "mark_read", :user_id => current_user.id}), :remote => true, class: 'dropdown-toggle', 'data-toggle' => 'dropdown' do %>
-              <span style="font-size: 1.2em;" class="glyphicon glyphicon-bell <%= logged_in? && current_user.unread_notifications.count > 0 ? 'has_notifications' : '' %>" ></span>
+            <%= link_to url_for({:controller => "notifications", :action => "mark_read", :user_id => current_user.id}), :remote => true, class: 'dropdown-toggle', 'data-toggle' => 'dropdown', :onclick => 'bellColor()' do %>
+              <span style="font-size: 1.2em;" id="notif-bell" class="glyphicon glyphicon-bell <%= logged_in? && current_user.unread_notifications.count > 0 ? 'has_notifications' : '' %>" ></span>
             <% end %>
             <ul class="dropdown-menu">
               <!-- render notifications -->
@@ -57,8 +57,8 @@
       <div style="position: relative; text-align: right;">
         <% if logged_in? %>
           <div class="btn-group">
-            <%= link_to url_for({:controller => "notifications", :action => "mark_read", :user_id => current_user.id}), :remote => true, class: 'dropdown-toggle', 'data-toggle' => 'dropdown', 'aria-haspopup' => true, 'aria-expanded' => 'false' do %>
-              <span style="font-size: 1.2em; color: white;" class="glyphicon glyphicon-bell <%= logged_in? && current_user.unread_notifications.count > 0 ? 'has_notifications' : '' %>" ></span>
+            <%= link_to url_for({:controller => "notifications", :action => "mark_read", :user_id => current_user.id}), :remote => true, class: 'dropdown-toggle', 'data-toggle' => 'dropdown', 'aria-haspopup' => true, 'aria-expanded' => 'false', :onclick => 'bellColor()' do %>
+              <span style="font-size: 1.2em; color: white;" id="notif-bell" class="glyphicon glyphicon-bell <%= logged_in? && current_user.unread_notifications.count > 0 ? 'has_notifications' : '' %>" ></span>
             <% end %>
 
             <div class="dropdown-menu" style="left: 0;">
@@ -101,3 +101,9 @@
 
   </div>
 </header>
+
+<script>
+  function bellColor(){
+    $("#notif-bell").removeClass("has_notifications");
+  } 
+</script>
