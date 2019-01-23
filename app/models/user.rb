@@ -375,7 +375,7 @@ class User < ApplicationRecord
 
   def unread_notifications
     if Rails.env.production?
-      notifications = Notification.where( 'user_id ILIKE ? AND read = ?', self.id, false)
+      notifications = Notification.where( 'user_id ILIKE ? AND read ILIKE ?', self.id, false)
     else
       notifications = Notification.where( 'user_id = ? AND read = ?', self.id, false)
     end 
