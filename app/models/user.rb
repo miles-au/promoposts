@@ -365,7 +365,7 @@ class User < ApplicationRecord
 
   def notifications_today
     if Rails.env.production?
-      notifications = Notification.where( "user_id = '?' AND created_at > '?'", self.id, 1.day.ago)
+      notifications = Notification.where( "user_id = '?' AND created_at > ?", self.id, 1.day.ago)
     else
       notifications = Notification.where( "user_id = ? AND created_at > ?", self.id, 1.day.ago)
     end 
