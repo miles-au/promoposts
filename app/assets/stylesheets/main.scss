@@ -907,6 +907,72 @@ span.picture {
   display: inline-block;
 }
 
+#favoriteProducts{
+  width: 200px;
+  display: inline-block;
+  font-size: 1em;
+  background-color: $sigYellow;
+  text-align: center;
+  vertical-align: top;
+  padding: 5px 0px;
+  a{
+    vertical-align: top;
+    color: $sigBlue;
+  }
+
+  &:hover{
+    background-color: $sigRed;
+    a, span{
+      color: $sigGrey;
+    }
+  }
+}
+
+#allLists{
+  h3{
+    background-color: $sigBlue !important;
+    border: none;
+    color: $sigGrey;
+  }
+  .ui-state-active{
+    background-color: $sigYellow !important;
+    border: none;
+    color: $sigBlue;
+  }
+  .ui-accordion-header-collapsed{
+    background-color: $sigBlue !important;
+    border: none;
+    color: $sigGrey;
+  }
+}
+
+#createList{
+  border-radius: 3px;
+  background-color: #ffb400;
+  padding: .5em .5em .5em .7em;
+  margin: 2px 0 0 0;
+  font-size: 100%;
+  line-height: 1.1;
+}
+
+.listingsContainer{
+  padding: 10px 0px;
+  a{
+    display: inline-block;
+  }
+}
+
+.listEditContainer{
+  a{
+    margin-right: 10px;
+  }
+}
+
+.productContainer{
+  margin: 5px;
+  display: inline-block;
+}
+
 #activity{
  width: calc( 100% - 250px ); 
  display: inline-block;

@@ -1,0 +1,40 @@
+<!--modal-->
+<div id="modal-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content"></div>
+	</div>
+</div>
+
+<h2 style="font-size: 1.7em; text-align: left;"><%= @user.name.possessive %> top products:</h2>
+
+<% if @user.lists.count == 0 %>
+	<p><%= @user.name %> has no products to display yet!</p>
+	<%= link_to @user do %>
+		<span class="glyphicon glyphicon-chevron-left"></span>Back to <%= @user.name.possessive %> profile
+	<% end %>
+<% end %>
+
+<div id="allLists">
+
+  <%= render @user.lists %>
+
+</div>
+
+<% if @user == current_user %>
+
+	<%=link_to({:controller => "lists", :action => "create", :user_id => current_user.id, :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary btn-lg'},) do%>
+		<div id="createList">
+			<span class="glyphicon glyphicon-plus"></span> Create a new list
+		</div>
+	<% end %>
+
+<% end %>
+
+<script>
+	$( function() {
+		$( "#allLists" ).accordion({
+			collapsible: true,
+			heightStyle: "content"
+		});
+	} );
+</script>

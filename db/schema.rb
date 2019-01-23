@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_02_234350) do
+ActiveRecord::Schema.define(version: 2019_01_16_213406) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -60,6 +60,20 @@ ActiveRecord::Schema.define(version: 2019_01_02_234350) do
     t.index ["passive_user_id"], name: "index_events_on_passive_user_id"
     t.index ["user_id", "passive_user_id"], name: "index_events_on_user_id_and_passive_user_id"
     t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
+  create_table "listings", force: :cascade do |t|
+    t.integer "product_id"
+    t.integer "list_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "lists", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
   end
 
   create_table "microposts", force: :cascade do |t|

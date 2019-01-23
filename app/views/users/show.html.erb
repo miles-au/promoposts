@@ -54,46 +54,10 @@
   </div>
 </div>
 
-<div id="topTen">
-
-  <% if @products.count > 0 || @user == current_user %>
-
-  <div class="accordion" id="productsContainer">
-    <div class="card">
-      <div class="card-header" id="headingOne">
-        <h5 class="mb-0">
-          <button class="btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="width: 100%;">
-          <h4 id="topPicksTitle" style="display: inline-block; width: 100%;">My Top Picks: <span class="glyphicon glyphicon-triangle-bottom" style="float: right;"></span></h4>
-          </button>
-        </h5>
-      </div>
-
-      <div id="collapseOne" class="collapse in" aria-labelledby="headingOne" data-parent="#accordionExample">
-        <div class="card-body">
-          <%= render @products %>
-
-          <% if @user == current_user %>
-            <% if @products.count < 10 %>
-              <%=link_to({:controller => "users", :action => "add_product", :user_id => current_user.id, :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary btn-lg'},) do%>
-                <div class="product">
-                  <div class="addProduct">
-                    <p class="productInnerText"><span class="glyphicon glyphicon-plus"></span></p>
-                  </div>
-                </div>
-                <h6 style="text-align: center; margin-bottom: 30px;">Add up to 10 products</h6>
-              <% end %> 
-            <% else %>
-                <h6>You've reached your limit of 10 products</h6>
-            <% end %>
-          <% end %>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
+<div id="favoriteProducts">
+  <%= link_to show_lists_path(:id => @user.id) do %>
+    My Product Lists (<%= @user.lists.count%>)
   <% end %>
-
 </div>
 
 <div id="activity">

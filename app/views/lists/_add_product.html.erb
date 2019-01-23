@@ -3,6 +3,7 @@
 	<% @product = Product.find(params['product_id']) %>
 	<%= f.hidden_field :product_id, :value => @product.id %>
 <% end %>
+<%= f.hidden_field :list_id, :value => @list.id %>
 
 	<div class="modal-header">
 	  <button type="button" class="close" data-dismiss="modal">x</button>
@@ -25,7 +26,7 @@
 	  <%= f.submit "Update", class: "btn btn-primary hidden", id: "submit-product-btn" %>
 	  <div id="product-missing-fields" class="" style="display: block; margin: 5px 0;">Missing required fields</div>
 	  <% if params['product_id'] %>
-		<%= link_to users_delete_product_path(:product_id => @product.id) do%>
+		<%= link_to users_delete_product_path(:product_id => @product.id, :user_id => params['user_id']) do%>
 			<div class="btn btn-greyed" style="display: block; margin: 5px 0;">Delete</div>
 		<% end %>
 	  <% end %>

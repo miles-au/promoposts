@@ -1,0 +1,52 @@
+<%= form_for @list, url: submit_list_path(:user_id => current_user.id), html: {method: :post} do |f| %>
+<% if params['list_id'] %>
+  <% @list = List.find(params['list_id']) %>
+  <%= f.hidden_field :list_id, :value => @list.id %>
+<% end %>
+
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">x</button>
+    <% if params['list_id'] %>
+      <h4 class="modal-title" id="myModalLabel">Edit List</h4>
+    <% else %>
+      <h4 class="modal-title" id="myModalLabel">Add a List</h4>
+    <% end %>
+  </div>
+  <div class="modal-body">
+    <%= f.label :name, :value => 'List Name*: ' %>
+    <%= f.text_field :name, :value => @list.name, :id => 'list_name', :maxlength => 75 %>
+
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Update", class: "btn btn-primary hidden", id: "submit-list-btn" %>
+    <div id="list-missing-fields" class="" style="display: block; margin: 5px 0;">Missing required fields</div>
+    <% if params['list_id'] %>
+      <%= link_to delete_list_path(:list_id => @list.id) do%>
+        <div class="btn btn-greyed" style="display: block; margin: 5px 0;">Delete</div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  $("#list_name").on("change keyup paste", function(){
+    input_name = document.getElementById("list_name");
+    var str_length = input_name.value.length;
+
+    if(str_length > 0){
+      all_fields();
+    }else{
+      missing_fields();
+    }
+  });
+
+  function missing_fields(){
+    $('#submit-list-btn').addClass('hidden');
+    $('#list-missing-fields').removeClass('hidden');
+  }
+  function all_fields(){
+    $('#submit-list-btn').removeClass('hidden');
+    $('#list-missing-fields').addClass('hidden');
+  }
+
+</script>

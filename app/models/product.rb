@@ -1,4 +1,4 @@
 class Product < ApplicationRecord
-	belongs_to :user
+	has_many :listings, dependent: :destroy
 	mount_uploader :picture, PictureUploader
 end

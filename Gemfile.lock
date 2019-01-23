@@ -447,6 +447,7 @@ GEM
       json (>= 1, < 3)
     pg (0.18.4)
     popper_js (1.14.5)
+    possessive (1.0.1)
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -612,6 +613,7 @@ DEPENDENCIES
   omniauth-twitter
   pg (= 0.18.4)
   popper_js
+  possessive
   puma (~> 3.11)
   rails (~> 5.2.1)
   rails-controller-testing

@@ -96,44 +96,6 @@ class UsersController < ApplicationController
     render 'show_follow'
   end
 
-  def add_product
-    @product = Product.new
-    respond_to do |format| 
-        format.html
-        format.js
-    end
-  end
-
-  def submit_product
-    #puts "PARAMS: #{params}"
-    product_id = params['product']['product_id']
-    user = User.find(params['user_id'])
-    title = params['product']['title']
-    url = params['product']['url']
-    picture = params['product']['picture']
-
-    #if product_id exists
-    if product_id
-      product = Product.find(product_id)
-      product.title = title
-      product.url = url
-      product.picture = picture
-      product.save!
-    #else
-    else
-      product = Product.new(:user_id => user.id, :title => title, :url => url, :picture => picture)
-      product.save!
-    end
-    
-    redirect_to user
-  end
-
-  def delete_product
-    product = Product.find(params['product_id'])
-    product.destroy!
-    redirect_to current_user
-  end
-
   def settings
     @user = User.find(params[:id])
     @setting = @user.setting

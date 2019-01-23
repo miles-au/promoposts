@@ -51,13 +51,18 @@ Rails.application.routes.draw do
   get 'static_pages/change_grid_view'
   post '/microposts/share_to_socials'
 
-  get 'users/add_product' => 'users#add_product'
-  post 'users/add_product' => 'users#submit_product'
+  get 'users/add_product' => 'lists#add_product'
+  post 'users/add_product' => 'lists#submit_product'
 
-  get 'users/delete_product' => 'users#delete_product'
+  get 'users/delete_product' => 'lists#delete_product'
 
   get 'users/:id/settings', to: 'users#settings', as: :user_settings
   post 'users/:id/settings', to: 'settings#update_settings', as: :update_user_settings
+
+  get 'users/:id/lists', to: 'lists#show', as: :show_lists
+  get 'users/create_list', to: 'lists#create', as: :create_list
+  post 'users/create_list', to: 'lists#submit', as: :submit_list
+  get 'users/delete_list', to: 'lists#delete', as: :delete_list
 
   get 'unsubscribe_email', to: 'users#unsubscribe_email'
   post 'unsubscribe_email', to: 'users#unsubscribe_email_action'
