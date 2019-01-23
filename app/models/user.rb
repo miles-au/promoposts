@@ -365,7 +365,7 @@ class User < ApplicationRecord
 
   def notifications_today
     if Rails.env.production?
-      notifications = Notification.where( "user_id ILIKE '?' AND created_at > '?'", self.id, 1.day.ago)
+      notifications = Notification.where( "user_id = '?' AND created_at > '?'", self.id, 1.day.ago)
     else
       notifications = Notification.where( "user_id = ? AND created_at > ?", self.id, 1.day.ago)
     end 
@@ -375,7 +375,7 @@ class User < ApplicationRecord
 
   def unread_notifications
     if Rails.env.production?
-      notifications = Notification.where( "user_id ILIKE '?' AND read ILIKE '?'", self.id, false)
+      notifications = Notification.where( "user_id = '?' AND read = ?", self.id, false)
     else
       notifications = Notification.where( "user_id = ? AND read = ?", self.id, false)
     end 
