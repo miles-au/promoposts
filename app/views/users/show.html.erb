@@ -54,10 +54,13 @@
   </div>
 </div>
 
-<div id="favoriteProducts">
-  <%= link_to show_lists_path(:id => @user.id) do %>
-    My Product Lists (<%= @user.lists.count%>)
-  <% end %>
+<div style="display: inline-block;">
+  <%= render 'follow_form' if logged_in? %>
+  <div id="favoriteProducts" style="margin-top: 5px;">
+    <%= link_to show_lists_path(:id => @user.id) do %>
+      My Product Lists (<%= @user.lists.count%>)
+    <% end %>
+  </div>
 </div>
 
 <div id="activity">
