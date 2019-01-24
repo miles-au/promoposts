@@ -8,8 +8,9 @@
 			<% end %>
 		</div>
 		<h6 style="text-align: center; margin-bottom: 30px;">
-			<%=link_to({:controller => "lists", :action => "add_product", :user_id => current_user.id, :list_id => list.id, :product_id => product.id, :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary btn-lg'},) do%>
-				<% if @user == current_user %>
+			<% if logged_in? && @user == current_user %>
+				<%=link_to({:controller => "lists", :action => "add_product", :user_id => current_user.id, :list_id => list.id, :product_id => product.id, :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary btn-lg'},) do%>
+				
 					<span class="glyphicon glyphicon-pencil"></span>
 				<% end %>
 			<% end %>

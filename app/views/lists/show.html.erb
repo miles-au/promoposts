@@ -8,10 +8,15 @@
 <h2 style="font-size: 1.7em; text-align: left;"><%= @user.name.possessive %> top products:</h2>
 
 <% if @user.lists.count == 0 %>
-	<p><%= @user.name %> has no products to display yet!</p>
-	<%= link_to @user do %>
-		<span class="glyphicon glyphicon-chevron-left"></span>Back to <%= @user.name.possessive %> profile
+	<% if current_user == @user %>
+		<p>You haven't created any lists yet!</p>
+	<% else %>
+		<p><%= @user.name %> has no products to display yet!</p>
 	<% end %>
+<% end %>
+
+<%= link_to @user do %>
+	<span class="glyphicon glyphicon-chevron-left"></span>Back to <%= @user.name.possessive %> profile
 <% end %>
 
 <div id="allLists">

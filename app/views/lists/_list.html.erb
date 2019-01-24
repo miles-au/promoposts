@@ -2,7 +2,7 @@
 	<%= list.name %>
 </h3>
 <div class="listContainer">
-	<% if current_user.id == list.user_id %>
+	<% if logged_in? && current_user.id == list.user_id %>
 		<div class="listEditContainer">
 			<%=link_to({:controller => "lists", :action => "create", :user_id => current_user.id, :list_id => list.id, :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary btn-lg'},) do%>
 				<span class="glyphicon glyphicon-pencil"></span> Edit Title
