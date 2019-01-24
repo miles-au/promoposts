@@ -39,14 +39,8 @@
       <%= render 'shared/follow_form' if controller_name != "users" && logged_in? %>
     </div>
 
-    <% if logged_in? && micropost.shareable %>
-      <%=link_to({:controller => "microposts", :action => "view", :remote => true, :id => micropost.id, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'}, :class => "SoMeIcon") do %>
-        <%= render :partial => 'microposts/content', :locals => {:picture_url => micropost.picture.url, :content => micropost.content, :clickable => clickable, :shareable => micropost.shareable, :bgcolor => bgcolor} %>
-      <% end %>
-    <% else %>
-      <%=link_to(@micropost) do %>
-        <%= render :partial => 'microposts/content', :locals => {:picture_url => micropost.picture.url, :content => micropost.content, :clickable => clickable, :shareable => micropost.shareable, :bgcolor => bgcolor} %>
-      <% end %>
+    <%=link_to(@micropost) do %>
+      <%= render :partial => 'microposts/content', :locals => {:picture_url => micropost.picture.url, :content => micropost.content, :clickable => clickable, :shareable => micropost.shareable, :bgcolor => bgcolor} %>
     <% end %>
 
     <%= link_to @micropost, :data=> {:micropost_id => @micropost_id} do %>
