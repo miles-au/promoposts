@@ -10,8 +10,8 @@ class Event < ApplicationRecord
   	questions = Micropost.where("category=?", "question")
   	scope :questions, -> { where("micropost_id in (?)", questions.ids)}
 
-  	products_discussions = Micropost.where("category=?", "products_discussion")
-  	scope :products_discussions, -> { where("micropost_id in (?)", products_discussions.ids)}
+  	careers = Micropost.where("category=?", "careers")
+  	scope :careers, -> { where("micropost_id in (?)", careers.ids)}
 
   	attr_accessor :message
 

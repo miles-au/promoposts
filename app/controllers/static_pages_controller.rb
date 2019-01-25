@@ -30,8 +30,8 @@ class StaticPagesController < ApplicationController
         when 'questions'
           @feed_items = Event.questions.paginate(:page => params[:page])
 
-        when 'products_discussion'
-          @feed_items = Event.products_discussions.paginate(:page => params[:page])
+        when 'careers'
+          @feed_items = Event.careers.paginate(:page => params[:page])
 
         when 'search'
           query = params[:search]
