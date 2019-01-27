@@ -66,6 +66,7 @@ class MicropostsController < ApplicationController
     @micropost = Micropost.find(params[:id])
     @comment = Comment.new
     @comments = Comment.where(:micropost_id => @micropost.id, :head => nil)
+    @comments = @comments.all.sort_by {|x| x.points }.reverse
     @user = @micropost.user
 
     if logged_in?

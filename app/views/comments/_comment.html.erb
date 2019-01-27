@@ -24,6 +24,6 @@
     <%= simple_format(comment.message, style: "display: inline-block; vertical-align: top;") %>
   </div>
 
-  <%= render Comment.where(:head => comment.id) %>
+  <%= render Comment.where(:head => comment.id).all.sort_by {|x| x.points }.reverse %>
 
 </div>
