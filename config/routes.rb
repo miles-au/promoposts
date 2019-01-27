@@ -82,6 +82,8 @@ Rails.application.routes.draw do
 
   get '/notifications', to: 'notifications#mark_read'
 
+  get '/submit_vote', to: 'votes#submit_vote'
+
   resources :users do
     member do
       get :following, :followers

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_16_213406) do
+ActiveRecord::Schema.define(version: 2019_01_26_172936) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -170,6 +170,14 @@ ActiveRecord::Schema.define(version: 2019_01_16_213406) do
     t.boolean "verify_email", default: false
     t.string "slug"
     t.index ["email"], name: "index_users_on_email", unique: true
+  end
+
+  create_table "votes", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "comment_id"
+    t.integer "points", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

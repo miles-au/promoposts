@@ -1,0 +1,1 @@
+$("#score-<%= @comment_id %>").html("<%= escape_javascript render(:partial => 'comments/score', :locals => { :user_id => current_user.id, :comment_id => @comment_id }) %>");

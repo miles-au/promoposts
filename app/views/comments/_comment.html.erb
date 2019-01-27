@@ -18,7 +18,10 @@
     </div>
   </div>
   <div id="comment-content-<%= comment.id %>" style="background-color: white; padding: 0px 5px;">
-    <p><%= simple_format(comment.message) %></p>
+    <div id="score-<%= comment.id %>" class="score" style="display: inline-block; width: 30px;">
+      <%= render :partial => 'comments/score', :locals => {:user_id => current_user.id, :comment_id => comment.id} %>
+    </div>
+    <%= simple_format(comment.message, style: "display: inline-block; vertical-align: top;") %>
   </div>
 
   <%= render Comment.where(:head => comment.id) %>

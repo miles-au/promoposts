@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_many :microposts, dependent: :destroy
   has_many :accounts, dependent: :destroy
   has_many :events, dependent: :destroy
+  has_many :votes, dependent: :destroy
   has_many :active_relationships, class_name:  "Relationship",
                                   foreign_key: "follower_id",
                                   dependent:   :destroy
