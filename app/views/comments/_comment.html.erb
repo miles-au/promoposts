@@ -8,10 +8,13 @@
     <div class="timestamp">
       Posted <%= time_ago_in_words(comment.created_at) %> ago.
       <% if current_user %>
-      <span style="font-size: 0.8em;">
+        <span style="font-size: 0.8em;">
         <%= link_to "reply", { :controller => :comments, :action => :reply, :remote => true, :head => comment, :micropost => comment.micropost} %>
         <% if current_user?(comment.user) || current_user.admin? %>
           <%= link_to "delete", comment, method: :delete, data: { confirm: "You sure?" } %>
+        <% end %>
+        <% if current_user?(comment.micropost.user) %>
+          <%= link_to "mark as top comment", mark_top_comment_path(:micropost_id => comment.micropost_id, :comment_id => comment.id) %>
         <% end %>
       </span>
       <% end %>
@@ -19,11 +22,16 @@
   </div>
   <div id="comment-content-<%= comment.id %>" style="background-color: white; padding: 0px 5px;">
     <div id="score-<%= comment.id %>" class="score" style="display: inline-block; width: 30px;">
-      <%= render :partial => 'comments/score', :locals => {:user_id => current_user.id, :comment_id => comment.id} %>
+      <% if logged_in? %>
+        <%= render :partial => 'comments/score', :locals => {:user_id => current_user.id, :comment_id => comment.id} %>
+      <% end %>
     </div>
+    <% if comment.micropost.top_comment == comment.id %>
+      <span style="display: inline-block; vertical-align: top; font-size: 2em; margin-right: 10px;" class="glyphicon glyphicon-ok top-comment"></span>
+    <% end %>
     <%= simple_format(comment.message, style: "display: inline-block; vertical-align: top;") %>
   </div>
 
-  <%= render Comment.where(:head => comment.id).all.sort_by {|x| x.points }.reverse %>
+  <%= render Comment.where(:head => comment.id).all.order(created_at: :desc).sort_by {|x| x.points }.reverse %>
 
 </div>

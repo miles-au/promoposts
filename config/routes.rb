@@ -73,6 +73,7 @@ Rails.application.routes.draw do
   get  "accounts/disconnect", to: "accounts#disconnect"
 
   get 'comments/reply', to: 'comments#reply'
+  get 'comments/mark_top_comment', to: 'microposts#mark_top_comment', as: :mark_top_comment
 
   get '/decline_wizard', to: 'static_pages#decline_wizard', as: 'decline_wizard'
 

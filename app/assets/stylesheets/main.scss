@@ -723,6 +723,16 @@ input {
   }
 }
 
+.timestamp{
+  a{
+    margin: 0 5px;
+  }
+}
+
+.top-comment{
+  color: $sigYellow;
+}
+
 .blueBack{
   background-color: $sigBlue;
   color: $sigYellow;

@@ -26,13 +26,9 @@
 	</div>
 	<div class="col-md-4">
 		<% if @micropost.shareable %>
-			<h3><%= link_to "Log In", login_path %> to share this post.</h3>
+			<h3><%= link_to "Log In", social_login_path %> to share this post.</h3>
 		<% end %>
 	</div>
 	<div class="col-md-1">
 	</div>
 </div>
-
-
-<p>&nbsp;</p>
-<%= render @comments %>

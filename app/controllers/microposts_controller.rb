@@ -66,7 +66,7 @@ class MicropostsController < ApplicationController
     @micropost = Micropost.find(params[:id])
     @comment = Comment.new
     @comments = Comment.where(:micropost_id => @micropost.id, :head => nil)
-    @comments = @comments.all.sort_by {|x| x.points }.reverse
+    @comments = @comments.all.order(created_at: :desc).sort_by {|x| x.points }.reverse
     @user = @micropost.user
 
     if logged_in?
@@ -322,6 +322,15 @@ class MicropostsController < ApplicationController
     uri = URI(url)
     uri.query = params.to_query
     uri.to_s
+  end
+
+  def mark_top_comment
+    micropost = Micropost.find(params['micropost_id'])
+    micropost.top_comment = params['comment_id']
+    micropost.save
+
+    flash[:success] = "Thank you for marking a top comment!"
+    redirect_to micropost
   end
 
   private
