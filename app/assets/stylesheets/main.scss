@@ -1013,23 +1013,25 @@ span.picture {
 }
 
 #favoriteProducts{
-  width: 200px;
-  display: inline-block;
-  font-size: 1em;
-  background-color: $sigYellow;
-  text-align: center;
-  vertical-align: top;
-  padding: 5px 0px;
   a{
-    vertical-align: top;
-    color: $sigBlue;
+    color: $grey1;
+    width: 100%;
   }
+  &:hover{
+    position: relative;
+    top: -5px;
+    left: -5px;
+  }
+}
+
+#profile-edit-link{
+  display: inline-block;
+  margin-bottom: 15px;
 
   &:hover{
-    background-color: $sigRed;
-    a, span{
-      color: $sigGrey;
-    }
+    position: relative;
+    top: -5px;
+    left: -5px;
   }
 }
 
@@ -1507,6 +1509,10 @@ span.picture {
 
   .modal-dialog{
     width: calc(100% - 20px);
+  }
+
+  .mobile-button{
+    width: calc(100% - 5px);
   }
 
 //navigation
