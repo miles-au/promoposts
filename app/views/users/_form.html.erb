@@ -46,14 +46,14 @@
     <%= f.label :slug, "Profile Url" %>
     <input type="textbox" class="form-control" placeholder="<%= @user.slug %>" id="slug-input" maxlength='75' />
     <div>
-      <p style="display: inline-block; ">www.promoposts.net/</p>
+      <p style="display: inline-block; ">www.promoposts.net/users/</p>
       <%= f.text_field :slug, class: 'form-control', readonly: true, id: "real-slug", style: 'display: inline-block; width: auto;' %>
     </div>
   <% else %>
     <%= f.hidden_field :slug, :value => SecureRandom.hex(64) %>
   <% end %>
 
-  <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+  <%= f.submit yield(:button_text), class: "pop-button form-submit" %>
 <% end %>
 
 <script>

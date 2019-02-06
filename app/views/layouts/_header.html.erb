@@ -16,7 +16,7 @@
             <% end %>
             <ul class="dropdown-menu">
               <!-- render notifications -->
-              <li class="notification-bullet" style="text-align: center;"><strong><%= link_to 'See all notifications', notifications_all_path%></strong></li>
+              <li class="notification-bullet" style="text-align: center;"><%= link_to 'see all notifications', notifications_all_path, :style => "width: 100%; font-weight: 700;" %></li>
               <% if current_user.unread_notifications.count > 0 %>
                 <%= render current_user.unread_notifications %>
               <% elsif current_user.notifications_today.count > 0 %>

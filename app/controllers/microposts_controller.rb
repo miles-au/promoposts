@@ -145,9 +145,7 @@ class MicropostsController < ApplicationController
       end
     end
 
-
-
-    redirect_to root_path
+    redirect_to micropost
   end
 
   def facebook_sharable_pages

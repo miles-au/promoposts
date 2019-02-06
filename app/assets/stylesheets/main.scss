@@ -9,6 +9,34 @@ $sigGrey: #f6f6f6;
 $sigRed: #ea5455;
 $sigCadet: #437F97;
 
+$yellow1: #ffb400;
+$yellow2: #ffc95c;
+$yellow3: #ffe4ae;
+$blue1: #2d4059;
+$blue2: #3d5875;
+$blue3: #54799b;
+$blue4: #97c2dd;
+$blue5: #ceddea;
+$grey1: #283642;
+$grey2: #48565e;
+$grey3: #9aa9b7;
+$grey4: #d7dde2;
+$grey5: #f6f6f6;
+$grey6: #ffffff;
+$teal1: #053b4c;
+$teal2: #1a5d72;
+$teal3: #437f97;
+$teal4: #66b4cc;
+$teal5: #a1d6e2;
+$teal6: #d7ebf2;
+$red1: #6b262c;
+$red2: #b72e35;
+$red3: #ea5455;
+$red4: #ef9297;
+
+$buttonShadow: 5px 5px $grey2;
+$buttonShadowHover: 13px 13px $grey3;
+
 @mixin vertical-align($position: relative) {
   position: $position;
   top: 50%;
@@ -40,6 +68,39 @@ textarea {
   margin-bottom: 10px;
 }
 
+.pop-button{
+  border: none;
+  background-color: $yellow1;
+  color: $grey1;
+  padding: 10px 20px;
+  font-weight: 700;
+  box-shadow: $buttonShadow;
+
+  &:hover{
+    box-shadow: $buttonShadowHover;
+  }
+}
+
+.form-submit{
+  &:hover{
+    margin-left: -5px;
+    margin-top: -5px;
+    margin-bottom: 20px;
+  }
+}
+
+.grey-submit{
+  background-color: $grey3;
+  color: $grey5;
+  padding: 5px;
+
+  &:hover{
+    background-color: $grey4;
+    color: $grey2;
+    font-weight: 700;
+  }
+}
+
 .btn, .btn-large, .btn-primary{
   border: none;
   border-radius: 0px;
@@ -57,17 +118,6 @@ textarea {
 
 }
 
-.search-btn{
-  background-color: $sigRed;
-  color: $sigGrey;
-  border: none;
-
-  &:hover{
-    background-color: $sigYellow;
-    color: $sigBlue;
-  } 
-}
-
 .btn-greyed{
   background-color: grey;
 }
@@ -83,18 +133,19 @@ textarea {
 .follow-btn{
   border: none;
   border-radius: 0px;
-  background-color: $sigCadet;
+  background-color: $yellow1;
   display: inline-block;
+  box-shadow: 2px 2px $grey2;
 
   div, span{
     display: inline-block;
-    color: $sigGrey;
+    color: $grey1;
     margin-left: 3px;
   }
   &:hover{
-    background-color: $sigRed;
+    background-color: $yellow3;
     div, span{
-      color: $sigGrey;
+      color: $grey1;
     }
   }
 }
@@ -102,16 +153,20 @@ textarea {
 .unfollow-btn{
   border: none;
   border-radius: 0px;
-  background-color: grey;
+  background-color: $grey3;
+  box-shadow: 2px 2px $grey2;
 
   div, span{
     display: inline-block;
-    color: $sigGrey;
+    color: $grey5;
     margin-left: 3px;
   }
+
   &:hover{
-    background-color: $sigRed;
-    color: $sigGrey;
+    background-color: $grey4;
+    div, span{
+      color: $grey2;
+    }
   }
 }
 
@@ -127,6 +182,7 @@ textarea {
 
 header, .navbar-inverse, .navbar-fixed-top{
   background-color: $sigBlue !important;
+  border: none;
 }
 
 .navbar-nav, .navbar-right{
@@ -140,7 +196,7 @@ header, .navbar-inverse, .navbar-fixed-top{
 }
 
 .jumbotron{
-  background-color: $sigYellow;
+  background-color: $blue5;
   border-radius: 0px !important;
   padding-top: 20px;
   padding-bottom: 20px;
@@ -154,57 +210,56 @@ header, .navbar-inverse, .navbar-fixed-top{
     font-size: 1.5em;
   }
 
-  .btn-discourage{
-    background-color: $sigBlue;
-    color: $sigGrey;
-
+  .pop-button{
+    display: inline-block;
     &:hover{
-      background-color: $sigGrey;
-      color: $sigBlue;
-    }
-  }
-  .btn-encourage{
-    background-color: $sigRed;
-    color: $sigGrey;
-
-    &:hover{
-      background-color: $sigGrey;
-      color: $sigBlue;
+      margin-left: -5px;
+      margin-bottom: 5px;
+      margin-top: -5px;
     }
   }
 }
 
 #quickstart-wizard{
-  text-align: center;
-  border: 5px solid $sigBlue;
-  margin-bottom: 10px;
-  span{
-    padding: 20px 10px 10px 10px;
-    font-size: 2em;
+  h2{
+    font-size: 2.5em;
+    margin-bottom: 0px;
   }
-  h3{
-    margin-top: 0px;
+  span{
+    font-size: 2em;
+    text-align: center;
+  }
+  .col{
+    padding: 10px;
+  }
+  .pop-button{
+    height: 175px;
+    font-size: 1.3em;
+    width: 100%;
+    &:hover{
+      margin-right: 5px;
+      margin-left: -5px;
+      margin-top: -5px;
+    }
   }
 }
 
 #decline-wizard{
-  margin: 0px -20px 0px 0px;
-  padding: 0px;
-  float: right;
-  display: block;
-  clear: both;
-  font-size: 0.9em;
+  span{
+    font-size: 1.1em;
+    color: $blue3;
+  }
 }
 
 /* typography */
 
 h1, h2, h3, h4, h5, h6, ul, li, p, div, span, body{
   font-family: 'Bai Jamjuree', sans-serif;
-  color: $sigBlue;
+  color: $grey1;
 }
 a{
   font-family: 'Bai Jamjuree', sans-serif;
-  color: $sigCadet;
+  color: $blue3;
 }
 
 
@@ -225,7 +280,7 @@ h2 {
 
 p {
   font-size: 1.1em;
-  line-height: 1.7em;
+  line-height: 1.4em;
 }
 
 /* header */
@@ -258,12 +313,21 @@ p {
 
 /*drop down*/
 .navbar .open a{
-    background-color: $sigGrey !important;
-    color: $sigBlue !important;
+    background-color: $yellow3 !important;
+    color: $grey1 !important;
     white-space: normal !important;
+    margin-bottom: -1px;
     span{
       color: $sigBlue;
     }
+}
+
+.dropdown open{
+  background-color: $yellow1;
+}
+
+li > .dropdown > .open:focus {
+  outline: none;
 }
 
 .dropdown-backdrop{
@@ -271,12 +335,12 @@ p {
 }
 
 .has_notifications{
-  color: $sigYellow !important;
+  color: $yellow1 !important;
 }
 
 .notification-bullet{
   list-style: none;
-  border-bottom: 1px solid $sigBlue;
+  border-bottom: 1px solid $blue1;
 }
 
 .navbar-inverse .navbar-nav > li > a {
@@ -291,34 +355,22 @@ p {
 .dropdown-menu{
   padding: 0px;
   width: 300px;
-  border-bottom: 3px solid $sigBlue;
-  border-left: 3px solid $sigBlue;
-  border-right: 3px solid $sigBlue;
-  border-top: 3px solid $sigGrey;
-  margin-top: 3px;
+  margin-top: 1px !important;
   border-radius: 0px;
+  border:none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
-  box-shadow: none;
+  box-shadow: $buttonShadow;
   max-height: calc(100vh - 50px);
   overflow: scroll;
 
-  li a{
-    background-color: $sigGrey;
-    color: $sigBlue;
-  }
-
   li a:hover{
-    background-color: $sigBlue !important;
-    color: $sigYellow !important;
+    background-color: $yellow1 !important;
+    color: $grey1 !important;
     span{
-      color: $sigYellow;
+      color: $grey2;
     }
   }
-}
-
-#logOutBtn{
-  border-top: 1px solid $sigBlue; 
 }
 
 /* footer */
@@ -476,10 +528,6 @@ aside {
     }
 }
 
-.users.follow {
-  padding: 0;
-}
-
 #user_display{
   display: inline-block;
   width: 200px;
@@ -494,14 +542,29 @@ aside {
 /* forms */
 
 input, textarea, select, .uneditable-input {
-  border: 1px solid #bbb;
   width: 100%;
   margin-bottom: 15px;
   @include box_sizing;
 }
 
+input[type="text"], input[type="email"], input[type="password"], input[type="textbox"]{
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 1px solid $grey3 !important;
+  border-radius: 0px !important;
+  background-color: $grey6;
+}
+
+.form-control[readonly]{
+  background-color: $grey4 !important;
+}
+
 input {
   height: auto !important;
+  &:focus{
+    outline: none;
+  }
 }
 
 #error_explanation {  
@@ -602,33 +665,33 @@ input {
 
 /* Users index */
 
-.users {
-  list-style: none;
-  margin: 0;
-  li {
-    overflow: auto;
-    padding: 10px 0;
-    border-bottom: 1px solid $gray-lighter;
-    font-size: 1.2em;
+.users-gallery{
+  text-align: center;
+  .user-block{
+    text-align: left;
+    margin-bottom: 15px;
+    display: inline-block;
+    width: 200px;
+    vertical-align: top;
+    border-bottom: 2px solid $grey4;
+    padding: 5px;
   }
 }
 
 .categoryTag{
   display: inline-block;
-  padding: 0px 2px;
-  line-height: 1.2em;
   vertical-align: top;
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 
 .vendorTag{
-  background-color: $sigYellow;
-  color: $sigBlue;
+  background-color: $teal4;
+  color: $grey5;
 }
 
 .distributorTag{
-  background-color: $sigBlue;
-  color: $sigYellow;
+  background-color: $teal3;
+  color: $grey5;
 }
 
 /* microposts */
@@ -639,7 +702,6 @@ input {
 
   li {
     padding: 10px 0;
-    border-top: 1px solid #e8e8e8;
   }
   .user {
     margin-top: 5em;
@@ -654,12 +716,6 @@ input {
       display: block;
       padding: 5px 0;
     }
-  }
-  .timestamp {
-    color: grey;
-    display: block;
-    margin-left: 60px;
-    font-size: 0.8em;
   }
   .avatar {
     float: left;
@@ -686,8 +742,6 @@ input {
   .content{
     vertical-align: top;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     margin-left: 0px;
 
     img{
@@ -720,12 +774,32 @@ input {
         @include vertical-align;
       }
     }
+
+    .content-minified{
+      display: block;
+    }
+    .content-full{
+      display: none;
+    }
+
   }
 }
 
 .timestamp{
+  display: block;
+  color: $grey3;
+  font-size: 0.8em;
+
   a{
     margin: 0 5px;
+  }
+}
+
+.go-to-post{
+  .go-to-post-link{
+    color: $grey3;
+    font-size: 0.8em;
+    margin-left: 15px;
   }
 }
 
@@ -733,19 +807,19 @@ input {
   color: $sigYellow;
 }
 
-.blueBack{
-  background-color: $sigBlue;
-  color: $sigYellow;
+.questionBack{
+  background-color: $blue3;
+  color: $grey5;
 }
 
-.cadetBack{
-  background-color: $sigCadet;
-  color: $sigGrey;
+.careersBack{
+  background-color: $blue2;
+  color: $yellow3;
 }
 
-.yellowBack{
-  background-color: $sigYellow;
-  color: $sigBlue;
+.defaultBack{
+  background-color: $blue1;
+  color: $yellow1;
 }
 
 .clickToShare{
@@ -770,7 +844,6 @@ input {
 
 .micropost-full{
   .content{
-    padding-top: 20px;
     img{
       width: 60%;
       display: block;
@@ -788,22 +861,31 @@ input {
       opacity: 1;
     }
   }  
-
-  .timestamp {
-    color: grey;
+  p{
+    height: auto !important;
+  }
+  .content-minified{
+    display: none;
+  }
+  .content-full{
     display: block;
-    margin-left: 60px;
-    font-size: 0.8em;
   }
 }
 
-.micropost-modal{
+#micropost-page{
   .content{
-    img{
-      width: 100%;
-      display: block;
-      clear: both;
+    p{
+      padding-top: 10px;
+      border-top: 2px solid $grey4;
     }
+  }
+}
+
+#share-button, #useOriginalText, #post-comment-button{
+  &:hover{
+    margin-left: -5px;
+    margin-top: -5px;
+    margin-bottom: 15px !important;
   }
 }
 
@@ -825,7 +907,7 @@ input {
 
   &:hover{
     span, p{
-      color: $sigCadet;
+      color: $teal3;
     }
   }
 
@@ -845,37 +927,47 @@ span.picture {
   }
 }
 
+#feeds{
+  margin-bottom: 5px;
+  a{
+    text-decoration: none;
+  }
+}
+
 .tab{
   display: inline-block;
   padding: 15px;
   font-weight: 800;
-  background-color: $sigBlue;
-  color: $sigYellow;
-
+  background-color: $yellow1;
+  color: $grey1;
+  border-radius: 8px;
+  box-shadow: $buttonShadow;
+  margin: 10px 5px;
   &:hover{
-    background-color: $sigGrey;
-    color: $sigBlue;
+    position: relative;
+    top: 5px;
+    left: 5px;
+    background-color: $blue1;
+    color: $grey5;
+    box-shadow: none;
   }
 }
 
 .tab-active{
-  background-color: $sigYellow;
-  color: $sigBlue;
-
-  &:hover{
-    background-color: $sigGrey;
-    color: $sigBlue;
-    text-decoration: none;
-  }
+  position: relative;
+  top: 5px;
+  left: 5px;
+  background-color: $blue1;
+  color: $grey5;
+  box-shadow: none;
 }
 
 .createPost{
   display: inline-block;
   float: right;
-  margin-right: 100px;
-  margin-top: 10px; 
-  border: 2px solid $sigBlue;
+  margin-right: 5%;
   padding: 5px 7px;
+  text-align: center;
 
   a{
     text-decoration: none;
@@ -886,11 +978,10 @@ span.picture {
   }
 
   &:hover{
-    div, span, h3{
-      text-decoration: none;
-      color: $sigYellow;
-    }
+    margin-right: calc(5% + 5px);
+    margin-top: -5px;
   }
+
 }
 
 .feed{
@@ -944,19 +1035,20 @@ span.picture {
 
 #allLists{
   h3{
-    background-color: $sigBlue !important;
+    background-color: $grey1 !important;
     border: none;
-    color: $sigGrey;
+    color: $grey1;
+    font-size: 1.3em;
   }
   .ui-state-active{
-    background-color: $sigYellow !important;
+    background-color: $yellow1 !important;
     border: none;
-    color: $sigBlue;
+    color: $blue1;
   }
   .ui-accordion-header-collapsed{
-    background-color: $sigBlue !important;
+    background-color: $blue1 !important;
     border: none;
-    color: $sigGrey;
+    color: $grey5;
   }
 }
 
@@ -979,6 +1071,9 @@ span.picture {
 .listEditContainer{
   a{
     margin-right: 10px;
+  }
+  a, span{
+    color: $blue3 !important;
   }
 }
 
@@ -1157,7 +1252,7 @@ span.picture {
   background-color: #323b43;
 }
 .email-login{
-  background-color: $sigCadet;
+  background-color: $teal3;
 }
 
 .top_icons{
@@ -1218,32 +1313,101 @@ span.picture {
   }
 }
 
-#searchBar{
-  span, form{
+.searchBar{
+  form{
+    background-color: $grey6;
+    width: auto;
+    height: auto;
     display: inline-block;
-    margin-left: 10px;
+    clear: right !important;
+    height: 30px;
+  }
+  form, button{
+    display: inline-block;
   }
   input{
-    width: auto;
+    padding-left: 5px;
+    display: inline-block;
+    width: 500px !important;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid $grey3;
+  }
+  input, button{
+    height: 30px !important;
+  }
+  button{
+    vertical-align: top;
+    border: none !important;
+    background-color: $yellow3;
+    text-align: center;
+  }
+  form:hover button{
+    background-color: $yellow1;
   }
 }
 
-#usersIndexSearch{
-  div{
+#feed-select{
+  position: relative;
+
+  #select-title{
     display: inline-block;
+    width: 50%;
+    font-size: 1.3em;
+    text-align: right;
+    background-color: $yellow3;
+    padding: 0px 25px 0px 5px;
+    margin: 10px 0px;
+    height: 50px;
+    line-height: 50px;
   }
-  input{
+  select{
+    position: relative;
+    margin: 10px 0px;
+    background-color: $yellow1;
+    border-radius: 0px;
+    border-top: 1px solid $grey2;
+    border-bottom: 1px solid $grey2;
+    border-left: none;
+    border-right: none;
+    padding: 5px;
+    font-size: 1.3em;
+    width: 50%;
     display: inline-block;
-    width: 500px;
+    float: right;
+    appearance: menulist !important;
+    height: 50px;
   }
-  .btn{
-    width: 150px;
+  &:after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: calc(50% - 5px);
+    width: 0; 
+    height: 0; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid $grey1;
+    pointer-events: none;
+  }
+  &:before {
+    content: "";
+    position: absolute;
+    right: calc(50vw - 15px);
+    top: 10px;
+    width: 30px; 
+    height: 50px; 
+    border-radius: 50%;
+    pointer-events: none;
+    background-color: $yellow1;
+    border: 1px solid $grey2;
   }
 }
 
 .connect_link{
   span, h5{
-    color: $sigCadet;
+    color: $teal3;
     display: inline-block;
     margin-left: 10px;
   }
@@ -1307,8 +1471,17 @@ span.picture {
   display: block;  
 }
 
+.mobile-show{
+  display: none !important;
+}
 
 @media (max-width: 768px){
+  .mobile-show{
+    display: block !important;
+  }
+  .mobile-hide{
+    display: none !important;
+  }
 
 //home page
   #logo {
@@ -1330,10 +1503,6 @@ span.picture {
   .container{
     width: 100%;
     padding: 0px;
-  }
-  #createPostBtn{
-    display: inline-block;
-    width: 100vw;
   }
 
   .modal-dialog{
@@ -1389,22 +1558,7 @@ span.picture {
   .createPost{
     float: left;
     margin-bottom: 10px;
-    width: 100%;
-    text-align: center;
-  }
-  #usersIndexSearch{
-    padding: 0px 10px;
-
-    div{
-      display: inline-block;
-    }
-    input{
-      display: inline-block;
-      width: 100%;
-    }
-    .btn{
-      width: 100%;
-    }
+    width: calc(100% - 5px);
   }
   .navbar-right{
     margin: 0px;
@@ -1418,6 +1572,16 @@ span.picture {
   }
   .dropdown-menu{
     float: right !important;
+  }
+  .searchBar{
+    form{
+      width: 100%;
+      text-align: center;
+    }
+    input{
+      width: calc(100% - 50px) !important;
+      margin-bottom: 0px;
+    }
   }
 
 //profile
@@ -1473,32 +1637,13 @@ span.picture {
   }
   #quickstart-wizard{
     padding: 5px !important;
-    text-align: left;
-
-    span{
-      display: inline-block;
-      vertical-align: top;
-      padding: 0px 15px;
-    }
-    h3{
-      vertical-align: top;
-      display: inline-block;
-      width: 70%;
+    .pop-button{
+      height: auto;
     }
     a{
+      width: 100%;
       display: inline-block;
     }
-  }
-  #quickstart-subtitle{
-    display: none;
-  }
-  #decline-wizard{
-    margin: 0px;
-    padding: 0px;
-    float: right;
-    display: block;
-    clear: both;
-    font-size: 0.9em;
   }
 }
 

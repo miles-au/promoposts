@@ -1,17 +1,22 @@
 <% provide(:title, 'All users') %>
 
-<div id="usersIndexSearch">
-	<h3>Find a user</h3>
+<!--search-->
+<h3>Find a user</h3>
+<div class="searchBar">
 	<%= form_tag users_path, :method => 'get' do %>
-	  <%= text_field_tag :search, params[:search] %>
-	  <%= submit_tag "Search", :name => nil, class: "btn btn-primary" %>
+	  <%= text_field_tag :search, params[:search], :placeholder => 'enter a name' %>
+	  <%= button_tag(type: "submit", :name => nil,class: "search-btn") do %>
+	    <span class="glyphicon glyphicon-search" ></span>
+	  <% end %>
+
 	<% end %>
 </div>
 
-<div id="usersContainer" style="padding-top: 20px;">
-	<ul id="usersIndex" class="users">
+<div id="usersContainer" class="users-gallery" style="padding-top: 20px;">
+	<div id="usersIndex">
 		<%= render @users %>
-	</ul>
+	</div>
 </div>
+
 <%= will_paginate @users %>
 

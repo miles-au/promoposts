@@ -1,119 +1,112 @@
-<% if logged_in? %>
-	<%= form_for @event, url: share_to_socials_path(:id => current_user.id, :micropost_id => @micropost.id), html: {method: :post} do |f| %>
+<span id="micropost-page">
+	<div style="display: inline-block;">
+    	<div class="avatar avatar-thumbnail" style="background-image: url('<%= @micropost.user.avatar %>');"></div>
+  	</div>
+  	<div style="display: inline-block;">
+	  	<h3 class="user" style="display: block;"><%= link_to @micropost.user.name, @micropost.user %></h3>
+    	<%= render :partial => 'shared/accolades', :locals => {:category => @user.category} %>
+	  	<span class="timestamp">
+	      Posted <%= time_ago_in_words(@micropost.created_at) %> ago.
+	      <% if current_user %>
+	        <% if current_user?(@micropost.user) || current_user.admin? %>
+	          <%= link_to "delete", @micropost, method: :delete,
+	                                           data: { confirm: "You sure?" } %>
+	        <% end %>
+	      <% end %>
+	    </span>
+	</div>
 
-		<div style="display: inline-block;">
-	    	<div class="avatar avatar-thumbnail" style="background-image: url('<%= @micropost.user.avatar %>');"></div>
-	  	</div>
-	  	<div style="display: inline-block;">
-		  	<h3 class="user" style="display: block;"><%= link_to @micropost.user.name, @micropost.user %></h3>
-        	<%= render :partial => 'shared/accolades', :locals => {:category => @user.category} %>
-		  	<span class="timestamp">
-		      Posted <%= time_ago_in_words(@micropost.created_at) %> ago.
-		      <% if current_user %>
-		        <% if current_user?(@micropost.user) || current_user.admin? %>
-		          <%= link_to "delete", @micropost, method: :delete,
-		                                           data: { confirm: "You sure?" } %>
+	<div class="row">
+		<div class="col-md-8">
+		  <div class="section" style="margin-top: 20px;">
+		      <span class="content">
+		      	<p style="font-size: 1.3em;">"<%= @micropost.content %>"</p>
+		        <% if @micropost.picture? %>
+		        	<img style="width: 100%;" src="<%= @micropost.picture.url %>", alt="promo post picture" />
 		        <% end %>
-		      <% end %>
-		    </span>
-		</div>
+		      </span>
+		  </div>
+		  <% if current_user %>
+			<%= render 'shared/comment_form' %>
+		  <% end %>
 
-		<div class="row">
-			<div class="col-md-8">
+		  <p>&nbsp;</p>
+		  <%= render @comments %>
+		</div>
+		<div class="col-md-4">
+			<% if logged_in? %>
 				<% if @micropost.shareable %>
-					<h3>1. Edit your text</h3>
-					  <div class="section">
-					      <span class="content">
-					      	<%= f.text_field :message, :id => "inputText", :maxlength => 240 %>
-					      	<div class="btn" id="useOriginalText">Use/Edit Original Text</div>
-					      	<p><%= @micropost.content %></p>
-					        <% if @micropost.picture? %>
-					        	<img style="width: 100%;" src="<%= @micropost.picture.url %>", alt="promo post picture" />
-					        <% end %>
-					      </span>
-					  </div>
-			  	<% else %>
-			  		<p><%= @micropost.content %></p>
-			  		<% if @micropost.picture? %>
-			        	<img style="width: 100%;" src="<%= @micropost.picture.url %>", alt="promo post picture" />
-			        <% end %>
-			  	<% end %>
-			</div>
-			<div class="col-md-4">
-				<% if @micropost.shareable %>
-					<h3>2. Share it!</h3>
-					<div id="shareContainer">
-				    	<span class="SoMeIcon">
-				    		<img class="facebook-login" src="<%= ActionController::Base.helpers.asset_path('facebook.svg')%>">
-				    	</span>
-				    	<% if !@fbaccounts.empty? %>
-							<% @fbaccounts.each do |page| %>
-								<%= render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id, :page_picture => page.picture}) %>
-							<% end %>
-						<% else %>
-							<% if current_user.fb_uid %>
-								<h6>No sharable pages available.</h6>
+					<%= form_for @event, url: share_to_socials_path(:id => current_user.id, :micropost_id => @micropost.id), html: {method: :post} do |f| %>
+						<h3>Share it!</h3>
+						<%= f.label :message, "Enter a caption:" %>
+						<div class="pop-button" style="margin-bottom: 10px;" id="useOriginalText">Use/Edit Original Text</div>
+						<%= f.text_area :message, :id => "inputText", :maxlength => 240 %>
+						<div id="shareContainer" style="margin-top: 10px;">
+					    	<span class="SoMeIcon">
+					    		<img class="facebook-login" src="<%= ActionController::Base.helpers.asset_path('facebook.svg')%>">
+					    	</span>
+					    	<% if !@fbaccounts.empty? %>
+								<% @fbaccounts.each do |page| %>
+									<%= render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id, :page_picture => page.picture}) %>
+								<% end %>
 							<% else %>
-								<%= render(:partial => 'shared/connect_account', :locals => { :provider => 'facebook'}) %>
+								<% if current_user.fb_uid %>
+									<h6>No sharable pages available.</h6>
+								<% else %>
+									<%= render(:partial => 'shared/connect_account', :locals => { :provider => 'facebook'}) %>
+								<% end %>
 							<% end %>
-						<% end %>
-						<span class="SoMeIcon">
-				    		<img class="linkedin-login" src="<%= ActionController::Base.helpers.asset_path('linkedin.svg')%>">
-				    	</span>
-				    	<% if !@linkedinaccounts.empty? %>
-							<% @linkedinaccounts.each do |page| %>
-								<%= render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id, :page_picture => page.picture}) %>
-							<% end %>
-						<% else %>
-							<% if current_user.linkedin_uid %>
-								<h6>No sharable pages available.</h6>
+							<span class="SoMeIcon">
+					    		<img class="linkedin-login" src="<%= ActionController::Base.helpers.asset_path('linkedin.svg')%>">
+					    	</span>
+					    	<% if !@linkedinaccounts.empty? %>
+								<% @linkedinaccounts.each do |page| %>
+									<%= render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id, :page_picture => page.picture}) %>
+								<% end %>
 							<% else %>
-								<%= render(:partial => 'shared/connect_account', :locals => { :provider => 'linkedin'}) %>
+								<% if current_user.linkedin_uid %>
+									<h6>No sharable pages available.</h6>
+								<% else %>
+									<%= render(:partial => 'shared/connect_account', :locals => { :provider => 'linkedin'}) %>
+								<% end %>
 							<% end %>
-						<% end %>
-						<span class="SoMeIcon">
-				    		<img class="buffer-login" src="<%= ActionController::Base.helpers.asset_path('buffer.svg')%>">
-				    	</span>
-						<% if !@bufferaccounts.empty? %>
-							<% @bufferaccounts.each do |page| %>
-								<%= render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id, :page_picture => page.picture}) %>
-							<% end %>
-						<% else %>
-							<% if current_user.buffer_uid %>
-								<h6>No sharable pages available.</h6>
+							<span class="SoMeIcon">
+					    		<img class="buffer-login" src="<%= ActionController::Base.helpers.asset_path('buffer.svg')%>">
+					    	</span>
+							<% if !@bufferaccounts.empty? %>
+								<% @bufferaccounts.each do |page| %>
+									<%= render(:partial => 'page_display', :locals => { :page_name => page.name, :page_id => page.account_id, :page_picture => page.picture}) %>
+								<% end %>
 							<% else %>
-								<%= render(:partial => 'shared/connect_account', :locals => { :provider => 'buffer'}) %>
+								<% if current_user.buffer_uid %>
+									<h6>No sharable pages available.</h6>
+								<% else %>
+									<%= render(:partial => 'shared/connect_account', :locals => { :provider => 'buffer'}) %>
+								<% end %>
 							<% end %>
-						<% end %>
-				  	</div>
-				  	<div>
-						<%= f.submit "Share", class: "btn btn-primary hidden", id: "share-button" %>
-						<div id="micropost-missing-fields" class="" style="display: block; margin: 5px 0;">Share</div>
-						<ul style="text-align: left;">
-							<li id="missing-text">Missing text</li>
-							<li id="missing-pages">Missing pages to share to</li>
-						</ul>
-					</div>
+					  	</div>
+					  	<div>
+							<%= f.submit "Share", class: "pop-button hidden", id: "share-button" %>
+							<div id="micropost-missing-fields" class="" style="display: block; margin: 5px 0;">Share</div>
+							<ul style="text-align: left;">
+								<li id="missing-text">Missing text</li>
+								<li id="missing-pages">Missing pages to share to</li>
+							</ul>
+						</div>
+					<% end %>
 				<% else %>
 					<h4> Sharing for this post is turned off </h4>
 				<% end %>
+			<% else %>
+				<h3><%= link_to "Log In", social_login_path %> to share this post.</h3>
+			<% end %>
 
-			</div>
-			<div class="col-md-1">
-				
-			</div>
 		</div>
-	<% end %>
-<% else %>
-	<%= render 'show_visitor' %>
-<% end %>
-
-<% if current_user %>
-	<%= render 'shared/comment_form' %>
-<% end %>
-
-<p>&nbsp;</p>
-<%= render @comments %>
+		<div class="col-md-1">
+			
+		</div>
+	</div>
+</span>
 
 <% if current_user %>
 <script>

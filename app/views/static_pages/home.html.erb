@@ -12,24 +12,25 @@
 	  <h2>
 	    Promotional products content shared in seconds
 	  </h2>
-
-	  <%#= link_to "sign up", signup_path, class: "btn btn-lg btn-primary" %>
-	  <%= link_to "log in / sign up", social_login_path, class: "btn btn-lg btn-primary" %>
+	  <div style="text-align: center;">
+	  	<%= link_to "log in / sign up", social_login_path, class: "pop-button pop-button-big" %>
+	  </div>
 	</div>
 <% end %>
 
 <!--search-->
-<div id="searchBar">
-	<span class="glyphicon glyphicon-search" ></span>
+<div class="searchBar">
 	<%= form_tag root_path, :method => 'get', id: 'searchPosts' do %>
-	  <%= text_field_tag :search, params[:search], :placeholder => 'Search posts' %>
+	  <%= text_field_tag :search, params[:search], :placeholder => 'search posts' %>
 	  <%= hidden_field_tag :feed , "search" %>
-	  <%= submit_tag "go", :name => nil, class: 'search-btn' %>
+	  <%= button_tag(type: "submit", :name => nil,class: "search-btn") do %>
+	    <span class="glyphicon glyphicon-search" ></span>
+	  <% end %>
 	<% end %>
 </div>
 
 <!--feeds-->
-<div style="display:inline-block;">
+<div id="feeds" class="mobile-hide" style="display:inline-block;">
 	<% if logged_in? %>
 		<%= link_to root_path( :feed => "user") do%>
 			<h5 id="userFeed" class="tab <%= 'tab-active' if @feed_type == 'user' %>">Your Feed</h5>
@@ -49,11 +50,22 @@
 	<% end %>
 </div>
 
+<div id="feed-select" class="mobile-show">
+	<span id="select-title">Current Feed:</span>
+	<select class="mobile-show" >
+	  <option value="/?feed=user" <%= 'selected' if @feed_type == 'user' %> >Your Feed</option>
+	  <option value="/?feed=global" <%= 'selected' if @feed_type == 'global' %> >Global Feed</option>
+	  <option value="/?feed=vendor" <%= 'selected' if @feed_type == 'vendor' %> >Vendor Feed</option>
+	  <option value="/?feed=questions" <%= 'selected' if @feed_type == 'questions' %> >Questions</option>
+	  <option value="/?feed=careers" <%= 'selected' if @feed_type == 'careers' %> >Careers</option>
+	</select>
+</div>
+
 <!--link to create post-->
 <% if logged_in? %>
   
 	<%= link_to microposts_new_path, :id => "createPostBtn" do%>
-		<div class="createPost">
+		<div class="createPost pop-button">
 			<span class="glyphicon glyphicon-pencil"></span>
 			<h3 class = "top_icons">create post</h3>
 		</div>
@@ -91,3 +103,15 @@
 	  	</div>
 	</div>
 </div>
+
+<script>
+	$(function(){
+      $('#feed-select').bind('change', function () {
+         var url = $(this).val()
+          if (url) {
+              window.location.replace(url);
+          }
+          return false;
+      });
+    });
+</script>

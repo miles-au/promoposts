@@ -1,26 +1,45 @@
 <% if current_user.accolade.newcomer %>
 
-	<div class='row' id="quickstart-wizard" style="padding: 5px 40px;">
-		<div class="col-md-3 col-sm-12">
-			<h2 style="font-size: 2em; text-align: left; margin-bottom: 5px;"><strong>Quickstart Wizard</strong></h2>
-			<p style="text-align: left;" id="quickstart-subtitle">Welcome to<br>Promo Posts!</p>
+	<div id="quickstart-wizard" class="jumbotron">
+		<h2><strong>Quickstart Wizard</strong></h2>
+		<p id="quickstart-subtitle" style="font-size: 1.5em; text-align: center;">Welcome to Promo Posts!</p>
+		<div class="row">
+			<div class="col col-md-3 col-sm-12">
+				<%= link_to edit_user_path(:id => current_user.id) do %>
+					<div class="pop-button">
+						<span class="glyphicon glyphicon-<%= current_user.picture.url ? 'check' : 'unchecked' %>"></span>
+						<p>1. upload a profile picture</p>
+					</div>
+				<% end %>
+			</div>
+			<div class="col col-md-3 col-sm-12">
+				<%= link_to accounts_edit_path(:id => current_user.id) do%>
+					<div class="pop-button">
+						<span class="glyphicon glyphicon-<%= current_user.accounts.count > 0 ? 'check' : 'unchecked' %>"></span>
+						<p>2. connect a social platform</p>
+					</div>
+				<% end %>
+			</div>
+			<div class="col col-md-3 col-sm-12">
+				<%= link_to show_lists_path(:id => current_user.id) do %>
+					<div class="pop-button">
+						<span class="glyphicon glyphicon-<%= current_user.lists.count > 0 ? 'check' : 'unchecked' %>"></span>
+						<p>3. create a product list</p>
+					</div>
+				<% end %>
+			</div>
+			<div class="col col-md-3 col-sm-12">
+				<%= link_to microposts_new_path do %>
+					<div class="pop-button">
+						<span class="glyphicon glyphicon-<%= current_user.microposts.count > 0 ? 'check' : 'unchecked' %>"></span>
+						<p>4. create a post</p>
+					</div>
+				<% end %>
+			</div>
 		</div>
-		<div class="col-md-3 col-sm-12">
-			<span class="glyphicon glyphicon-<%= current_user.picture.url ? 'check' : 'unchecked' %>"></span>
-			<h3><%= link_to "1. Upload a profile picture", edit_user_path(:id => current_user.id) %></h3>
-		</div>
-		<div class="col-md-3 col-sm-12">
-			<span class="glyphicon glyphicon-<%= current_user.accounts.count > 0 ? 'check' : 'unchecked' %>"></span>
-			<h3><%= link_to "2. Connect a social media account", accounts_edit_path(:id => current_user.id) %></h3>
-		</div>
-		<div class="col-md-3 col-sm-12">
-			<span class="glyphicon glyphicon-<%= current_user.microposts.count > 0 ? 'check' : 'unchecked' %>"></span>
-			<h3><%= link_to "3. Create a post", microposts_new_path %></h3>
-		</div>
-		<p id="decline-wizard"><%= link_to decline_wizard_path, :remote => true do %>
-  			no thanks, I <em>am</em> the wizard
-  			<% end %>
-  		</p>
+		<%= link_to decline_wizard_path, :remote => true, :id => "decline-wizard", :style => "text-align: right; display: block;" do %>
+			no thanks, I <em>am</em> the wizard <span class="glyphicon glyphicon-remove"></span>
+		<% end %>
 	</div>
 	
 <% end %>

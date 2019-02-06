@@ -1,6 +1,9 @@
+<% puts "content: #{content}" %>
+<% puts "LENGTH: #{content.length}" %>
 <div class="section">
   <span class="content">
-    <p style="font-size: 1.4em; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%= content %></p>
+    <p class="content-minified" style="font-size: 1.2em; overflow: hidden; height: 5em;"><%= content.length > 100 ? content[0..97] : content %> <span class="go-to-post"><%= content.length > 100 ? '...' : '' %><span class="go-to-post-link">go to post</span></span></p>
+    <p class="content-full" style="font-size: 1.2em; overflow: hidden; height: 5em;"><%= content %></p>
 
     <% if picture_url %>
       <div class="square" style="background-image: url('<%= picture_url %>');">

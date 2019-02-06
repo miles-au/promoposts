@@ -1,15 +1,15 @@
-<li>
+<div class="user-block">
   <div class="avatar avatar-thumbnail" style="background-image: url('<%= user.avatar %>');"></div>
   <%= link_to user.name, user %>
   <% if current_user.admin? && !current_user?(user) %>
     | <%= link_to "delete", user, method: :delete,
                                   data: { confirm: "You sure?" } %>
   <% end %>
-  <div style="display: inline-block;">
-  	<%= render :partial => 'shared/accolades', :locals => {:category => user.category} %>
+  <div>
+    <%= render :partial => 'shared/accolades', :locals => {:category => user.category} %>
   </div>
-</li>
+</div>
 
 <script>
-	show_tooltips();
+  show_tooltips();
 </script>

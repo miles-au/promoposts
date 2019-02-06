@@ -17,11 +17,11 @@
 
     <% case micropost.category %>
       <% when 'question' %>
-        <% bgcolor = 'yellowBack' %>
+        <% bgcolor = 'questionBack' %>
       <% when 'careers' %>
-        <% bgcolor = 'cadetBack' %>
+        <% bgcolor = 'careersBack' %>
       <% else %>
-        <% bgcolor = 'blueBack' %>
+        <% bgcolor = 'defaultBack' %>
     <% end %>
 
     <% if micropost.shareable%>

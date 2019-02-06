@@ -7,9 +7,7 @@
           <div class="avatar" style="background-image: url('<%= @user.avatar %>');"></div>
         </div>
         <h1>
-          <%= link_to @user do %>
-            <span style="text-align: left; display: block;"><%= @user.name %></span>
-          <% end %>
+          <%= link_to @user.name, @user %>
         </h1>
       </section>
     </div>
@@ -20,9 +18,9 @@
   <div class="col-md-8">
     <h3><%= @title %></h3>
     <% if @users.any? %>
-      <ul class="users follow">
+      <div class="users-gallery">
         <%= render @users %>
-      </ul>
+      </div>
       <%= will_paginate %>
     <% end %>
   </div>

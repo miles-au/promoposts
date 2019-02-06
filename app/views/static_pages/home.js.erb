@@ -3,5 +3,5 @@ $('#postsContainer').append('<%= j render @feed_items %>');
   $('.pagination').replaceWith('<%= j will_paginate @feed_items %>');
 <% else %>
   $(window).off('scroll');
-  $('.pagination').remove();
+  $('.pagination').replaceWith('<h3 style="clear: both;">end of list</h3>');
 <% end %>

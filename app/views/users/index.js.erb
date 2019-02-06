@@ -3,5 +3,5 @@ $('#usersIndex').append('<%= j render @users %>');
   $('.pagination').replaceWith('<%= j will_paginate @users %>');
 <% else %>
   $(window).off('scroll');
-  $('.pagination').remove();
+  $('.pagination').replaceWith('<h3 style="clear: both;">end of list</h3>');
 <% end %>

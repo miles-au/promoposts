@@ -1,4 +1,4 @@
-<div class="comment" id="comment-<%= comment.id %>" style="<%= comment.head ? 'padding-left: 25px;' : 'border: none;' %>">
+<div class="comment" id="comment-<%= comment.id %>" style="<%= comment.head ? 'padding-left: 25px;' : 'border: none;' %> margin-top: 10px;">
   <div class="avatar avatar-mini" style="background-image: url('<%= comment.user.avatar %>');"></div>
   <div style="display: inline-block;">
     <span class="user" style="font-size: 1.2em;"><%= link_to comment.user.name, comment.user %></span>
@@ -13,7 +13,7 @@
         <% if current_user?(comment.user) || current_user.admin? %>
           <%= link_to "delete", comment, method: :delete, data: { confirm: "You sure?" } %>
         <% end %>
-        <% if current_user?(comment.micropost.user) %>
+        <% if current_user?(comment.micropost.user) && comment.micropost.category == "question" %>
           <%= link_to "mark as top comment", mark_top_comment_path(:micropost_id => comment.micropost_id, :comment_id => comment.id) %>
         <% end %>
       </span>
@@ -27,7 +27,7 @@
       <% end %>
     </div>
     <% if comment.micropost.top_comment == comment.id %>
-      <span style="display: inline-block; vertical-align: top; font-size: 2em; margin-right: 10px;" class="glyphicon glyphicon-ok top-comment"></span>
+      <span style="display: inline-block; vertical-align: top; font-size: 2em; margin-right: 10px;" class="glyphicon glyphicon-ok top-comment" data-toggle="tooltip" data-placement="top" title="Post author's accepted answer"></span>
     <% end %>
     <%= simple_format(comment.message, style: "display: inline-block; vertical-align: top;") %>
   </div>
