@@ -77,7 +77,7 @@ Rails.application.routes.draw do
 
   get '/decline_wizard', to: 'static_pages#decline_wizard', as: 'decline_wizard'
 
-  get '/account_activations/:id/edit', to: 'account_activations#update_email', as: 'update_email'
+  get '/account_activations/:id/update', to: 'account_activations#update_email', as: 'update_email'
 
   get '/notifications/all', to: 'notifications#all'
 

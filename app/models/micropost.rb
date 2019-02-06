@@ -12,6 +12,7 @@ class Micropost < ActiveRecord::Base
   self.per_page = 24
 
   after_save :create_event
+  before_destroy :delete_notifications
 
   def create_event
     @event = Event.new(user_id: self.user_id, micropost_id: self.id, contribution: 'create')
@@ -31,6 +32,11 @@ class Micropost < ActiveRecord::Base
       if picture.blank? && content.blank?
         errors[:base] << "Please include a photo or text."
       end
+    end
+
+    def delete_notifications
+      Notification.where("notifications.category = 'comment' AND notifications.destination_id = ?", self.id).destroy_all
+      Notification.where("notifications.category = 'share' AND notifications.destination_id = ?", self.id).destroy_all
     end
     
 end

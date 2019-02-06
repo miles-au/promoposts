@@ -1,7 +1,13 @@
 <div class="comment" id="comment-<%= comment.id %>" style="<%= comment.head ? 'padding-left: 25px;' : 'border: none;' %> margin-top: 10px;">
-  <div class="avatar avatar-mini" style="background-image: url('<%= comment.user.avatar %>');"></div>
+  <div class="avatar avatar-mini" style="background-image: url("<%= comment.user ? comment.user.avatar : 'avatar.png' %>");"></div>
   <div style="display: inline-block;">
-    <span class="user" style="font-size: 1.2em;"><%= link_to comment.user.name, comment.user %></span>
+    <span class="user" style="font-size: 1.2em;">
+      <% if comment.user %>
+        <%= link_to comment.user.name, comment.user %>
+      <%else%>
+        [deleted user]
+      <% end %>
+    </span>
     <div style="display: inline-block; text-align: left;">
       <%= render :partial => 'shared/accolades', :locals => {:category => @user.category} %>
     </div>

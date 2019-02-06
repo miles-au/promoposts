@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_27_194627) do
+ActiveRecord::Schema.define(version: 2019_02_06_203959) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -97,6 +97,8 @@ ActiveRecord::Schema.define(version: 2019_01_27_194627) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "read", default: false
+    t.string "category"
+    t.integer "destination_id"
   end
 
   create_table "oauth_accounts", force: :cascade do |t|

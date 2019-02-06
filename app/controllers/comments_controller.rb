@@ -28,7 +28,8 @@ class CommentsController < ApplicationController
         @notification.message = "#{current_user.name} commented on your post."
       end
 
-      @notification.url = micropost_url(@micropost)
+      @notification.category = 'comment'
+      @notification.destination_id = @micropost.id
       @notification.save!
 
       #if recepient has valid email, gave permissions to email them, and this is not a reply to their own comment

@@ -1,4 +1,4 @@
-<li class="notification-bullet"><%= link_to notification.url do %>
+<li class="notification-bullet"><%= link_to notification.destination_link do %>
 		<%= notification.message %><br>
 		<span class="timestamp" style="font-size: 0.8em;"><%= time_ago_in_words(notification.created_at) %> ago</span>
 	<% end %>

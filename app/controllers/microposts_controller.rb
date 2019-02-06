@@ -103,13 +103,15 @@ class MicropostsController < ApplicationController
       share_to_buffer(micropost, buffer_profiles, message)
     end
 
-    #create event
-    @event = Event.new(user_id: current_user.id, passive_user_id: micropost.user.id, micropost_id: micropost.id, contribution: 'share')
-    @event.save!
+    if current_user != micropost.user
+      #create event
+      @event = Event.new(user_id: current_user.id, passive_user_id: micropost.user.id, micropost_id: micropost.id, contribution: 'share')
+      @event.save!
 
-    #create notification
-    @notification = Notification.new(:user_id => micropost.user_id, :message => "#{@user.name} shared your post.", :url => micropost_url(micropost) )
-    @notification.save!
+      #create notification
+      @notification = Notification.new(:user_id => micropost.user_id, :message => "#{@user.name} shared your post.", :category => "share", :destination_id => micropost.id )
+      @notification.save!
+    end 
 
 
     #create flash message

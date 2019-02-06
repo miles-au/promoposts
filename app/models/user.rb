@@ -23,6 +23,8 @@ class User < ApplicationRecord
   after_create :create_accolades
   after_create :create_setting
 
+  before_destroy :delete_notifications
+
 
   validates :name,  presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -439,6 +441,10 @@ class User < ApplicationRecord
     def create_setting
       settings = Setting.new(user_id: self.id)
       settings.save!
+    end
+
+    def delete_notifications
+      Notification.where("notifications.category = 'follow' AND notifications.destination_id = ?", self.id).destroy_all
     end
 
 end
