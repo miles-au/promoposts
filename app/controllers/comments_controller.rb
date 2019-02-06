@@ -30,7 +30,10 @@ class CommentsController < ApplicationController
 
       @notification.category = 'comment'
       @notification.destination_id = @micropost.id
-      @notification.save!
+
+      if @notification.user_id.to_i != current_user.id.to_i
+        @notification.save!
+      end
 
       #if recepient has valid email, gave permissions to email them, and this is not a reply to their own comment
       if recipient.verify_email && recipient.setting.email_for_replies && recipient != current_user
