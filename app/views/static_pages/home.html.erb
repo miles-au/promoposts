@@ -52,14 +52,36 @@
 
 <div id="feed-select" class="mobile-show">
 	<span id="select-title">Current Feed:</span>
-	<select class="mobile-show" >
-	  <option value="/?feed=user" <%= 'selected' if @feed_type == 'user' %> >Your Feed</option>
-	  <option value="/?feed=global" <%= 'selected' if @feed_type == 'global' %> >Global Feed</option>
-	  <option value="/?feed=vendor" <%= 'selected' if @feed_type == 'vendor' %> >Vendor Feed</option>
-	  <option value="/?feed=questions" <%= 'selected' if @feed_type == 'questions' %> >Questions</option>
-	  <option value="/?feed=careers" <%= 'selected' if @feed_type == 'careers' %> >Careers</option>
-	</select>
+	<div id="feed-names" class="mobile-show" >
+		<% case params["feed"] %>
+			<% when 'user' %>
+				<p style="display: inline-block;">Your Feed</p>
+			<% when 'global' %>
+				<p style="display: inline-block;">Global Feed</p>
+			<% when 'vendor' %>
+				<p style="display: inline-block;">Vendor Feed</p>
+			<% when 'questions' %>
+				<p style="display: inline-block;">Questions</p>
+			<% when 'careers' %>
+				<p style="display: inline-block;">Careers</p>
+			<% when 'search' %>
+				<p style="display: inline-block;"><%= "'#{params[:search]}'" %></p>
+			<% else %>
+				<p style="display: inline-block;">Your Feed</p>
+		<% end %>
+		<span id="slide-glyph" class="glyphicon glyphicon-triangle-right"></span>
+	</div>
+	<div id="feeds-slide" style="display: none;" class="slide-close">
+		<% if logged_in? %>
+			<a href="/?feed=user">Your Feed</a>
+		<% end %>
+		<a href="/?feed=global">Global Feed</a>
+		<a href="/?feed=vendor">Vendor Feed</a>
+		<a href="/?feed=questions">Questions</a>
+		<a href="/?feed=careers">Careers</a>
+	</div>
 </div>
+<hr>
 
 <!--link to create post-->
 <% if logged_in? %>
@@ -104,14 +126,21 @@
 	</div>
 </div>
 
+
 <script>
-	$(function(){
-      $('#feed-select').bind('change', function () {
-         var url = $(this).val()
-          if (url) {
-              window.location.replace(url);
-          }
-          return false;
-      });
-    });
+	$( "#feed-names" ).click(function() {
+	  if($("#feeds-slide").hasClass("slide-close")){
+	  	$("#feeds-slide").show('slow');
+	  	$("#feeds-slide").removeClass("slide-close");
+	  	$("#feeds-slide").addClass("slide-open");
+	  	$("#slide-glyph").removeClass("glyphicon-triangle-right");
+	  	$("#slide-glyph").addClass("glyphicon-triangle-bottom");
+	  }else{
+	  	$("#feeds-slide").hide('slow');
+	  	$("#feeds-slide").addClass("slide-close");
+	  	$("#feeds-slide").removeClass("slide-open");
+	  	$("#slide-glyph").removeClass("glyphicon-triangle-bottom");
+	  	$("#slide-glyph").addClass("glyphicon-triangle-right");
+	  } 
+	});
 </script>
