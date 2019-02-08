@@ -187,10 +187,10 @@ header, .navbar-inverse, .navbar-fixed-top{
 
 .navbar-nav, .navbar-right{
   li, a, span{
-    color: $sigGrey;
+    color: $grey5;
 
     &:hover{
-      color: $sigYellow;
+      color: $yellow1 !important;
     }
   }
 }
@@ -1459,17 +1459,22 @@ span.picture {
 
 #mobileNav{
   display: none;
-  .navbar-nav, .navbar-right{
-  li, a, span{
-      background-color: $sigBlue !important;
-      color: $sigGrey !important;
+  .dropdown-menu{
+    border: none;
+    a{
+      background-color: $grey4;
+      color: $grey1;
+      .timestamp{
+        color: $grey2;
+      }
 
       &:hover{
-        color: $sigYellow !important;
+        background-color: $yellow1;
       }
     }
   }
-  .dropdown-menu{
+  button{
+    background-color: $blue1;
     border: none;
   }
 }
@@ -1530,12 +1535,7 @@ span.picture {
         font-size: 2em;
         padding: 20px 0px;
         display: block;
-        background-color: $sigBlue;
-        color: $sigYellow;
       }
-    }
-    ul{
-      
     }
   }
   #mainNav{
@@ -1573,13 +1573,6 @@ span.picture {
   }
   .navbar-right{
     margin: 0px;
-  }
-  .navbar .open a{
-    background-color: $sigBlue !important;
-    color: $sigYellow !important;
-    span{
-      color: $sigYellow;
-    }
   }
   .dropdown-menu{
     float: right !important;
