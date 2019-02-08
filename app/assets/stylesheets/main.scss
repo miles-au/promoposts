@@ -49,6 +49,7 @@ $buttonShadowHover: 13px 13px $grey3;
 
 body {
   padding-top: 60px;
+  padding-bottom: 50px; /* give fixed footer some room */
   background-color: $sigGrey;
 }
 
@@ -217,6 +218,24 @@ header, .navbar-inverse, .navbar-fixed-top{
       margin-bottom: 5px;
       margin-top: -5px;
     }
+  }
+}
+
+#footerContainer{
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  padding: 0px 20px;
+  background-color: $grey5;
+  width: 100%;
+  p{
+    display: inline-block;
+    color: $grey3;
+    font-size: 0.7;
+  }
+  .policy-link{
+    font-size: 0.6em;
+    margin-right: 5px;
   }
 }
 
@@ -1586,6 +1605,10 @@ span.picture {
       width: calc(100% - 50px) !important;
       margin-bottom: 0px;
     }
+  }
+  #footerContainer{
+    position: static;
+    
   }
 
 //profile
