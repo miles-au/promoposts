@@ -1,5 +1,12 @@
 <div class='accolades'>
-  <% if category != 'none' %>
-    <div class='categoryTag <%= category %>Tag' data-toggle="tooltip" data-placement="top" title="<%= category %>" style="display: inline-block; padding: 5px;"><%= category %></div>
+  <% if user %>
+	  <% if user.category != 'none' %>
+	    <div class='categoryTag <%= user.category %>Tag' data-toggle="tooltip" data-placement="top" title="<%= user.category %>" style="display: inline-block; padding: 5px;"><%= user.category %>
+	    </div>
+	  <% end %>
+	  <% if user.admin == true %>
+	  	<div class='categoryTag adminTag' data-toggle="tooltip" data-placement="top" title="Promo Posts Administrator" style="display: inline-block; padding: 5px;">STAFF
+	    </div>
+	  <% end %>
   <% end %>
 </div>

@@ -25,12 +25,7 @@
       <span style="text-align: left; display: block;"><%= @user.name %></span>
     </h1>
   </section>
-<!--
-  <div class="stats">
-    <%#= render 'shared/stats' %>
-    <%#= render 'follow_form' if logged_in? %>
-  </div>
--->
+
 </div>
 
 <% if @user.cover_photo? %>
@@ -44,7 +39,7 @@
 
 <div class="row" >
   <div class='col-md-4 col-sm-12'>
-    <%= render :partial => 'shared/accolades', :locals => {:category => @user.category} %>
+    <%= render :partial => 'shared/accolades', :locals => {:user => @user} %>
   </div>
   <div class='col-md-4 col-sm-12'>
     
@@ -57,7 +52,7 @@
 <div class="mobile-button" style="display: inline-block;">
   <%= render 'follow_form' if logged_in? %>
   <%= link_to show_lists_path(:id => @user.id) do %>
-    <div id="favoriteProducts" class="pop-button">
+    <div id="favoriteProducts" class="pop-button" style="margin-top: 20px;">
       <%= "My Product Lists (#{@user.lists.count})" %>
     </div>
   <% end %>

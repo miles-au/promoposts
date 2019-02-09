@@ -1,5 +1,6 @@
 <div class="comment" id="comment-<%= comment.id %>" style="<%= comment.head ? 'padding-left: 25px;' : 'border: none;' %> margin-top: 10px;">
-  <div class="avatar avatar-mini" style="background-image: url("<%= comment.user ? comment.user.avatar : 'avatar.png' %>");"></div>
+  <% default_avatar_url = '/assets/dead-avatar.png' %>
+  <div class="avatar avatar-mini" style="background-image: url('<%= comment.user ? comment.user.avatar : default_avatar_url %>');"></div>
   <div style="display: inline-block;">
     <span class="user" style="font-size: 1.2em;">
       <% if comment.user %>
@@ -9,7 +10,7 @@
       <% end %>
     </span>
     <div style="display: inline-block; text-align: left;">
-      <%= render :partial => 'shared/accolades', :locals => {:category => @user.category} %>
+      <%= render :partial => 'shared/accolades', :locals => {:user => comment.user } %>
     </div>
     <div class="timestamp">
       Posted <%= time_ago_in_words(comment.created_at) %> ago.

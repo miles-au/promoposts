@@ -34,7 +34,7 @@
       <% clickable = '' %>
     <% end %>
 
-    <%= render :partial => 'shared/accolades', :locals => {:category => @user.category} %>
+    <%= render :partial => 'shared/accolades', :locals => {:user => @user } %>
     <div style="height: 20px;">
       <%= render 'shared/follow_form' if controller_name != "users" && logged_in? %>
     </div>
