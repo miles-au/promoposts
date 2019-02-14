@@ -1,5 +1,5 @@
 class MicropostsController < ApplicationController
-  before_action :logged_in_user, only: [:create, :destroy, :new, :share_to_facebook]
+  before_action :logged_in_user, only: [:create, :destroy, :new, :share_to_socials]
   before_action :correct_user,   only: :destroy
 
   protect_from_forgery except: :show
@@ -8,6 +8,12 @@ class MicropostsController < ApplicationController
   require 'net/http'
   require 'net/https'
   require 'json'
+
+  rescue_from Koala::Facebook::APIError do
+    # redirect to fb auth dialog
+    flash[:danger] = "Sorry, something went wrong."
+    redirect_back(fallback_location: root_path)
+  end
 
   def create
     @micropost = current_user.microposts.build(micropost_params)
@@ -171,12 +177,11 @@ class MicropostsController < ApplicationController
     fb_page = Koala::Facebook::API.new(access_token)
 
     if micropost.picture?
-      fb_page.put_picture(micropost.picture.path, 'image' ,{:message => message})
+      graph_post = fb_page.put_picture(micropost.picture.url, 'image' ,{:message => message})
     else
-      fb_page.put_connections(page_id, "feed", :message => message)
+      graph_post = fb_page.put_connections(page_id, "feed", :message => message)
     end
 
-    #did the post succeed?
     @post_success << 'Facebook'
   end
 
