@@ -9,9 +9,17 @@ class MicropostsController < ApplicationController
   require 'net/https'
   require 'json'
 
-  rescue_from Koala::Facebook::APIError do
-    # redirect to fb auth dialog
-    flash[:danger] = "Sorry, something went wrong."
+  rescue_from Koala::Facebook::APIError do |exception|
+    puts "EXCEPTION: #{exception}"
+    if exception.fb_error_code == 190 || exception.fb_error_type == 200
+      flash[:danger] = "We were unable to get the required permissions"
+    elsif exception.fb_error_code == 32
+      flash[:danger] = "Thanks for the enthusiasm! Unfortunately you are making too many requests."
+    elsif exception.fb_error_code == 506
+      flash[:danger] = "It looks like you've shared this post recently!"
+    else
+      flash[:danger] = "Sorry, something went wrong."
+    end
     redirect_back(fallback_location: root_path)
   end
 
@@ -204,12 +212,11 @@ class MicropostsController < ApplicationController
   end
 
   def share_to_linkedin(micropost, page_id, message)
-
     client = @user.linkedin
     accounts = client.company(is_admin: 'true').all.pluck(:id)
 
     #is this a profile or company page?
-    if accounts.include?(page_id)
+    if accounts.include?(page_id.to_i)
       uri = URI("https://api.linkedin.com/v1/companies/#{page_id}/shares?format=json")
     else
       uri = URI("https://api.linkedin.com/v1/people/~/shares?format=json")

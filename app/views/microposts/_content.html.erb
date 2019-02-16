@@ -1,5 +1,3 @@
-<% puts "content: #{content}" %>
-<% puts "LENGTH: #{content.length}" %>
 <div class="section">
   <span class="content">
     <p class="content-minified" style="font-size: 1.2em; overflow: hidden; height: 5em;"><%= content.length > 100 ? content[0..97] : content %> <span class="go-to-post"><%= content.length > 100 ? '...' : '' %><span class="go-to-post-link">go to post</span></span></p>

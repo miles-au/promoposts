@@ -53,7 +53,7 @@ class SessionsController < ApplicationController
       flash[:success] = "Your #{@provider} account has been connected, #{@user.name}."
       redirect_back_or accounts_edit_path
     else
-      flash[:danger] = "We are experiencing technical difficulties, we apologize for the inconvenience."
+      flash[:danger] = "There was an error while authenticating your account, we apologize for the inconvenience."
       redirect_to root_url
     end
 
@@ -82,21 +82,26 @@ class SessionsController < ApplicationController
     provider = params['provider']
     error = params['error'] unless params['error'].nil?
 
-    if current_user
-      #already signed in
-      #connect with oauth
-      @user = User.connect_accounts_oauth2(provider, code, current_user.id)
-      create_accounts(provider)
-      flash[:success] = "Your #{@provider} account has been connected, #{@user.name}."
-      redirect_back_or accounts_edit_path
+    if error
+      flash[:danger] = "There was an error while authenticating your account, we apologize for the inconvenience."
+      redirect_to '/accounts/edit'
     else
-      #connecting an account
-      @user = User.create_with_oauth2(provider, code)
-      create_accounts(provider)
-      log_in @user
-      flash[:success] = "Welcome to Promo Posts, #{@user.name}."
-      redirect_back_or root_url
+      if logged_in?
+        #already signed in
+        #connect with oauth
+        @user = User.connect_accounts_oauth2(provider, code, current_user.id)
+        create_accounts(provider)
+        flash[:success] = "Your #{@provider} account has been connected, #{@user.name}."
+        redirect_to '/accounts/edit'
+      else
+        @user = User.create_with_oauth2(provider, code)
+        create_accounts(provider)
+        log_in @user
+        flash[:success] = "Welcome to Promo Posts, #{@user.name}."
+        redirect_to root_url
+      end
     end
+    
   end
 
   def create_accounts(provider)

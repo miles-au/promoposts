@@ -14,11 +14,11 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    # Confirms a logged-in user.
+    # Confirms a logged-out user.
     def logged_out_user
       unless !logged_in?
         store_location
-        flash[:success] = "You are logged in."
+        flash[:success] = "Welcome to Promo Posts, #{current_user.name}"
         redirect_to root_path
       end
     end
