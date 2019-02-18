@@ -792,6 +792,7 @@ input {
       font-size: 1.2em;
       white-space: normal;
       text-align: center;
+      height: 0px;
 
       strong{
         margin-top: -50%;
@@ -1013,6 +1014,19 @@ span.picture {
 .feed{
   ul, ol, li, .pagination{
     margin: 0px;
+  }
+}
+
+.col-md-3{
+  .user{
+    &:after{
+      content: "\A";
+      white-space: pre; 
+    }  
+  }
+  .timestamp a::after{
+    content: "\A";
+    white-space: pre; 
   }
 }
 
@@ -1322,6 +1336,8 @@ span.picture {
 .action-wrapper{
   display: inline-block;
   margin-top: 5px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid $grey4;
 }
 
 .columns-2{
