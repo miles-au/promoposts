@@ -77,9 +77,14 @@ class UsersController < ApplicationController
   def destroy
     user = User.find(params[:id])
     user.destroy!
-    log_out
     flash[:success] = "User deleted"
-    redirect_to root_url
+    if current_user.admin
+      redirect_to users_path
+    else
+      log_out
+      redirect_to root_url
+    end
+    
   end
 
   def following

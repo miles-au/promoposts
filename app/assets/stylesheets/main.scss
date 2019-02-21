@@ -189,10 +189,9 @@ header, .navbar-inverse, .navbar-fixed-top{
 .navbar-nav, .navbar-right{
   li, a, span{
     color: $grey5;
-
-    &:hover{
-      color: $yellow1 !important;
-    }
+  }
+  a:hover{
+    color: $yellow1 !important;
   }
 }
 
