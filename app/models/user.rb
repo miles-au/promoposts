@@ -366,6 +366,18 @@ class User < ApplicationRecord
     results
   end
 
+  def display_notifications
+    if self.unread_notifications.count > 0
+      return self.unread_notifications
+    elsif self.notifications_today.count > 0
+      return self.notifications_today
+    elsif self.notifications.count > 0
+      return self.notifications
+    else
+      return Notification.none
+    end
+  end
+
   def notifications_today
     if Rails.env.production?
       notifications = Notification.where( "user_id = '?' AND created_at > ?", self.id, 1.day.ago)

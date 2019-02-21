@@ -17,12 +17,8 @@
             <ul class="dropdown-menu">
               <!-- render notifications -->
               <li class="notification-bullet" style="text-align: center;"><%= link_to 'see all notifications', notifications_all_path, :style => "width: 100%; font-weight: 700;" %></li>
-              <% if current_user.unread_notifications.count > 0 %>
-                <%= render current_user.unread_notifications %>
-              <% elsif current_user.notifications_today.count > 0 %>
-                <%= render current_user.notifications_today %>
-              <% elsif current_user.notifications.count > 0 %>
-                <%= render current_user.notifications.limit(10) %>
+              <% if current_user.display_notifications.count > 0 %>
+                <%= render partial: 'shared/display_notifications', locals: {notifs: current_user.display_notifications} %>
               <% else %>
                 <li class="notification-bullet" style="text-align: center;"><p>You have no notifications!</p></li>
               <% end %>
@@ -63,12 +59,8 @@
 
             <div class="dropdown-menu" style="left: 0;">
                 <li class="notification-bullet" style="text-align: center;"><strong><%= link_to 'See all notifications', notifications_all_path%></strong></li>
-                <% if current_user.unread_notifications.count > 0 %>
-                  <%= render current_user.unread_notifications %>
-                <% elsif current_user.notifications_today.count > 0 %>
-                  <%= render current_user.notifications_today %>
-                <% elsif current_user.notifications.count > 0 %>
-                  <%= render current_user.notifications.limit(10) %>
+                <% if current_user.display_notifications %>
+                  <%= render partial: 'shared/display_notifications', locals: {notifs: current_user.display_notifications} %>
                 <% else %>
                   <li class="notification-bullet" style="text-align: center;"><p>You have no notifications!</p></li>
                 <% end %>

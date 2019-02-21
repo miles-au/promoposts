@@ -39,7 +39,7 @@ $buttonShadowHover: 13px 13px $grey3;
 
 @mixin vertical-align($position: relative) {
   position: $position;
-  top: 50%;
+  /*top: 50%;*/
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
@@ -361,6 +361,10 @@ li > .dropdown > .open:focus {
 .notification-bullet{
   list-style: none;
   border-bottom: 1px solid $blue1;
+  p{
+    color: $grey1;
+    background-color: $grey4;
+  }
 }
 
 .navbar-inverse .navbar-nav > li > a {
@@ -383,6 +387,7 @@ li > .dropdown > .open:focus {
   box-shadow: $buttonShadow;
   max-height: calc(100vh - 50px);
   overflow: scroll;
+  background-color: $grey4;
 
   li a:hover{
     background-color: $yellow1 !important;

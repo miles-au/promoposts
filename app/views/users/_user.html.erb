@@ -6,7 +6,7 @@
                                   data: { confirm: "You sure?" } %>
   <% end %>
   <div>
-    <%= render :partial => 'shared/accolades', :locals => {:category => user.category} %>
+    <%= render :partial => 'shared/accolades', :locals => {:user => user} %>
   </div>
 </div>
 
