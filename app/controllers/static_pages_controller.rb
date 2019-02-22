@@ -77,11 +77,19 @@ class StaticPagesController < ApplicationController
   end
 
   def condense_feed_items(items)
-    singles = items.select(:micropost_id).group(:micropost_id).having("count(*) = 1").pluck(:id)
-    @multis = items.select(:micropost_id).group(:micropost_id).having("count(*) > 1").pluck(:id)
+    if Rails.env.production?
+      singles = items.select(:micropost_id).having("count(*) = 1").pluck(:id)
+      @multis = items.select(:micropost_id).having("count(*) > 1").pluck(:id)
 
-    duplicates = items.select(:micropost_id).group(:micropost_id).having("count(*) > 1")
-    counts_hash = duplicates.select(:user_id).group(:user_id).size
+      duplicates = items.select(:micropost_id).group(:micropost_id).having("count(*) > 1")
+      counts_hash = duplicates.select(:user_id).group(:user_id).size
+    else
+      singles = items.select(:micropost_id).group(:micropost_id).having("count(*) = 1").pluck(:id)
+      @multis = items.select(:micropost_id).group(:micropost_id).having("count(*) > 1").pluck(:id)
+
+      duplicates = items.select(:micropost_id).group(:micropost_id).having("count(*) > 1")
+      counts_hash = duplicates.select(:user_id).group(:user_id).size
+    end
 
     @event_counts = {}
     counts_hash.each do |key,value|
