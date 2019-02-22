@@ -1,8 +1,8 @@
 <% notif_count = 0 %>
 <% notifs.each do |notification| %>
-  <% dup_count = notifs.where(:category => notification.category, :destination_id => notification.destination_id).count %>
-
   <% if notif_count < 10 %>
+  	<% dup_count = notifs.where(:category => notification.category, :destination_id => notification.destination_id).count %>
+  
 	  <% if dup_count > 1 %>
 	    <% duplicates = notifs.where(:category => notification.category, :destination_id => notification.destination_id) %>
 	    <% if notification == duplicates.first %>

@@ -16,43 +16,45 @@ class StaticPagesController < ApplicationController
       case @feed_type
         when "user"
           if logged_in?
-            @feed_items = current_user.feed.paginate(:page => params[:page])
+            @feed_items_raw = current_user.feed.paginate(:page => params[:page])
           else
             redirect_to login_path
           end
 
         when "global"
-          @feed_items = Event.all.paginate(:page => params[:page])
+          @feed_items_raw = Event.all.paginate(:page => params[:page])
 
         when "vendor"
-          @feed_items = Event.vendors.paginate(:page => params[:page])
+          @feed_items_raw = Event.vendors.paginate(:page => params[:page])
 
         when 'questions'
-          @feed_items = Event.questions.paginate(:page => params[:page])
+          @feed_items_raw = Event.questions.paginate(:page => params[:page])
 
         when 'careers'
-          @feed_items = Event.careers.paginate(:page => params[:page])
+          @feed_items_raw = Event.careers.paginate(:page => params[:page])
 
         when 'search'
           query = params[:search]
 
           if Rails.env.production?
-            @feed_items = Event.joins(:micropost).where("content ILIKE '%#{query}%'").reorder("content ILIKE '#{query}%' DESC").paginate(:page => params[:page])
+            @feed_items_raw = Event.joins(:micropost).where("content ILIKE '%#{query}%'").reorder("content ILIKE '#{query}%' DESC").paginate(:page => params[:page])
           else
-            @feed_items = Event.joins(:micropost).where("content LIKE '%#{query}%'").reorder("content LIKE '#{query}%' DESC").paginate(:page => params[:page])
+            @feed_items_raw = Event.joins(:micropost).where("content LIKE '%#{query}%'").reorder("content LIKE '#{query}%' DESC").paginate(:page => params[:page])
           end 
 
       end
     else
       #render defaults
       if logged_in?
-        @feed_items = current_user.feed.paginate(:page => params[:page])
+        @feed_items_raw = current_user.feed.paginate(:page => params[:page])
         @feed_type = "user"
       else
-        @feed_items = Event.all.paginate(:page => params[:page])
+        @feed_items_raw = Event.all.paginate(:page => params[:page])
         @feed_type = "global"
       end
     end
+
+    @feed_items = condense_feed_items(@feed_items_raw)
 
     #newcomer accolade
     if current_user
@@ -72,6 +74,27 @@ class StaticPagesController < ApplicationController
       format.js
     end
 
+  end
+
+  def condense_feed_items(items)
+    singles = items.select(:micropost_id).group(:micropost_id).having("count(*) = 1").pluck(:id)
+    @multis = items.select(:micropost_id).group(:micropost_id).having("count(*) > 1").pluck(:id)
+
+    duplicates = items.select(:micropost_id).group(:micropost_id).having("count(*) > 1")
+    counts_hash = duplicates.select(:user_id).group(:user_id).size
+
+    @event_counts = {}
+    counts_hash.each do |key,value|
+      if @event_counts.key?(key[0])
+        @event_counts[key[0]] = @event_counts[key[0]] + 1
+      else
+        @event_counts[key[0]] = 1
+      end
+    end
+
+    feed_items = items.where(:id => singles).or(items.where(:id => @multis))
+
+    return feed_items
   end
 
   def change_grid_view
