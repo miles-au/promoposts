@@ -9,7 +9,7 @@ class WebhooksController < ApplicationController
 	  content = changes['value']['message']
 	  account_id = changes['value']['from']['id']
 	  if item == "photo"
-	  	picture = item = changes['value']['link']
+	  	picture = changes['value']['link']
 	  else
 	  	picture = nil
 	  end
