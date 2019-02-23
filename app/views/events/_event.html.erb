@@ -4,9 +4,6 @@
 	<% if @event_counts && @event_counts.key?(event.micropost.id) %>
 		<div class="avatar avatar-thumbnail" style="width: 25px; height: 25px;background-image: url('/assets/multi_avatar.svg');"></div>
 		<span style="margin-left: 5px; font-size: 1em;"><%= pluralize(@event_counts[event.micropost.id], 'user') %> interacted with a post</span>
-		<% puts "EVENT_COUNTS: #{@event_counts[event.micropost.id]}" %>
-		<% puts "EVENT_COUNTS ALL: #{@event_counts}" %>
-
 	<% else %>
 		<div class="avatar avatar-thumbnail" style="width: 25px; height: 25px;background-image: url('<%= @active_user.avatar %>');"></div>
 		<span class="user" style="font-size: 1.1em;"><%= link_to @active_user.name, @active_user %></span>

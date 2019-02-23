@@ -77,6 +77,7 @@ class StaticPagesController < ApplicationController
   end
 
   def condense_feed_items(items)
+=begin
     if Rails.env.production?
       singles = items.select(:micropost_id, :id).group(:micropost_id, :id).having("count(*) = 1").pluck(:id)
       @multis = items.select(:micropost_id, :id).group(:micropost_id, :id).having("count(*) > 1").pluck(:id)
@@ -90,6 +91,21 @@ class StaticPagesController < ApplicationController
       duplicates = items.select(:micropost_id).group(:micropost_id).having("count(*) > 1")
       counts_hash = duplicates.select(:user_id).group(:user_id).size
     end
+=end
+  
+    #get events
+    item_counts = items.select('COUNT(id)', :micropost_id).group(:micropost_id).size
+    event_ids = []
+    @event_counts = {}
+    item_counts.each do |key, value|
+      event_ids << items.find_by(:micropost => key)
+      post_events = items.where(:micropost => key)
+      @event_counts[key] = post_events.pluck(:user_id).uniq.count
+    end
+
+=begin
+    duplicates = items.select(:micropost_id).group(:micropost_id).having("count(*) > 1")
+    counts_hash = duplicates.select(:user_id).group(:user_id).size
 
     @event_counts = {}
     counts_hash.each do |key,value|
@@ -99,8 +115,10 @@ class StaticPagesController < ApplicationController
         @event_counts[key[0]] = 1
       end
     end
+=end
 
-    feed_items = items.where(:id => singles).or(items.where(:id => @multis))
+    #feed_items = items.where(:id => singles).or(items.where(:id => @multis))
+    feed_items = items.where(:id => event_ids)
 
     return feed_items
   end
