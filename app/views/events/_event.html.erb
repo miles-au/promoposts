@@ -1,7 +1,7 @@
 <div class="action-wrapper col-md-<%= @boot_columns %> col-sm-12" style="padding: 0px;">
 	<% @active_user = User.find(event.user_id) %>
 
-	<% if @event_counts && @event_counts.key?(event.micropost.id) %>
+	<% if @event_counts && @event_counts.key?(event.micropost.id) > 1 %>
 		<div class="avatar avatar-thumbnail" style="width: 25px; height: 25px;background-image: url('/assets/multi_avatar.svg');"></div>
 		<span style="margin-left: 5px; font-size: 1em;"><%= pluralize(@event_counts[event.micropost.id], 'user') %> interacted with a post</span>
 	<% else %>
