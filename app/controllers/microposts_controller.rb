@@ -1,6 +1,6 @@
 class MicropostsController < ApplicationController
   before_action :logged_in_user, only: [:create, :destroy, :new, :share_to_socials]
-  before_action :correct_or_admin_user,   only: :destroy
+  before_action :correct_or_admin_user, only: :destroy
 
   protect_from_forgery except: :show
 
@@ -350,13 +350,6 @@ class MicropostsController < ApplicationController
     def micropost_params
       params.require(:micropost).permit(:content, :picture, :category, :shareable)
     end
-
-=begin
-    def correct_user
-      @micropost = current_user.microposts.find_by(id: params[:id])
-      redirect_to root_url if @micropost.nil?
-    end
-=end
 
     def correct_or_admin_user
       @micropost = current_user.microposts.find_by(id: params[:id])
