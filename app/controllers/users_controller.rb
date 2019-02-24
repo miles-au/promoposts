@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, only: [:index, :edit, :update, :destroy,
                                         :following, :followers, :settings, :update_settings]
-  before_action :correct_user,   only: [:edit, :update, :settings, :update_settings]
+  #before_action :correct_user,   only: [:edit, :update, :settings, :update_settings]
   #before_action :admin_user,     only: [:destroy]
   before_action :correct_or_admin_user,   only: [:destroy]
   before_action :logged_out_user, only: [:new]
