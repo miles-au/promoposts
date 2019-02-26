@@ -19,7 +19,7 @@ class WebhooksController < ApplicationController
 			picture = doc.at('meta[property="og:image"]')['content']
 		end
 
-		picture ||= '/assets/ext_link.svg'
+		picture ||= request.protocol + request.host_with_port + path_to_image('/assets/ext_link.svg')
 
 	  else
 	  	picture = nil
