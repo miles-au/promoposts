@@ -24,28 +24,28 @@
         <% bgcolor = 'defaultBack' %>
     <% end %>
 
-    <% if micropost.shareable%>
-      <% if logged_in? %>
-        <% clickable = 'click' %>
-      <% else %>
-        <% clickable = 'login' %>
-      <% end %>
-    <% else %>
-      <% clickable = '' %>
-    <% end %>
-
     <%= render :partial => 'shared/accolades', :locals => {:user => @user } %>
     <div style="height: 20px;">
       <%= render 'shared/follow_form' if controller_name != "users" && logged_in? %>
     </div>
 
     <%=link_to(@micropost) do %>
-      <%= render :partial => 'microposts/content', :locals => {:picture_url => micropost.picture.url, :content => micropost.content, :clickable => clickable, :shareable => micropost.shareable, :bgcolor => bgcolor} %>
+      <%= render :partial => 'microposts/content', :locals => {:micropost => @micropost, :bgcolor => bgcolor} %>
     <% end %>
 
-    <%= link_to @micropost, :data=> {:micropost_id => @micropost_id} do %>
-      <p><%= pluralize( @micropost.comments.count, 'Comment' ) %></p>
-    <% end %>
+    <div>
+      <%= link_to @micropost, :data=> {:micropost_id => @micropost_id} do %>
+        <span class="click-to-comments" style="display: inline-block;"><%= pluralize( @micropost.comments.count, 'Comment' ) %>
+        </span>
+      <% end %>
+      <% if @micropost.external_url %>
+        <%= link_to(@micropost.external_url, :class => "go-to-external-link", :style => "float:right;") do %>
+          <span class="glyphicon glyphicon-link"></span>
+          go to link
+        <% end %>
+      <% end %>
+    </div>
+
 </li>
 
 <script>

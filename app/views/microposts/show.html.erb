@@ -20,7 +20,11 @@
 		<div class="col-md-8">
 		  <div class="section" style="margin-top: 20px;">
 		      <span class="content">
-		      	<p style="font-size: 1.3em;">"<%= @micropost.content %>"</p>
+		      	<p style="font-size: 1.3em;">"<%= @micropost.content %>" 
+		      		<% if @micropost.external_url %>
+		      			<span class="go-to-external-link"><span class="glyphicon glyphicon-link"></span><%=link_to('go to link',@micropost.external_url) %></span>
+		      		<% end %>
+		      	</p>
 		        <% if @micropost.picture? %>
 		        	<img style="width: 100%;" src="<%= @micropost.picture.url %>", alt="promo post picture" />
 		        <% end %>

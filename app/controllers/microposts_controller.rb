@@ -185,9 +185,17 @@ class MicropostsController < ApplicationController
     fb_page = Koala::Facebook::API.new(access_token)
 
     if micropost.picture?
-      graph_post = fb_page.put_picture(micropost.picture.url, 'image' ,{:message => message})
+      if micropost.external_url?
+        graph_post = fb_page.put_picture(micropost.picture.url, 'image' ,{:message => message, :link => micropost.external_url})
+      else
+        graph_post = fb_page.put_picture(micropost.picture.url, 'image' ,{:message => message})
+      end
     else
-      graph_post = fb_page.put_connections(page_id, "feed", :message => message)
+      if micropost.external_url?
+        graph_post = fb_page.put_connections(page_id, "feed", :message => message, :link => micropost.external_url)
+      else
+        graph_post = fb_page.put_connections(page_id, "feed", :message => message)
+      end
     end
 
     @post_success << 'Facebook'
@@ -225,9 +233,17 @@ class MicropostsController < ApplicationController
     token = User.get_token(current_user.linkedin_oauth_token).token
 
     if micropost.picture.url
-      share = {:content => {:'title' => message, :'submitted-url' => micropost.picture.url}, visibility: {code: "anyone"} }.to_json
+      if micropost.external_url
+        share = {:content => {:'title' => message, :'submitted-url' => micropost.picture.url}, :'submitted-url' => micropost.external_url, visibility: {code: "anyone"} }.to_json
+      else
+        share = {:content => {:'title' => message, :'submitted-url' => micropost.picture.url}, visibility: {code: "anyone"} }.to_json
+      end
     else
-      share = {comment: message, visibility: {code: "anyone"} }.to_json
+      if micropost.external_url
+        share = {:content=>{ :'submitted-url' => micropost.external_url },comment: message, visibility: {code: "anyone"} }.to_json
+      else
+        share = {comment: message, visibility: {code: "anyone"} }.to_json
+      end
     end
 
     header = { "Content-Type" => "application/json", 'Host' => 'api.linkedin.com', 'Connection' => 'Keep-Alive', 'Authorization' => "Bearer #{token}" }
@@ -319,11 +335,19 @@ class MicropostsController < ApplicationController
     client = @user.buffer
     
     if micropost.picture.url
-      picture = root_url + micropost.picture.url
-      debugger
-      response = client.create_update(:body => {:profile_ids => profiles, :text => message, :now => true, :media => {:photo => picture}})
+      if micropost.external_url
+        picture = root_url + micropost.picture.url
+        response = client.create_update(:body => {:profile_ids => profiles, :text => message, :now => true, :media => {:photo => picture, :link => micropost.external_url}})
+      else
+        picture = root_url + micropost.picture.url
+        response = client.create_update(:body => {:profile_ids => profiles, :text => message, :now => true, :media => {:photo => picture}})
+      end
     else
-      response = client.create_update(:body => {:profile_ids => profiles, :text => message, :now => true} )
+      if micropost.external_url
+        response = client.create_update(:body => {:profile_ids => profiles, :text => message, :now => true, :media => {:link => micropost.external_url}} )
+      else
+        response = client.create_update(:body => {:profile_ids => profiles, :text => message, :now => true} )
+      end
     end
     
     #puts "RESPONSE: #{response}"
@@ -348,7 +372,7 @@ class MicropostsController < ApplicationController
   private
 
     def micropost_params
-      params.require(:micropost).permit(:content, :picture, :category, :shareable)
+      params.require(:micropost).permit(:content, :picture, :category, :shareable, :external_url)
     end
 
     def correct_or_admin_user

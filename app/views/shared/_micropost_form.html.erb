@@ -27,6 +27,10 @@
     <p style="display: inline-block; text-align: top;">Add an image (10mb max)</p>
     <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
   </div>
+  <div class="external_url">
+    <%= f.label :external_url, "Include a link:"%>
+    <%= f.text_field :external_url, placeholder: "Include a website url here:", maxlength: 500 %>
+  </div>
   <%= f.submit "Post", class: "btn btn-primary" %>
 <% end %>
 

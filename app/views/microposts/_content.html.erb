@@ -1,16 +1,18 @@
 <% snippet_length = 75 %>
 <div class="section">
   <span class="content">
-    <p class="content-minified" style="font-size: 1.2em; overflow: hidden; height: 5em;"><%= content.length > snippet_length ? content[0..snippet_length-3] : content %> <span class="go-to-post"><%= content.length > snippet_length ? '...' : '' %><span class="go-to-post-link">go to post</span></span></p>
-    <p class="content-full" style="font-size: 1.2em; overflow: hidden; height: 5em;"><%= content %></p>
+    <p class="content-minified" style="font-size: 1.2em; overflow: hidden; height: 5em;"><%= micropost.content.length > snippet_length ? micropost.content[0..snippet_length-3] : micropost.content %> <span class="go-to-post"><%= micropost.content.length > snippet_length ? '...' : '' %><span class="go-to-post-link">go to post</span></span></p>
+    <p class="content-full" style="font-size: 1.2em; overflow: hidden; height: 5em;"><%= micropost.content %></p>
 
-    <% if picture_url %>
-      <div class="square" style="background-image: url('<%= picture_url %>');">
+    <% if micropost.picture.url %>
+      <div class="square" style="background-image: url('<%= micropost.picture.url %>');">
           <%#= render :partial => 'shared/click_to_share', :locals => {:btn_title => clickable, :shareable => shareable} %>
       </div>
+    <% elsif micropost.external_url %>
+      <div class="square" style="background-image: url('/assets/ext_link.svg');">
     <% else %>
       <div class="noPic square <%= bgcolor %>">
-      <span></span><strong>"<%= content %>"</strong>
+      <span></span><strong>"<%= micropost.content %>"</strong>
         <%#= render :partial => 'shared/click_to_share', :locals => {:btn_title => clickable, :shareable => shareable} %>
       </div>
     <% end %>

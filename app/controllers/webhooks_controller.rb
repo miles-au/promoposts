@@ -11,15 +11,14 @@ class WebhooksController < ApplicationController
 	  if item == "photo"
 	  	picture = changes['value']['link']
 	  elsif item == "share"
-	  	share_link = changes['value']['link']
+	  	external_link = changes['value']['link']
 
-		y = Net::HTTP.get_response(URI.parse(share_link))
+		y = Net::HTTP.get_response(URI.parse(external_link))
 		if y.is_a?(Net::HTTPSuccess)
 			doc = Nokogiri::HTML(y.body)
 			picture = doc.at('meta[property="og:image"]')['content']
 		end
-
-		picture ||= request.protocol + request.host_with_port + path_to_image('/assets/ext_link.svg')
+		picture = nil
 
 	  else
 	  	picture = nil
@@ -29,6 +28,9 @@ class WebhooksController < ApplicationController
 	  	if @account.autoshare == true
 		  user_id = @account.user_id
 		  @micropost = Micropost.new(:content => content, :user_id => user_id, :remote_picture_url => picture)
+		  if external_link
+		  	@micropost.external_url = external_link
+		  end
 		  @micropost.save!
 		end
 		 
