@@ -1,14 +1,4 @@
 GIT
-  remote: git://github.com/Instagram/instagram-ruby-gem.git
-  revision: 461f98ba4d7c0ef6e176be6f9c1c086649002f93
-  specs:
-    instagram (1.1.6)
-      faraday (>= 0.7, < 0.10)
-      faraday_middleware (>= 0.8, < 0.10)
-      hashie (>= 0.4.0)
-      multi_json (~> 1.0, >= 1.0.3)
-
-GIT
   remote: https://github.com/activerecord-hackery/ransack.git
   revision: 322a014cd4c491d1832dd371e1f32ffd247b14ba
   specs:
@@ -427,9 +417,6 @@ GEM
       omniauth-oauth2 (~> 1.1)
     omniauth-facebook (5.0.0)
       omniauth-oauth2 (~> 1.2)
-    omniauth-instagram (1.3.0)
-      omniauth (~> 1)
-      omniauth-oauth2 (~> 1)
     omniauth-linkedin-oauth2 (0.2.5)
       omniauth (~> 1.0)
       omniauth-oauth2
@@ -594,7 +581,6 @@ DEPENDENCIES
   google-api-client
   guard (= 2.13.0)
   guard-minitest (= 2.4.4)
-  instagram!
   jbuilder (~> 2.5)
   jquery-rails
   koala
@@ -607,7 +593,6 @@ DEPENDENCIES
   omniauth
   omniauth-buffer2
   omniauth-facebook
-  omniauth-instagram
   omniauth-linkedin-oauth2
   omniauth-oauth2
   omniauth-twitter
@@ -634,4 +619,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.4
+   1.17.3

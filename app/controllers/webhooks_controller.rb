@@ -10,6 +10,17 @@ class WebhooksController < ApplicationController
 	  account_id = changes['value']['from']['id']
 	  if item == "photo"
 	  	picture = changes['value']['link']
+	  elsif item == "share"
+	  	share_link = changes['value']['link']
+
+		y = Net::HTTP.get_response(URI.parse(share_link))
+		if y.is_a?(Net::HTTPSuccess)
+			doc = Nokogiri::HTML(y.body)
+			picture = doc.at('meta[property="og:image"]')['content']
+		end
+
+		picture ||= '/assets/ext_link.svg'
+
 	  else
 	  	picture = nil
 	  end
@@ -22,7 +33,7 @@ class WebhooksController < ApplicationController
 		end
 		 
 	  #testing purposes
-	  elsif account_id == '1067280970047460'
+	  elsif account_id == '1067280970047460' && Rails.env.development?
 	  	@account = Account.find_by_account_id('2315862868426589')
 
 	  	if @account.autoshare == true

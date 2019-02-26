@@ -26,7 +26,7 @@
   <%= f.radio_button :category, "none", :checked => logged_in? && @user.category == "none" %>
   </div><br />
 
-  <%= f.label :name, "Organization/Name"%>
+  <%= f.label :name, "Name"%>
   <%= f.text_field :name, class: 'form-control' %>
   
   <%= f.label :email %>

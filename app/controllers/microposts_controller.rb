@@ -352,8 +352,7 @@ class MicropostsController < ApplicationController
     end
 
     def correct_or_admin_user
-      @micropost = current_user.microposts.find_by(id: params[:id])
-      if current_user.admin == true || @micropost.nil?
+      if current_user.admin == true || current_user.microposts.find_by(id: params[:id])
         @micropost = Micropost.find(params[:id])
       else
         redirect_to root_url
