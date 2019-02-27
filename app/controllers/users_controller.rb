@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   before_action :correct_or_admin_user,   only: [:destroy]
   before_action :logged_out_user, only: [:new]
 
-  protect_from_forgery
+  protect_from_forgery with: :exception
 
   def new
     @user = User.new
