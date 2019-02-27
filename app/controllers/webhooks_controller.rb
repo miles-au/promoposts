@@ -17,8 +17,9 @@ class WebhooksController < ApplicationController
 		if y.is_a?(Net::HTTPSuccess)
 			doc = Nokogiri::HTML(y.body)
 			picture = doc.at('meta[property="og:image"]')['content']
+		else
+			picture = nil
 		end
-		picture = nil
 
 	  else
 	  	picture = nil
