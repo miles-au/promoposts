@@ -12,7 +12,6 @@ class ListsController < ApplicationController
   end
 
   def submit
-	puts "PARAMS: #{params}"
 	list_id = params['list']['list_id']
 	user_id = params[:user_id]
     list_name = params['list']['name']

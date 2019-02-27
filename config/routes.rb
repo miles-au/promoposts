@@ -21,10 +21,10 @@ Rails.application.routes.draw do
 
   get '/social_login', to: 'sessions#social_new'
 
-  get 'microposts/facebook_sharable_pages'
-  get 'microposts/linkedin_sharable_pages'
+  #get 'microposts/facebook_sharable_pages'
+  #get 'microposts/linkedin_sharable_pages'
   #get 'microposts/instagram_sharable_pages'
-  get 'microposts/buffer_sharable_pages'
+  #get 'microposts/buffer_sharable_pages'
 
   #oauth 1
   get '/auth/:provider/callback', to: 'sessions#callback', as: 'sessions_callback'
@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   get 'microposts/share_to_socials', to: 'microposts#share_to_socials', as: 'share_to_socials'
 
   get 'microposts/new'
-  get 'microposts/view', to: 'microposts#view'
+  #get 'microposts/view', to: 'microposts#view'
 
   post '/webhooks_facebook' => 'webhooks#facebook', as: :facebook_webhooks
   get '/webhooks_facebook' => 'webhooks#challenge', as: :challenge_webhooks

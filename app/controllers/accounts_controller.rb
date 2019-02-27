@@ -53,21 +53,20 @@ class AccountsController < ApplicationController
 	  		#if page exists
 	  		if !page.empty?
 				#subscribe
-				a = Account.find_by_account_id(page.to_s)
+				a = @user.accounts.find_by_account_id(page.to_s)
 				a.autoshare = true
 				a.save!
 				#page_token = @user.facebook.get_object(page, fields:"access_token")['access_token']
 				page_token = Account.get_token(a.access_token)
 				url = 'https://graph.facebook.com/v3.1/'+ page +'/subscribed_apps'
 				x = Net::HTTP.post_form(URI.parse(url), {"access_token" => page_token})
-				puts x.body
 
 				#response
 				get_url = URI('https://graph.facebook.com/' + page + '/subscribed_apps')
 				get_params = { "access_token" => page_token }
 				get_url.query = URI.encode_www_form(get_params)
 				y = Net::HTTP.get_response(get_url)
-				puts y.body if y.is_a?(Net::HTTPSuccess)
+				#puts y.body if y.is_a?(Net::HTTPSuccess)
 
 	  		end
 	  	end
@@ -83,7 +82,7 @@ class AccountsController < ApplicationController
 	  		if !unsubs || !unsubs.include?(page)
 				
 				#unsubscribe
-				a = Account.find_by_account_id(page.to_s)
+				a = @user.accounts.find_by_account_id(page.to_s)
 				a.autoshare = false
 				a.save!
 				#page_token = @user.facebook.get_object(page, fields:"access_token")['access_token']
@@ -96,14 +95,13 @@ class AccountsController < ApplicationController
 			    attribute_url << {"access_token" => page_token}.map{|k,v| "#{k}=#{v}"}.join('&')
 			    request = Net::HTTP::Delete.new(uri.request_uri+attribute_url)
 			    response = http.request(request)
-			    puts response.body
 
 				#response
 				get_url = URI('https://graph.facebook.com/' + page + '/subscribed_apps')
 				get_params = { "access_token" => page_token }
 				get_url.query = URI.encode_www_form(get_params)
 				y = Net::HTTP.get_response(get_url)
-				puts y.body if y.is_a?(Net::HTTPSuccess)
+				#puts y.body if y.is_a?(Net::HTTPSuccess)
 
 	  		end
 	  	end

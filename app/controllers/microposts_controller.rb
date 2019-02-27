@@ -2,7 +2,7 @@ class MicropostsController < ApplicationController
   before_action :logged_in_user, only: [:create, :destroy, :new, :share_to_socials]
   before_action :correct_or_admin_user, only: [:destroy]
 
-  protect_from_forgery except: :show
+  protect_from_forgery #except: :show
 
   require 'uri'
   require 'net/http'
@@ -10,7 +10,6 @@ class MicropostsController < ApplicationController
   require 'json'
 
   rescue_from Koala::Facebook::APIError do |exception|
-    puts "EXCEPTION: #{exception}"
     if exception.fb_error_code == 190 || exception.fb_error_type == 200
       flash[:danger] = "We were unable to get the required permissions"
     elsif exception.fb_error_code == 32
@@ -59,14 +58,15 @@ class MicropostsController < ApplicationController
     redirect_to root_url
   end
 
+=begin
   def view
     @event = Event.new
     @micropost = Micropost.find(params[:id])
 
     if logged_in?
-      @fbaccounts = Account.where(:provider => "facebook", :user_id => current_user.id)
-      @linkedinaccounts = Account.where(:provider => "linkedin", :user_id => current_user.id)
-      @bufferaccounts = Account.where(:provider => "buffer", :user_id => current_user.id)
+      @fbaccounts = current_user.accounts.where(:provider => "facebook", :user_id => current_user.id)
+      @linkedinaccounts = current_user.accounts.where(:provider => "linkedin", :user_id => current_user.id)
+      @bufferaccounts = current_user.accounts.where(:provider => "buffer", :user_id => current_user.id)
     end
 
     respond_to do |format| 
@@ -74,6 +74,7 @@ class MicropostsController < ApplicationController
         format.js
     end
   end
+=end
 
   def show
     @event = Event.new
@@ -84,9 +85,9 @@ class MicropostsController < ApplicationController
     @user = @micropost.user
 
     if logged_in?
-      @fbaccounts = Account.where(:provider => "facebook", :user_id => current_user.id)
-      @linkedinaccounts = Account.where(:provider => "linkedin", :user_id => current_user.id)
-      @bufferaccounts = Account.where(:provider => "buffer", :user_id => current_user.id)
+      @fbaccounts = current_user.accounts.where(:provider => "facebook", :user_id => current_user.id)
+      @linkedinaccounts = current_user.accounts.where(:provider => "linkedin", :user_id => current_user.id)
+      @bufferaccounts = current_user.accounts.where(:provider => "buffer", :user_id => current_user.id)
     end
   end
 
@@ -95,7 +96,7 @@ class MicropostsController < ApplicationController
     micropost = Micropost.find(params['micropost_id'])
     message = params[:event]['message']
     pages = params[:event]['pages']
-    accounts = Account.where('account_id IN (?)', pages)
+    accounts = @user.accounts.where('account_id IN (?)', pages)
     buffer_profiles = []
     @post_success = []
     @post_failure = []
@@ -141,7 +142,6 @@ class MicropostsController < ApplicationController
     failure_map = @post_failure.map(&:inspect).join(', ')
     provider_string = success_map.gsub!('"', '')
     fail_string = failure_map.gsub!('"', '')
-    puts "POST_SUCCESS: #{@post_success}"
 
     if @post_failure.empty? && @post_success.empty?
       flash[:warning] = "No posts"
@@ -164,6 +164,7 @@ class MicropostsController < ApplicationController
     redirect_to micropost
   end
 
+=begin
   def facebook_sharable_pages
     @user = User.find(params[:id])
     @micropost = Micropost.find(params[:micropost])
@@ -177,6 +178,7 @@ class MicropostsController < ApplicationController
         format.js { render 'facebook_sharable_pages.js.erb' }
     end
   end
+=end
 
   def share_to_facebook(micropost, page_id, message, access_token)
     #get permissions
@@ -201,6 +203,7 @@ class MicropostsController < ApplicationController
     @post_success << 'Facebook'
   end
 
+=begin
   def linkedin_sharable_pages
     #puts "linkedin_sharable_pages"
     @user = User.find(params[:id])
@@ -218,6 +221,7 @@ class MicropostsController < ApplicationController
         format.js { render 'linkedin_sharable_pages.js.erb' }
     end
   end
+=end
 
   def share_to_linkedin(micropost, page_id, message)
     client = @user.linkedin
@@ -254,8 +258,6 @@ class MicropostsController < ApplicationController
     req = Net::HTTP::Post.new(uri.path, header)
     req.body = share
     res = http.request(req)
-    puts "RESPONSE: #{res.body}"
-    puts "Response #{res.code} #{res.message}: #{res.body}"
     update = res.body['update']
     
     if update
@@ -310,7 +312,7 @@ class MicropostsController < ApplicationController
   end
 =end
 
-
+=begin
   def buffer_sharable_pages
     #puts "buffer_sharable_pages"
     @user = User.find(params[:id])
@@ -328,6 +330,7 @@ class MicropostsController < ApplicationController
         format.js { render 'buffer_sharable_pages.js.erb' }
     end
   end
+=end
 
   def share_to_buffer(micropost, profiles, message)
     #get permissions

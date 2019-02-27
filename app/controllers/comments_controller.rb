@@ -18,7 +18,7 @@ class CommentsController < ApplicationController
         #this is a reply to comment
         category = 'comment'
         recipient = Comment.find(@comment.head).user
-        @notification.user_id = Comment.find(@comment.head).user_id
+        @notification.user_id = recipient.id
         @notification.message = "#{current_user.name} replied to your comment."
       else
         #this is a comment on post
@@ -42,7 +42,6 @@ class CommentsController < ApplicationController
 
       redirect_to @micropost
     else
-      puts 'FAILED'
       redirect_to micropost_path(@micropost.id), :flash => { :danger => @comment.errors.full_messages.join(', ') }
     end
 

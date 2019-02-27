@@ -6,6 +6,8 @@ class UsersController < ApplicationController
   before_action :correct_or_admin_user,   only: [:destroy]
   before_action :logged_out_user, only: [:new]
 
+  protect_from_forgery
+
   def new
     @user = User.new
   end
@@ -29,7 +31,6 @@ class UsersController < ApplicationController
     activity  = Event.where("user_id = :user_id", user_id: @user.id)
     @events = activity.paginate(page: params[:page], :per_page => 10)
     #@microposts = @user.microposts.paginate(page: params[:page], :per_page => 10)
-    @products = Product.where("user_id = :user_id", user_id: @user.id)
     redirect_to root_url and return unless @user.activated == true
   end
 

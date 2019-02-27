@@ -7,8 +7,6 @@ class NotificationsController < ApplicationController
 		@user = User.find(params[:user_id])
 		@notifications = @user.unread_notifications
 
-		puts "UNREAD: #{@notifications}"
-
 		@notifications.each do |notification|
 			notification.read = true
 			notification.save
