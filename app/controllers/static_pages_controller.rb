@@ -37,9 +37,9 @@ class StaticPagesController < ApplicationController
           query = params[:search]
 
           if Rails.env.production?
-            @feed_items_raw = Event.joins(:micropost).where("content ILIKE '%#{query}%'").reorder("content ILIKE '#{query}%' DESC").paginate(:page => params[:page])
+            @feed_items_raw = Event.joins(:micropost).where("content ILIKE ?", "%#{query}%").reorder("content ILIKE '#{query}%' DESC").paginate(:page => params[:page])
           else
-            @feed_items_raw = Event.joins(:micropost).where("content LIKE '%#{query}%'").reorder("content LIKE '#{query}%' DESC").paginate(:page => params[:page])
+            @feed_items_raw = Event.joins(:micropost).where("content LIKE ?", "%#{query}%").reorder("content LIKE '#{query}%' DESC").paginate(:page => params[:page])
           end 
 
       end

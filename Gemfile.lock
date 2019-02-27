@@ -84,6 +84,7 @@ GEM
       sass (>= 3.3.4)
     bootstrap-will_paginate (1.0.0)
       will_paginate
+    brakeman (4.4.0)
     builder (3.2.3)
     byebug (10.0.2)
     capybara (3.11.1)
@@ -567,6 +568,7 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   bootstrap-sass
   bootstrap-will_paginate
+  brakeman
   buffer!
   byebug
   capybara (>= 2.15)
