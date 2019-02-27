@@ -15,6 +15,11 @@
   <% end %>
 <% end %>
 
+<% if current_user && current_user.admin? %>
+  <%= link_to "delete this user", @user, method: :delete,
+                                data: { confirm: "You sure?" }, class: "pop-button" %>
+<% end %>
+
 <div style="position: relative;">
 <div id="user_display">
   <section class="user_info">

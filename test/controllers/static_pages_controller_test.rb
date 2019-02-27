@@ -3,7 +3,7 @@ require 'test_helper'
 class StaticPagesControllerTest < ActionDispatch::IntegrationTest
 
   def setup
-    @base_title = "Promo Posts - share promo content in seconds"
+    @base_title = "Promo Posts - News, Content, Ideas"
   end
 
   test "should get home" do

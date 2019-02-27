@@ -4,8 +4,23 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+one:
+  user: michael
+  passive_user_id: archer
+  micropost: orange
+  created_at: <%= 10.minutes.ago %>
+  contribution: "comment"
+
+two:
+  user: lana
+  passive_user_id: malory
+  micropost: sing
+  created_at: <%= 6.months.ago %>
+  contribution: "share"
+
+three:
+  user: archer
+  passive_user_id: archer
+  micropost: ants
+  created_at: <%= 42.days.ago %>
+  contribution: "created"

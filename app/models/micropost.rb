@@ -39,20 +39,26 @@ class Micropost < ActiveRecord::Base
     end
 
     def valid_url
-      if test_link(external_url).present?
-        valid_link = test_link(external_url)
-      elsif test_link("http://www.#{external_url}")
-        valid_link = test_link("http://www.#{external_url}")
-      elsif test_link("https://www.#{external_url}")
-        valid_link = test_link("https://www.#{external_url}")
-      elsif test_link("http://#{external_url}")
-        valid_link = test_link("http://#{external_url}")
-      end
-
-      if valid_link
-        self.update_attribute('external_url', valid_link)
+      if !external_url || external_url.empty?
+        self.update_attribute('external_url', nil)
+        return
       else
-        errors[:base] << "Please include a full valid link."
+        puts "EXTERNAL: #{external_url}"
+        if test_link(external_url).present?
+          valid_link = test_link(external_url)
+        elsif test_link("http://www.#{external_url}")
+          valid_link = test_link("http://www.#{external_url}")
+        elsif test_link("https://www.#{external_url}")
+          valid_link = test_link("https://www.#{external_url}")
+        elsif test_link("http://#{external_url}")
+          valid_link = test_link("http://#{external_url}")
+        end
+
+        if valid_link
+          self.update_attribute('external_url', valid_link)
+        else
+          errors[:base] << "Please include a full valid link."
+        end
       end
     end
 
