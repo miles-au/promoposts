@@ -15,13 +15,7 @@ class Micropost < ActiveRecord::Base
 
   self.per_page = 24
 
-  after_save :create_event
   before_destroy :delete_notifications
-
-  def create_event
-    @event = Event.new(user_id: self.user_id, micropost_id: self.id, contribution: 'create')
-    @event.save!
-  end
 
   private
 

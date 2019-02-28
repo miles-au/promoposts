@@ -29,7 +29,8 @@ class MicropostsController < ApplicationController
     end
     if @micropost.save
       flash[:success] = "Your promo post is live!"
-      @event = Event.new(user_id: current_user.id, micropost_id: @micropost.id)
+      @event = Event.new(user_id: current_user.id, micropost_id: @micropost.id, contribution: 'create')
+      @event.save
       if @micropost.category == 'question'
         question_notification_emails
       end
