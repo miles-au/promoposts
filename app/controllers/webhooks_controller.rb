@@ -21,6 +21,12 @@ class WebhooksController < ApplicationController
 			picture = nil
 		end
 
+	  elsif item == "status"
+	  	if changes['value']['photos']
+	  	  picture = changes['value']['photos'].first
+	  	else
+	  	  picture = nil
+	  	end
 	  else
 	  	picture = nil
 	  end
