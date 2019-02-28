@@ -81,7 +81,7 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     assert_not @other.active_relationships.find_by(followed_id: @user.id)
     get root_path
     assert_no_match content, response.body
-
   end
+  
 
 end
