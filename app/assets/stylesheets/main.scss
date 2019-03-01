@@ -729,14 +729,23 @@ input {
   list-style: none;
   padding: 0;
 
-  li {
-    padding: 10px 0;
-  }
   .user {
-    margin-top: 5em;
+    display: inline-block;
     padding-top: 0;
     font-size: 1.3em;
     vertical-align: top;
+  }
+  li{
+    padding: 10px 0;
+  }
+  .user-info{
+    min-height: 50px;
+    .user{
+      width: calc(100% - 85px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap
+    }
   }
   .content {
     display: block;
@@ -747,7 +756,7 @@ input {
     }
   }
   .avatar {
-    float: left;
+    display: inline-block;
     margin-right: 10px;
   }
   .noPic{
@@ -806,6 +815,7 @@ input {
     }
 
     .content-minified{
+      height: 5em;
       display: block;
     }
     .content-full{
@@ -1623,6 +1633,9 @@ span.picture {
     strong{
       text-indent: 0px;
     }
+  }
+  .content-minified{
+    height: auto !important;
   }
   .action-wrapper{
     width: 100%;

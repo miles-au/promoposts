@@ -61,7 +61,7 @@ class SessionsController < ApplicationController
 
   def oauth2
     provider = params['provider']
-    puts "PROVIDER: #{provider}"
+    #puts "PROVIDER: #{provider}"
 
     case provider
       when "linkedin"

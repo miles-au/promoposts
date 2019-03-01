@@ -62,7 +62,7 @@ class StaticPagesController < ApplicationController
         current_user.accolade.newcomer = false
         current_user.accolade.save!
       end
-      if current_user.accolade.newcomer
+      if current_user.accolade && current_user.accolade.newcomer
         @newcomer = current_user
       end
     end

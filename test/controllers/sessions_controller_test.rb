@@ -4,6 +4,9 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   test "should get new" do
     get login_path
     assert_response :success
-  end
 
+    get social_login_path
+    assert_response :success
+  end
+  
 end

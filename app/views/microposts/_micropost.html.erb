@@ -1,19 +1,10 @@
 <% @user = micropost.user %>
 
 <li id="micropost-<%= micropost.id %>" >
-  <div>
+  <div class="user-info">
     <div class="avatar avatar-thumbnail" style="background-image: url('<%= micropost.user.avatar %>');"></div>
-    <span class="user"><%= link_to micropost.user.name, micropost.user %></span>
+    <div class="user"><%= link_to micropost.user.name, micropost.user %></div>
   </div>
-    <span class="timestamp">
-      <%= time_ago_in_words(micropost.created_at) %> ago.
-      <% if current_user %>
-        <% if current_user?(micropost.user) || current_user.admin? %>
-          <%= link_to "delete", micropost, method: :delete,
-                                           data: { confirm: "You sure?" } %>
-        <% end %>
-      <% end %>
-    </span>
 
     <% case micropost.category %>
       <% when 'question' %>
@@ -24,10 +15,20 @@
         <% bgcolor = 'defaultBack' %>
     <% end %>
 
-    <%= render :partial => 'shared/accolades', :locals => {:user => @user } %>
-    <div style="height: 20px;">
+    <div style="height: 20px; margin-bottom: 5px;">
       <%= render 'shared/follow_form' if controller_name != "users" && logged_in? %>
     </div>
+    <%= render :partial => 'shared/accolades', :locals => {:user => @user } %>
+
+    <span class="timestamp">
+      <%= time_ago_in_words(micropost.created_at) %> ago.
+      <% if current_user %>
+        <% if current_user?(micropost.user) || current_user.admin? %>
+          <%= link_to "delete", micropost, method: :delete,
+                                           data: { confirm: "You sure?" } %>
+        <% end %>
+      <% end %>
+    </span>
 
     <%=link_to(@micropost) do %>
       <%= render :partial => 'microposts/content', :locals => {:micropost => @micropost, :bgcolor => bgcolor} %>

@@ -54,7 +54,7 @@
 	<span id="select-title">Current Feed:</span>
 	<div id="feed-names" class="mobile-show" >
 		<% case params["feed"] %>
-			<% when 'user' %>
+			<% when 'user'%>
 				<p style="display: inline-block;">Your Feed</p>
 			<% when 'global' %>
 				<p style="display: inline-block;">Global Feed</p>
@@ -67,7 +67,7 @@
 			<% when 'search' %>
 				<p style="display: inline-block;"><%= "'#{params[:search]}'" %></p>
 			<% else %>
-				<p style="display: inline-block;">Your Feed</p>
+				<p style="display: inline-block;">Global Feed</p>
 		<% end %>
 		<span id="slide-glyph" class="glyphicon glyphicon-triangle-right"></span>
 	</div>

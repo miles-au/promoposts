@@ -1,8 +1,8 @@
 <% snippet_length = 75 %>
 <div class="section">
   <span class="content">
-    <p class="content-minified" style="font-size: 1.2em; overflow: hidden; height: 5em;"><%= micropost.content.length > snippet_length ? micropost.content[0..snippet_length-3] : micropost.content %> <span class="go-to-post"><%= micropost.content.length > snippet_length ? '...' : '' %><span class="go-to-post-link">go to post</span></span></p>
-    <p class="content-full" style="font-size: 1.2em; overflow: hidden; height: 5em;"><%= micropost.content %></p>
+    <p class="content-minified" style="font-size: 1.2em; overflow: hidden;"><%= micropost.content.length > snippet_length ? micropost.content[0..snippet_length-3] : micropost.content %> <span class="go-to-post"><%= micropost.content.length > snippet_length ? '...' : '' %><span class="go-to-post-link">go to post</span></span></p>
+    <p class="content-full" style="font-size: 1.2em; overflow: hidden;"><%= micropost.content %></p>
 
     <% if micropost.picture.url %>
       <div class="square" style="background-image: url('<%= micropost.picture.url %>');">
