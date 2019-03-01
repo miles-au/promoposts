@@ -7,7 +7,7 @@
 		<span style="margin-left: 5px; font-size: 1em;"><%= pluralize(@event_counts[event.micropost.id], 'user') %> interacted with a post</span>
 	<% else %>
 		<div class="avatar avatar-thumbnail" style="width: 25px; height: 25px;background-image: url('<%= @active_user.avatar %>');"></div>
-		<div class="user" style="font-size: 1.1em;"><%= link_to @active_user.name, @active_user %></div>
+		<div class="user" style="font-size: 1.1em; display: inline-block; width: auto; max-width: 60%;"><%= link_to @active_user.name, @active_user %></div>
 	
 		<% case event.contribution %>
 			<% when 'create' %>
@@ -20,16 +20,17 @@
 				<span style="margin-left: 5px; font-size: 1em;">posted:</span>
 		<% end %>
 
+		<span style="font-size: 0.8em;">
+			<% if current_user && @event_counts%>
+			    <% if current_user.id == event.user_id || current_user.admin? %>
+			      <%= link_to "remove", event, method: :delete,
+			                                       data: { confirm: "Are you sure?" } %>
+			    <% end %>
+			<% end %>
+		</span>
+
 	<% end %>
 
-	<span style="font-size: 0.8em;">
-		<% if current_user %>
-		    <% if current_user.id == event.user_id || current_user.admin? %>
-		      <%= link_to "remove", event, method: :delete,
-		                                       data: { confirm: "Are you sure?" } %>
-		    <% end %>
-		<% end %>
-	</span>
   </div>
 
 	<% @micropost = Micropost.find(event.micropost_id) %>
