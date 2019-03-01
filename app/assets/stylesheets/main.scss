@@ -541,6 +541,8 @@ aside {
 }
 
 #user_display{
+  display: inline-block;
+  width: 200px;
   h1{
     font-size: 2.2em;
   }
@@ -551,10 +553,12 @@ aside {
       margin: 0 auto;
     }
 }
+.user_company span{
+  color: $grey3;
+}
 
-#user_display{
-  display: inline-block;
-  width: 200px;
+#mobile_user_display{
+  display: none;
 }
 
 #coverPhoto{
@@ -744,7 +748,11 @@ input {
       width: calc(100% - 85px);
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap
+      white-space: nowrap;
+    }
+    .user-company{
+      color: $grey3;
+      font-size: 0.8em;
     }
   }
   .content {
@@ -1681,12 +1689,14 @@ span.picture {
       height: 20vw;
     }
     h1{
-      padding: 2px;
-      background-color: $sigGrey;
-      display: inline-block;
-      font-size: 2em;
-      margin: 5px;
+      display: none;
     }
+    .user_company{
+      display: none;
+    }
+  }
+  #mobile_user_display{
+    display: block;
   }
   #activity{
     width: 100vw;

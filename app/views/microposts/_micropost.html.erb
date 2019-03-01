@@ -3,7 +3,10 @@
 <li id="micropost-<%= micropost.id %>" >
   <div class="user-info">
     <div class="avatar avatar-thumbnail" style="background-image: url('<%= micropost.user.avatar %>');"></div>
-    <div class="user"><%= link_to micropost.user.name, micropost.user %></div>
+    <div class="user" style="display: inline-block;">
+      <%= link_to micropost.user.name, micropost.user %>
+      <p class="user-company"><%= micropost.user.company %></p>
+    </div>
   </div>
 
     <% case micropost.category %>
@@ -15,9 +18,11 @@
         <% bgcolor = 'defaultBack' %>
     <% end %>
 
-    <div style="height: 20px; margin-bottom: 5px;">
-      <%= render 'shared/follow_form' if controller_name != "users" && logged_in? %>
-    </div>
+    <% if controller_name != "users" && logged_in? %>
+      <div style="height: 20px; margin-bottom: 5px;">
+        <%= render 'shared/follow_form'%>
+      </div>
+    <% end %>
     <%= render :partial => 'shared/accolades', :locals => {:user => @user } %>
 
     <span class="timestamp">

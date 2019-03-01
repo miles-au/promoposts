@@ -141,7 +141,6 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     end
     get micropost_path(micropost)
     assert_match reply, response.body
-    puts "CATEGORY: #{micropost.category}"
     assert_select "a", text: "mark as top comment", count: 0
     delete logout_path
 

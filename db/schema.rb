@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_26_205505) do
+ActiveRecord::Schema.define(version: 2019_03_01_210640) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -173,6 +173,7 @@ ActiveRecord::Schema.define(version: 2019_02_26_205505) do
     t.string "cover_photo"
     t.boolean "verify_email", default: false
     t.string "slug"
+    t.string "company"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

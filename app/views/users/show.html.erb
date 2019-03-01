@@ -1,11 +1,13 @@
 <% provide(:title, @user.name) %>
 
 <!--modal-->
+<!--
   <div id="modal-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content"></div>
     </div>
   </div>
+-->
 
 <% if @user == current_user %>
   <%= link_to(edit_user_path) do%>
@@ -29,8 +31,10 @@
     <h1>
       <span style="text-align: left; display: block;"><%= @user.name %></span>
     </h1>
+    <h4 class="user_company">
+      <span style="text-align: left; display: block;"><%= @user.company %></span>
+    </h4>
   </section>
-
 </div>
 
 <% if @user.cover_photo? %>
@@ -40,6 +44,15 @@
   <div id="coverPhoto" style="padding-top: 0px; height: <%= @user.cover_photo? ? '100' : '0' %>%;">
   </div>
 <% end %>
+</div>
+
+<div id="mobile_user_display">
+  <h4 style="font-size: 1.5em;">
+    <span style="text-align: left; display: block;"><%= @user.name %></span>
+  </h4>
+  <h4 class="user_company">
+    <span style="text-align: left; display: block;"><%= @user.company %></span>
+  </h4>
 </div>
 
 <div class="row" >

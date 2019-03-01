@@ -28,6 +28,9 @@
 
   <%= f.label :name, "Name"%>
   <%= f.text_field :name, class: 'form-control' %>
+
+  <%= f.label :company, "Organization"%>
+  <%= f.text_field :company, class: 'form-control' %>
   
   <%= f.label :email %>
   <% if @user.verify_email || !current_user %>
