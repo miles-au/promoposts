@@ -7,7 +7,11 @@ class WebhooksController < ApplicationController
 	def facebook
 	  field = @changes['field']
 	  item = @changes['value']['item']
-	  content = @changes['value']['message']
+	  if @changes['value']['message']
+	  	content = @changes['value']['message']
+	  else
+	  	content = "<image only>"
+	  end
 	  account_id = @changes['value']['from']['id']
 	  if item == "photo"
 	  	picture = @changes['value']['link']

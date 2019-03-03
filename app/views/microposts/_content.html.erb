@@ -1,3 +1,6 @@
+<% if micropost.content.empty? || micropost.content.blank? || micropost.content == nil %>
+<% micropost.content = "<image only>" %>
+<% end %>
 <% snippet_length = 75 %>
 <div class="section">
   <span class="content">
