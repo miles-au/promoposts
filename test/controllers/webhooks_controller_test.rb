@@ -20,9 +20,18 @@ class WebhooksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "facebook webhooks on removal" do
+  test "share from facebook - removal" do
     assert_no_difference ['Micropost.count', 'Event.count'] do
       payload = {"entry"=>[{"changes"=>[{"field"=>"feed", "value"=>{"recipient_id"=>@account.account_id, "from"=>{"id"=>@account.account_id, "name"=>"Promo Posts"}, "item"=>"post", "post_id"=>"190203818526382_248192106060886", "verb"=>"remove", "created_time"=>1551641464}}], "id"=>@account.account_id, "time"=>1551641467}], "object"=>"page", "password"=>ENV['webhooks_password'], "webhook"=>{"entry"=>[{"changes"=>[{"field"=>"feed", "value"=>{"recipient_id"=>@account.id, "from"=>{"id"=>@account.id, "name"=>"Promo Posts"}, "item"=>"post", "post_id"=>"190203818526382_248192106060886", "verb"=>"remove", "created_time"=>1551641464}}], "id"=>@account.id, "time"=>1551641467}], "object"=>"page"}}
+      post facebook_webhooks_path, params: payload
+    end
+  end
+
+  test "share from facebook - wrong password" do
+    assert_no_difference ['Micropost.count', 'Event.count'] do
+      payload = {"entry"=>[{"changes"=>[{"field"=>"feed", "value"=>{"from"=>{"name"=>"Test Page", "id"=>@account.account_id}, "post_id"=>"44444444_444444444", "item"=>"status", "verb"=>"add", "published"=>1, "created_time"=>1551573275, "message"=>"Example post content."}}], "id"=>"0", "time"=>1551573275}], "object"=>"page", "password"=>"wrong-password", "webhook"=>{"entry"=>[{"changes"=>[{"field"=>"feed", "value"=>{"from"=>{"name"=>"Test Page", "id"=>@account.id}, "post_id"=>"44444444_444444444", "item"=>"status", "verb"=>"add", "published"=>1, "created_time"=>1551573275, "message"=>"Example post content."}}], "id"=>"0", "time"=>1551573275}], "object"=>"page"}}
+      post facebook_webhooks_path, params: payload
+      payload = {"entry"=>[{"changes"=>[{"field"=>"feed", "value"=>{"from"=>{"name"=>"Test Page", "id"=>@account.account_id}, "post_id"=>"44444444_444444444", "item"=>"status", "verb"=>"add", "published"=>1, "created_time"=>1551573275, "message"=>"Example post content."}}], "id"=>"0", "time"=>1551573275}], "object"=>"page", "webhook"=>{"entry"=>[{"changes"=>[{"field"=>"feed", "value"=>{"from"=>{"name"=>"Test Page", "id"=>@account.id}, "post_id"=>"44444444_444444444", "item"=>"status", "verb"=>"add", "published"=>1, "created_time"=>1551573275, "message"=>"Example post content."}}], "id"=>"0", "time"=>1551573275}], "object"=>"page"}}
       post facebook_webhooks_path, params: payload
     end
   end
