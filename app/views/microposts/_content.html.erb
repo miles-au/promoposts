@@ -1,5 +1,9 @@
-<% if micropost.content.empty? || micropost.content.blank? || micropost.content == nil %>
-<% micropost.content = "<image only>" %>
+<% if micropost.content %>
+  <% if micropost.content.empty? || micropost.content.blank? || micropost.content == nil %>
+    <% micropost.content = "<image only>" %>
+  <% end %>
+<% else %>
+  <% micropost.content = "<image only>" %>
 <% end %>
 <% snippet_length = 75 %>
 <div class="section">
