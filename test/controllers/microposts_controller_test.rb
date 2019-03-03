@@ -44,5 +44,5 @@ class MicropostsControllerTest < ActionDispatch::IntegrationTest
     assert_not_equal(before_delete, after_delete)
     assert_redirected_to root_url
   end
-
+  
 end
