@@ -2,7 +2,7 @@ class WebhooksController < ApplicationController
 	protect_from_forgery :except => :facebook
 	protect_from_forgery :except => :delete_data
 
-	before_action :check_password, only: [:facebook]
+	before_action :webhook_check, only: [:facebook]
 
 	def facebook
 	  field = @changes['field']
@@ -123,10 +123,14 @@ class WebhooksController < ApplicationController
 	    render :json => { url: status_url, confirmation_code: ticket.id}
 	end
 
-	def check_password
+	def webhook_check
 		password = params['password']
 		if password.to_s == ENV['webhooks_password'].to_s
 			@changes = params['entry'].first['changes'].first
+			verb = @changes['value']['verb']
+			if verb != "add"
+			  head :non_authoritative_information
+			end
 		else
 			head :forbidden
 		end
