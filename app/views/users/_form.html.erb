@@ -27,10 +27,10 @@
   </div><br />
 
   <%= f.label :name, "Name"%>
-  <%= f.text_field :name, class: 'form-control' %>
+  <%= f.text_field :name, class: 'form-control', maxlength: 50 %>
 
   <%= f.label :company, "Organization"%>
-  <%= f.text_field :company, class: 'form-control' %>
+  <%= f.text_field :company, class: 'form-control', maxlength: 50  %>
   
   <%= f.label :email %>
   <% if @user.verify_email || !current_user %>

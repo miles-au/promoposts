@@ -2,16 +2,17 @@ class WebhooksController < ApplicationController
 	protect_from_forgery :except => :facebook
 	protect_from_forgery :except => :delete_data
 
+	before_action :check_password, only: [:facebook]
+
 	def facebook
-	  changes = params['entry'].first['changes'].first
-	  field = changes['field']
-	  item = changes['value']['item']
-	  content = changes['value']['message']
-	  account_id = changes['value']['from']['id']
+	  field = @changes['field']
+	  item = @changes['value']['item']
+	  content = @changes['value']['message']
+	  account_id = @changes['value']['from']['id']
 	  if item == "photo"
-	  	picture = changes['value']['link']
+	  	picture = @changes['value']['link']
 	  elsif item == "share"
-	  	external_link = changes['value']['link']
+	  	external_link = @changes['value']['link']
 
 		y = Net::HTTP.get_response(URI.parse(external_link))
 		if y.is_a?(Net::HTTPSuccess)
@@ -22,8 +23,8 @@ class WebhooksController < ApplicationController
 		end
 
 	  elsif item == "status"
-	  	if changes['value']['photos']
-	  	  picture = changes['value']['photos'].first
+	  	if @changes['value']['photos']
+	  	  picture = @changes['value']['photos'].first
 	  	else
 	  	  picture = nil
 	  	end
@@ -31,7 +32,8 @@ class WebhooksController < ApplicationController
 	  	picture = nil
 	  end
 
-	  if @account = Account.find_by_account_id(account_id)
+	  @account = Account.find_by_account_id(account_id)
+	  if @account
 	  	if @account.autoshare == true
 		  user_id = @account.user_id
 		  @micropost = Micropost.new(:content => content, :user_id => user_id, :remote_picture_url => picture)
@@ -39,32 +41,39 @@ class WebhooksController < ApplicationController
 		  	@micropost.external_url = external_link
 		  end
 		  @micropost.save!
+		  event = Event.new(user_id: user_id, micropost_id: @micropost.id, contribution: 'create')
+      	  event.save
+		  head :created and return
+		else
+		  head :forbidden and return
 		end
 		 
 	  #testing purposes
 	  elsif account_id == '1067280970047460' && Rails.env.development?
-	  	@account = Account.find_by_account_id('2315862868426589')
+	  	@account = Account.find_by_account_id('1067280970047460')
 
-	  	if @account.autoshare == true
+	  	if @account && @account.autoshare == true
 	  	  user_id = User.find_by_name('Promo Poster').id
 		  @micropost = Micropost.new(:content => content, :user_id => user_id, :remote_picture_url => picture)
 		  @micropost.save!
+		  event = Event.new(user_id: user_id, micropost_id: @micropost.id, contribution: 'create')
+      	  event.save
+		  head :created and return
 		end
+	  else
+	  	head :not_implemented and return
 	  end
-
-	  head :ok and return
-	  render html: "success"
 
 	end
 
 	def challenge
 		if params['hub.verify_token'] == 'cCxiKr91yt87CyQeUhEp'
 			render html: params['hub.challenge'] and return
-		  else
+		else
 			render html: 'error' and return
-		  end
+		end
 
-		  redirect_to root_url
+		redirect_to root_url
 	end
 
 	def unauthorize_facebook
@@ -108,7 +117,15 @@ class WebhooksController < ApplicationController
 	    user.save!
 
 	    render :json => { url: status_url, confirmation_code: ticket.id}
+	end
 
+	def check_password
+		password = params['password']
+		if password.to_s == ENV['webhooks_password'].to_s
+			@changes = params['entry'].first['changes'].first
+		else
+			head :forbidden
+		end
 	end
 
 end

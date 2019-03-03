@@ -1,9 +1,12 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  account_id: MyString
-  user: one
+test_page:
+  account_id: '8081743795567065'
+  user: michael
+  autoshare: true
 
-two:
-  account_id: MyString
-  user: two
+autoshare_off:
+  account_id: '8081743795567065'
+  user: michael
+  autoshare: false
+  
