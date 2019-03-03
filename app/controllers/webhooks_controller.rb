@@ -38,6 +38,24 @@ class WebhooksController < ApplicationController
 
 	  @account = Account.find_by_account_id(account_id)
 	  if @account
+	  	#last post
+	  	last_post = @account.user.microposts.first
+	  	post_time = last_post.created_at
+	  	plus_twenty = last_post.created_at + 20.seconds
+	  	#received post from facebook
+	  	created_time = @changes['value']['created_time']
+	  	received_time = Time.zone.strptime(created_time.to_s, '%s')
+
+	  	if content
+		  	if last_post.content == content && received_time < plus_twenty
+		  	  head :accepted and return
+		  	end
+		else
+			if received_time < plus_twenty
+				head :accepted and return
+		  	end
+		end
+
 	  	if @account.autoshare == true
 		  user_id = @account.user_id
 		  @micropost = Micropost.new(:content => content, :user_id => user_id, :remote_picture_url => picture)
