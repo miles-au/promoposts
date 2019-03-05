@@ -41,10 +41,15 @@ class SessionsController < ApplicationController
     if par['intent'] == "sign_in"
       #sign_in
       @user = User.create_with_omniauth(@auth)
-      create_accounts(@provider)
-      flash[:success] = "Welcome to Promo Posts, #{@user.name}."
-      log_in @user
-      redirect_back_or root_url
+      if @user
+        create_accounts(@provider)
+        flash[:success] = "Welcome to Promo Posts, #{@user.name}."
+        log_in @user
+        redirect_back_or root_url
+      else
+        flash[:danger] = "There was an issue logging you in. We apologize for the inconvenience"
+        redirect_back_or root_url
+      end
     elsif par['intent'] == "connect"
       #connect
       @user = User.connect_accounts(@auth, current_user.id)

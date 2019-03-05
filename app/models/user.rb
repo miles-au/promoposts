@@ -167,12 +167,18 @@ class User < ApplicationRecord
 
     case auth['provider']
       when "facebook"
+        graph = Koala::Facebook::API.new(auth.credentials.token)
         if user
-          user.fb_uid = auth['uid']
+          #user.fb_uid = auth['uid']
+          user.fb_uid = graph.get_object("me")['id']
         else
-          user = User.find_or_initialize_by(fb_uid: auth['uid'])
+          user = User.find_or_initialize_by(fb_uid: graph.get_object("me")['id'])
         end
-        user.fb_oauth_token = encrypted_token
+        if auth['uid'] == graph.get_object("me")['id']
+          user.fb_oauth_token = encrypted_token
+        else
+          return nil
+        end
       when "linkedin"
         if user
           user.linkedin_uid = auth['uid']
