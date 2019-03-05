@@ -35,9 +35,8 @@ class SessionsController < ApplicationController
     par = request.env['omniauth.params']
     @auth = request.env['omniauth.auth']
     @provider = @auth['provider']
-    @code = params['oauth_verifier']
-
-    par_code = params['code']
+    #@code = params['oauth_verifier']
+    #par_code = params['code']
 
     if par['intent'] == "sign_in"
       #sign_in
@@ -53,6 +52,8 @@ class SessionsController < ApplicationController
       flash[:success] = "Your #{@provider} account has been connected, #{@user.name}."
       redirect_back_or accounts_edit_path
     else
+      puts "Facebook Login Error"
+      puts "Request: #{request.env['omniauth.params']}"
       flash[:danger] = "There was an error while authenticating your account, we apologize for the inconvenience."
       redirect_to root_url
     end
