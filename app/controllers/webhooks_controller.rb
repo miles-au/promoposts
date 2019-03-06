@@ -142,15 +142,10 @@ class WebhooksController < ApplicationController
 	end
 
 	def webhook_check
-		password = params['password']
-		if password.to_s == ENV['webhooks_password'].to_s
-			@changes = params['entry'].first['changes'].first
-			verb = @changes['value']['verb']
-			if verb != "add"
-			  head :non_authoritative_information
-			end
-		else
-			head :forbidden
+		@changes = params['entry'].first['changes'].first
+		verb = @changes['value']['verb']
+		if verb != "add"
+		  head :non_authoritative_information
 		end
 	end
 
