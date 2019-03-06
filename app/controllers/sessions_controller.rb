@@ -136,9 +136,9 @@ class SessionsController < ApplicationController
 
       a = Account.find_by(:account_id => page['id'],:user_id => @user.id)
       if a
-        a.update(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
+        a.update(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
       else
-        a = Account.new(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
+        a = Account.new(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
         a.save
         a
       end
