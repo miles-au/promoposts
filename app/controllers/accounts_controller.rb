@@ -47,7 +47,7 @@ class AccountsController < ApplicationController
   	@account = Account.new
   	@user = User.find(params[:user_id])
 
-  	if params[:subscribe]
+  	if params[:subscribe] && logged_in?
 	  	subs = params[:subscribe]
 	  	subs.each do |page|
 	  		#if page exists
