@@ -38,7 +38,7 @@ class WebhooksController < ApplicationController
 
 	  @account = Account.find_by_account_id(account_id)
 	  if @account
-	  	#last post
+	  	#last post - to counter share to facebook page, webhook shares back to promo posts
 	  	last_post = @account.user.microposts.first
 	  	if last_post
 		  	post_time = last_post.created_at
@@ -46,19 +46,16 @@ class WebhooksController < ApplicationController
 		  	#received post from facebook
 		  	created_time = @changes['value']['created_time']
 		  	received_time = Time.zone.strptime(created_time.to_s, '%s')
-		else
-			received_time = 0
-			plus_twenty = 1
-		end
 
-	  	if content
-		  	if last_post.content == content && received_time < plus_twenty
-		  	  head :accepted and return
-		  	end
-		else
-			if received_time < plus_twenty
-				head :accepted and return
-		  	end
+		  	if content
+			  	if last_post.content == content && received_time < plus_twenty
+			  	  head :accepted and return
+			  	end
+			else
+				if received_time < plus_twenty
+					head :accepted and return
+			  	end
+			end
 		end
 
 	  	if @account.autoshare == true
