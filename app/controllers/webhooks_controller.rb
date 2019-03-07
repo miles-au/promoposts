@@ -9,8 +9,6 @@ class WebhooksController < ApplicationController
 	  item = @changes['value']['item']
 	  if @changes['value']['message']
 	  	content = @changes['value']['message']
-	  else
-	  	content = "<image only>"
 	  end
 	  account_id = @changes['value']['from']['id']
 	  if item == "photo"
