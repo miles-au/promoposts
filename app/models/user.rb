@@ -40,6 +40,9 @@ class User < ApplicationRecord
   mount_uploader :cover_photo, PictureUploader
   validate  :picture_size
 
+  include PgSearch
+  pg_search_scope :search, against: [:name, :company]
+
   require 'rubygems'
   #require 'linkedin'
 
@@ -362,15 +365,8 @@ class User < ApplicationRecord
     decrypt_value(val)
   end
 
-  def self.search(query)
-
-    if Rails.env.production?
-      results = User.where("name ILIKE '%#{query}%'").reorder("name ILIKE '#{query}%' DESC")
-    else
-      results = User.where("name LIKE '%#{query}%'").reorder("name LIKE '#{query}%' DESC ")
-    end 
-    
-    results
+  def self.find_user(query)
+      results = User.where("name LIKE ?", "%#{query}%" ).reorder("name LIKE '#{query}%' DESC ")
   end
 
   def display_notifications

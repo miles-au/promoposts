@@ -13,15 +13,27 @@ class UsersController < ApplicationController
   end
 
   def index
-    @search = params[:search]
+    if Rails.env.production?
+      @search = params[:search]
 
-    if @search
-
-      @users = User.search(@search).paginate(:page => params[:page], :per_page => 20)
+      if @search
+        @users = User.search(@search).paginate(:page => params[:page], :per_page => 20)
+      else
+        @users = User.where(activated: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => 20)
+      end
 
     else
-      
-      @users = User.where(activated: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => 20)
+      @search = ActiveRecord::Base::sanitize_sql(params[:search])
+
+      if @search
+
+        @users = User.find_user(@search).paginate(:page => params[:page], :per_page => 20)
+
+      else
+        
+        @users = User.where(activated: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => 20)
+      end
+
     end
     
   end
