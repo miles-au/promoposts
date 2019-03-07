@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     if Rails.env.production?
       @search = params[:search]
 
-      if @search
+      if @search.present?
         @users = User.search(@search).paginate(:page => params[:page], :per_page => 20)
       else
         @users = User.where(activated: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => 20)
