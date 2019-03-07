@@ -83,6 +83,8 @@ class WebhooksController < ApplicationController
 		  event = Event.new(user_id: user_id, micropost_id: @micropost.id, contribution: 'create')
       	  event.save
 		  head :created and return
+		else
+		  head :not_implemented and return
 		end
 	  else
 	  	head :not_implemented and return
@@ -144,10 +146,21 @@ class WebhooksController < ApplicationController
 	end
 
 	def webhook_check
-		@changes = params['entry'].first['changes'].first
-		verb = @changes['value']['verb']
-		if verb != "add"
-		  head :non_authoritative_information
+		graph = Koala::Facebook::RealtimeUpdates.new( :app_id => ENV['FACEBOOK_KEY'] , :secret => ENV['FACEBOOK_SECRET'])
+		legitimate = graph.validate_update(request.body, headers)
+
+		#puts "LEGIT?: #{legitimate}"
+		#puts "BODY: #{request.body.read}"
+		#puts "HEADER: #{headers}"
+
+		if legitimate
+			@changes = params['entry'].first['changes'].first
+			verb = @changes['value']['verb']
+			if verb != "add"
+			  head :non_authoritative_information
+			end
+		else
+		  head :forbidden
 		end
 	end
 
