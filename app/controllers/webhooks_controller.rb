@@ -146,14 +146,13 @@ class WebhooksController < ApplicationController
 	end
 
 	def webhook_check
-		#graph = Koala::Facebook::RealtimeUpdates.new( :app_id => ENV['FACEBOOK_KEY'] , :secret => ENV['FACEBOOK_SECRET'])
-		#legitimate = graph.validate_update(request.body, headers)
+		graph = Koala::Facebook::RealtimeUpdates.new( :app_id => ENV['FACEBOOK_KEY'] , :secret => ENV['FACEBOOK_SECRET'])
+		if Rails.env.test?
+		  legitimate = true
+		else
+		  legitimate = graph.validate_update(request.body.read, request.env)
+		end
 
-		#puts "LEGIT?: #{legitimate}"
-		#puts "BODY: #{request.body.read}"
-		#puts "HEADER: #{headers}"
-
-		legitimate = true
 		if legitimate
 			@changes = params['entry'].first['changes'].first
 			verb = @changes['value']['verb']
