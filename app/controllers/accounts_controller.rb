@@ -46,6 +46,8 @@ class AccountsController < ApplicationController
   def update
   	@account = Account.new
   	@user = User.find(params[:user_id])
+    @post_success = []
+    @post_failure = []
 
   	if params[:subscribe] && logged_in?
 	  	subs = params[:subscribe]
@@ -54,8 +56,7 @@ class AccountsController < ApplicationController
 	  		if !page.empty?
 				#subscribe
 				a = @user.accounts.find_by_account_id(page.to_s)
-				a.autoshare = true
-				a.save!
+				
 				#page_token = @user.facebook.get_object(page, fields:"access_token")['access_token']
 				page_token = Account.get_token(a.access_token)
 				url = 'https://graph.facebook.com/v3.1/'+ page +'/subscribed_apps'
@@ -66,7 +67,15 @@ class AccountsController < ApplicationController
 				get_params = { "access_token" => page_token }
 				get_url.query = URI.encode_www_form(get_params)
 				y = Net::HTTP.get_response(get_url)
-				#puts y.body if y.is_a?(Net::HTTPSuccess)
+				puts y.body
+
+        if y.is_a?(Net::HTTPSuccess)
+          a.autoshare = true
+          a.save!
+          @post_success << a.name
+        else
+          @post_failure << a.name
+        end
 
 	  		end
 	  	end
@@ -83,31 +92,51 @@ class AccountsController < ApplicationController
 				
 				#unsubscribe
 				a = @user.accounts.find_by_account_id(page.to_s)
-				a.autoshare = false
-				a.save!
+				
 				#page_token = @user.facebook.get_object(page, fields:"access_token")['access_token']
 				page_token = Account.get_token(a.access_token)
 				url = 'https://graph.facebook.com/v3.1/'+ page +'/subscribed_apps'
 				uri = URI.parse(url)
-			    http = Net::HTTP.new(uri.host, uri.port)
-			    http.use_ssl = true
-			    attribute_url = '?'
-			    attribute_url << {"access_token" => page_token}.map{|k,v| "#{k}=#{v}"}.join('&')
-			    request = Net::HTTP::Delete.new(uri.request_uri+attribute_url)
-			    response = http.request(request)
+			  http = Net::HTTP.new(uri.host, uri.port)
+			  http.use_ssl = true
+			  attribute_url = '?'
+			  attribute_url << {"access_token" => page_token}.map{|k,v| "#{k}=#{v}"}.join('&')
+			  request = Net::HTTP::Delete.new(uri.request_uri+attribute_url)
+			  response = http.request(request)
 
 				#response
 				get_url = URI('https://graph.facebook.com/' + page + '/subscribed_apps')
 				get_params = { "access_token" => page_token }
 				get_url.query = URI.encode_www_form(get_params)
 				y = Net::HTTP.get_response(get_url)
-				#puts y.body if y.is_a?(Net::HTTPSuccess)
+				puts y.body
+        if y.is_a?(Net::HTTPSuccess)
+          a.autoshare = false
+          a.save!
+          @post_success << a.name
+        else
+          @post_failure << a.name
+        end
 
 	  		end
 	  	end
 	  end
 
-	  flash[:success] = "Updated account preferences."
+    success_map = @post_success.map(&:inspect).join(', ')
+    failure_map = @post_failure.map(&:inspect).join(', ')
+    provider_string = success_map.gsub!('"', '')
+    fail_string = failure_map.gsub!('"', '')
+
+    if @post_success.count < 1 && @post_failure.count < 1
+      flash[:success] = "Autoshare settings up to date."
+    elsif @post_success.count < 1
+      flash[:danger] = "Sorry, we were unable to update autoshare for: #{fail_string}"
+    elsif @post_failure.count < 1
+      flash[:success] = "Autoshare settings updated for: #{provider_string}"
+    else
+      flash[:success] = "Autoshare settings updated for: #{provider_string} | Autoshare update failed: #{fail_string}"
+    end
+	  
   	redirect_to '/accounts/edit'
 
   end
