@@ -61,15 +61,16 @@ class AccountsController < ApplicationController
 				page_token = Account.get_token(a.access_token)
 				url = 'https://graph.facebook.com/v3.1/'+ page +'/subscribed_apps'
 				x = Net::HTTP.post_form(URI.parse(url), {"access_token" => page_token})
+        #puts x.body
 
 				#response
 				get_url = URI('https://graph.facebook.com/' + page + '/subscribed_apps')
 				get_params = { "access_token" => page_token }
 				get_url.query = URI.encode_www_form(get_params)
 				y = Net::HTTP.get_response(get_url)
-				puts y.body
+			  #puts y.body
 
-        if y.is_a?(Net::HTTPSuccess)
+        if x.is_a?(Net::HTTPSuccess)
           a.autoshare = true
           a.save!
           @post_success << a.name
@@ -103,14 +104,23 @@ class AccountsController < ApplicationController
 			  attribute_url << {"access_token" => page_token}.map{|k,v| "#{k}=#{v}"}.join('&')
 			  request = Net::HTTP::Delete.new(uri.request_uri+attribute_url)
 			  response = http.request(request)
+        #puts response.body
 
 				#response
 				get_url = URI('https://graph.facebook.com/' + page + '/subscribed_apps')
 				get_params = { "access_token" => page_token }
 				get_url.query = URI.encode_www_form(get_params)
 				y = Net::HTTP.get_response(get_url)
-				puts y.body
-        if y.is_a?(Net::HTTPSuccess)
+				#puts y.body
+
+        sub_list = y.body.to_s
+        found = false
+
+        if sub_list.include? a.account_id
+          found = true
+        end
+
+        if y.is_a?(Net::HTTPSuccess) && found == false
           a.autoshare = false
           a.save!
           @post_success << a.name
