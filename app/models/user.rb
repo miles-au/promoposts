@@ -366,7 +366,8 @@ class User < ApplicationRecord
   end
 
   def self.find_user(query)
-      results = User.where("name LIKE ?", "%#{query}%" ).reorder("name LIKE '#{query}%' DESC ")
+    safe_query = ActiveRecord::Base.connection.quote("#{query}%")
+    results = User.where("name LIKE ?", "%#{query}%" ).reorder("name LIKE #{safe_query} DESC ")
   end
 
   def display_notifications
