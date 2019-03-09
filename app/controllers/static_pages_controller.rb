@@ -38,7 +38,7 @@ class StaticPagesController < ApplicationController
 
           if Rails.env.production?
             safe_query = ActiveRecord::Base.connection.quote("#{query}%")
-            @feed_items_raw = Event.joins(:micropost).where("content ILIKE ?", "%#{query}%").reorder("content ILIKE '#{safe_query}%' DESC").paginate(:page => params[:page])
+            @feed_items_raw = Event.joins(:micropost).where("content ILIKE ?", "%#{query}%").reorder("content ILIKE #{safe_query} DESC").paginate(:page => params[:page])
           else
             safe_query = ActiveRecord::Base.connection.quote("#{query}%")
             @feed_items_raw = Event.joins(:micropost).where("content LIKE ?", "%#{query}%").reorder("content LIKE #{safe_query} DESC").paginate(:page => params[:page])
