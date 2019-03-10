@@ -113,6 +113,8 @@ class MicropostsController < ApplicationController
         when "buffer"
           buffer_profiles.push(page.account_id)
       end
+
+      page.last_share_time = Time.now
     end
 
     if !buffer_profiles.empty?
@@ -182,8 +184,6 @@ class MicropostsController < ApplicationController
 =end
 
   def share_to_facebook(micropost, page_id, message, access_token)
-    #get permissions
-    permissions = @user.facebook.get_connections('me', 'permissions')
 
     fb_page = Koala::Facebook::API.new(access_token)
 

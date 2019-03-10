@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_01_210640) do
+ActiveRecord::Schema.define(version: 2019_03_10_023826) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 2019_03_01_210640) do
     t.boolean "autoshare"
     t.string "name"
     t.string "picture"
+    t.datetime "last_share_time"
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
