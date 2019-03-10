@@ -7,8 +7,9 @@ class WebhooksController < ApplicationController
 	def facebook
 	  field = @changes['field']
 	  item = @changes['value']['item']
-
-	  if item == "reaction"
+	  facebook_items = ["album", "address", "comment", "connection", "coupon", "event", "experience", "group", "group_message", "interest", "like", "mention", "milestone", "note", "page", "picture", "platform-story", "photo-album", "profile", "rating", "reaction", "relationship-status", "story", "timeline cover", "tag", "video"]
+	  
+	  if facebook_items.include?(item)
 	  	head :accepted and return
 	  end
 
