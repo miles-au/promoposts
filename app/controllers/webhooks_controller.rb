@@ -44,7 +44,7 @@ class WebhooksController < ApplicationController
 	  	#last post - to counter share to facebook page, webhook shares back to promo posts
 	  	
 	  	if @account.last_share_time
-		  	plus_five = last_share_time + 5.seconds
+		  	plus_five = @account.last_share_time + 5.seconds
 		  	#received post from facebook
 		  	created_time = @changes['value']['created_time']
 		  	received_time = Time.zone.strptime(created_time.to_s, '%s')
