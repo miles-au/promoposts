@@ -1,4 +1,7 @@
 class VotesController < ApplicationController
+	before_action :logged_in_user
+	protect_from_forgery with: :exception
+	
 	def submit_vote
 		@comment_id = params['comment_id']
 		@comment = Comment.find(@comment_id)
