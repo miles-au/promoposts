@@ -7,6 +7,11 @@ class WebhooksController < ApplicationController
 	def facebook
 	  field = @changes['field']
 	  item = @changes['value']['item']
+
+	  if item == "reaction"
+	  	head :accepted and return
+	  end
+
 	  if @changes['value']['message']
 	  	content = @changes['value']['message']
 	  end
