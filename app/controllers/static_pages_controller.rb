@@ -105,7 +105,7 @@ class StaticPagesController < ApplicationController
 =end
   
     #get events
-    item_counts = items.select('COUNT(id)', :micropost_id).group(:micropost_id).size
+    item_counts = items.select('COUNT(id)', :micropost_id).group(:micropost_id, :created_at).size
     event_ids = []
     @event_counts = {}
     item_counts.each do |key, value|
