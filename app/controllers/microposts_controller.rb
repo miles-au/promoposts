@@ -115,6 +115,7 @@ class MicropostsController < ApplicationController
       end
 
       page.last_share_time = Time.now
+      page.save
     end
 
     if !buffer_profiles.empty?
