@@ -15,6 +15,6 @@ class Event < ApplicationRecord
 
 	attr_accessor :message
 
-	self.per_page = 24
+	#self.per_page = 24
 
 end

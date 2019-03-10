@@ -5,7 +5,7 @@
     <div class="avatar avatar-thumbnail" style="background-image: url('<%= micropost.user.avatar %>');"></div>
     <div class="user" style="display: inline-block;">
       <%= link_to micropost.user.name, micropost.user %>
-      <p class="user-company"><%= micropost.user.company %></p>
+      <p class="user-company"><%= micropost.user.company || "&nbsp;".html_safe %></p>
     </div>
   </div>
 

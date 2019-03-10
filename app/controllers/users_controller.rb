@@ -17,9 +17,9 @@ class UsersController < ApplicationController
       @search = params[:search]
 
       if @search.present?
-        @users = User.search(@search).paginate(:page => params[:page], :per_page => 20)
+        @users = User.search(@search).paginate(:page => params[:page], :per_page => 60)
       else
-        @users = User.where(activated: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => 20)
+        @users = User.where(activated: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => 60)
       end
 
     else
@@ -27,11 +27,11 @@ class UsersController < ApplicationController
 
       if @search
 
-        @users = User.find_user(@search).paginate(:page => params[:page], :per_page => 20)
+        @users = User.find_user(@search).paginate(:page => params[:page], :per_page => 60)
 
       else
         
-        @users = User.where(activated: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => 20)
+        @users = User.where(activated: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => 60)
       end
 
     end

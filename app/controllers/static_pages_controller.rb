@@ -16,47 +16,56 @@ class StaticPagesController < ApplicationController
       case @feed_type
         when "user"
           if logged_in?
-            @feed_items_raw = current_user.feed.paginate(:page => params[:page])
+            @feed_items_raw = current_user.feed
+            @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
           else
             redirect_to login_path
           end
 
         when "global"
-          @feed_items_raw = Event.all.paginate(:page => params[:page])
+          @feed_items_raw = Event.all
+          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
 
         when "vendor"
-          @feed_items_raw = Event.vendors.paginate(:page => params[:page])
+          @feed_items_raw = Event.vendors
+          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
 
         when 'questions'
-          @feed_items_raw = Event.questions.paginate(:page => params[:page])
+          @feed_items_raw = Event.questions
+          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
 
         when 'careers'
-          @feed_items_raw = Event.careers.paginate(:page => params[:page])
+          @feed_items_raw = Event.careers
+          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
 
         when 'search'
           query = params[:search]
 
           if Rails.env.production?
             safe_query = ActiveRecord::Base.connection.quote("#{query}%")
-            @feed_items_raw = Event.joins(:micropost).where("content ILIKE ?", "%#{query}%").reorder("content ILIKE #{safe_query} DESC").paginate(:page => params[:page])
+            @feed_items_raw = Event.joins(:micropost).where("content ILIKE ?", "%#{query}%").reorder("content ILIKE #{safe_query} DESC")
+            @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
           else
             safe_query = ActiveRecord::Base.connection.quote("#{query}%")
-            @feed_items_raw = Event.joins(:micropost).where("content LIKE ?", "%#{query}%").reorder("content LIKE #{safe_query} DESC").paginate(:page => params[:page])
+            @feed_items_raw = Event.joins(:micropost).where("content LIKE ?", "%#{query}%").reorder("content LIKE #{safe_query} DESC")
+            @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
           end 
 
       end
     else
       #render defaults
       if logged_in?
-        @feed_items_raw = current_user.feed.paginate(:page => params[:page])
+        @feed_items_raw = current_user.feed
+        @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
         @feed_type = "user"
       else
-        @feed_items_raw = Event.all.paginate(:page => params[:page])
+        @feed_items_raw = Event.all
+        @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
         @feed_type = "global"
       end
     end
 
-    @feed_items = condense_feed_items(@feed_items_raw)
+    
 
     #newcomer accolade
     if current_user
