@@ -84,8 +84,11 @@ class MicropostsController < ApplicationController
     @comments = Comment.where(:micropost_id => @micropost.id, :head => nil)
     @comments = @comments.all.order(created_at: :desc).sort_by {|x| x.points }.reverse
     @user = @micropost.user
+    @token = SecureRandom.urlsafe_base64
 
-    if logged_in?
+    if logged_in? && @micropost.shareable
+      current_user.activation_digest = @token
+      current_user.save
       @fbaccounts = current_user.accounts.where(:provider => "facebook", :user_id => current_user.id)
       @linkedinaccounts = current_user.accounts.where(:provider => "linkedin", :user_id => current_user.id)
       @bufferaccounts = current_user.accounts.where(:provider => "buffer", :user_id => current_user.id)
@@ -94,6 +97,9 @@ class MicropostsController < ApplicationController
 
   def share_to_socials
     @user = current_user
+    if params['token'] != @user.activation_digest
+      head :forbidden
+    end
     micropost = Micropost.find(params['micropost_id'])
     message = params[:event]['message']
     pages = params[:event]['pages']

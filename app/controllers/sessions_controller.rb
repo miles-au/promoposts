@@ -159,9 +159,9 @@ class SessionsController < ApplicationController
         end
         a = Account.find_by(:account_id => page.id)
         if a
-          a.update(:name => page.name, :account_id => page.id , :provider => "linkedin", :user_id => @user.id, :autoshare => false, :picture => picture_url)
+          a.update(:name => page.name, :account_id => page.id , :provider => "linkedin", :user_id => @user.id, :picture => picture_url)
         else
-          a = Account.new(:name => page.name, :account_id => page.id , :provider => "linkedin", :user_id => @user.id, :autoshare => false, :picture => picture_url)
+          a = Account.new(:name => page.name, :account_id => page.id , :provider => "linkedin", :user_id => @user.id, :picture => picture_url)
           a.save
           a
         end
@@ -176,9 +176,9 @@ class SessionsController < ApplicationController
     profile_id = client.profile.id
     a = Account.find_by(:account_id => profile_id)
     if a
-      a.update(:name => "#{client.profile.first_name} #{client.profile.last_name} | profile", :account_id => profile_id , :provider => "linkedin", :user_id => @user.id, :autoshare => false, :picture => picture_url)
+      a.update(:name => "#{client.profile.first_name} #{client.profile.last_name} | profile", :account_id => profile_id , :provider => "linkedin", :user_id => @user.id, :picture => picture_url)
     else
-      a = Account.new(:name => "#{client.profile.first_name} #{client.profile.last_name} | profile", :account_id => profile_id , :provider => "linkedin", :user_id => @user.id, :autoshare => false, :picture => picture_url)
+      a = Account.new(:name => "#{client.profile.first_name} #{client.profile.last_name} | profile", :account_id => profile_id , :provider => "linkedin", :user_id => @user.id, :picture => picture_url)
       a.save
       a
     end
@@ -191,9 +191,9 @@ class SessionsController < ApplicationController
 
     a = Account.find_by(:account_id => client.user.id)
     if a
-      a.update(:name => client.user.full_name, :account_id => client.user.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'])
+      a.update(:name => client.user.full_name, :account_id => client.user.id , :provider => @provider, :user_id => @user.id, :access_token => @auth.credentials.token, :uid => @auth['uid'])
     else
-      a = Account.new(:name => client.user.full_name, :account_id => client.user.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => @auth.credentials.token, :uid => @auth['uid'])
+      a = Account.new(:name => client.user.full_name, :account_id => client.user.id , :provider => @provider, :user_id => @user.id, :access_token => @auth.credentials.token, :uid => @auth['uid'])
         a.save
         a
     end
@@ -217,9 +217,9 @@ class SessionsController < ApplicationController
         end
         a = Account.find_by(:account_id => page.id)
         if a
-          a.update(:name => "#{page.service_username} | #{page.service} - #{page.service_type}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
+          a.update(:name => "#{page.service_username} | #{page.service} - #{page.service_type}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
         else
-          a = Account.new(:name => "#{page.service_username} | #{page.service} - #{page.service_type}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :autoshare => false, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
+          a = Account.new(:name => "#{page.service_username} | #{page.service} - #{page.service_type}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
           a.save
           a
         end
