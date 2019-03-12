@@ -14,7 +14,7 @@ gem 'will_paginate_infinite'
 gem 'bootstrap-will_paginate'
 gem 'carrierwave'
 gem 'mini_magick'
-gem 'fog'
+#gem 'fog'
 gem "fog-google"
 gem "google-api-client"
 gem "mime-types"
@@ -36,6 +36,7 @@ gem "popper_js"
 gem 'possessive'
 gem "brakeman"
 gem "pg_search"
+gem 'rack-attack'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
@@ -67,12 +68,13 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 group :development, :test do
   # Use sqlite3 as the database for Active Record
-  gem 'sqlite3'
+  gem 'sqlite3', '~> 1.3.6'
   gem 'minitest'
   gem 'minitest-reporters'
   gem 'guard',                    '2.13.0'
   gem 'guard-minitest',           '2.4.4'
   gem 'rails-controller-testing'
+  #gem 'rspec-rails', '~> 3.8'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end
@@ -84,6 +86,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  #gem 'spring-commands-rspec'
 end
 
 group :test do

@@ -30,6 +30,7 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
       after_count = Event.count
       assert_equal(before_count + 1, after_count)
     end
+
     m = assigns(:micropost)
     assert m.picture?
     assert_redirected_to root_url
@@ -59,6 +60,26 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
   	# Visit different user (no delete links)
     get user_path(users(:archer))
     assert_select 'a', text: 'delete', count: 0
+  end
+
+  test "micropost post 6 times in succession" do
+    ENV["THROTTLE_DURING_TEST"] = "true"
+
+    log_in_as(users(:lana))
+
+    assert_difference 'Micropost.count', 5 do
+        5.times do
+          content = Faker::Lorem.sentence(5)
+          post microposts_path, params: { micropost: { content: content}}
+        end
+    end
+
+    assert_no_difference 'Micropost.count' do
+      post microposts_path, params: { micropost: { content: "this is one too many"}}
+    end
+
+    ENV["THROTTLE_DURING_TEST"] = "false"
+    Rails.cache.clear
   end
 
   test "global feed and user feed appear correctly if logged in/not logged in" do

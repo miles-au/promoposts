@@ -8,7 +8,12 @@ class WebhooksController < ApplicationController
 	  field = @changes['field']
 	  item = @changes['value']['item']
 	  facebook_items = ["album", "address", "comment", "connection", "coupon", "event", "experience", "group", "group_message", "interest", "like", "mention", "milestone", "note", "page", "picture", "platform-story", "photo-album", "profile", "rating", "reaction", "relationship-status", "story", "timeline cover", "tag", "video"]
-	  
+	  published = @changes['value']['published']
+
+	  if published == 0
+	  	head :accepted
+	  end
+
 	  if facebook_items.include?(item)
 	  	head :accepted and return
 	  end

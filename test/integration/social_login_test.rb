@@ -3,6 +3,7 @@ include SessionsHelper
 require 'uri'
 
 class SocialLoginTest < ActionController::TestCase
+  
   def setup
     @user = users(:michael)
     @controller = SessionsController.new

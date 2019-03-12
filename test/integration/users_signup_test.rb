@@ -35,7 +35,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     log_in_as(user)
     assert_not is_logged_in?
     oldToken = user.activation_token
-
+    
     #resend activation link
     assert_not flash.empty?
     user.resend_activation_email

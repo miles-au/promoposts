@@ -18,10 +18,59 @@ class ActiveSupport::TestCase
     session[:user_id] = user.id
   end
 
+  def before_setup
+    super
+      Rails.cache.clear
+      if ENV["THROTTLE_DURING_TEST"] == "true"
+        ENV["THROTTLE_DURING_TEST"] = "false"
+      end
+  end
+
+  def before_teardown
+    super
+      Rails.cache.clear
+      if ENV["THROTTLE_DURING_TEST"] == "true"
+        ENV["THROTTLE_DURING_TEST"] = "false"
+      end
+  end
+
+  def after_teardown
+    super
+      Rails.cache.clear
+      if ENV["THROTTLE_DURING_TEST"] == "true"
+        ENV["THROTTLE_DURING_TEST"] = "false"
+      end
+  end
+
+=begin
+  #throttle all tests
+  def after_setup
+    super
+      ENV["THROTTLE_DURING_TEST"] = "true"
+  end
+
+  def before_teardown
+    super
+      ENV.delete("THROTTLE_DURING_TEST")
+      Rails.cache.clear
+  end
+=end
+
 end
 
 
 class ActionDispatch::IntegrationTest
+
+  def after_setup
+    super
+      ENV["THROTTLE_DURING_TEST"] = "true"
+  end
+
+  def before_teardown
+    super
+      ENV.delete("THROTTLE_DURING_TEST")
+      Rails.cache.clear
+  end
 
   # Log in as a particular user.
   def log_in_as(user, password: 'password', remember_me: '1')
