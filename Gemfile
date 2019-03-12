@@ -14,7 +14,7 @@ gem 'will_paginate_infinite'
 gem 'bootstrap-will_paginate'
 gem 'carrierwave'
 gem 'mini_magick'
-gem 'fog-core', '2.1.0'
+gem 'fog'
 gem "fog-google"
 gem "google-api-client"
 gem "mime-types"
