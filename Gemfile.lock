@@ -429,6 +429,7 @@ DEPENDENCIES
   dotenv-rails
   faker
   fog
+  fog-core (= 2.1.0)
   fog-google
   google-api-client
   guard (= 2.13.0)
