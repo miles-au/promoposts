@@ -10,7 +10,7 @@ class WebhooksController < ApplicationController
 	  facebook_items = ["album", "address", "comment", "connection", "coupon", "event", "experience", "group", "group_message", "interest", "like", "mention", "milestone", "note", "page", "picture", "platform-story", "photo-album", "profile", "rating", "reaction", "relationship-status", "story", "timeline cover", "tag", "video"]
 	  published = @changes['value']['published']
 
-	  if published == 0
+	  if published == 0 || published == false || published == "0"
 	  	head :accepted
 	  end
 
