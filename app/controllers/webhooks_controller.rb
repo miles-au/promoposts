@@ -11,7 +11,7 @@ class WebhooksController < ApplicationController
 	  published = @changes['value']['published']
 
 	  if published == 0 || published == false || published == "0"
-	  	head :accepted
+	  	head :accepted and return
 	  end
 
 	  if facebook_items.include?(item)
