@@ -5,16 +5,14 @@ class WebhooksController < ApplicationController
 	before_action :webhook_check, only: [:facebook]
 
 	def facebook
-	  field = @changes['field']
-	  item = @changes['value']['item']
-	  facebook_items = ["album", "address", "comment", "connection", "coupon", "event", "experience", "group", "group_message", "interest", "like", "mention", "milestone", "note", "page", "picture", "platform-story", "photo-album", "profile", "rating", "reaction", "relationship-status", "story", "timeline cover", "tag", "video"]
-	  published = @changes['value']['published']
-
-	  if published == 0 || published == false || published == "0"
+	  if @changes['value']['published'] == 0 || @changes['value']['published'] == false || @changes['value']['published'] == "0"
 	  	head :accepted and return
 	  end
 
-	  if facebook_items.include?(item)
+	  #field = @changes['field']
+	  item = @changes['value']['item']
+
+	  if ["album", "address", "comment", "connection", "coupon", "event", "experience", "group", "group_message", "interest", "like", "mention", "milestone", "note", "page", "picture", "platform-story", "photo-album", "profile", "rating", "reaction", "relationship-status", "story", "timeline cover", "tag", "video"].include?(item)
 	  	head :accepted and return
 	  end
 
