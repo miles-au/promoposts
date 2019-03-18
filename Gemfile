@@ -34,7 +34,6 @@ gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'buffer', :github => 'bufferapp/buffer-ruby'
 gem "popper_js"
 gem 'possessive'
-gem "brakeman"
 gem "pg_search"
 gem 'rack-attack'
 # Use Puma as the app server
@@ -87,6 +86,8 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   #gem 'spring-commands-rspec'
+  gem "brakeman"
+  gem "traceroute"
 end
 
 group :test do
