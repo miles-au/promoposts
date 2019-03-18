@@ -45,7 +45,7 @@
         </span>
       <% end %>
       <% if @micropost.external_url %>
-        <%= link_to(@micropost.external_url, :class => "go-to-external-link", :style => "float:right;") do %>
+        <%= link_to(@micropost.external_url, :class => "go-to-external-link", :style => "float:right;", :target => "_blank") do %>
           <span class="glyphicon glyphicon-link"></span>
           go to link
         <% end %>

@@ -1,5 +1,6 @@
 class ListsController < ApplicationController
   protect_from_forgery with: :exception
+  before_action :correct_or_admin_user, only: [:submit, :delete, :submit_product, :delete_product]
 
   def show
 	@user = User.find(params[:id])
@@ -16,14 +17,13 @@ class ListsController < ApplicationController
   def submit
 	list_id = params['list']['list_id']
 	user_id = params[:user_id]
-    list_name = params['list']['name']
+  list_name = params['list']['name']
 
     #if list_id exists
     if list_id
       list = List.find(list_id)
       list.name = list_name
       list.save!
-    #else
     else
       list = List.new(:user_id => user_id, :name => list_name)
       list.save!
@@ -94,5 +94,14 @@ class ListsController < ApplicationController
     flash[:success] = "Product deleted."
     redirect_to show_lists_path(:id => params['user_id'])
   end
+
+  private
+
+    def correct_or_admin_user
+      if current_user.admin == true || current_user.id.to_s == params['user_id']
+      else
+        head :forbidden
+      end
+    end
 
 end

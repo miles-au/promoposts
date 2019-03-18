@@ -81,10 +81,17 @@ class Rack::Attack
     Koala::Facebook::RealtimeUpdates.new( :app_id => ENV['FACEBOOK_KEY'] , :secret => ENV['FACEBOOK_SECRET']).validate_update(request.body.read, request.env)
   end
 
-  Rack::Attack.safelist("facebook webhooks") do |request|
+  Rack::Attack.safelist("test environment") do |request|
     # Requests are allowed if the return value is truthy
-    Rails.env.test?
-    #ENV["THROTTLE_DURING_TEST"] != "true" || !ENV["THROTTLE_DURING_TEST"]
+    if Rails.env.test?
+      if ENV["THROTTLE_DURING_TEST"] != "true" || !ENV["THROTTLE_DURING_TEST"]
+        true
+      else
+        false
+      end
+    else
+      false
+    end
   end
 
   # Lockout IP addresses that are hammering your login page.

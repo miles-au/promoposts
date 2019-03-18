@@ -27,7 +27,7 @@
 
 <% if @user == current_user %>
 
-	<%=link_to({:controller => "lists", :action => "create", :user_id => current_user.id, :remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary btn-lg'},) do%>
+	<%=link_to(:controller => "lists", :action => "create", :user_id => current_user.id, :remote => true) do%>
 		<div id="createList">
 			<span class="glyphicon glyphicon-plus"></span> Create a new list
 		</div>
