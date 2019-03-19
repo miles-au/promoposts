@@ -80,6 +80,8 @@ class Rack::Attack
     # Requests are allowed if the return value is truthy
     req_bod = req.body.read
     req_env = req.env
+    puts "BODY: #{req_bod}"
+    puts "ENV: #{req_env}"
     if Koala::Facebook::RealtimeUpdates.new( :app_id => ENV['FACEBOOK_KEY'] , :secret => ENV['FACEBOOK_SECRET']).validate_update( req_bod , req_env )
       true
     end
