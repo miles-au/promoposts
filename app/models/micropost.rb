@@ -3,7 +3,7 @@ class Micropost < ActiveRecord::Base
   default_scope -> { order(created_at: :desc) }
   mount_uploader :picture, PictureUploader
   validates :user_id, presence: true
-  validates :content, length: { maximum: 240 }
+  validates :content, length: { maximum: 500 }
   validates :external_url, length: {maximum: 500}
   validate  :picture_size
   validate :content_exists
