@@ -75,6 +75,7 @@ class Rack::Attack
   #    ['']] # body
   # end
 
+=begin
   # Provided that trusted users use an HTTP request header named APIKey
   Rack::Attack.safelist("facebook webhooks") do |req|
     # Requests are allowed if the return value is truthy
@@ -85,6 +86,7 @@ class Rack::Attack
       true
     end
   end
+=end
 
   Rack::Attack.safelist("test environment") do |req|
     # Requests are allowed if the return value is truthy
