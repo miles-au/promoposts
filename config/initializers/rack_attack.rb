@@ -1,4 +1,3 @@
-=begin
 class Rack::Attack
   ### Configure Cache ###
 
@@ -122,4 +121,3 @@ class Rack::Attack
   end
 
 end
-=end

@@ -5,8 +5,12 @@ class WebhooksController < ApplicationController
 	before_action :webhook_check, only: [:facebook]
 
 	def facebook
-	  if @changes['value']['published'] == 0 || @changes['value']['published'] == false || @changes['value']['published'] == "0"
-	  	head :accepted and return
+	  if @changes['value']['published']
+		if @changes['value']['published'] == 0 || @changes['value']['published'] == false || @changes['value']['published'] == "0"
+		  head :accepted and return
+		end
+	  else
+	  	head :not_implemented and return
 	  end
 
 	  #field = @changes['field']

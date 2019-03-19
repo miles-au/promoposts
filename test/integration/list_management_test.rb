@@ -22,7 +22,7 @@ class ListsManagementTest < ActionDispatch::IntegrationTest
     end
 
     #name too long
-    assert_no_difference 'List.count' do
+    assert_raise do
       post submit_list_path, params: { list: { name: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget volutpat." }, :user_id => @archer.id }
     end
 
