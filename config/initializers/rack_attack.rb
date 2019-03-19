@@ -78,12 +78,12 @@ class Rack::Attack
   # Provided that trusted users use an HTTP request header named APIKey
   Rack::Attack.safelist("facebook webhooks") do |req|
     # Requests are allowed if the return value is truthy
-    if Koala::Facebook::RealtimeUpdates.new( :app_id => ENV['FACEBOOK_KEY'] , :secret => ENV['FACEBOOK_SECRET']).validate_update( req.params.read , req.env )
+    if Koala::Facebook::RealtimeUpdates.new( :app_id => ENV['FACEBOOK_KEY'] , :secret => ENV['FACEBOOK_SECRET']).validate_update( req, req.env )
       true
     end
   end
 
-  Rack::Attack.safelist("test environment") do |request|
+  Rack::Attack.safelist("test environment") do |req|
     # Requests are allowed if the return value is truthy
     if Rails.env.test?
       if ENV["THROTTLE_DURING_TEST"] != "true" || !ENV["THROTTLE_DURING_TEST"]
