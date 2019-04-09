@@ -1,3 +1,5 @@
+<% @micropost = Micropost.find(event.micropost_id) %>
+
 <div class="action-wrapper col-md-<%= @boot_columns %> col-sm-12" style="padding: 0px;">
 	<% @active_user = User.find(event.user_id) %>
 
@@ -11,7 +13,16 @@
 	
 		<% case event.contribution %>
 			<% when 'create' %>
-				<span style="margin-left: 5px; font-size: 1em;">created a post</span>
+				<% case @micropost.category %>
+					<% when 'cover_photo' %>
+						<span style="margin-left: 5px; font-size: 1em;">posted a cover photo</span>
+					<% when 'question' %>
+						<span style="margin-left: 5px; font-size: 1em;">asked a question</span>
+					<% when 'careers' %>
+						<span style="margin-left: 5px; font-size: 1em;">is hiring</span>
+					<% else %>
+						<span style="margin-left: 5px; font-size: 1em;">created a post</span>
+				<% end %>
 			<% when 'share' %>
 				<span style="margin-left: 5px; font-size: 1em;">shared to social media</span>
 			<% when 'comment' %>
@@ -32,7 +43,5 @@
 	<% end %>
 
   </div>
-
-	<% @micropost = Micropost.find(event.micropost_id) %>
 	<%= render @micropost %>
 </div>

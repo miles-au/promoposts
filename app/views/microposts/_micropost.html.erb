@@ -35,17 +35,17 @@
       <% end %>
     </span>
 
-    <%=link_to(@micropost) do %>
-      <%= render :partial => 'microposts/content', :locals => {:micropost => @micropost, :bgcolor => bgcolor} %>
+    <%=link_to(micropost) do %>
+      <%= render :partial => 'microposts/content', :locals => {:micropost => micropost, :bgcolor => bgcolor} %>
     <% end %>
 
     <div>
-      <%= link_to @micropost, :data=> {:micropost_id => @micropost_id} do %>
-        <span class="click-to-comments" style="display: inline-block;"><%= pluralize( @micropost.comments.count, 'Comment' ) %>
+      <%= link_to micropost, :data=> {:micropost_id => micropost.id} do %>
+        <span class="click-to-comments" style="display: inline-block;"><%= pluralize( micropost.comments.count, 'Comment' ) %>
         </span>
       <% end %>
-      <% if @micropost.external_url %>
-        <%= link_to(@micropost.external_url, :class => "go-to-external-link", :style => "float:right;", :target => "_blank") do %>
+      <% if micropost.external_url %>
+        <%= link_to(micropost.external_url, :class => "go-to-external-link", :style => "float:right;", :target => "_blank") do %>
           <span class="glyphicon glyphicon-link"></span>
           go to link
         <% end %>

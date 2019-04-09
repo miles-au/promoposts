@@ -30,6 +30,10 @@ class StaticPagesController < ApplicationController
           @feed_items_raw = Event.vendors
           @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
 
+        when 'cover_photos'
+          @feed_items_raw = Event.cover_photos
+          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
+
         when 'questions'
           @feed_items_raw = Event.questions
           @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)

@@ -41,7 +41,7 @@
 			<% if logged_in? %>
 				<% if @micropost.shareable %>
 					<%= form_for @event, url: share_to_socials_path(:id => current_user.id, :micropost_id => @micropost.id, :token => @token), html: {method: :post} do |f| %>
-						<h3>Share it!</h3>
+						<h3 class="heading-blue">Share it!</h3>
 						<%= f.label :message, "Enter a caption:" %>
 						<div class="pop-button" style="margin-bottom: 10px;" id="useOriginalText">Use/Edit Original Text</div>
 						<%= f.text_area :message, :id => "inputText", :maxlength => 240 %>

@@ -13,6 +13,9 @@ class Event < ApplicationRecord
 	careers = Micropost.where("category=?", "careers")
 	scope :careers, -> { where("micropost_id in (?)", careers.ids)}
 
+	cover_photos = Micropost.where("category=?", "cover_photo")
+	scope :cover_photos, -> { where("micropost_id in (?)", cover_photos.ids)}
+
 	attr_accessor :message
 
 	#self.per_page = 24

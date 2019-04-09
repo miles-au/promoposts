@@ -42,6 +42,9 @@
 	<%= link_to root_path( :feed => "vendor") do%>
 		<h5 id="vendorFeed" class="tab <%= 'tab-active' if @feed_type == 'vendor' %>">Vendor Feed</h5>
 	<% end %>
+	<%= link_to root_path( :feed => "cover_photos") do%>
+		<h5 id="coverPhotosFeed" class="tab <%= 'tab-active' if @feed_type == 'cover_photos' %>">Cover Photos</h5>
+	<% end %>
 	<%= link_to root_path( :feed => "questions") do%>
 		<h5 id="questionsFeed" class="tab <%= 'tab-active' if @feed_type == 'questions' %>">Questions</h5>
 	<% end %>
@@ -60,6 +63,8 @@
 				<p style="display: inline-block;">Global Feed</p>
 			<% when 'vendor' %>
 				<p style="display: inline-block;">Vendor Feed</p>
+			<% when 'cover_photos' %>
+				<p style="display: inline-block;">Cover Photos</p>
 			<% when 'questions' %>
 				<p style="display: inline-block;">Questions</p>
 			<% when 'careers' %>

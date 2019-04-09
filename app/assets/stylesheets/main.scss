@@ -17,6 +17,7 @@ $blue2: #3d5875;
 $blue3: #54799b;
 $blue4: #97c2dd;
 $blue5: #ceddea;
+$blue6: #dae5f7;
 $grey1: #283642;
 $grey2: #48565e;
 $grey3: #9aa9b7;
@@ -268,6 +269,10 @@ header, .navbar-inverse, .navbar-fixed-top{
     font-size: 1.1em;
     color: $blue3;
   }
+}
+
+.heading-blue{
+  background-color: $blue6;  
 }
 
 /* typography */
