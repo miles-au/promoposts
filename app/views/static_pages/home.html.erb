@@ -72,7 +72,11 @@
 			<% when 'search' %>
 				<p style="display: inline-block;"><%= "'#{params[:search]}'" %></p>
 			<% else %>
-				<p style="display: inline-block;">Global Feed</p>
+				<% if logged_in? %>
+					<p style="display: inline-block;">Your Feed</p>
+				<% else %>
+					<p style="display: inline-block;">Global Feed</p>
+				<% end %>
 		<% end %>
 		<span id="slide-glyph" class="glyphicon glyphicon-triangle-right"></span>
 	</div>
