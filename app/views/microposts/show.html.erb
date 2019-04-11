@@ -26,7 +26,7 @@
 		      		<% end %>
 		      	</p>
 		        <% if @micropost.picture? %>
-		        	<% image = MiniMagick::Image.open(@micropost.picture.path) %>
+		        	<% image = MiniMagick::Image.open(@micropost.picture.url) %>
 		        	<span style="float:right;"><%= @micropost.category.downcase.tr("_", " ") %> - <%= image[:width] %> x <%= image[:height] %> px</span>
 		        	<img style="width: 100%;" src="<%= @micropost.picture.url %>", alt="promo post picture" />
 		        <% end %>
