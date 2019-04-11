@@ -8,7 +8,7 @@ class Micropost < ActiveRecord::Base
   validate  :picture_size
   validate :content_exists
   validate :valid_url
-  validate :cover_photo_has_picture
+  validate :digital_asset_has_picture
   has_many :events, dependent: :destroy
   has_many :comments, dependent: :destroy
 
@@ -84,11 +84,11 @@ class Micropost < ActiveRecord::Base
       Notification.where("notifications.category = 'share' AND notifications.destination_id = ?", self.id).destroy_all
     end
 
-    def cover_photo_has_picture
-      if category == "cover_photo"
+    def digital_asset_has_picture
+      if category == "cover_photo" || category == "email_banner" || category == "infographic"
         if picture.blank?
           #cover photo must have a picture
-          errors[:base] << "Please include a picture with your cover photo."
+          errors[:base] << "Please include a picture with your #{category.tr("_", " ")}."
         else
           return
         end

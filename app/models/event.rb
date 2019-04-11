@@ -13,7 +13,7 @@ class Event < ApplicationRecord
 	careers = Micropost.where("category=?", "careers")
 	scope :careers, -> { where("micropost_id in (?)", careers.ids)}
 
-	digital_assets = Micropost.where("category=?", "cover_photo")
+	digital_assets = Micropost.where("category=?", "cover_photo").or(Micropost.where("category=?", "email_banner")).or(Micropost.where("category=?", "infographic"))
 	scope :digital_assets, -> { where("micropost_id in (?)", digital_assets.ids)}
 
 	attr_accessor :message

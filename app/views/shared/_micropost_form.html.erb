@@ -3,11 +3,19 @@
 
   <div class="categoryLabel">
     <%= f.label :category, "General Update" %>
-    <%= f.radio_button :category, "general Update", :checked => true %>
+    <%= f.radio_button :category, "general_update", :checked => true %>
   </div>
   <div class="categoryLabel">
     <%= f.label :category, "Cover Photo" %>
     <%= f.radio_button :category, "cover_photo" %>
+  </div>
+  <div class="categoryLabel">
+    <%= f.label :category, "Email Banner" %>
+    <%= f.radio_button :category, "email_banner" %>
+  </div>
+  <div class="categoryLabel">
+    <%= f.label :category, "Infographic" %>
+    <%= f.radio_button :category, "infographic" %>
   </div>
   <div class="categoryLabel">
     <%= f.label :category, "Question" %>
