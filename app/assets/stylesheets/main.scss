@@ -808,10 +808,6 @@ input {
       position: relative;
     }
 
-    .square:hover .clickToShare{
-      opacity: 1;
-    }
-
     .noPic{
       display: block;
       width: 100%;
@@ -917,6 +913,7 @@ input {
       display: block;
       clear: both;
     }
+
     .square{
       padding-top: 75%;
       background-size: cover;
@@ -925,9 +922,6 @@ input {
       position: relative;
     }
 
-    .square:hover .clickToShare{
-      opacity: 1;
-    }
   }  
   p{
     height: auto !important;
