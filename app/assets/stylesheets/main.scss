@@ -909,9 +909,9 @@ input {
 .micropost-full{
   .content{
     img{
-      width: 60%;
-      display: block;
-      clear: both;
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .square{
@@ -1623,8 +1623,8 @@ span.picture {
     display: none;
   }
   #feedContainer{
-    padding-right: 0px;
-    padding-left: 0px;
+    padding-right: 10px;
+    padding-left: 10px;
   }
   .row{
     margin: 0px;
@@ -1701,6 +1701,9 @@ span.picture {
     width: 100vw;
   }
   .micropost-full{
+    img{
+      width: 100% !important;
+    }
     .square{
       padding-top: 100% !important;
     }

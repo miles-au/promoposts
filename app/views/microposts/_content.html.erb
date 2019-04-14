@@ -12,17 +12,23 @@
     <p class="content-full" style="font-size: 1.2em; overflow: hidden;"><%= micropost.content %></p>
 
     <% if micropost.picture.url %>
-      <div class="square" style="background-image: url('<%= micropost.picture.url %>');">
-          <%#= render :partial => 'shared/click_to_share', :locals => {:btn_title => clickable, :shareable => shareable} %>
-      </div>
+      <% if controller_name == "users" %>
+        <img src="<%= micropost.picture.url %>" />
+      <% else %>
+        <div class="square" style="background-image: url('<%= micropost.picture.url %>');"></div>
+      <% end %>
     <% elsif micropost.external_url %>
-      <div class="square" style="background-image: url('/assets/ext_link.svg');">
+      <% if controller_name == "users" %>
+        <img src="/assets/ext_link.svg" />
+      <% else %>
+        <div class="square" style="background-image: url('/assets/ext_link.svg');"></div>
+      <% end %>
     <% else %>
       <div class="noPic square <%= bgcolor %>">
       <span></span><strong>"<%= micropost.content %>"</strong>
-        <%#= render :partial => 'shared/click_to_share', :locals => {:btn_title => clickable, :shareable => shareable} %>
       </div>
     <% end %>
 
   </span>
 </div>
+
