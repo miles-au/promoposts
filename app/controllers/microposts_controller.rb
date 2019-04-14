@@ -87,8 +87,8 @@ class MicropostsController < ApplicationController
     @token = SecureRandom.urlsafe_base64
 
     if logged_in? && @micropost.shareable
-      current_user.activation_digest = @token
-      current_user.save
+      #current_user.activation_digest = @token
+      #current_user.save
       @fbaccounts = current_user.accounts.where(:provider => "facebook", :user_id => current_user.id)
       @linkedinaccounts = current_user.accounts.where(:provider => "linkedin", :user_id => current_user.id)
       @bufferaccounts = current_user.accounts.where(:provider => "buffer", :user_id => current_user.id)
@@ -97,9 +97,9 @@ class MicropostsController < ApplicationController
 
   def share_to_socials
     @user = current_user
-    if params['token'] != @user.activation_digest
-      head :forbidden
-    end
+    #if params['token'] != @user.activation_digest
+      #head :forbidden
+    #end
     micropost = Micropost.find(params['micropost_id'])
     message = params[:event]['message']
     pages = params[:event]['pages']
