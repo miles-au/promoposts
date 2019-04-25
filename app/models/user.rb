@@ -30,7 +30,7 @@ class User < ApplicationRecord
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
   #VALID_SLUG_REGEX = /\A[-\w.]+\z/i
-  #validates :slug, format: { with: VALID_SLUG_REGEX }, uniqueness: { case_sensitive: false }, length: { maximum: 75 }
+  validates :slug, uniqueness: { case_sensitive: false }, length: { maximum: 75 }
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   validates :category, presence: true
