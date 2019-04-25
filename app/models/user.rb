@@ -292,7 +292,7 @@ class User < ApplicationRecord
 
     end
 
-    user.password = self.new_token
+    user.password ||= self.new_token
     user.name ||= "#{api.profile.first_name} #{api.profile.last_name}"
     user.activated = true
     user.activated_at ||= Time.zone.now
