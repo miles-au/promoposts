@@ -40,7 +40,15 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by_slug(params[:id]) || User.find(params[:id])
-    activity  = Event.where("user_id = :user_id", user_id: @user.id)
+    if params["feed"].present? || !params["feed"].blank?
+      if params["feed"] == "shareable"
+        activity = Event.where(:user_id => @user.id).joins(:micropost).where("shareable = ?", true)
+      else
+        activity = Event.where(:user_id => @user.id).joins(:micropost).where("category = ?", params["feed"])
+      end
+    else
+      activity = Event.where(:user_id => @user.id)
+    end
     @events = activity.paginate(page: params[:page], :per_page => 10)
     #@microposts = @user.microposts.paginate(page: params[:page], :per_page => 10)
     redirect_to root_url and return unless @user.activated == true

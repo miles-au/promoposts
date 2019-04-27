@@ -78,13 +78,42 @@
 
 <div id="activity">
   <h3>Activity (<%= @events.count %>)</h3>
-  <% if @events %>
+
+  <div id="feed-select" >
+    <span id="select-title">Filter:</span>
+    <div id="feed-names" >
+      <% case params["feed"] %>
+          <% when ''%>
+            <p style="display: inline-block;">All Posts</p>
+          <% when 'shareable' %>
+            <p style="display: inline-block;">Shareable</p>
+          <% when 'cover_photo' %>
+            <p style="display: inline-block;">Cover Photos</p>
+          <% when 'email_banner' %>
+            <p style="display: inline-block;">Email Banners</p>
+          <% when 'infographic' %>
+            <p style="display: inline-block;">Infographics</p>
+          <% else %>
+            <p style="display: inline-block;">All Posts</p>
+        <% end %>
+      <span id="slide-glyph" class="glyphicon glyphicon-triangle-right"></span>
+    </div>
+    <div id="feeds-slide" style="display: none;" class="slide-close">
+      <a href="<%= user_path(:id => @user) %>">All Posts</a>
+      <a href="<%= user_path(:id => @user, :feed => 'shareable') %>">Shareable</a>
+      <a href="<%= user_path(:id => @user, :feed => 'cover_photo') %>">Cover Photos</a>
+      <a href="<%= user_path(:id => @user, :feed => 'email_banner') %>">Email Banners</a>
+      <a href="<%= user_path(:id => @user, :feed => 'infographic') %>">Infograpics</a>
+    </div>
+  </div>
+
+  <% if @events.count > 0 %>
     <ol id="microPostsContainer" class="microposts micropost-full">
       <%= render @events %>
     </ol>
     <%= will_paginate @events %>
   <% else %>
-    <p>No activity.</p>
+    <p>No posts were found.</p>
   <% end %>
 </div>
 
@@ -133,5 +162,21 @@
   }
 
   show_tooltips();
+
+  $( "#feed-names" ).click(function() {
+    if($("#feeds-slide").hasClass("slide-close")){
+      $("#feeds-slide").show('slow');
+      $("#feeds-slide").removeClass("slide-close");
+      $("#feeds-slide").addClass("slide-open");
+      $("#slide-glyph").removeClass("glyphicon-triangle-right");
+      $("#slide-glyph").addClass("glyphicon-triangle-bottom");
+    }else{
+      $("#feeds-slide").hide('slow');
+      $("#feeds-slide").addClass("slide-close");
+      $("#feeds-slide").removeClass("slide-open");
+      $("#slide-glyph").removeClass("glyphicon-triangle-bottom");
+      $("#slide-glyph").addClass("glyphicon-triangle-right");
+    } 
+  });
   
 </script>
