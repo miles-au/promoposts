@@ -383,7 +383,8 @@ class MicropostsController < ApplicationController
   def download_picture
     micropost = Micropost.find(params[:id])
     if Rails.env.production?
-      send_file micropost.picture.url, type: 'image/png', disposition: 'attachment'
+      send_data micropost.picture.url, filename: "NAME YOU WANT.pdf", type: 'image/png', disposition: 'attachment'
+      #send_file micropost.picture.url, type: 'image/png', disposition: 'attachment'
     else
       send_file micropost.picture.path, type: 'image/png', disposition: 'attachment'
     end
