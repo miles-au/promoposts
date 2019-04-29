@@ -26,7 +26,16 @@
 		      		<% end %>
 		      	</p>
 		        <% if @micropost.picture? %>
-		        	<% image = MiniMagick::Image.open(@micropost.picture.url) %>
+		        	<%= link_to download_picture_path(:id => @micropost.id) do %>
+		        		<span style="color: inherit;" class="glyphicon glyphicon-cloud-download"></span> download image
+		        	<% end %>
+		        	<a href="#" style="display:inline-block;"></a>
+		        	<% if Rails.env.production? %>
+		        		<% image = MiniMagick::Image.open(@micropost.picture.url) %>
+		        	<% else %> 
+		        		<% pic_url = "#{request.protocol}#{request.subdomain}.#{request.domain}#{@micropost.picture.url}" %>
+		        		<% image = MiniMagick::Image.open(pic_url) %>
+		        	<% end %>
 		        	<% if @micropost.category %>
 		        		<span style="float:right;"><%= @micropost.category.downcase.tr("_", " ") %> - <%= image[:width] %> x <%= image[:height] %> px</span>
 		        	<% else %>

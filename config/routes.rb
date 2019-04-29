@@ -79,6 +79,8 @@ Rails.application.routes.draw do
 
   get '/submit_vote', to: 'votes#submit_vote'
 
+  get '/microposts/:id/download_picture', to: "microposts#download_picture", as: 'download_picture'
+
   resources :users do
     member do
       get :following, :followers
