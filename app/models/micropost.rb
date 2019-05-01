@@ -7,7 +7,7 @@ class Micropost < ActiveRecord::Base
   validates :external_url, length: {maximum: 500}
   validate  :picture_size
   validate :content_exists
-  validate :valid_url
+  #validate :valid_url
   validate :digital_asset_has_picture
   has_many :events, dependent: :destroy
   has_many :comments, dependent: :destroy
