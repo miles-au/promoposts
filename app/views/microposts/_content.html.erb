@@ -25,7 +25,7 @@
       <% end %>
     <% else %>
       <div class="noPic square <%= bgcolor %>">
-      <span></span><strong>"<%= micropost.content %>"</strong>
+      <span></span><strong>"<%= sanitize micropost.content %>"</strong>
       </div>
     <% end %>
 
