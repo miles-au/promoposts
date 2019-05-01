@@ -65,6 +65,7 @@ class Micropost < ActiveRecord::Base
 
       begin
         resp = Net::HTTP.get_response(URI.parse(link))
+        puts resp
       rescue *http_errors
         puts "Net:HTTP Error"
       rescue StandardError => e
