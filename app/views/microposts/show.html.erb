@@ -21,7 +21,7 @@
 		  <div class="section" style="margin-top: 20px;">
 		      <span class="content">
 		      	<p style="font-size: 1.3em;">"<%= @micropost.content %>" 
-		      		<% if @micropost.external_url %>
+		      		<% if @micropost.external_url.present? %>
 		      			<br><span class="go-to-external-link"><span class="glyphicon glyphicon-link"></span><%=link_to('go to link',@micropost.external_url, :target=>"_blank") %></span>
 		      		<% end %>
 		      	</p>
