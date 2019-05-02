@@ -7,7 +7,7 @@ class Micropost < ActiveRecord::Base
   validates :external_url, length: {maximum: 500}
   validate  :picture_size
   validate :content_exists
-  #validate :valid_url
+  validate :valid_url
   validate :digital_asset_has_picture
   has_many :events, dependent: :destroy
   has_many :comments, dependent: :destroy
@@ -37,6 +37,12 @@ class Micropost < ActiveRecord::Base
       if !external_url || external_url.empty?
         self.update_attribute('external_url', nil)
         return
+      end
+
+=begin
+      if !external_url || external_url.empty?
+        self.update_attribute('external_url', nil)
+        return
       else
         puts "EXTERNAL: #{external_url}"
         if test_link(external_url).present?
@@ -55,6 +61,8 @@ class Micropost < ActiveRecord::Base
           errors[:base] << "Please include a full valid link."
         end
       end
+=end
+
     end
 
     def test_link(link)
