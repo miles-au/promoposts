@@ -45,6 +45,7 @@ class SessionsController < ApplicationController
         create_accounts(@provider)
         flash[:success] = "Welcome to Promo Posts, #{@user.name}."
         log_in @user
+        remember(@user)
         redirect_back_or root_url
       else
         flash[:danger] = "There was an issue logging you in. We apologize for the inconvenience"
