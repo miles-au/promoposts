@@ -85,14 +85,18 @@
       <% case params["feed"] %>
           <% when ''%>
             <p style="display: inline-block;">All Posts</p>
-          <% when 'shareable' %>
-            <p style="display: inline-block;">Shareable</p>
+          <% when 'general_update' %>
+            <p style="display: inline-block;">General Updates</p>
           <% when 'cover_photo' %>
             <p style="display: inline-block;">Cover Photos</p>
           <% when 'email_banner' %>
             <p style="display: inline-block;">Email Banners</p>
           <% when 'infographic' %>
             <p style="display: inline-block;">Infographics</p>
+          <% when 'memes' %>
+            <p style="display: inline-block;">Memes</p>
+          <% when 'careers' %>
+            <p style="display: inline-block;">Careers</p>
           <% else %>
             <p style="display: inline-block;">All Posts</p>
         <% end %>
@@ -100,10 +104,12 @@
     </div>
     <div id="feeds-slide" style="display: none;" class="slide-close">
       <a href="<%= user_path(:id => @user) %>">All Posts</a>
-      <a href="<%= user_path(:id => @user, :feed => 'shareable') %>">Shareable</a>
+      <a href="<%= user_path(:id => @user, :feed => 'general_update') %>">General Updates</a>
       <a href="<%= user_path(:id => @user, :feed => 'cover_photo') %>">Cover Photos</a>
       <a href="<%= user_path(:id => @user, :feed => 'email_banner') %>">Email Banners</a>
       <a href="<%= user_path(:id => @user, :feed => 'infographic') %>">Infograpics</a>
+      <a href="<%= user_path(:id => @user, :feed => 'memes') %>">Memes</a>
+      <a href="<%= user_path(:id => @user, :feed => 'careers') %>">Careers</a>
     </div>
   </div>
 

@@ -41,11 +41,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find_by_slug(params[:id]) || User.find(params[:id])
     if params["feed"].present? || !params["feed"].blank?
-      if params["feed"] == "shareable"
-        activity = Event.where(:user_id => @user.id).joins(:micropost).where("shareable = ?", true)
-      else
-        activity = Event.where(:user_id => @user.id).joins(:micropost).where("category = ?", params["feed"])
-      end
+      activity = Event.where(:user_id => @user.id).joins(:micropost).where("category = ?", params["feed"])
     else
       activity = Event.where(:user_id => @user.id)
     end

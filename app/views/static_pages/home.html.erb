@@ -39,14 +39,14 @@
 	<%= link_to root_path( :feed => "global") do%>
 		<h5 id="globalFeed" class="tab <%= 'tab-active' if @feed_type == 'global' %>">Global Feed</h5>
 	<% end %>
-	<%= link_to root_path( :feed => "shareable") do%>
-		<h5 id="shareableFeed" class="tab <%= 'tab-active' if @feed_type == 'shareable' %>">Shareable</h5>
-	<% end %>
 	<%= link_to root_path( :feed => "digital_assets") do%>
 		<h5 id="digitalAssetsFeed" class="tab <%= 'tab-active' if @feed_type == 'digital_assets' %>">Digital Assets</h5>
 	<% end %>
 	<%= link_to root_path( :feed => "questions") do%>
 		<h5 id="questionsFeed" class="tab <%= 'tab-active' if @feed_type == 'questions' %>">Questions</h5>
+	<% end %>
+	<%= link_to root_path( :feed => "news") do%>
+		<h5 id="newsFeed" class="tab <%= 'tab-active' if @feed_type == 'news' %>">News</h5>
 	<% end %>
 	<%= link_to root_path( :feed => "careers") do%>
 		<h5 id="careersFeed" class="tab <%= 'tab-active' if @feed_type == 'careers' %>">Careers</h5>
@@ -61,12 +61,12 @@
 				<p style="display: inline-block;">Your Feed</p>
 			<% when 'global' %>
 				<p style="display: inline-block;">Global Feed</p>
-			<% when 'shareable' %>
-				<p style="display: inline-block;">Shareable Feed</p>
 			<% when 'digital_assets' %>
 				<p style="display: inline-block;">Digital Assets</p>
 			<% when 'questions' %>
 				<p style="display: inline-block;">Questions</p>
+			<% when 'news' %>
+				<p style="display: inline-block;">News Feed</p>
 			<% when 'careers' %>
 				<p style="display: inline-block;">Careers</p>
 			<% when 'search' %>
@@ -85,8 +85,9 @@
 			<a href="/?feed=user">Your Feed</a>
 		<% end %>
 		<a href="/?feed=global">Global Feed</a>
-		<a href="/?feed=shareable">Shareable</a>
+		<a href="/?feed=digital_assets">Digital Assets</a>
 		<a href="/?feed=questions">Questions</a>
+		<a href="/?feed=news">News</a>
 		<a href="/?feed=careers">Careers</a>
 	</div>
 </div>

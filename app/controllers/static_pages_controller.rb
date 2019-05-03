@@ -26,10 +26,6 @@ class StaticPagesController < ApplicationController
           @feed_items_raw = Event.all
           @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
 
-        when "shareable"
-          @feed_items_raw = Event.shareables
-          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
-
         when "vendor"
           @feed_items_raw = Event.vendors
           @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
@@ -44,6 +40,10 @@ class StaticPagesController < ApplicationController
 
         when 'careers'
           @feed_items_raw = Event.careers
+          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
+
+        when "news"
+          @feed_items_raw = Event.news
           @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
 
         when 'search'

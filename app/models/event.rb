@@ -13,11 +13,11 @@ class Event < ApplicationRecord
 	careers = Micropost.where("category=?", "careers")
 	scope :careers, -> { where("micropost_id in (?)", careers.ids)}
 
-	digital_assets = Micropost.where("category=?", "cover_photo").or(Micropost.where("category=?", "email_banner")).or(Micropost.where("category=?", "infographic"))
+	digital_assets = Micropost.where("category=?", "cover_photo").or(Micropost.where("category=?", "email_banner")).or(Micropost.where("category=?", "infographic")).or(Micropost.where("category=?", "general_update")).or(Micropost.where("category=?", "meme"))
 	scope :digital_assets, -> { where("micropost_id in (?)", digital_assets.ids)}
 
-	shareables = Micropost.where("shareable=?", true)
-	scope :shareables, -> { where("micropost_id in (?)", shareables.ids)}
+	news = Micropost.where("category=?", "news")
+	scope :news, -> { where("micropost_id in (?)", news.ids)}
 
 	attr_accessor :message
 

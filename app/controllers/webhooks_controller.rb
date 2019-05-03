@@ -70,7 +70,7 @@ class WebhooksController < ApplicationController
 
 	  	if @account.autoshare == true
 		  user_id = @account.user_id
-		  @micropost = Micropost.new(:content => content, :user_id => user_id, :remote_picture_url => picture)
+		  @micropost = Micropost.new(:content => content, :user_id => user_id, :remote_picture_url => picture, :category => "news")
 		  if external_link
 		  	@micropost.external_url = external_link
 		  end
