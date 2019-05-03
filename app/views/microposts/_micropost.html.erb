@@ -52,6 +52,12 @@
       <% end %>
     </div>
 
+    <% if controller_name == "users" && @user == current_user %>
+      <div>
+        <p><span class="glyphicon glyphicon-stats"></span> Shares: <%= micropost.shares %> | Downloads: <%= micropost.downloads %></p>
+      </div>
+    <% end %>
+
 </li>
 
 <script>
