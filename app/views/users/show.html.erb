@@ -27,7 +27,7 @@
 
 <% if current_user && current_user.admin? %>
   <%= link_to "delete this user", @user, method: :delete,
-                                data: { confirm: "You sure?" }, class: "pop-button" %>
+                                data: { confirm: "You sure?" }, class: "admin-button" %>
 <% end %>
 
 <div style="position: relative;">
@@ -45,13 +45,8 @@
   </section>
 </div>
 
-<% if @user.cover_photo? %>
-  <div id="coverPhoto" style="background-image: url('<%= @user.cover_photo %>'); background-position: center; background-size: cover;">
-  </div>
-<% else %>
-  <div id="coverPhoto" style="padding-top: 0px; height: <%= @user.cover_photo? ? '100' : '0' %>%;">
-  </div>
-<% end %>
+<% default_cover_photo = "/assets/default-cover-photo.png" %>
+<div id="coverPhoto" style="background-image: url('<%= @user.cover_photo? ? @user.cover_photo : default_cover_photo %>'); background-position: center; background-size: cover;">
 </div>
 
 <div id="mobile_user_display">
@@ -146,25 +141,8 @@
     
     history.pushState(null, '<%= :title %>', '/users/<%= @user.slug %>');
 
-    var cover = document.getElementById('coverPhoto');
     var coverWidth = $("#coverPhoto").width();
-    <% if !@user.cover_photo? %>
-      //trianglify
-      color_arr = ['#2d4059', '#437F97', '#f6f6f6'];
-
-      shuffleArray(color_arr);
-
-      var pattern = Trianglify({
-        width: coverWidth,
-        height: coverWidth*0.35,
-        cell_size: 75,
-        x_colors: color_arr
-      });
-
-      cover.appendChild(pattern.canvas());
-    <% else %>
-      $("#coverPhoto").height(coverWidth * 0.35);
-    <% end %>
+    $("#coverPhoto").height(coverWidth * 0.35);
 
   });
 

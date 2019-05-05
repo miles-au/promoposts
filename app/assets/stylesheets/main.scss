@@ -83,6 +83,19 @@ textarea {
   }
 }
 
+.admin-button{
+  border: none;
+  background-color: $red3;
+  color: $grey5;
+  padding: 10px 20px;
+  font-weight: 700;
+  box-shadow: $buttonShadow;
+
+  &:hover{
+    box-shadow: $buttonShadowHover;
+  }
+}
+
 .form-submit{
   &:hover{
     margin-left: -5px;
