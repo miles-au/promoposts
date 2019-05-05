@@ -40,7 +40,9 @@ class PictureUploader < CarrierWave::Uploader::Base
 
   # Add a white list of extensions which are allowed to be uploaded.
   def extension_whitelist
-    %w(jpg jpeg gif png)
+    #temporarily disable gifs
+    %w(jpg jpeg png)
+    #%w(jpg jpeg gif png)
   end
 
   # Override the filename of the uploaded files:
