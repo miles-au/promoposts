@@ -1501,6 +1501,11 @@ span.picture {
   }
 }
 
+.slideDivider{
+  border-top: 1px solid $blue3;
+  border-bottom: 1px solid $blue3;
+}
+
 .connect_link{
   span, h5{
     color: $teal3;

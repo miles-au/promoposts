@@ -41,7 +41,11 @@ class UsersController < ApplicationController
   def show
     @user = User.find_by_slug(params[:id]) || User.find(params[:id])
     if params["feed"].present? || !params["feed"].blank?
-      activity = Event.where(:user_id => @user.id).joins(:micropost).where("category = ?", params["feed"])
+      if params["feed"] == "digital_assets"
+        activity = Event.where(:user_id => @user.id).joins(:micropost).where("category = ? OR category = ? OR category = ? OR category = ? OR category = ? ", "cover_photo", "email_banner" , "infographic", "general_update" , "meme")
+      else
+        activity = Event.where(:user_id => @user.id).joins(:micropost).where("category = ?", params["feed"])
+      end
     else
       activity = Event.where(:user_id => @user.id)
     end
