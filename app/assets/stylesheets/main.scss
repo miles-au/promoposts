@@ -12,6 +12,7 @@ $sigCadet: #437F97;
 $yellow1: #ffb400;
 $yellow2: #ffc95c;
 $yellow3: #ffe4ae;
+$yellow4: #f9eed7;
 $blue1: #2d4059;
 $blue2: #3d5875;
 $blue3: #54799b;
@@ -1041,9 +1042,15 @@ span.picture {
   position: relative;
   top: 5px;
   left: 5px;
-  background-color: $blue1;
+  background-color: $blue1 !important;
   color: $grey5;
   box-shadow: none;
+}
+
+.tab-digital{
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: $yellow3;
 }
 
 .createPost{
@@ -1449,22 +1456,22 @@ span.picture {
   }
 }
 
-#feed-select{
+.feedSelect{
   position: relative;
   width: 300px;
 
-  #select-title{
+  .selectTitle{
     display: inline-block;
     width: 40%;
-    font-size: 1em;
+    font-size: 0.9em;
     text-align: right;
     background-color: $yellow3;
-    padding: 0px 25px 0px 5px;
+    padding: 0px 10px 0px 5px;
     margin-top: 10px;
     height: 50px;
     line-height: 50px;
   }
-  #feed-names{
+  .feedNames{
     position: relative;
     margin-top: 10px;
     background-color: $yellow1;
@@ -1473,7 +1480,7 @@ span.picture {
     border-color: $grey2;
     border-style: solid;
     padding: 0px 5px 5px 10px;
-    font-size: 1em;
+    font-size: 0.9em;
     float: right;
     height: 50px;
     width: 60%;
@@ -1481,7 +1488,7 @@ span.picture {
   }
 }
 
-#feeds-slide{
+.feedSlide{
   background-color: $yellow3;
   padding: 20px 10px 20px 10px;
   text-align: center;
@@ -1502,8 +1509,7 @@ span.picture {
 }
 
 .slideDivider{
-  border-top: 1px solid $blue3;
-  border-bottom: 1px solid $blue3;
+  background-color: $yellow4
 }
 
 .connect_link{
@@ -1724,7 +1730,7 @@ span.picture {
       padding-top: 100% !important;
     }
   }
-  #feed-select{
+  .feedSelect{
     font-size: 1.3em;
     width: 100%;
     #feed-names{

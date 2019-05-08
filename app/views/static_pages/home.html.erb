@@ -39,9 +39,6 @@
 	<%= link_to root_path( :feed => "global") do%>
 		<h5 id="globalFeed" class="tab <%= 'tab-active' if @feed_type == 'global' %>">Global Feed</h5>
 	<% end %>
-	<%= link_to root_path( :feed => "digital_assets") do%>
-		<h5 id="digitalAssetsFeed" class="tab <%= 'tab-active' if @feed_type == 'digital_assets' %>">Digital Assets</h5>
-	<% end %>
 	<%= link_to root_path( :feed => "questions") do%>
 		<h5 id="questionsFeed" class="tab <%= 'tab-active' if @feed_type == 'questions' %>">Questions</h5>
 	<% end %>
@@ -51,18 +48,39 @@
 	<%= link_to root_path( :feed => "careers") do%>
 		<h5 id="careersFeed" class="tab <%= 'tab-active' if @feed_type == 'careers' %>">Careers</h5>
 	<% end %>
+
+	<div id="digital_feeds">
+		<h5 style="margin-bottom: 0px;"><strong>Digital Assets:</strong></h5>
+		<%= link_to root_path( :feed => "digital_assets") do%>
+			<h5 id="digitalAssetsFeed-All" class="tab tab-digital <%= 'tab-active' if @feed_type == 'digital_assets' %>">All</h5>
+		<% end %>
+		<%= link_to root_path( :feed => "general_update") do%>
+			<h5 id="digitalAssetsFeed-general_update" class="tab tab-digital <%= 'tab-active' if @feed_type == 'general_update' %>">General Updates</h5>
+		<% end %>
+		<%= link_to root_path( :feed => "cover_photo") do%>
+			<h5 id="digitalAssetsFeed-cover_photo" class="tab tab-digital <%= 'tab-active' if @feed_type == 'cover_photo' %>">Cover Photos</h5>
+		<% end %>
+		<%= link_to root_path( :feed => "email_banner") do%>
+			<h5 id="digitalAssetsFeed-email_banner" class="tab tab-digital <%= 'tab-active' if @feed_type == 'email_banner' %>">Email Banners</h5>
+		<% end %>
+		<%= link_to root_path( :feed => "infographic") do%>
+			<h5 id="digitalAssetsFeed-All" class="tab tab-digital <%= 'tab-active' if @feed_type == 'infographic' %>">Infographics</h5>
+		<% end %>
+		<%= link_to root_path( :feed => "meme") do%>
+			<h5 id="digitalAssetsFeed-All" class="tab tab-digital <%= 'tab-active' if @feed_type == 'meme' %>">Memes</h5>
+		<% end %>
+	</div>
+
 </div>
 
-<div id="feed-select" class="mobile-show">
-	<span id="select-title">Feed:</span>
-	<div id="feed-names" class="mobile-show" >
+<div id="feed-select" class="mobile-show feedSelect">
+	<span id="select-title" class="selectTitle">Feed:</span>
+	<div id="feed-names" class="mobile-show feedNames" >
 		<% case params["feed"] %>
 			<% when 'user'%>
 				<p style="display: inline-block;">Your Feed</p>
 			<% when 'global' %>
 				<p style="display: inline-block;">Global Feed</p>
-			<% when 'digital_assets' %>
-				<p style="display: inline-block;">Digital Assets</p>
 			<% when 'questions' %>
 				<p style="display: inline-block;">Questions</p>
 			<% when 'news' %>
@@ -80,7 +98,7 @@
 		<% end %>
 		<span id="slide-glyph" class="glyphicon glyphicon-triangle-right"></span>
 	</div>
-	<div id="feeds-slide" style="display: none;" class="slide-close">
+	<div id="feeds-slide" style="display: none;" class="slide-close feedSlide">
 		<% if logged_in? %>
 			<a href="/?feed=user">Your Feed</a>
 		<% end %>
@@ -91,6 +109,40 @@
 		<a href="/?feed=careers">Careers</a>
 	</div>
 </div>
+
+<div id="digi-feed-select" class="mobile-show feedSelect">
+	<span id="digi-select-title" class="selectTitle">Digital Assets:</span>
+	<div id="digi-feed-names" class="mobile-show feedNames" >
+		<% case params["feed"] %>
+			<% when 'digital_assets'%>
+				<p style="display: inline-block;">All</p>
+			<% when 'general_update' %>
+				<p style="display: inline-block;">General Updates</p>
+			<% when 'cover_photo' %>
+				<p style="display: inline-block;">Cover Photos</p>
+			<% when 'email_banner' %>
+				<p style="display: inline-block;">Email Banners</p>
+			<% when 'infographic' %>
+				<p style="display: inline-block;">Infographics</p>
+			<% when 'meme' %>
+				<p style="display: inline-block;">Memes</p>
+			<% when 'search' %>
+				<p style="display: inline-block;"><%= "'#{params[:search]}'" %></p>
+			<% else %>
+				<p style="display: inline-block;">All</p>
+		<% end %>
+		<span id="digi-slide-glyph" class="glyphicon glyphicon-triangle-right"></span>
+	</div>
+	<div id="digi-feeds-slide" style="display: none;" class="slide-close feedSlide">
+		<a href="/?feed=digital_assets">All</a>
+		<a href="/?feed=general_update">General Updates</a>
+		<a href="/?feed=cover_photo">Cover Photos</a>
+		<a href="/?feed=email_banner">Email Banners</a>
+		<a href="/?feed=infographic">Infographics</a>
+		<a href="/?feed=meme">Memes</a>
+	</div>
+</div>
+
 <hr>
 
 <!--link to create post-->
@@ -152,4 +204,21 @@
 	  	$("#slide-glyph").addClass("glyphicon-triangle-right");
 	  } 
 	});
+
+	$( "#digi-feed-names" ).click(function() {
+	  if($("#digi-feeds-slide").hasClass("slide-close")){
+	  	$("#digi-feeds-slide").show('slow');
+	  	$("#digi-feeds-slide").removeClass("slide-close");
+	  	$("#digi-feeds-slide").addClass("slide-open");
+	  	$("#digi-slide-glyph").removeClass("glyphicon-triangle-right");
+	  	$("#digi-slide-glyph").addClass("glyphicon-triangle-bottom");
+	  }else{
+	  	$("#digi-feeds-slide").hide('slow');
+	  	$("#digi-feeds-slide").addClass("slide-close");
+	  	$("#digi-feeds-slide").removeClass("slide-open");
+	  	$("#digi-slide-glyph").removeClass("glyphicon-triangle-bottom");
+	  	$("#digi-slide-glyph").addClass("glyphicon-triangle-right");
+	  } 
+	});
+
 </script>

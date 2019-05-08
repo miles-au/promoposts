@@ -9,6 +9,7 @@ class StaticPagesController < ApplicationController
       @columns = cookies[:columns]
       @boot_columns = 12/@columns.to_i
     end
+    @digital_asset_types = ['general_update', 'cover_photo', 'email_banner', 'infographic', 'meme']
 
     @feed_type = params[:feed]
     if @feed_type
@@ -33,6 +34,26 @@ class StaticPagesController < ApplicationController
         when 'digital_assets'
           @feed_items_raw = Event.digital_assets
           @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
+
+        when 'general_update'
+          @feed_items_raw = Event.general_updates
+          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
+        
+        when 'cover_photo'
+          @feed_items_raw = Event.cover_photos
+          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
+
+        when 'email_banner'
+          @feed_items_raw = Event.email_banners
+          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
+
+        when 'infographic'
+          @feed_items_raw = Event.infographics
+          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)    
+
+        when 'meme'
+          @feed_items_raw = Event.memes
+          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24) 
 
         when 'questions'
           @feed_items_raw = Event.questions

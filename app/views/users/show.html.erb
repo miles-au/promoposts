@@ -82,9 +82,9 @@
 <div id="activity">
   <h3>Activity (<%= @events.count %>)</h3>
 
-  <div id="feed-select" >
-    <span id="select-title">Filter:</span>
-    <div id="feed-names" >
+  <div id="feed-select" class="feedSelect">
+    <span id="select-title" class="selectTitle">Filter:</span>
+    <div id="feed-names" class="feedNames">
       <% case params["feed"] %>
           <% when ''%>
             <p style="display: inline-block;">All Posts</p>
@@ -109,15 +109,15 @@
         <% end %>
       <span id="slide-glyph" class="glyphicon glyphicon-triangle-right"></span>
     </div>
-    <div id="feeds-slide" style="display: none;" class="slide-close">
-      <a href="<%= user_path(:id => @user) %>"><strong>- All Posts -</strong></a>
+    <div id="feeds-slide" style="display: none;" class="slide-close feedSlide">
+      <a href="<%= user_path(:id => @user) %>"><strong>All Posts</strong></a>
       <div class="slideDivider">
-        <a href="<%= user_path(:id => @user, :feed => 'digital_assets') %>"><strong>- All Digital Assets -</strong></a>
+        <a href="<%= user_path(:id => @user, :feed => 'digital_assets') %>"><strong>All Digital Assets</strong></a>
         <a href="<%= user_path(:id => @user, :feed => 'general_update') %>">General Updates</a>
         <a href="<%= user_path(:id => @user, :feed => 'cover_photo') %>">Cover Photos</a>
         <a href="<%= user_path(:id => @user, :feed => 'email_banner') %>">Email Banners</a>
         <a href="<%= user_path(:id => @user, :feed => 'infographic') %>">Infograpics</a>
-        <a href="<%= user_path(:id => @user, :feed => 'memes') %>">Memes</a>
+        <a href="<%= user_path(:id => @user, :feed => 'meme') %>">Memes</a>
       </div>
       <a href="<%= user_path(:id => @user, :feed => 'news') %>">News</a>
       <a href="<%= user_path(:id => @user, :feed => 'careers') %>">Careers</a>
