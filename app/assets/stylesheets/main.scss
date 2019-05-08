@@ -1,14 +1,7 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
-@import url('https://fonts.googleapis.com/css?family=Bai+Jamjuree');
 
 //Color Palette:
-$sigBlue: #2d4059;
-$sigYellow: #ffb400;
-$sigGrey: #f6f6f6;
-$sigRed: #ea5455;
-$sigCadet: #437F97;
-
 $yellow1: #ffb400;
 $yellow2: #ffc95c;
 $yellow3: #ffe4ae;
@@ -52,7 +45,7 @@ $buttonShadowHover: 13px 13px $grey3;
 body {
   padding-top: 60px;
   padding-bottom: 50px; /* give fixed footer some room */
-  background-color: $sigGrey;
+  background-color: $grey5;
 }
 
 section {
@@ -117,23 +110,6 @@ textarea {
   }
 }
 
-.btn, .btn-large, .btn-primary{
-  border: none;
-  border-radius: 0px;
-  background-color: $sigRed;
-  color: $sigGrey;
-
-  a{
-    color: $sigGrey;
-  }
-
-  &:hover{
-    background-color: $sigBlue;
-    color: $sigYellow;
-  }
-
-}
-
 .btn-greyed{
   background-color: grey;
 }
@@ -141,7 +117,7 @@ textarea {
 #product-missing-fields, #micropost-missing-fields{
   background-color: grey;
   width: 100%;
-  color: $sigGrey;
+  color: $grey5;
   padding: 5px;
   text-align: center;
 }
@@ -197,7 +173,7 @@ textarea {
 }
 
 header, .navbar-inverse, .navbar-fixed-top{
-  background-color: $sigBlue !important;
+  background-color: $blue1 !important;
   border: none;
 }
 
@@ -215,7 +191,7 @@ header, .navbar-inverse, .navbar-fixed-top{
   border-radius: 0px !important;
   padding-top: 20px;
   padding-bottom: 20px;
-  color: $sigBlue;
+  color: $blue1;
 
   h1{
     font-size: 3.5em;
@@ -327,14 +303,14 @@ p {
   float: left;
   margin-right: 10px;
   font-size: 1.7em;
-  color: $sigYellow;
+  color: $yellow1;
   letter-spacing: -1px;
   font-weight: bold;
   padding-bottom: 5px;
   text-decoration: none;
 
   h3{
-    color: $sigYellow;
+    color: $yellow1;
     text-decoration: none;
     margin: 10px;
   }
@@ -356,7 +332,7 @@ p {
     white-space: normal !important;
     margin-bottom: -1px;
     span{
-      color: $sigBlue;
+      color: $blue1;
     }
 }
 
@@ -386,7 +362,7 @@ li > .dropdown > .open:focus {
 }
 
 .navbar-inverse .navbar-nav > li > a {
-  color: $sigGrey;
+  color: $grey5;
 }
 
 .btn-group{
@@ -425,10 +401,10 @@ footer {
   color: #777;
 
   a {
-    color: $sigBlue;
+    color: $blue1;
 
     &:hover {
-    color: $sigYellow;
+    color: $yellow1;
     }
   }
 
@@ -452,40 +428,10 @@ footer {
 
 /* mixins, variables, etc. */
 
-$gray-medium-light: #eaeaea;
-
 @mixin box_sizing {
   -moz-box-sizing:    border-box;
   -webkit-box-sizing: border-box;
   box-sizing:         border-box;
-}
-
-/* sidebar */
-
-aside {
-  section.user_info {
-    margin-top: 20px;
-  }
-  section {
-    padding: 10px 0;
-    margin-top: 20px;
-    &:first-child {
-      border: 0;
-      padding-top: 0;
-    }
-    span {
-      display: block;
-      margin-bottom: 3px;
-      line-height: 1;
-    }
-    h1 {
-      font-size: 1.4em;
-      text-align: left;
-      letter-spacing: -1px;
-      margin-bottom: 3px;
-      margin-top: 0px;
-    }
-  }
 }
 
 /* post form */
@@ -523,7 +469,7 @@ aside {
 }
 
 #avatarBacking{
-  background-color: $sigGrey;
+  background-color: $grey5;
 }
 .stats {
   overflow: auto;
@@ -532,15 +478,15 @@ aside {
   a {
     float: left;
     padding: 0 10px;
-    border-left: 1px solid $gray-lighter;
-    color: $sigBlue;
+    border-left: 1px solid $grey4;
+    color: $blue1;
     &:first-child {
       padding-left: 0;
       border: 0;
     }
     &:hover {
       text-decoration: none;
-      color: $sigYellow;
+      color: $yellow1;
     }
   }
   strong {
@@ -615,10 +561,10 @@ input {
 }
 
 #error_explanation {  
-  color: $sigRed;
+  color: $red3;
   .alert{
     border-radius: 0px;
-    border: 5px solid $sigRed;
+    border: 5px solid $red3;
     
   }
   ul {
@@ -628,33 +574,33 @@ input {
 
 .alert-danger{
   background-color: transparent !important;
-  color: $sigRed;
+  color: $red3;
   font-weight: 700 !important;
-  border: 5px solid $sigRed;
+  border: 5px solid $red3;
   border-radius: 0px;
 }
 
 .alert-success{
   background-color: transparent !important;
-  color: $sigBlue;
-  border: 5px solid $sigBlue !important;
+  color: $blue1;
+  border: 5px solid $blue1 !important;
   font-weight: 700 !important;
 }
 
 .alert-info{
   background-color: transparent !important;
-  color: $sigBlue;
-  border: 5px solid $sigBlue !important;
+  color: $blue1;
+  border: 5px solid $blue1 !important;
   font-weight: 700 !important;
 }
 
 .alert-warning{
   background-color: transparent !important;
-  color: $sigBlue;
-  border: 5px solid $sigBlue !important;
+  color: $blue1;
+  border: 5px solid $blue1 !important;
   font-weight: 700 !important;
   a{
-    color: $sigRed;
+    color: $red3;
   }
 }
 
@@ -882,7 +828,7 @@ input {
 }
 
 .top-comment{
-  color: $sigYellow;
+  color: $yellow1;
 }
 
 .questionBack{
@@ -908,15 +854,15 @@ input {
   padding: 10px 10px 0px 10px;
   left: 0px;
   z-index: 100;
-  background-color: $sigYellow;
-  color: $sigBlue;
+  background-color: $yellow1;
+  color: $blue1;
   font-size: 14px;
 }
 
 .clickToView{
-  background-color: $sigBlue !important;
+  background-color: $blue1 !important;
   p{
-    color: $sigGrey !important;
+    color: $grey5 !important;
   }
 }
 
@@ -1098,7 +1044,7 @@ span.picture {
   .avatar{
     display: inline-block;
   }
-  border-left: 1px solid $sigBlue;
+  border-left: 1px solid $blue1;
 }
 
 .comment_message{
@@ -1108,7 +1054,7 @@ span.picture {
 }
 
 .voted{
-  color: $sigYellow;
+  color: $yellow1;
 }
 
 #topTen{
@@ -1200,7 +1146,7 @@ span.picture {
 }
 
 #topPicksTitle{
-  background-color: $sigYellow;
+  background-color: $yellow1;
   padding: 5px;
 }
 
@@ -1217,13 +1163,13 @@ span.picture {
 
 .addProduct{
   text-align: center;
-  background-color: $sigYellow;
+  background-color: $yellow1;
   background-size: cover;
   height: 150px;
   background-position: center;
 
   span{
-    color: $sigBlue;
+    color: $blue1;
   }
 }
 
@@ -1319,13 +1265,6 @@ span.picture {
   display: none;
 }
 
-.a2a_kit{
-  margin: 10px 0;
-  a img{
-    background-color: $sigRed;
-  }
-}
-
 .inactive{
   display: none;
 }
@@ -1385,7 +1324,7 @@ span.picture {
   opacity: 1;
 
   span{
-    color: $sigRed;
+    color: $red3;
   }  
 }
 
@@ -1521,7 +1460,7 @@ span.picture {
 
   &:hover{
     span, h5{
-      color: $sigYellow;
+      color: $yellow1;
     }
   }
 }
@@ -1530,12 +1469,12 @@ span.picture {
   opacity: 1 !important;
 
   .tooltip-inner{
-    background-color: $sigYellow !important;
-    color: $sigBlue !important;
+    background-color: $yellow1 !important;
+    color: $blue1 !important;
     opacity: 1;
   }
   .tooltip-arrow{
-    border-top-color: $sigYellow !important;
+    border-top-color: $yellow1 !important;
   }
 }
 
@@ -1601,7 +1540,7 @@ span.picture {
     position: fixed;
   }
   .jumbotron{
-    color: $sigBlue;
+    color: $blue1;
     width: 100%;
 
     h1{
@@ -1704,7 +1643,7 @@ span.picture {
     width: auto;
 
     .avatar{
-      border: 2px solid $sigGrey;
+      border: 2px solid $grey5;
       display: inline-block;
       width: 20vw;
       height: 20vw;

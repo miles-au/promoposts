@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link href="https://fonts.googleapis.com/css?family=Bai+Jamjuree" rel="stylesheet">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123139806-2"></script>
     <script>
@@ -14,12 +15,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= render 'layouts/rails_default' %>
     <%= render 'layouts/shim' %>
-    <% if controller_name == 'microposts' %>
-    <% end %>
-    <meta property="fb:app_id" content="<%= ENV['FACEBOOK_KEY'] %>" />
+    <!--<meta property="fb:app_id" content="<%= ENV['FACEBOOK_KEY'] %>" />-->
     <%= favicon_link_tag asset_path('favicon.png') %>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <%= render 'layouts/facebook_pixel' %>
+    <%#= render 'layouts/facebook_pixel' %>
   </head>
 
   <body>
@@ -36,7 +34,11 @@
       <%= debug(params) if Rails.env.development? %>
     </div>
 
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   </body>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script
+  src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+  integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+  crossorigin="anonymous"></script>
   
 </html>
