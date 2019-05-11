@@ -141,8 +141,8 @@ class User < ApplicationRecord
 
   # Returns a user's feed.
   def feed
-    #following_ids = Relationship.where(:follower_id => id).pluck(:followed_id)
-    following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
+    following_ids = Relationship.where(:follower_id => id).pluck(:followed_id)
+    #following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
     relevant = Event.where("? in (?)", id, following_ids).or(Event.where(:user_id => id))
     relevant.joins(:micropost).where("campaign_id is null OR category = 'campaign'")
   end
