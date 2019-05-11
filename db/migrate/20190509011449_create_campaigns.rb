@@ -6,6 +6,6 @@ class CreateCampaigns < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
-    
+    add_index :campaigns, [:created_at]
   end
 end
