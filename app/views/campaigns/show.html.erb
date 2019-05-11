@@ -10,7 +10,7 @@
 		</div>
 		<div style="display: inline-block;">
 			<h3 class="user" style="display: block;"><%= link_to @campaign.user.name, @campaign.user %></h3>
-			<%= render :partial => 'shared/accolades', :locals => {:user => @user} %>
+			<%= render :partial => 'shared/accolades', :locals => {:user => @campaign.user} %>
 			<span class="timestamp">
 			  Campaign created <%= time_ago_in_words(@campaign.created_at) %> ago.
 			  <% if current_user %>
