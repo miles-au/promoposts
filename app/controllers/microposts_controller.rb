@@ -29,12 +29,14 @@ class MicropostsController < ApplicationController
     end
     if @micropost.save
       flash[:success] = "Your promo post is live!"
-      @event = Event.new(user_id: current_user.id, micropost_id: @micropost.id, contribution: 'create')
-      @event.save
       if @micropost.category == 'question'
         question_notification_emails
       end
-      redirect_to root_url
+      if @micropost.campaign_id
+        redirect_to campaign_path(id: @micropost.campaign_id)
+      else
+        redirect_to @micropost
+      end
     else
       render 'microposts/new'
     end
@@ -80,6 +82,9 @@ class MicropostsController < ApplicationController
   def show
     @event = Event.new
     @micropost = Micropost.find(params[:id])
+    if @micropost.campaign_id
+      @campaign = Campaign.find(@micropost.campaign_id)
+    end
     @comment = Comment.new
     @comments = Comment.where(:micropost_id => @micropost.id, :head => nil)
     @comments = @comments.all.order(created_at: :desc).sort_by {|x| x.points }.reverse
@@ -394,7 +399,7 @@ class MicropostsController < ApplicationController
   private
 
     def micropost_params
-      params.require(:micropost).permit(:content, :picture, :category, :shareable, :external_url)
+      params.require(:micropost).permit(:content, :picture, :category, :shareable, :external_url, :campaign_id)
     end
 
     def correct_or_admin_user

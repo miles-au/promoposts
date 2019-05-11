@@ -1,0 +1,21 @@
+<%= form_for(@campaign) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <div class="external_url">
+    <p>Campaign Name:</p>
+    <%= f.text_field :name, placeholder: "Enter a campaign name...", maxlength: 75 %>
+  </div>
+  &nbsp;
+  <%= f.fields_for :microposts, Micropost.new do |micropost| %>
+    <div class="picture">
+      <span style="display: inline-block; font-size: 1.2em;" class="glyphicon glyphicon-picture"></span>
+      <p style="display: inline-block; text-align: top;">Campaign Poster (10mb max):</p>
+      <p style="font-size: 0.8em;">This picture will be the face of your campaign. We recommend a square picture.</p>
+      <%= micropost.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
+    </div>
+    &nbsp;
+    <%= micropost.hidden_field :category, :value => "campaign" %>
+   <% end %>
+   &nbsp;
+  <%= f.submit "Start Campaign", class: "pop-button" %>
+<% end %>

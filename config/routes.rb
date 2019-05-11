@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :campaigns
   get 'password_resets/new'
   get 'password_resets/edit'
   get 'sessions/new'
@@ -94,5 +95,6 @@ Rails.application.routes.draw do
   resources :events,              only: [:destroy]
   resources :tickets,             only: [:create, :destroy, :show]
   resources :comments
+  resources :campaigns,           only: [:create, :destroy, :show]
 
 end

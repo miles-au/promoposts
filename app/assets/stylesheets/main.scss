@@ -77,6 +77,19 @@ textarea {
   }
 }
 
+.pop-button-grey{
+  border: none;
+  background-color: $grey3;
+  color: $grey5;
+  padding: 10px 20px;
+  font-weight: 700;
+  box-shadow: $buttonShadow;
+
+  &:hover{
+    box-shadow: $buttonShadowHover;
+  }
+}
+
 .admin-button{
   border: none;
   background-color: $red3;
@@ -1017,6 +1030,7 @@ span.picture {
   &:hover{
     margin-right: calc(5% + 5px);
     margin-top: -5px;
+    margin-left: -5px;
   }
 
 }
@@ -1493,6 +1507,67 @@ span.picture {
   }
 }
 
+.campaign-text{
+  h2{
+    background-color: $teal3;
+    padding: 5px 10px;
+    margin: 0px;
+    display: inline-block;
+    font-size: 1.6em;
+    text-align: left;
+    color: $grey5;
+    span{
+      color: $grey5;
+    }
+  }
+  .campaign-title{
+    font-size: 2.4em;
+    color: $blue2;
+    margin-left: 20px;
+  }
+}
+
+#add-to-campaign{
+  text-align: center;
+  display: inline-block;
+  text-align: center;
+  &:hover{
+    margin-left: -5px;
+    margin-bottom: 20px;
+    margin-top: -5px;
+  }
+}
+
+#campaign-add-post-container{
+  margin-top: 20px;
+  background-color: $yellow4;
+  padding: 15px;
+}
+
+.campaign-add-post-title{
+  margin-top: 0px;
+  margin-bottom: 10px;
+  font-size: 1.7em;
+  color: $blue1;
+  text-align: left;
+  display: inline-block;
+}
+
+.campaign-category{
+  text-align: left;
+  font-size: 1.3em;
+  border-bottom: 2px solid $blue1;
+}
+
+.campaign_tag{
+  background-color: $teal3;
+  padding: 5px;
+  display: inline-block;
+  color: $grey5;
+  &:hover{
+    background-color: $teal4;
+  }
+}
 
 //MOBILE RESPONSIVE CODE
 

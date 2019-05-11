@@ -30,4 +30,8 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  format: 'hello world'
+  activerecord:
+    attributes:
+      microposts:
+        base: ''

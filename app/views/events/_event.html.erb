@@ -14,6 +14,8 @@
 		<% case event.contribution %>
 			<% when 'create' %>
 				<% case @micropost.category %>
+					<% when 'campaign' %>
+						<span style="margin-left: 5px; font-size: 1em;">created a campaign</span>
 					<% when 'cover_photo' %>
 						<span style="margin-left: 5px; font-size: 1em;">posted a cover photo</span>
 					<% when 'email_banner' %>

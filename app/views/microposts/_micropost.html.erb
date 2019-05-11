@@ -1,13 +1,16 @@
 <% @user = micropost.user %>
 
 <li id="micropost-<%= micropost.id %>" >
-  <div class="user-info">
-    <div class="avatar avatar-thumbnail" style="background-image: url('<%= micropost.user.avatar %>');"></div>
-    <div class="user" style="display: inline-block;">
-      <%= link_to micropost.user.name, micropost.user %>
-      <p class="user-company"><%= micropost.user.company || "&nbsp;".html_safe %></p>
+
+  <% if controller_name != "campaigns" %>
+
+    <div class="user-info">
+      <div class="avatar avatar-thumbnail" style="background-image: url('<%= micropost.user.avatar %>');"></div>
+      <div class="user" style="display: inline-block;">
+        <%= link_to micropost.user.name, micropost.user %>
+        <p class="user-company"><%= micropost.user.company || "&nbsp;".html_safe %></p>
+      </div>
     </div>
-  </div>
 
     <% case micropost.category %>
       <% when 'question' %>
@@ -34,17 +37,33 @@
         <% end %>
       <% end %>
     </span>
+  <% else %>
+    <p class="campaign-category"><%= micropost.category ? micropost.category.titlecase.tr("_", " ") : 'Post' %></p>
+    <% if current_user %>
+        <% if current_user?(micropost.user) || current_user.admin? %>
+          <%= link_to "delete this post", micropost, method: :delete,
+                                           data: { confirm: "You sure?" } %>
+        <% end %>
+      <% end %>
+  <% end %>
 
+  <% if micropost.category == "campaign" %>
+    <%=link_to(campaign_path(:id => micropost.campaign_id)) do %>
+      <%= render :partial => 'microposts/content', :locals => {:micropost => micropost, :bgcolor => bgcolor} %>
+    <% end %>
+  <% else %>
     <%=link_to(micropost) do %>
       <%= render :partial => 'microposts/content', :locals => {:micropost => micropost, :bgcolor => bgcolor} %>
     <% end %>
+  <% end %>
+    
 
     <div>
       <%= link_to micropost, :data=> {:micropost_id => micropost.id} do %>
         <span class="click-to-comments" style="display: inline-block;"><%= pluralize( micropost.comments.count, 'Comment' ) %>
         </span>
       <% end %>
-      <% if micropost.external_url %>
+      <% if micropost.external_url.present? %>
         <%= link_to(micropost.external_url, :class => "go-to-external-link", :style => "float:right;", :target => "_blank") do %>
           <span class="glyphicon glyphicon-link"></span>
           go to link

@@ -1,0 +1,37 @@
+<div class="row">
+	<div class="col-md-4 col-sm-12">
+		<div class="campaign-text">
+			<h2><span class="glyphicon glyphicon-flag"></span> campaign: </h2>
+			<span class="campaign-title"><strong><%= @campaign.name %></strong></span>
+		</div>
+
+		<div style="display: inline-block;">
+			<div class="avatar avatar-thumbnail" style="background-image: url('<%= @campaign.user.avatar %>');"></div>
+		</div>
+		<div style="display: inline-block;">
+			<h3 class="user" style="display: block;"><%= link_to @campaign.user.name, @campaign.user %></h3>
+			<%= render :partial => 'shared/accolades', :locals => {:user => @user} %>
+			<span class="timestamp">
+			  Campaign created <%= time_ago_in_words(@campaign.created_at) %> ago.
+			  <% if current_user %>
+			    <% if current_user?(@campaign.user) || current_user.admin? %>
+			      <%= link_to "delete campaign", @campaign, method: :delete,
+			                                       data: { confirm: "You sure?" } %>
+			    <% end %>
+			  <% end %>
+			</span>
+		</div>
+
+		<% if @campaign.user == current_user %>
+			<%= render 'add_post_form' %>
+		<% end %>
+
+	</div>
+
+	<div class="col-md-8 col-sm-12">
+		<div class="microposts micropost-full" style="width: 100%;">
+			<%= render @campaign.microposts.reverse %>
+		</div>
+	</div>
+
+</div>

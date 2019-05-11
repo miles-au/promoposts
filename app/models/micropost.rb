@@ -1,5 +1,6 @@
 class Micropost < ActiveRecord::Base
   belongs_to :user
+  belongs_to :campaign, optional: true
   default_scope -> { order(created_at: :desc) }
   mount_uploader :picture, PictureUploader
   validates :user_id, presence: true
@@ -9,8 +10,11 @@ class Micropost < ActiveRecord::Base
   validate :content_exists
   validate :valid_url
   validate :digital_asset_has_picture
+  validate :campaign_has_picture_and_text
   has_many :events, dependent: :destroy
   has_many :comments, dependent: :destroy
+  before_save
+  after_create :create_event
 
   #attr_accessor :external_url
 
@@ -28,17 +32,12 @@ class Micropost < ActiveRecord::Base
     end
 
     def content_exists
-      if picture.blank? && content.blank?
-        errors[:base] << "Please include a photo or text."
-      end
+        if campaign_id.blank? && picture.blank? && content.blank?
+          errors[:base] << "Please include a photo or text."
+        end
     end
 
     def valid_url
-      if !external_url || external_url.empty?
-        self.update_attribute('external_url', nil)
-        return
-      end
-
 =begin
       if !external_url || external_url.empty?
         self.update_attribute('external_url', nil)
@@ -94,14 +93,33 @@ class Micropost < ActiveRecord::Base
     end
 
     def digital_asset_has_picture
-      if category == "cover_photo" || category == "email_banner" || category == "infographic"
-        if picture.blank?
-          #cover photo must have a picture
-          errors[:base] << "Please include a picture with your #{category.tr("_", " ")}."
-        else
-          return
+      if campaign_id.blank?
+        if category == "cover_photo" || category == "email_banner" || category == "infographic" || category == "meme"
+          if picture.blank?
+            #cover photo must have a picture
+            errors[:base] << "Please include a picture with your #{category.tr("_", " ")}."
+          else
+            return
+          end
         end
       end
+    end
+
+    def campaign_has_picture_and_text
+      if category == "campaign" 
+        errors[:base] << "Please include a campaign poster." if picture.blank?
+        if content.blank?
+          self.update_attribute('content', self.campaign.name)
+        end
+      elsif campaign_id
+        errors[:base] << "Please include a picture." if picture.blank?
+        errors[:base] << "Please include a caption." if content.blank?
+      end
+    end
+
+    def create_event
+      event = Event.new(user_id: user_id, micropost_id: id, contribution: 'create')
+      event.save
     end
     
 end

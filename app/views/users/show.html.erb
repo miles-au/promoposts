@@ -23,6 +23,13 @@
     </div>
   <% end %>
 
+  <%= link_to new_campaign_path, :id => "campaignPostBtn" do%>
+    <div class="createPost pop-button">
+      <span class="glyphicon glyphicon-flag"></span>
+      <h3 class = "top_icons">create campaign</h3>
+    </div>
+  <% end %>
+
 <% end %>
 
 <% if current_user && current_user.admin? %>
@@ -90,6 +97,8 @@
             <p style="display: inline-block;">All Posts</p>
           <% when 'digital_assets' %>
             <p style="display: inline-block;">All Digital Assets</p>
+          <% when 'campaign' %>
+            <p style="display: inline-block;">Campaigns</p>
           <% when 'general_update' %>
             <p style="display: inline-block;">General Updates</p>
           <% when 'cover_photo' %>
@@ -113,6 +122,7 @@
       <a href="<%= user_path(:id => @user) %>"><strong>All Posts</strong></a>
       <div class="slideDivider">
         <a href="<%= user_path(:id => @user, :feed => 'digital_assets') %>"><strong>All Digital Assets</strong></a>
+        <a href="<%= user_path(:id => @user, :feed => 'campaign') %>">Campaigns</a>
         <a href="<%= user_path(:id => @user, :feed => 'general_update') %>">General Updates</a>
         <a href="<%= user_path(:id => @user, :feed => 'cover_photo') %>">Cover Photos</a>
         <a href="<%= user_path(:id => @user, :feed => 'email_banner') %>">Email Banners</a>

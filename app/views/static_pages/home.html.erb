@@ -54,6 +54,9 @@
 		<%= link_to root_path( :feed => "digital_assets") do%>
 			<h5 id="digitalAssetsFeed-All" class="tab tab-digital <%= 'tab-active' if @feed_type == 'digital_assets' %>">All</h5>
 		<% end %>
+		<%= link_to root_path( :feed => "campaign") do%>
+			<h5 id="digitalAssetsFeed-campaign" class="tab tab-digital <%= 'tab-active' if @feed_type == 'campaign' %>">Campaigns</h5>
+		<% end %>
 		<%= link_to root_path( :feed => "general_update") do%>
 			<h5 id="digitalAssetsFeed-general_update" class="tab tab-digital <%= 'tab-active' if @feed_type == 'general_update' %>">General Updates</h5>
 		<% end %>
@@ -103,7 +106,6 @@
 			<a href="/?feed=user">Your Feed</a>
 		<% end %>
 		<a href="/?feed=global">Global Feed</a>
-		<a href="/?feed=digital_assets">Digital Assets</a>
 		<a href="/?feed=questions">Questions</a>
 		<a href="/?feed=news">News</a>
 		<a href="/?feed=careers">Careers</a>
@@ -116,6 +118,8 @@
 		<% case params["feed"] %>
 			<% when 'digital_assets'%>
 				<p style="display: inline-block;">All</p>
+			<% when 'campaign' %>
+				<p style="display: inline-block;">Campaigns</p>
 			<% when 'general_update' %>
 				<p style="display: inline-block;">General Updates</p>
 			<% when 'cover_photo' %>
@@ -135,6 +139,7 @@
 	</div>
 	<div id="digi-feeds-slide" style="display: none;" class="slide-close feedSlide">
 		<a href="/?feed=digital_assets">All</a>
+		<a href="/?feed=campaign">Campaigns</a>
 		<a href="/?feed=general_update">General Updates</a>
 		<a href="/?feed=cover_photo">Cover Photos</a>
 		<a href="/?feed=email_banner">Email Banners</a>
@@ -154,6 +159,14 @@
 			<h3 class = "top_icons">create post</h3>
 		</div>
 	<% end %>
+
+	<%= link_to new_campaign_path, :id => "campaignPostBtn" do%>
+		<div class="createPost pop-button">
+			<span class="glyphicon glyphicon-flag"></span>
+			<h3 class = "top_icons">create campaign</h3>
+		</div>
+	<% end %>
+
 <% end %>
 
 <!--grid views-->

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_03_225056) do
+ActiveRecord::Schema.define(version: 2019_05_09_020744) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -30,6 +30,15 @@ ActiveRecord::Schema.define(version: 2019_05_03_225056) do
     t.string "picture"
     t.datetime "last_share_time"
     t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "campaigns", force: :cascade do |t|
+    t.string "name"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_campaigns_on_user_id"
+    t.index [nil, "created_at"], name: "index_campaigns_on_micropost_id_and_created_at"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -90,6 +99,7 @@ ActiveRecord::Schema.define(version: 2019_05_03_225056) do
     t.string "external_url"
     t.integer "shares"
     t.integer "downloads"
+    t.integer "campaign_id"
     t.index ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_microposts_on_user_id"
   end

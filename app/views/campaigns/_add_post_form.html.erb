@@ -1,0 +1,54 @@
+<div id="campaign-add-post-container">
+  <%= form_for @campaign, :remote => true do |f| %>
+    <h2 class="campaign-add-post-title">Add a post to <em><%= @campaign.name %></em> :</h2>
+    <%= render 'shared/error_messages', object: f.object %>
+
+    <%= f.fields_for :microposts, Micropost.new do |micropost| %>
+
+      <div class="create_post_buttons">
+        <div class="categoryLabel">
+          <%= micropost.label :category, "General Update" %>
+          <%= micropost.radio_button :category, "general_update", :checked => true %>
+        </div>
+        <div class="categoryLabel">
+          <%= micropost.label :category, "Cover Photo" %>
+          <%= micropost.radio_button :category, "cover_photo" %>
+        </div>
+        <div class="categoryLabel">
+          <%= micropost.label :category, "Email Banner" %>
+          <%= micropost.radio_button :category, "email_banner" %>
+        </div>
+        <div class="categoryLabel">
+          <%= micropost.label :category, "Infographic" %>
+          <%= micropost.radio_button :category, "infographic" %>
+        </div>
+        <div class="categoryLabel">
+          <%= micropost.label :category, "Memes" %>
+          <%= micropost.radio_button :category, "meme" %>
+        </div>
+      </div>
+
+      <div class="picture">
+        <span style="display: inline-block; font-size: 1.2em;" class="glyphicon glyphicon-picture"></span>
+        <p style="display: inline-block; text-align: top;">Add Picture (10mb max)*:</p>
+        <%= micropost.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
+      </div>
+      <div class="field" style="">
+        <p style="display: inline-block; text-align: top;">Add Caption*:</p>
+        <%= micropost.text_area :content, placeholder: "Tell us about your campaign...", maxlength: 500 %>
+      </div>
+    <% end %>
+    <%= f.submit "Add this post to #{@campaign.name}", class: "pop-button", id: "add-post-to-campaign-btn" %>
+    <div id="add-post-to-campaign-btn-grey" class="pop-button pop-button-grey" style="display: none; text-align: center;">Adding post...</div>
+    <p id="large-pics-may-take-a-while" style="margin-top: 10px; display: none;">(large pictures may take a while to upload)</p>
+  <% end %>
+</div>
+
+<script>
+$("#add-post-to-campaign-btn").click(function(){
+  $(this).hide();
+  $("#add-post-to-campaign-btn-grey").show();
+  $("#large-pics-may-take-a-while").show();
+});
+  
+</script>

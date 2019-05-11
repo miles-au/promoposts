@@ -42,12 +42,14 @@ class UsersController < ApplicationController
     @user = User.find_by_slug(params[:id]) || User.find(params[:id])
     if params["feed"].present? || !params["feed"].blank?
       if params["feed"] == "digital_assets"
-        activity = Event.where(:user_id => @user.id).joins(:micropost).where("category = ? OR category = ? OR category = ? OR category = ? OR category = ? ", "cover_photo", "email_banner" , "infographic", "general_update" , "meme")
+        relevant = Event.where(:user_id => @user.id).joins(:micropost).where("category = ? OR category = ? OR category = ? OR category = ? OR category = ? OR category = ?", "campaign", "cover_photo", "email_banner" , "infographic", "general_update" , "meme")
+        activity = relevant.joins(:micropost).where("campaign_id is null OR category = 'campaign'")
       else
         activity = Event.where(:user_id => @user.id).joins(:micropost).where("category = ?", params["feed"])
       end
     else
-      activity = Event.where(:user_id => @user.id)
+      relevant = Event.joins(:micropost).where("campaign_id is null OR category = 'campaign'")
+      activity = relevant.where(:user_id => @user.id)
     end
     @events = activity.paginate(page: params[:page], :per_page => 10)
     #@microposts = @user.microposts.paginate(page: params[:page], :per_page => 10)
