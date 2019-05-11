@@ -94,9 +94,10 @@ class MicropostsController < ApplicationController
     if logged_in? && @micropost.shareable
       #current_user.activation_digest = @token
       #current_user.save
-      @fbaccounts = current_user.accounts.where(:provider => "facebook", :user_id => current_user.id)
-      @linkedinaccounts = current_user.accounts.where(:provider => "linkedin", :user_id => current_user.id)
-      @bufferaccounts = current_user.accounts.where(:provider => "buffer", :user_id => current_user.id)
+      platform_accounts = current_user.accounts
+      @fbaccounts = platform_accounts.where(:provider => "facebook", :user_id => current_user.id)
+      @linkedinaccounts = platform_accounts.where(:provider => "linkedin", :user_id => current_user.id)
+      @bufferaccounts = platform_accounts.where(:provider => "buffer", :user_id => current_user.id)
     end
   end
 

@@ -10,19 +10,19 @@
   <div class="social-accounts-wrap">
 
     <!--if logged_in and facebook accounts exist in user's name-->
-    <% if logged_in? && @fb_accounts.count > 0 %>
+    <% if logged_in? && @data['facebook'].count > 0 %>
       <p>Tick the checkbox to enable autoshare. <%= link_to "What is autoshare?", what_is_autoshare_path %><br><span style="font-size: 0.8em;">Autoshares via Facebook will show up on your page, but will not be shareable by other Promo Posts members to their own platforms.</span></p>
-      <% accounts = @fb_accounts %>
+      <% accounts = @data['facebook'] %>
       <% accounts.each do |page| %>
         <div class="fb-settings-wrapper">
           <% if page['autoshare'] %>
             <!-- if autoshare is already turned on, unsubscribe -->
-            <input name="unsubscribe_hidden[]" type="hidden" value="<%= page['account_id'] %>">
-            <input name="unsubscribe[]" type="checkbox" value="<%= page['account_id'] %>" checked="checked" id="account_unsubscribe">
+            <input name="unsubscribe_hidden[]" type="hidden" value="<%= page.id %>">
+            <input name="unsubscribe[]" type="checkbox" value="<%= page.id %>" checked="checked" id="account_unsubscribe">
 
           <% else %>
             <!-- else, subscribe-->
-            <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page['account_id'], "" %>
+            <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page.id, "" %>
           <% end %>
 
           <div class="img-holder">
@@ -58,17 +58,17 @@
   <div class="social-accounts-wrap">
 
     <!--if logged_in and linkedin accounts exist in user's name-->
-    <% if logged_in? && @linkedin_accounts.count > 0 %>
-      <% accounts = @linkedin_accounts %>
+    <% if logged_in? && @data['linkedin'].count > 0 %>
+      <% accounts = @data['linkedin'] %>
       <% accounts.each do |page| %>
         <div class="fb-settings-wrapper">
           <!--
           <% if page['autoshare'] %>
-            <input name="unsubscribe_hidden[]" type="hidden" value="<%= page['account_id'] %>">
-            <input name="unsubscribe[]" type="checkbox" value="<%= page['account_id'] %>" checked="checked" id="account_unsubscribe">
+            <input name="unsubscribe_hidden[]" type="hidden" value="<%= page.id %>">
+            <input name="unsubscribe[]" type="checkbox" value="<%= page.id %>" checked="checked" id="account_unsubscribe">
 
           <% else %>
-            <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page['account_id'], "" %>
+            <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page.id, "" %>
           <% end %>
           -->
 
@@ -105,17 +105,17 @@
   <div class="social-accounts-wrap">
 
     <!--if logged_in and buffer accounts exist in user's name-->
-    <% if logged_in? && @buffer_accounts.count > 0 %>
-      <% accounts = @buffer_accounts %>
+    <% if logged_in? && @data['buffer'].count > 0 %>
+      <% accounts = @data['buffer'] %>
       <% accounts.each do |page| %>
         <div class="fb-settings-wrapper">
           <!--
           <% if page['autoshare'] %>
-            <input name="unsubscribe_hidden[]" type="hidden" value="<%= page['account_id'] %>">
-            <input name="unsubscribe[]" type="checkbox" value="<%= page['account_id'] %>" checked="checked" id="account_unsubscribe">
+            <input name="unsubscribe_hidden[]" type="hidden" value="<%= page.id %>">
+            <input name="unsubscribe[]" type="checkbox" value="<%= page.id %>" checked="checked" id="account_unsubscribe">
 
           <% else %>
-            <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page['account_id'], "" %>
+            <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page.id, "" %>
           <% end %>
           -->
 

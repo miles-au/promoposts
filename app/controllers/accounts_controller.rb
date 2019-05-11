@@ -7,38 +7,16 @@ class AccountsController < ApplicationController
   	@user = current_user
 
   	providers = ["facebook", "linkedin", "instagram", "buffer"]
-  	data = {}
+  	@data = {}
 
-
+    #sort accounts by platform
   	providers.each do |provider|
-  		data[provider] = []
+  		@data[provider] = []
   		@user.accounts.each do |account|
   			if account['provider'] == provider
-  				data[provider].push(account)
+  				@data[provider].push(account)
   			end
   		end
-  	end
-
-  	#data{{'facebook' => [account, account, account]}, {'linkedin' => [account, account, account]}}
-  	if @user.fb_uid
-  		@fb_accounts = data['facebook']
-  	else
-  		@fb_accounts = []
-  	end
-  	if @user.linkedin_uid
-  		@linkedin_accounts = data['linkedin']
-  	else
-  		@linkedin_accounts = []
-  	end
-  	if @user.instagram_uid
-  		@instagram_accounts = data['instagram']
-  	else
-  		@instagram_accounts = []
-  	end
-  	if @user.buffer_uid
-  		@buffer_accounts = data['buffer']
-  	else
-  		@buffer_accounts = []
   	end
 
   end
@@ -53,18 +31,17 @@ class AccountsController < ApplicationController
 	  	subs = params[:subscribe]
 	  	subs.each do |page|
 	  		#if page exists
-	  		if !page.empty?
+	  		if page.present?
 				#subscribe
-				a = @user.accounts.find_by_account_id(page.to_s)
+				a = @user.accounts.find(page)
 				
-				#page_token = @user.facebook.get_object(page, fields:"access_token")['access_token']
 				page_token = Account.get_token(a.access_token)
-				url = 'https://graph.facebook.com/v3.1/'+ page +'/subscribed_apps'
+				url = "https://graph.facebook.com/v3.1/#{a.account_id}/subscribed_apps"
 				x = Net::HTTP.post_form(URI.parse(url), {"access_token" => page_token})
         #puts x.body
 
 				#response
-				get_url = URI('https://graph.facebook.com/' + page + '/subscribed_apps')
+				get_url = URI("https://graph.facebook.com/#{a.account_id}/subscribed_apps")
 				get_params = { "access_token" => page_token }
 				get_url.query = URI.encode_www_form(get_params)
 				y = Net::HTTP.get_response(get_url)
@@ -92,11 +69,10 @@ class AccountsController < ApplicationController
 	  		if !unsubs || !unsubs.include?(page)
 				
 				#unsubscribe
-				a = @user.accounts.find_by_account_id(page.to_s)
+				a = @user.accounts.find(page)
 				
-				#page_token = @user.facebook.get_object(page, fields:"access_token")['access_token']
 				page_token = Account.get_token(a.access_token)
-				url = 'https://graph.facebook.com/v3.1/'+ page +'/subscribed_apps'
+				url = "https://graph.facebook.com/v3.1/#{a.account_id}/subscribed_apps"
 				uri = URI.parse(url)
 			  http = Net::HTTP.new(uri.host, uri.port)
 			  http.use_ssl = true
@@ -107,7 +83,7 @@ class AccountsController < ApplicationController
         #puts response.body
 
 				#response
-				get_url = URI('https://graph.facebook.com/' + page + '/subscribed_apps')
+				get_url = URI("https://graph.facebook.com/#{a.account_id}/subscribed_apps")
 				get_params = { "access_token" => page_token }
 				get_url.query = URI.encode_www_form(get_params)
 				y = Net::HTTP.get_response(get_url)
@@ -174,7 +150,7 @@ class AccountsController < ApplicationController
   private
 
   	def account_params
-      params.permit(:provider, :user_id.to_s, :account_id, :subscribe, :unsubscribe)
+      params.permit(:provider, :user_id.to_s, :subscribe, :unsubscribe)
     end
 
 end
