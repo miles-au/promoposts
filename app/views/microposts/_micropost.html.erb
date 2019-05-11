@@ -39,7 +39,7 @@
     </span>
   <% else %>
     <p class="campaign-category"><%= micropost.category ? micropost.category.titlecase.tr("_", " ") : 'Post' %></p>
-    <% if current_user %>
+    <% if current_user && micropost.category != 'campaign' %>
         <% if current_user?(micropost.user) || current_user.admin? %>
           <%= link_to "delete this post", micropost, method: :delete,
                                            data: { confirm: "You sure?" } %>
