@@ -51,7 +51,7 @@ class UsersController < ApplicationController
       relevant = Event.joins(:micropost).where("campaign_id is null OR category = 'campaign'")
       activity = relevant.where(:user_id => @user.id)
     end
-    @events = activity.paginate(page: params[:page], :per_page => 25)
+    @events = activity.paginate(page: params[:page], :per_page => 10)
     #@microposts = @user.microposts.paginate(page: params[:page], :per_page => 10)
     redirect_to root_url and return unless @user.activated == true
   end
