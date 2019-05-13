@@ -16,7 +16,13 @@
 	<div id="usersIndex">
 		<%= render @users %>
 	</div>
+
+	<div id="infinite-scrolling">
+    <% if @users.any? %>
+        <%= will_paginate @users %>
+      <% else %>
+        <p>No users were found.</p>
+      <% end %>
+    </div>
+
 </div>
-
-<%= will_paginate @users %>
-

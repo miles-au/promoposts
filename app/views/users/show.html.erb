@@ -134,14 +134,18 @@
     </div>
   </div>
 
-  <% if @events.count > 0 %>
-    <ol id="microPostsContainer" class="microposts micropost-full">
+  <div class="feed">
+    <ol id="microPostsContainer" class="microposts microposts-full">
       <%= render @events %>
     </ol>
-    <%= will_paginate @events %>
-  <% else %>
-    <p>No posts were found.</p>
-  <% end %>
+    <div id="infinite-scrolling">
+    <% if @events.any? %>
+        <%= will_paginate @events %>
+      <% else %>
+        <p>No posts were found.</p>
+      <% end %>
+    </div>
+  </div>
 </div>
 
 <script>

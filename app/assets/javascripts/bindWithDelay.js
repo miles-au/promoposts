@@ -13,6 +13,10 @@ Examples:
     $(window).bindWithDelay("resize", callback, 1000, true);
 */
 
+/*What does bindWithDelay do? It prevents a function call from happening EVERY time an event is fired from the browser.
+Rather than implementing custom timeout code, just add in this plugin and simplify your code.
+*/
+
 (function($) {
 
 $.fn.bindWithDelay = function( type, data, fn, timeout, throttle ) {
