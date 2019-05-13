@@ -15,6 +15,7 @@ class Micropost < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   before_save
   after_create :create_event
+  after_create :set_stats_to_zero
 
   #attr_accessor :external_url
 
@@ -120,6 +121,10 @@ class Micropost < ActiveRecord::Base
     def create_event
       event = Event.new(user_id: user_id, micropost_id: id, contribution: 'create')
       event.save
+    end
+
+    def set_stats_to_zero
+      self.update_attributes(:shares => 0, :downloads => 0)
     end
     
 end

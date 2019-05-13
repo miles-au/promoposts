@@ -48,8 +48,9 @@ class UsersController < ApplicationController
         activity = Event.where(:user_id => @user.id).joins(:micropost).where("category = ?", params["feed"])
       end
     else
-      relevant = Event.joins(:micropost).where("campaign_id is null OR category = 'campaign'")
-      activity = relevant.where(:user_id => @user.id)
+      #relevant = Event.joins(:micropost).where("campaign_id is null OR category = 'campaign'")
+      #activity = relevant.where(:user_id => @user.id)
+      activity = Event.where(:user_id => @user.id)
     end
     @events = activity.paginate(page: params[:page], :per_page => 10)
     #@microposts = @user.microposts.paginate(page: params[:page], :per_page => 10)
