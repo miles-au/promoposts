@@ -1,4 +1,4 @@
-<% @micropost = Micropost.find(event.micropost_id) %>
+<% @micropost = event.micropost %>
 
 <div class="action-wrapper col-md-<%= @boot_columns %> col-sm-12" style="padding: 0px;">
 	<% @active_user = User.find(event.user_id) %>
