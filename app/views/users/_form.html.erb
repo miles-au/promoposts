@@ -53,7 +53,7 @@
       <%= f.text_field :slug, class: 'form-control', readonly: true, id: "real-slug", style: 'display: inline-block; width: auto;' %>
     </div>
   <% else %>
-    <%= f.hidden_field :slug, :value => SecureRandom.hex(64) %>
+    <%= f.hidden_field :slug, :value => "" %>
   <% end %>
 
   <%= f.submit yield(:button_text), class: "pop-button form-submit" %>

@@ -17,7 +17,7 @@
       <% else %>
         <div class="square" style="background-image: url('<%= micropost.picture.url %>');"></div>
       <% end %>
-    <% elsif micropost.external_url %>
+    <% elsif micropost.external_url.present? %>
       <% if controller_name == "users" %>
         <img src="/assets/ext_link.svg" />
       <% else %>
