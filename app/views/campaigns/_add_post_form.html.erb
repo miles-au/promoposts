@@ -38,7 +38,7 @@
         <%= micropost.text_area :content, placeholder: "Tell us about your campaign...", maxlength: 500 %>
       </div>
     <% end %>
-    <%= f.submit "Add this post to #{@campaign.name}", class: "pop-button", id: "add-post-to-campaign-btn" %>
+    <%= f.submit "Add to campaign", class: "pop-button", id: "add-post-to-campaign-btn" %>
     <div id="add-post-to-campaign-btn-grey" class="pop-button pop-button-grey" style="display: none; text-align: center;">Adding post...</div>
     <p id="large-pics-may-take-a-while" style="margin-top: 10px; display: none;">(large pictures may take a while to upload)</p>
   <% end %>
