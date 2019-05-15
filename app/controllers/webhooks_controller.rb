@@ -75,8 +75,8 @@ class WebhooksController < ApplicationController
 		  	@micropost.external_url = external_link
 		  end
 		  @micropost.save!
-		  event = Event.new(user_id: user_id, micropost_id: @micropost.id, contribution: 'create')
-      	  event.save
+		  #event = Event.new(user_id: user_id, micropost_id: @micropost.id, contribution: 'create')
+      	  #event.save
 		  head :created and return
 		else
 		  head :forbidden and return
@@ -90,8 +90,8 @@ class WebhooksController < ApplicationController
 	  	  user_id = User.find_by_name('Promo Poster').id
 		  @micropost = Micropost.new(:content => content, :user_id => user_id, :remote_picture_url => picture)
 		  @micropost.save!
-		  event = Event.new(user_id: user_id, micropost_id: @micropost.id, contribution: 'create')
-      	  event.save
+		  #event = Event.new(user_id: user_id, micropost_id: @micropost.id, contribution: 'create')
+      	  #event.save
 		  head :created and return
 		else
 		  head :not_implemented and return
