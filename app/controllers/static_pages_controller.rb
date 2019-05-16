@@ -95,7 +95,7 @@ class StaticPagesController < ApplicationController
         @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
         @feed_type = "user"
       else
-        @feed_items_raw = Event.all
+        @feed_items_raw = Event.global
         @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
         @feed_type = "global"
       end
