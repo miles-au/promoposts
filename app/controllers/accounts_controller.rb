@@ -23,7 +23,7 @@ class AccountsController < ApplicationController
 
   def update
   	@account = Account.new
-  	@user = User.find(params[:user_id])
+  	@user = current_user
     @post_success = []
     @post_failure = []
 
@@ -150,7 +150,7 @@ class AccountsController < ApplicationController
   private
 
   	def account_params
-      params.permit(:provider, :user_id.to_s, :subscribe, :unsubscribe)
+      params.permit(:provider, :subscribe, :unsubscribe)
     end
 
 end
