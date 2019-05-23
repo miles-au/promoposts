@@ -31,10 +31,11 @@
 		      		<% end %>
 		      	</p>
 		        <% if @micropost.picture? %>
-		        	<%= link_to download_picture_path(:id => @micropost.id) do %>
+		        	<div>
+		        	<%= link_to download_picture_path(:id => @micropost.id), :class => 'pop-button download-button' do %>
 		        		<span style="color: inherit;" class="glyphicon glyphicon-cloud-download"></span> download image
 		        	<% end %>
-		        	<a href="#" style="display:inline-block;"></a>
+		        	</div>
 		        	<% if Rails.env.production? %>
 		        		<% image = MiniMagick::Image.open(@micropost.picture.url) %>
 		        	<% else %> 

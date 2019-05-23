@@ -929,6 +929,13 @@ input {
   padding: 5px;
 }
 
+.download-button{
+  margin: 10px 5px 15px 5px;
+  &:hover{
+    text-decoration: none !important;
+  }
+}
+
 #digital_asset_buttons{
   background-color: $teal6;
 }

@@ -36,6 +36,9 @@ gem "popper_js"
 gem 'possessive'
 gem "pg_search"
 gem 'rack-attack'
+gem 'rubyzip', '>= 1.0.0'
+gem 'zip-zip'
+
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets

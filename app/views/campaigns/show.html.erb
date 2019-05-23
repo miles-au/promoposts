@@ -5,6 +5,12 @@
 			<p class="campaign-title"><strong><%= @campaign.name %></strong></p>
 		</div>
 
+		<div>
+			<%= link_to download_assets_path(:id => @campaign.id), :class => 'pop-button download-button' do %>
+	    		<span style="color: inherit;" class="glyphicon glyphicon-cloud-download"></span> download campaign assets
+	    	<% end %>
+    	</div>
+
 		<div style="display: inline-block;">
 			<div class="avatar avatar-thumbnail" style="background-image: url('<%= @campaign.user.avatar %>');"></div>
 		</div>

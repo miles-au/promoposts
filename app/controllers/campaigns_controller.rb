@@ -68,6 +68,29 @@ class CampaignsController < ApplicationController
     redirect_to root_url
   end
 
+  def download_assets
+    File.delete("#{Rails.root}/public/archive.zip") if File.exist?("#{Rails.root}/public/archive.zip")
+    campaign = Campaign.find(params[:id])
+    zipfile_name = "#{Rails.root}/public/archive.zip"
+
+    Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
+      campaign.microposts.each do |asset|
+        if Rails.env.production?
+          zipfile.add("#{asset.category}.png", asset.picture.url)
+        else
+          zipfile.add("#{asset.category}.png", asset.picture.path)
+        end
+      end
+    end
+
+    if Rails.env.production?
+      send_data("#{Rails.root}/public/archive.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
+    else
+      send_file("#{Rails.root}/public/archive.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
+    end
+    
+  end
+
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def campaign_params
