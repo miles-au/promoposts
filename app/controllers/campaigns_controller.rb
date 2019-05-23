@@ -76,7 +76,7 @@ class CampaignsController < ApplicationController
     Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
       campaign.microposts.each do |asset|
         if Rails.env.production?
-          zipfile.add("#{asset.category}.png", asset.picture.url)
+          zipfile.add("#{asset.category}.png", asset.picture.path)
         else
           zipfile.add("#{asset.category}.png", asset.picture.path)
         end
@@ -88,7 +88,7 @@ class CampaignsController < ApplicationController
     else
       send_file("#{Rails.root}/public/archive.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
     end
-    
+
   end
 
   private
