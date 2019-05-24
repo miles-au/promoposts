@@ -70,13 +70,26 @@ class CampaignsController < ApplicationController
 
   def download_assets
     File.delete("#{Rails.root}/public/archive.zip") if File.exist?("#{Rails.root}/public/archive.zip")
+    FileUtils.remove_dir(folder_path) if Dir.exist?("#{Rails.root}/public/downloads/")
+
     campaign = Campaign.find(params[:id])
     zipfile_name = "#{Rails.root}/public/archive.zip"
+    folder_path = "#{Rails.root}/public/downloads/"
+
+    if Rails.env.production?
+      campaign.microposts.each do |post|
+        og_file_name = post.picture.url.split('/').last
+        open(folder_path + "#{og_file_name}", 'wb') do |file|
+           file << open("#{og_file_name}").read
+        end
+      end
+    end
 
     Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
       campaign.microposts.each do |asset|
         if Rails.env.production?
-          zipfile.add("#{asset.category}.png", asset.picture.url)
+          file_name = asset.picture.url.split('/').last
+          zipfile.add("#{asset.category}.png", File.join(folder_path,file_name))
         else
           zipfile.add("#{asset.category}.png", asset.picture.path)
         end
@@ -88,7 +101,7 @@ class CampaignsController < ApplicationController
     else
       send_file("#{Rails.root}/public/archive.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
     end
-    
+
   end
 
   private
