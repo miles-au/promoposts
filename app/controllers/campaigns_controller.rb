@@ -98,7 +98,7 @@ class CampaignsController < ApplicationController
     end
 
     if Rails.env.production?
-      send_file("#{Rails.root}/public/#{current_user.id}.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
+      send_data("#{Rails.root}/public/#{current_user.id}.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
     else
       send_file("#{Rails.root}/public/#{current_user.id}.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
     end
