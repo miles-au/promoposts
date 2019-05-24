@@ -98,15 +98,17 @@ class CampaignsController < ApplicationController
     end
 
     if Rails.env.production?
-      send_data("#{Rails.root}/public/#{current_user.id}.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip")
+      send_file("#{Rails.root}/public/#{current_user.id}.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
     else
-      send_file("#{Rails.root}/public/#{current_user.id}.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip")
+      send_file("#{Rails.root}/public/#{current_user.id}.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
     end
-    
+  
+=begin
     if Rails.env.production?
       File.delete("#{Rails.root}/public/#{current_user.id}.zip") if File.exist?("#{Rails.root}/public/#{current_user.id}.zip")
       FileUtils.rm_rf("#{Rails.root}/public/downloads/#{current_user.id}") if File.exist?("#{Rails.root}/public/downloads/#{current_user.id}")
     end
+=end
 
   end
 
