@@ -105,15 +105,12 @@ class CampaignsController < ApplicationController
       end
     end
 
-
     send_data( open("#{Rails.root}/public/#{current_user.id}.zip").read.force_encoding('BINARY'), :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
 
-=begin
     if Rails.env.production?
       File.delete("#{Rails.root}/public/#{current_user.id}.zip") if File.exist?("#{Rails.root}/public/#{current_user.id}.zip")
       FileUtils.rm_rf("#{Rails.root}/public/downloads/#{current_user.id}") if File.exist?("#{Rails.root}/public/downloads/#{current_user.id}")
     end
-=end
 
   end
 
