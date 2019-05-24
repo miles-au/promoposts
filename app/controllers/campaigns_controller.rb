@@ -79,9 +79,8 @@ class CampaignsController < ApplicationController
 
     if Rails.env.production?
       campaign.microposts.each do |post|
-        og_file_name = post.picture.url.split('/').last
-        open(folder_path + "#{og_file_name}", 'wb') do |file|
-           file << open("#{og_file_name}").read
+        open(folder_path + "#{}", 'wb') do |file|
+           file << open(file.picture.url).read
         end
       end
     end
