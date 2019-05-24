@@ -75,12 +75,12 @@ class CampaignsController < ApplicationController
 
     campaign = Campaign.find(params[:id])
     zipfile_name = "#{Rails.root}/public/#{current_user.id}.zip"
-    folder_path = "#{Rails.root}/public/downloads/#{current_user.id}"
+    folder_path = "#{Rails.root}/public/downloads/#{current_user.id}/"
 
     if Rails.env.production?
       campaign.microposts.each do |post|
         og_file_name = post.picture.url.split('/').last
-        open(folder_path, 'wb') do |file|
+        open(folder_path + "#{og_file_name}", 'wb') do |file|
            file << open("#{og_file_name}").read
         end
       end
