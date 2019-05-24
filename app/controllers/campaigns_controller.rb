@@ -81,7 +81,7 @@ class CampaignsController < ApplicationController
       campaign.microposts.each do |post|
         file_name = post.picture.url.split('/').last
         open(folder_path + "#{file_name}", 'wb') do |file|
-           file << open(file.picture.url).read
+           file << open(post.picture.url).read
         end
       end
     end
