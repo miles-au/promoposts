@@ -79,7 +79,8 @@ class CampaignsController < ApplicationController
 
     if Rails.env.production?
       campaign.microposts.each do |post|
-        open(folder_path + "#{}", 'wb') do |file|
+        file_name = post.picture.url.split('/').last
+        open(folder_path + "#{file_name}", 'wb') do |file|
            file << open(file.picture.url).read
         end
       end
