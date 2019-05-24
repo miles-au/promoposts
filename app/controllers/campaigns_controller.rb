@@ -69,12 +69,13 @@ class CampaignsController < ApplicationController
   end
 
   def download_assets
-    File.delete("#{Rails.root}/public/archive.zip") if File.exist?("#{Rails.root}/public/archive.zip")
-    FileUtils.remove_dir(folder_path) if Dir.exist?("#{Rails.root}/public/downloads/")
+    File.delete("#{Rails.root}/public/#{current_user.id}.zip") if File.exist?("#{Rails.root}/public/#{current_user.id}.zip")
+    FileUtils.remove_dir("#{Rails.root}/public/downloads/#{current_user.id}") if Dir.exist?("#{Rails.root}/public/downloads/#{current_user.id}/")
+    FileUtils.mkdir_p("#{Rails.root}/public/downloads/#{current_user.id}")
 
     campaign = Campaign.find(params[:id])
-    zipfile_name = "#{Rails.root}/public/archive.zip"
-    folder_path = "#{Rails.root}/public/downloads/"
+    zipfile_name = "#{Rails.root}/public/#{current_user.id}.zip"
+    folder_path = "#{Rails.root}/public/downloads/#{current_user.id}"
 
     if Rails.env.production?
       campaign.microposts.each do |post|
@@ -97,9 +98,14 @@ class CampaignsController < ApplicationController
     end
 
     if Rails.env.production?
-      send_data("#{Rails.root}/public/archive.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
+      send_data("#{Rails.root}/public/#{current_user.id}.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
     else
-      send_file("#{Rails.root}/public/archive.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
+      send_file("#{Rails.root}/public/#{current_user.id}.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
+    end
+    
+    if Rails.env.production?
+      File.delete("#{Rails.root}/public/#{current_user.id}.zip") if File.exist?("#{Rails.root}/public/#{current_user.id}.zip")
+      FileUtils.rm_rf("#{Rails.root}/public/downloads/#{current_user.id}") if File.exist?("#{Rails.root}/public/downloads/#{current_user.id}")
     end
 
   end
