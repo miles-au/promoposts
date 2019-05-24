@@ -88,6 +88,14 @@ class CampaignsController < ApplicationController
 
     Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
       campaign.microposts.each do |asset|
+        if current_user.id != asset.user_id
+          if asset.downloads
+            asset.downloads += 1
+          else 
+            asset.downloads = 1
+          end
+          asset.save
+        end
         if Rails.env.production?
           file_name = asset.picture.url.split('/').last
           zipfile.add("#{asset.category}.png", File.join(folder_path,file_name))
@@ -99,8 +107,7 @@ class CampaignsController < ApplicationController
 
 
     send_data( open("#{Rails.root}/public/#{current_user.id}.zip").read.force_encoding('BINARY'), :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
-    #send_data("#{Rails.root}/public/#{current_user.id}.zip", :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
-  
+
 =begin
     if Rails.env.production?
       File.delete("#{Rails.root}/public/#{current_user.id}.zip") if File.exist?("#{Rails.root}/public/#{current_user.id}.zip")

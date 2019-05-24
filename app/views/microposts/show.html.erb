@@ -31,22 +31,33 @@
 		      		<% end %>
 		      	</p>
 		        <% if @micropost.picture? %>
-		        	<div>
-		        	<%= link_to download_picture_path(:id => @micropost.id), :class => 'pop-button download-button' do %>
-		        		<span style="color: inherit;" class="glyphicon glyphicon-cloud-download"></span> download image
-		        	<% end %>
+		        	<div class="row" style="height: 50px; padding: 5px;">
+			        	<div class="col-md-4 col-sm-12">
+			        		<%= link_to download_picture_path(:id => @micropost.id), data: { turbolinks: false } do %>
+			        			<div class='pop-button download-button' style="width: 100%; text-align: center;">
+					        		<span style="color: inherit;" class="glyphicon glyphicon-cloud-download"></span> download image
+					        	</div>
+					        <% end %>
+			        	</div>
+			        	<div class="col-md-4 col-sm-12" style="text-align: center;">
+			        		<% if current_user == @micropost.user %>
+			        			<span>Shares: <%= @micropost.shares %> | Downloads: <%= @micropost.downloads %></span>
+			        		<% end %>
+			        	</div>
+			        	<div class="col-md-4 col-sm-12">
+				        	<% if Rails.env.production? %>
+				        		<% image = MiniMagick::Image.open(@micropost.picture.url) %>
+				        	<% else %> 
+				        		<% pic_url = "#{request.protocol}#{request.subdomain}.#{request.domain}#{@micropost.picture.url}" %>
+				        		<% image = MiniMagick::Image.open(pic_url) %>
+				        	<% end %>
+				        	<% if @micropost.category %>
+				        		<span style="float:right;"><%= @micropost.category.downcase.tr("_", " ") %> - <%= image[:width] %> x <%= image[:height] %> px</span>
+				        	<% else %>
+				        		<span style="float:right;">General Update - <%= image[:width] %> x <%= image[:height] %> px</span>
+				        	<% end %>
+			        	</div>
 		        	</div>
-		        	<% if Rails.env.production? %>
-		        		<% image = MiniMagick::Image.open(@micropost.picture.url) %>
-		        	<% else %> 
-		        		<% pic_url = "#{request.protocol}#{request.subdomain}.#{request.domain}#{@micropost.picture.url}" %>
-		        		<% image = MiniMagick::Image.open(pic_url) %>
-		        	<% end %>
-		        	<% if @micropost.category %>
-		        		<span style="float:right;"><%= @micropost.category.downcase.tr("_", " ") %> - <%= image[:width] %> x <%= image[:height] %> px</span>
-		        	<% else %>
-		        		<span style="float:right;">General Update - <%= image[:width] %> x <%= image[:height] %> px</span>
-		        	<% end %>
 		        	<img style="width: 100%;" src="<%= @micropost.picture.url %>", alt="promo post picture" />
 		        <% end %>
 		      </span>

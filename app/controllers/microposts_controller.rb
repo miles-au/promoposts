@@ -389,10 +389,18 @@ class MicropostsController < ApplicationController
   def download_picture
     micropost = Micropost.find(params[:id])
     category = micropost.category || "picture"
+    if current_user != micropost.user
+      if micropost.downloads
+        micropost.downloads += 1
+      else 
+        micropost.downloads = 1
+      end
+      micropost.save
+    end
     if Rails.env.production?
-      send_data micropost.picture.url, filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment'
+      send_data(open(micropost.picture.url.read.force_encoding('BINARY')), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
     else
-      send_file micropost.picture.path, type: 'image/png', disposition: 'attachment'
+      send_data(open("#{request.protocol}#{request.subdomain}.#{request.domain}#{micropost.picture.url}").read.force_encoding('BINARY'), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
     end
   end
 

@@ -6,7 +6,7 @@
 		</div>
 
 		<div>
-			<%= link_to download_assets_path(:id => @campaign.id), :class => 'pop-button download-button' do %>
+			<%= link_to download_assets_path(:id => @campaign.id), :class => 'pop-button download-button', data: { turbolinks: false }  do %>
 	    		<span style="color: inherit;" class="glyphicon glyphicon-cloud-download"></span> download campaign assets
 	    	<% end %>
     	</div>
