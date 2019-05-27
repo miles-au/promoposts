@@ -10,22 +10,24 @@
 	    		<span style="color: inherit;" class="glyphicon glyphicon-cloud-download"></span> download campaign assets
 	    	<% end %>
     	</div>
-
-		<div style="display: inline-block;">
-			<div class="avatar avatar-thumbnail" style="background-image: url('<%= @campaign.user.avatar %>');"></div>
-		</div>
-		<div style="display: inline-block;">
-			<h3 class="user" style="display: block;"><%= link_to @campaign.user.name, @campaign.user %></h3>
-			<%= render :partial => 'shared/accolades', :locals => {:user => @campaign.user} %>
-			<span class="timestamp">
-			  Campaign created <%= time_ago_in_words(@campaign.created_at) %> ago.
-			  <% if current_user %>
-			    <% if current_user?(@campaign.user) || current_user.admin? %>
-			      <%= link_to "delete campaign", @campaign, method: :delete,
-			                                       data: { confirm: "You sure?" } %>
-			    <% end %>
-			  <% end %>
-			</span>
+    	
+    	<div>
+			<div style="display: inline-block;">
+				<div class="avatar avatar-thumbnail" style="background-image: url('<%= @campaign.user.avatar %>');"></div>
+			</div>
+			<div style="display: inline-block;">
+				<h3 class="user" style="display: block;"><%= link_to @campaign.user.name, @campaign.user %></h3>
+				<%= render :partial => 'shared/accolades', :locals => {:user => @campaign.user} %>
+				<span class="timestamp">
+				  Campaign created <%= time_ago_in_words(@campaign.created_at) %> ago.
+				  <% if current_user %>
+				    <% if current_user?(@campaign.user) || current_user.admin? %>
+				      <%= link_to "delete campaign", @campaign, method: :delete,
+				                                       data: { confirm: "You sure?" } %>
+				    <% end %>
+				  <% end %>
+				</span>
+			</div>
 		</div>
 
 		<% if @campaign.user == current_user %>
