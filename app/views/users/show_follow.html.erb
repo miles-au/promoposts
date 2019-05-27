@@ -18,10 +18,13 @@
   <div class="col-md-8">
     <h3><%= @title %></h3>
     <% if @users.any? %>
-      <div class="users-gallery">
+      <div class="users-gallery" id="usersList">
         <%= render @users %>
       </div>
-      <%= will_paginate %>
+      <div id="infinite-scrolling">
+        <%= will_paginate @users %>
+      </div>
     <% end %>
+
   </div>
 </div>
