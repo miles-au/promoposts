@@ -18,19 +18,22 @@ gem "fog-google"
 gem 'carrierwave-google-storage'
 gem "mime-types"
 gem 'dotenv-rails'
+
+#OAuth / Social platforms
 gem 'omniauth'
 gem 'omniauth-oauth2'
 gem 'omniauth-buffer2'
+gem 'koala'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin-oauth2'
-gem 'omniauth-twitter'
+gem "linkedin-oauth2"
+#gem 'omniauth-twitter'
 #gem 'omniauth-instagram'
 #gem "instagram", :git => 'git://github.com/Instagram/instagram-ruby-gem.git'
-gem "linkedin-oauth2"
-gem 'koala'
+
 #gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'buffer', :github => 'bufferapp/buffer-ruby'
-#gem "popper_js"
+gem "popper_js"
 gem 'possessive'
 gem "pg_search"
 gem 'rack-attack'
