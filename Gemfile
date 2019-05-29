@@ -8,12 +8,10 @@ gem 'rails', '~> 5.2.1'
 gem 'bootstrap-sass'
 gem 'bcrypt'
 gem 'jquery-rails'
-gem 'faker'
 gem 'will_paginate'
 #gem 'will_paginate_infinite'
 gem 'bootstrap-will_paginate'
 gem 'carrierwave'
-gem 'mini_magick'
 gem 'fog', '~> 2.0.0'
 gem "fog-google"
 #gem "google-api-client"
@@ -30,9 +28,9 @@ gem 'omniauth-twitter'
 #gem "instagram", :git => 'git://github.com/Instagram/instagram-ruby-gem.git'
 gem "linkedin-oauth2"
 gem 'koala'
-gem 'ransack', github: 'activerecord-hackery/ransack'
+#gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'buffer', :github => 'bufferapp/buffer-ruby'
-gem "popper_js"
+#gem "popper_js"
 gem 'possessive'
 gem "pg_search"
 gem 'rack-attack'
@@ -60,7 +58,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use ActiveStorage variant
-# gem 'mini_magick', '~> 4.8'
+gem 'mini_magick'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -76,6 +74,7 @@ group :development, :test do
   gem 'guard',                    '2.13.0'
   gem 'guard-minitest',           '2.4.4'
   gem 'rails-controller-testing'
+  gem 'faker'
   #gem 'rspec-rails', '~> 3.8'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -104,7 +103,6 @@ end
 
 group :production do
   gem 'pg', '0.18.4'
-  gem 'carrierwave-google-storage'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

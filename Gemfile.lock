@@ -1,17 +1,4 @@
 GIT
-  remote: https://github.com/activerecord-hackery/ransack.git
-  revision: d44bfe6fe21ab374ceea9d060267d0d38b09ef28
-  specs:
-    polyamorous (2.1.1)
-      activerecord (>= 5.0)
-    ransack (2.1.1)
-      actionpack (>= 5.0)
-      activerecord (>= 5.0)
-      activesupport (>= 5.0)
-      i18n
-      polyamorous (= 2.1.1)
-
-GIT
   remote: https://github.com/bufferapp/buffer-ruby.git
   revision: eb88e4872f3755e75b09c1f9094bb7338c54439b
   specs:
@@ -629,7 +616,6 @@ DEPENDENCIES
   rack-attack
   rails (~> 5.2.1)
   rails-controller-testing
-  ransack!
   rubyzip (>= 1.0.0)
   sass-rails (~> 5.0)
   selenium-webdriver
