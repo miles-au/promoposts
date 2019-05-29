@@ -16,10 +16,10 @@ gem 'carrierwave'
 gem 'mini_magick'
 gem 'fog', '~> 2.0.0'
 gem "fog-google"
-gem "google-api-client"
+#gem "google-api-client"
+gem 'carrierwave-google-storage'
 gem "mime-types"
 gem 'dotenv-rails'
-gem 'carrierwave-google-storage'
 gem 'omniauth'
 gem 'omniauth-oauth2'
 gem 'omniauth-buffer2'
@@ -79,6 +79,7 @@ group :development, :test do
   #gem 'rspec-rails', '~> 3.8'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'derailed_benchmarks'
 end
 
 group :development do
