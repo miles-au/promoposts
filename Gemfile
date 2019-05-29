@@ -33,7 +33,7 @@ gem "linkedin-oauth2"
 
 #gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'buffer', :github => 'bufferapp/buffer-ruby'
-#gem "popper_js"
+gem "popper_js"
 gem 'possessive'
 gem "pg_search"
 gem 'rack-attack'

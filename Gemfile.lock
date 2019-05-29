@@ -429,6 +429,7 @@ GEM
     pg_search (2.1.5)
       activerecord (>= 4.2)
       activesupport (>= 4.2)
+    popper_js (1.14.5)
     possessive (1.0.1)
     pry (0.12.2)
       coderay (~> 1.1.0)
@@ -601,6 +602,7 @@ DEPENDENCIES
   omniauth-oauth2
   pg (= 0.18.4)
   pg_search
+  popper_js
   possessive
   puma (~> 3.11)
   rack-attack
