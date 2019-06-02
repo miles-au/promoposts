@@ -149,7 +149,7 @@
 	show_tooltips();
 	
 	$('#useOriginalText').click(function() {
-	  $( "#inputText" ).val("<%= escape_javascript(@micropost.content) %>");
+	  $( "#inputText" ).val("<%= escape_javascript(raw(@micropost.content)) %>");
 	  check_fields();
 	});
 
