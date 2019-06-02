@@ -83,6 +83,8 @@ Rails.application.routes.draw do
   get '/microposts/:id/download_picture', to: "microposts#download_picture", as: 'download_picture'
   get '/campaigns/:id/download_assets', to: "campaigns#download_assets", as: 'download_assets'
 
+  get '/landing_page', to: "static_pages#landing_page"
+
   resources :users do
     member do
       get :following, :followers

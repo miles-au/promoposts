@@ -189,4 +189,7 @@ class StaticPagesController < ApplicationController
   def what_is_autoshare
   end
 
+  def landing_page
+  end
+
 end

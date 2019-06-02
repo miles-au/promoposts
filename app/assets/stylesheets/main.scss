@@ -1577,6 +1577,20 @@ span.picture {
   }
 }
 
+.landing_page{
+  h1{
+    margin: 0px;
+  }
+  .pop-button{
+    text-align: center;
+    margin: 30px;
+    display: block;
+  }
+  a{
+    font-size: 1.2em;
+  }
+}
+
 //MOBILE RESPONSIVE CODE
 
 #mobileNav{
