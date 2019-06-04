@@ -880,7 +880,7 @@ input {
   }
 }
 
-.micropost-full{
+.microposts-full{
   .content{
     img{
       width: 80%;
@@ -1589,6 +1589,15 @@ span.picture {
   a{
     font-size: 1.2em;
   }
+  img{
+    width: 100%;
+    border: 5px solid $grey4;
+  }
+  .row{
+    h2{
+      font-size: 1.5em;
+    }
+  }
 }
 
 //MOBILE RESPONSIVE CODE
@@ -1758,7 +1767,7 @@ span.picture {
   #activity{
     width: 100vw;
   }
-  .micropost-full{
+  .microposts-full{
     img{
       width: 100% !important;
     }

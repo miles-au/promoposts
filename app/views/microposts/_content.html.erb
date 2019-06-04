@@ -11,7 +11,7 @@
     <p class="content-minified" style="font-size: 1.2em; overflow: hidden;"><%= micropost.content.length > snippet_length ? micropost.content[0..snippet_length-3] : micropost.content %> <span class="go-to-post"><%= micropost.content.length > snippet_length ? '...' : '' %><span class="go-to-post-link">go to post</span></span></p>
     <p class="content-full" style="font-size: 1.2em; overflow: hidden;"><%= micropost.content %></p>
 
-    <% if micropost.picture.url %>
+    <% if micropost.picture.present? %>
       <% if controller_name == "users" || controller_name == "campaigns" %>
         <img src="<%= micropost.picture.url %>" />
       <% else %>
