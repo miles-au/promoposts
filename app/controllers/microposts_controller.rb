@@ -245,6 +245,12 @@ class MicropostsController < ApplicationController
 
     #create share
     if micropost.picture.url
+      if Rails.env.production? 
+        pic_url = micropost.picture.url
+      else
+        pic_url = "#{request.protocol}#{request.subdomain}.#{request.domain}#{micropost.picture.url}"
+      end
+      
       if micropost.external_url
         #article with picture
         share = {
@@ -255,7 +261,7 @@ class MicropostsController < ApplicationController
                         "thumbnails": [
                             { 
                                 "imageSpecificContent": {},
-                                "resolvedUrl": micropost.picture.url
+                                "resolvedUrl": pic_url
                             }
                         ]
                     }
@@ -280,15 +286,16 @@ class MicropostsController < ApplicationController
         end
         puts "PIC_UPLOAD: #{pic_upload}"
 =end
+
         share = {
             "content": {
                 "contentEntities": [
                     {
-                        "entityLocation": "#{request.protocol}#{request.subdomain}.#{request.domain}#{micropost.picture.url}",
+                        "entityLocation": pic_url,
                         "thumbnails": [
                             {
                                 "imageSpecificContent": {},
-                                "resolvedUrl": "#{micropost.picture.url}"
+                                "resolvedUrl": pic_url
                             }
                         ]
                     }
