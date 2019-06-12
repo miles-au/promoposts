@@ -174,6 +174,11 @@ class MicropostsController < ApplicationController
         flash_text = "Posted to: #{provider_string} | Failed post: #{fail_string} | #{view_context.link_to('Click here to open Buffer.', 'https://buffer.com')}".html_safe
         flash[:success] = flash_text
       else
+        if micropost.shares
+          micropost.shares += 1
+        else 
+          micropost.shares = 1
+        end
         flash[:success] = "Posted to: #{provider_string} | Failed posts: #{fail_string}"
       end
     end
@@ -250,7 +255,7 @@ class MicropostsController < ApplicationController
       else
         pic_url = "#{request.protocol}#{request.subdomain}.#{request.domain}#{micropost.picture.url}"
       end
-      
+
       if micropost.external_url
         #article with picture
         share = {
