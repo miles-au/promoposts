@@ -5,6 +5,8 @@ ruby '2.5.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.1'
+gem 'httparty'
+#gem 'rest-client'
 gem 'bootstrap-sass'
 gem 'jquery-rails'
 gem 'will_paginate'
@@ -24,7 +26,7 @@ gem 'omniauth-buffer2'
 gem 'koala'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin-oauth2'
-gem "linkedin-oauth2"
+#gem "linkedin-oauth2"
 #gem 'omniauth-twitter'
 #gem 'omniauth-instagram'
 #gem "instagram", :git => 'git://github.com/Instagram/instagram-ruby-gem.git'

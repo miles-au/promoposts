@@ -11,12 +11,14 @@ Rails.application.config.middleware.use OmniAuth::Builder do
 
 	provider :buffer, ENV['BUFFER_CLIENT_ID'], ENV['BUFFER_CLIENT_SECRET']
 
+	provider :linkedin, ENV['LINKEDIN_CLIENT_ID'], ENV['LINKEDIN_CLIENT_SECRET'],
+			:scope => 'r_liteprofile r_emailaddress w_member_social',
+			:fields => ['id', 'first-name', 'last-name', 'picture-url', 'email-address']
+
  end
 
 =begin
-OAUTH1
-
-	 provider :linkedin, ENV['LINKEDIN_CLIENT_ID'], ENV['LINKEDIN_CLIENT_SECRET'],
-	 		:scope => 'w_share rw_company_admin r_basicprofile ',
-	 		:fields => ['id', 'first-name', 'last-name']
+provider :linkedin, ENV['LINKEDIN_CLIENT_ID'], ENV['LINKEDIN_CLIENT_SECRET'],
+			:scope => 'r_liteprofile r_emailaddress rw_organization_admin w_organization_social w_member_social',
+			:fields => ['id', 'first-name', 'last-name', 'picture-url', 'email-address']
 =end

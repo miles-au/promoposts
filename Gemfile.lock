@@ -340,6 +340,8 @@ GEM
     heapy (0.1.4)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
+    httparty (0.16.2)
+      multi_xml (>= 0.5.2)
     httpclient (2.8.3)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
@@ -358,10 +360,6 @@ GEM
       addressable
       faraday
       json (>= 1.8)
-    linkedin-oauth2 (1.0.0)
-      faraday (~> 0.9)
-      hashie (~> 3.2)
-      oauth2 (~> 1.0)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -586,10 +584,10 @@ DEPENDENCIES
   fog-google
   guard (= 2.13.0)
   guard-minitest (= 2.4.4)
+  httparty
   jbuilder (~> 2.5)
   jquery-rails
   koala
-  linkedin-oauth2
   listen (>= 3.0.5, < 3.2)
   mime-types
   mini_magick

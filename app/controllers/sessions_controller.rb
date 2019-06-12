@@ -147,10 +147,12 @@ class SessionsController < ApplicationController
   end
 
   def linkedin
-    client = @user.linkedin
 
+=begin LINKEDIN COMPANY PAGES AWAITING TO JOIN PROGRAM
     #check company pages
-    @accounts = client.company(is_admin: 'true').all
+    @accounts = @user.linkedin_companies
+
+    puts "ACCOUNTS: #{@accounts}"
 
     if @accounts
       @accounts.each do |page|
@@ -168,18 +170,21 @@ class SessionsController < ApplicationController
         end
       end
     end
+=end
+  
+    client = @user.linkedin
 
     #check profile
-    picture_url = client.profile( fields: ['picture-urls::(original)']).picture_urls.all.first
+    picture_url = client['profilePicture']['displayImage~']['elements'].first['identifiers'].first['identifier']
     if !picture_url
       picture_url = ActionController::Base.helpers.asset_path('page.svg')
     end
-    profile_id = client.profile.id
+    profile_id = client['id']
     a = Account.find_by(:account_id => profile_id)
     if a
-      a.update(:name => "#{client.profile.first_name} #{client.profile.last_name} | profile", :account_id => profile_id , :provider => "linkedin", :user_id => @user.id, :picture => picture_url)
+      a.update(:name => "#{client['firstName']["localized"]["en_US"]} #{client['lastName']["localized"]["en_US"]} | profile", :account_id => profile_id , :provider => "linkedin", :user_id => @user.id, :picture => picture_url)
     else
-      a = Account.new(:name => "#{client.profile.first_name} #{client.profile.last_name} | profile", :account_id => profile_id , :provider => "linkedin", :user_id => @user.id, :picture => picture_url)
+      a = Account.new(:name => "#{client['firstName']["localized"]["en_US"]} #{client['lastName']["localized"]["en_US"]} | profile", :account_id => profile_id , :provider => "linkedin", :user_id => @user.id, :picture => picture_url)
       a.save
       a
     end

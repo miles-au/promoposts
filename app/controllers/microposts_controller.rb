@@ -5,6 +5,7 @@ class MicropostsController < ApplicationController
   protect_from_forgery with: :exception
 
   require 'uri'
+  require 'open-uri'
   require 'net/http'
   require 'net/https'
   require 'json'
@@ -238,6 +239,108 @@ class MicropostsController < ApplicationController
 =end
 
   def share_to_linkedin(micropost, page_id, message)
+
+    client = @user.linkedin
+    decrypted_token = User.get_token(current_user.linkedin_oauth_token)
+
+    #create share
+    if micropost.picture.url
+      if micropost.external_url
+        #article with picture
+        share = {
+            "content": {
+                "contentEntities": [
+                    {
+                        "entityLocation": micropost.external_url,
+                        "thumbnails": [
+                            { 
+                                "imageSpecificContent": {},
+                                "resolvedUrl": micropost.picture.url
+                            }
+                        ]
+                    }
+                ],
+                "title": message,
+                "shareMediaCategory": "ARTICLE"
+            },
+            "owner": "urn:li:person:#{page_id}",
+        }.to_json
+        #share = {:content => {:'title' => message, :'submitted-url' => micropost.picture.url}, :'submitted-url' => micropost.external_url}.to_json
+      else
+        #picture
+=begin AWAITING APPROVAL FOR RICH MEDIA SHARES
+        if Rails.env.production?
+          pic_upload = RestClient.post('https://api.linkedin.com/media/upload', 
+            :fileupload => File.new(micropost.picture.url),
+            Authorization: "Bearer #{decrypted_token}")
+        else
+          RestClient.post('https://api.linkedin.com/media/upload', 
+            pic_upload = :fileupload => File.new(open("#{request.protocol}#{request.subdomain}.#{request.domain}#{micropost.picture.url}"),
+            { Authorization: "Bearer #{decrypted_token}" }))
+        end
+        puts "PIC_UPLOAD: #{pic_upload}"
+=end
+        share = {
+            "content": {
+                "contentEntities": [
+                    {
+                        "entityLocation": "#{request.protocol}#{request.subdomain}.#{request.domain}#{micropost.picture.url}",
+                        "thumbnails": [
+                            {
+                                "imageSpecificContent": {},
+                                "resolvedUrl": "#{request.protocol}#{request.subdomain}.#{request.domain}#{micropost.picture.url}"
+                            }
+                        ]
+                    }
+                ],
+                "title": message
+            },
+            "owner": "urn:li:person:#{page_id}",
+        }.to_json
+
+        puts "SHARE: #{share}"
+      end
+    else
+      #link without picture
+      if micropost.external_url
+        #share = {:content=>{ :'submitted-url' => micropost.external_url },comment: message, visibility: {code: "anyone"} }.to_json
+        share = {
+            "content": {
+                "contentEntities": [
+                    {
+                        "entityLocation": micropost.external_url,
+                    }
+                ],
+                "title": message,
+                "shareMediaCategory": "ARTICLE"
+            },
+            "owner": "urn:li:person:#{page_id}",
+        }.to_json
+      else
+        #share = {comment: message, visibility: {code: "anyone"} }.to_json
+        share = {
+            "owner": "urn:li:person:#{page_id}",
+            "text": {
+                "text": message
+            }
+        }.to_json
+      end
+    end
+
+    decrypted_token = User.get_token(current_user.linkedin_oauth_token)
+
+    #header = { "Content-Type" => "application/json", 'Host' => 'api.linkedin.com', 'Connection' => 'Keep-Alive', 'Authorization' => "Bearer #{token}" }
+    #HTTParty.post("https://api.linkedin.com/v2/organizationalEntityAcls?q=roleAssignee&oauth2_access_token=#{decrypted_token}")
+
+    header = { "Content-Type" => "application/json", 'Host' => 'api.linkedin.com', 'Connection' => 'Keep-Alive', 'Authorization' => "Bearer #{decrypted_token}" }
+    update = HTTParty.post("https://api.linkedin.com/v2/shares", 
+    :body => share,
+    :headers => header )
+
+    puts "UPDATE: #{update}"
+    puts "UPDATE: #{update['created']}"
+
+=begin AWAITING LINKEDIN APPROVAL FOR COMPANY PAGES
     client = @user.linkedin
     accounts = client.company(is_admin: 'true').all.pluck(:id)
 
@@ -274,7 +377,9 @@ class MicropostsController < ApplicationController
     res = http.request(req)
     update = res.body['update']
     
-    if update
+=end
+
+    if update['created']
       @post_success << 'LinkedIn'
     else
       @post_failure << 'LinkedIn'

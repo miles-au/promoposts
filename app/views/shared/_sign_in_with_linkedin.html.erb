@@ -1,4 +1,4 @@
-<%= link_to(:controller => :sessions, :action => :oauth2, :provider => 'linkedin') do %>
+<%= link_to("/auth/linkedin?intent=sign_in") do %>
   <div class="linkedin-login social-login">
     <img src="assets/linkedin.svg">
     <h6>Log In/Sign Up with LinkedIn </h6>

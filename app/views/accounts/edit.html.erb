@@ -44,6 +44,9 @@
     <% else %>
       <% if current_user.fb_uid %>
         <h6>No sharable pages available.</h6>
+        <%= link_to accounts_disconnect_path(:provider => 'facebook'), :class => "connect_link" do %>
+          <h5> Disconnect your Facebook Account </h5>
+        <% end %>
       <% else %>
         <%= render(:partial => 'shared/connect_account', :locals => { :provider => 'facebook'}) %>
       <% end %>
@@ -87,10 +90,11 @@
     <% else %>
       <% if current_user.linkedin_uid %>
         <h6>No sharable pages available.</h6>
+        <%= link_to accounts_disconnect_path(:provider => 'linkedin'), :class => "connect_link" do %>
+          <h5> Disconnect your LinkedIn Account </h5>
+        <% end %>
       <% else %>
-          <%= link_to sessions_oauth2_path(:provider => 'linkedin'), class: 'connect_link' do%>
-            <span class="glyphicon glyphicon-transfer" style="display: inline-block;"></span><h5 style="display: inline-block; margin-left: 5px;">Connect your LinkedIn account </h5>
-          <% end %>
+          <%= render(:partial => 'shared/connect_account', :locals => { :provider => 'linkedin'}) %>
       <% end %>
 
     <% end %>
@@ -134,6 +138,9 @@
     <% else %>
       <% if current_user.buffer_uid %>
         <h6>No sharable pages available.</h6>
+        <%= link_to accounts_disconnect_path(:provider => 'buffer'), :class => "connect_link" do %>
+          <h5> Disconnect your Buffer Account </h5>
+        <% end %>
       <% else %>
         <%= render(:partial => 'shared/connect_account', :locals => { :provider => 'buffer'}) %>
       <% end %>
