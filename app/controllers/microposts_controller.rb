@@ -288,7 +288,7 @@ class MicropostsController < ApplicationController
                         "thumbnails": [
                             {
                                 "imageSpecificContent": {},
-                                "resolvedUrl": "#{request.protocol}#{request.subdomain}.#{request.domain}#{micropost.picture.url}"
+                                "resolvedUrl": "#{micropost.picture.url}"
                             }
                         ]
                     }
