@@ -23,6 +23,7 @@ class User < ApplicationRecord
   after_create :set_slug_default
   after_create :create_accolades
   after_create :create_setting
+  after_create :follow_promo_posts
 
   before_destroy :delete_notifications
 
@@ -469,6 +470,10 @@ class User < ApplicationRecord
 
     def delete_notifications
       Notification.where("notifications.category = 'follow' AND notifications.destination_id = ?", self.id).destroy_all
+    end
+
+    def follow_promo_posts
+      self.follow(User.find(1))
     end
 
 end
