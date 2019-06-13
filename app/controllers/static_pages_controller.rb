@@ -90,6 +90,10 @@ class StaticPagesController < ApplicationController
       end
     else
       #render defaults
+      @feed_items_raw = Event.global
+      @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
+      @feed_type = "global"
+=begin
       if logged_in?
         @feed_items_raw = current_user.feed
         @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
@@ -99,6 +103,7 @@ class StaticPagesController < ApplicationController
         @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
         @feed_type = "global"
       end
+=end
     end
 
     
