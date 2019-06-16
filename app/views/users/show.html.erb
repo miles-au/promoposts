@@ -10,10 +10,8 @@
 -->
 
 <% if @user == current_user %>
-  <%= link_to(edit_user_path) do%>
-    <div id="profile-edit-link" class="pop-button mobile-button">
-      <span class='glyphicon glyphicon-user'></span><p style="display: inline-block; margin-left: 5px;">edit my profile</p>
-    </div>
+  <%= link_to edit_user_path, id:"profile-edit-link", class:"pop-button mobile-button" do%>
+    <span class='glyphicon glyphicon-user'></span><p style="display: inline-block; margin-left: 5px;">edit my profile</p>
   <% end %>
 
   <%= link_to microposts_new_path, :id => "createPostBtn" do%>

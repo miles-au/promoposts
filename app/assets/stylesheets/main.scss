@@ -2,6 +2,7 @@
 @import "bootstrap";
 
 //Color Palette:
+$yellow0: #f4af0c;
 $yellow1: #ffb400;
 $yellow2: #ffc95c;
 $yellow3: #ffe4ae;
@@ -65,15 +66,36 @@ textarea {
 }
 
 .pop-button{
-  border: none;
+  border-top: 3px solid $yellow3;
+  border-left: 3px solid $yellow3;
+  border-bottom: 3px solid $grey4;
+  border-right: 3px solid $grey4;
+  border-radius: 20px;
   background-color: $yellow1;
   color: $grey1;
   padding: 10px 20px;
   font-weight: 700;
-  box-shadow: $buttonShadow;
+
+  p, h3, span{
+    margin: 0px;
+  }
 
   &:hover{
-    box-shadow: $buttonShadowHover;
+    background-color: $yellow1;
+    border-top: 3px solid $grey4;
+    border-left: 3px solid $grey4;
+    border-bottom: 3px solid $yellow3;
+    border-right: 3px solid $yellow3;
+    text-decoration: none !important;
+    color: $grey5;
+    p, h3, span{
+      color: $grey5;
+      margin-bottom: 0px;
+    }
+  }
+
+  a:hover{
+    text-decoration: none !important;
   }
 }
 
@@ -86,7 +108,7 @@ textarea {
   box-shadow: $buttonShadow;
 
   &:hover{
-    box-shadow: $buttonShadowHover;
+    background-color: $grey4;
   }
 }
 
@@ -103,36 +125,28 @@ textarea {
   }
 }
 
-.form-submit{
-  &:hover{
-    margin-left: -5px;
-    margin-top: -5px;
-    margin-bottom: 20px;
-  }
-}
-
-.grey-submit{
-  background-color: $grey3;
-  color: $grey5;
-  padding: 5px;
-
-  &:hover{
-    background-color: $grey4;
-    color: $grey2;
-    font-weight: 700;
-  }
-}
-
-.btn-greyed{
-  background-color: grey;
-}
-
-#product-missing-fields, #micropost-missing-fields{
+#product-missing-fields, #micropost-missing-fields, .grey-submit{
   background-color: grey;
   width: 100%;
   color: $grey5;
-  padding: 5px;
+  padding: 10px;
   text-align: center;
+  border-top: none;
+  border-left: none;
+  border-bottom: 3px solid $grey3;
+  border-right: 3px solid $grey3;
+  border-radius: 20px;
+}
+
+.grey-submit{
+  &:hover{
+    background-color: $grey4;
+    color: $grey2;
+    border-top: 3px solid $grey3;
+    border-left: 3px solid $grey3;
+    border-bottom: none;
+    border-right: none;
+  }
 }
 
 .follow-btn{
@@ -213,15 +227,6 @@ header, .navbar-inverse, .navbar-fixed-top{
   h2{
     font-size: 1.5em;
   }
-
-  .pop-button{
-    display: inline-block;
-    &:hover{
-      margin-left: -5px;
-      margin-bottom: 5px;
-      margin-top: -5px;
-    }
-  }
 }
 
 #footerContainer{
@@ -259,11 +264,6 @@ header, .navbar-inverse, .navbar-fixed-top{
     height: 175px;
     font-size: 1.3em;
     width: 100%;
-    &:hover{
-      margin-right: 5px;
-      margin-left: -5px;
-      margin-top: -5px;
-    }
   }
 }
 
@@ -918,14 +918,6 @@ input {
   }
 }
 
-#share-button, #useOriginalText, #post-comment-button{
-  &:hover{
-    margin-left: -5px;
-    margin-top: -5px;
-    margin-bottom: 15px !important;
-  }
-}
-
 .create_post_buttons{
   padding: 5px;
 }
@@ -1026,21 +1018,6 @@ span.picture {
   margin-right: 5%;
   padding: 5px 7px;
   text-align: center;
-
-  a{
-    text-decoration: none;
-  }
-
-  h3{
-    margin: 0px;
-  }
-
-  &:hover{
-    margin-right: calc(5% + 5px);
-    margin-top: -5px;
-    margin-left: -5px;
-  }
-
 }
 
 .feed{
@@ -1079,32 +1056,9 @@ span.picture {
   color: $yellow1;
 }
 
-#topTen{
-  width: 200px;
-  display: inline-block;
-}
-
-#favoriteProducts{
-  a{
-    color: $grey1;
-    width: 100%;
-  }
-  &:hover{
-    position: relative;
-    top: -5px;
-    left: -5px;
-  }
-}
-
 #profile-edit-link{
   display: inline-block;
   margin-bottom: 15px;
-
-  &:hover{
-    position: relative;
-    top: -5px;
-    left: -5px;
-  }
 }
 
 #allLists{
@@ -1539,11 +1493,6 @@ span.picture {
   text-align: center;
   display: inline-block;
   text-align: center;
-  &:hover{
-    margin-left: -5px;
-    margin-bottom: 20px;
-    margin-top: -5px;
-  }
 }
 
 #campaign-add-post-container{
