@@ -85,11 +85,12 @@ class StaticPagesController < ApplicationController
           end 
 
         else
-          redirect_to root_path(:feed => 'global')
+          redirect_to root_path(:feed => 'digital_assets')
 
       end
     else
       #render defaults
+=begin
       if logged_in?
         @feed_items_raw = current_user.feed
         @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
@@ -99,6 +100,11 @@ class StaticPagesController < ApplicationController
         @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
         @feed_type = "global"
       end
+=end
+      @feed_items_raw = Event.digital_assets
+      @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
+      @feed_type = "digital_assets"
+
     end
 
     
