@@ -139,7 +139,7 @@
       <%= render @events %>
     </ol>
     <div id="infinite-scrolling">
-    <% if @events.any? %>
+      <% if @events.any? %>
         <%= will_paginate @events %>
       <% else %>
         <p>No posts were found.</p>
