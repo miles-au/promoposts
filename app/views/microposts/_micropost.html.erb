@@ -71,7 +71,7 @@
       <% end %>
     </div>
 
-    <% if controller_name == "users" && @user == current_user %>
+    <% if (controller_name == "users" || controller_name == "campaigns") && @user == current_user %>
       <div>
         <p><span class="glyphicon glyphicon-stats"></span> Shares: <%= micropost.shares %> | Downloads: <%= micropost.downloads %></p>
       </div>
