@@ -43,26 +43,29 @@
 
 <!--feeds-->
 <div id="feeds" class="mobile-hide" style="display:inline-block;">
-	<% if logged_in? %>
-		<%= link_to root_path( :feed => "user") do%>
-			<h5 id="userFeed" class="tab <%= 'tab-active' if @feed_type == 'user' %>">Your Feed</h5>
+
+	<% if false #commenting out %>
+		<% if logged_in? %>
+			<%= link_to root_path( :feed => "user") do%>
+				<h5 id="userFeed" class="tab <%= 'tab-active' if @feed_type == 'user' %>">Your Feed</h5>
+			<% end %>
 		<% end %>
-	<% end %>
-	<%= link_to root_path( :feed => "global") do%>
-		<h5 id="globalFeed" class="tab <%= 'tab-active' if @feed_type == 'global' %>">Global Feed</h5>
-	<% end %>
-	<%= link_to root_path( :feed => "questions") do%>
-		<h5 id="questionsFeed" class="tab <%= 'tab-active' if @feed_type == 'questions' %>">Questions</h5>
-	<% end %>
-	<%= link_to root_path( :feed => "news") do%>
-		<h5 id="newsFeed" class="tab <%= 'tab-active' if @feed_type == 'news' %>">News</h5>
-	<% end %>
-	<%= link_to root_path( :feed => "careers") do%>
-		<h5 id="careersFeed" class="tab <%= 'tab-active' if @feed_type == 'careers' %>">Careers</h5>
+		<%= link_to root_path( :feed => "global") do%>
+			<h5 id="globalFeed" class="tab <%= 'tab-active' if @feed_type == 'global' %>">Global Feed</h5>
+		<% end %>
+		<%= link_to root_path( :feed => "questions") do%>
+			<h5 id="questionsFeed" class="tab <%= 'tab-active' if @feed_type == 'questions' %>">Questions</h5>
+		<% end %>
+		<%= link_to root_path( :feed => "news") do%>
+			<h5 id="newsFeed" class="tab <%= 'tab-active' if @feed_type == 'news' %>">News</h5>
+		<% end %>
+		<%= link_to root_path( :feed => "careers") do%>
+			<h5 id="careersFeed" class="tab <%= 'tab-active' if @feed_type == 'careers' %>">Careers</h5>
+		<% end %>
 	<% end %>
 
 	<div id="digital_feeds">
-		<h5 style="margin-bottom: 0px;"><strong>Digital Assets:</strong></h5>
+		<!--<h5 style="margin-bottom: 0px;"><strong>Digital Assets:</strong></h5>-->
 		<%= link_to root_path( :feed => "digital_assets") do%>
 			<h5 id="digitalAssetsFeed-All" class="tab tab-digital <%= 'tab-active' if @feed_type == 'digital_assets' %>">All</h5>
 		<% end %>
@@ -89,30 +92,34 @@
 </div>
 
 <div id="feed-select" class="mobile-show feedSelect">
-	<span id="select-title" class="selectTitle">Feed:</span>
-	<div id="feed-names" class="mobile-show feedNames" >
-		<% case params["feed"] %>
-			<% when 'user'%>
-				<p style="display: inline-block;">Your Feed</p>
-			<% when 'global' %>
-				<p style="display: inline-block;">Global Feed</p>
-			<% when 'questions' %>
-				<p style="display: inline-block;">Questions</p>
-			<% when 'news' %>
-				<p style="display: inline-block;">News Feed</p>
-			<% when 'careers' %>
-				<p style="display: inline-block;">Careers</p>
-			<% when 'search' %>
-				<p style="display: inline-block;"><%= "'#{params[:search]}'" %></p>
-			<% else %>
-				<% if logged_in? %>
+	<% if false #commenting out %>
+		<span id="select-title" class="selectTitle">Feed:</span>
+
+		<div id="feed-names" class="mobile-show feedNames" >
+			<% case params["feed"] %>
+				<% when 'user'%>
 					<p style="display: inline-block;">Your Feed</p>
-				<% else %>
+				<% when 'global' %>
 					<p style="display: inline-block;">Global Feed</p>
-				<% end %>
-		<% end %>
-		<span id="slide-glyph" class="glyphicon glyphicon-triangle-right"></span>
-	</div>
+				<% when 'questions' %>
+					<p style="display: inline-block;">Questions</p>
+				<% when 'news' %>
+					<p style="display: inline-block;">News Feed</p>
+				<% when 'careers' %>
+					<p style="display: inline-block;">Careers</p>
+				<% when 'search' %>
+					<p style="display: inline-block;"><%= "'#{params[:search]}'" %></p>
+				<% else %>
+					<% if logged_in? %>
+						<p style="display: inline-block;">Your Feed</p>
+					<% else %>
+						<p style="display: inline-block;">Global Feed</p>
+					<% end %>
+			<% end %>
+			<span id="slide-glyph" class="glyphicon glyphicon-triangle-right"></span>
+		</div>
+	<% end %>
+	
 	<div id="feeds-slide" style="display: none;" class="slide-close feedSlide">
 		<% if logged_in? %>
 			<a href="/?feed=user">Your Feed</a>

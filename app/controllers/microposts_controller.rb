@@ -30,9 +30,9 @@ class MicropostsController < ApplicationController
     end
     if @micropost.save
       flash[:success] = "Your promo post is live!"
-      if @micropost.category == 'question'
-        question_notification_emails
-      end
+      # if @micropost.category == 'question'
+      #   question_notification_emails
+      # end
       if @micropost.campaign_id
         redirect_to campaign_path(id: @micropost.campaign_id)
       else

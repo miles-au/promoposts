@@ -24,20 +24,23 @@
       <%= f.radio_button :category, "meme" %>
     </div>
   </div>
-  <div class="create_post_buttons">
-    <div class="categoryLabel">
-      <%= f.label :category, "News" %>
-      <%= f.radio_button :category, "news", :checked => true %>
+
+  <% if false #commenting out %>
+    <div class="create_post_buttons">
+      <div class="categoryLabel">
+        <%= f.label :category, "News" %>
+        <%= f.radio_button :category, "news", :checked => true %>
+      </div>
+      <div class="categoryLabel">
+        <%= f.label :category, "Question" %>
+        <%= f.radio_button :category, "question" %>
+      </div>
+      <div class="categoryLabel">
+        <%= f.label :category, "Careers" %>
+        <%= f.radio_button :category, "careers"%>
+      </div>
     </div>
-    <div class="categoryLabel">
-      <%= f.label :category, "Question" %>
-      <%= f.radio_button :category, "question" %>
-    </div>
-    <div class="categoryLabel">
-      <%= f.label :category, "Careers" %>
-      <%= f.radio_button :category, "careers"%>
-    </div>
-  </div>
+  <% end %>
 
   <div class="field">
     <%= f.label :shareable, "Allow other users to share to this post to their social media." %>
