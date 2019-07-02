@@ -45,6 +45,7 @@ class SessionsController < ApplicationController
         create_accounts(@provider)
         flash[:success] = "Welcome to Promo Posts, #{@user.name}."
         log_in @user
+        params[:session][:remember_me] == '1' ? remember(user) : forget(user)
         remember(@user)
         redirect_back_or root_url
       else
@@ -104,6 +105,7 @@ class SessionsController < ApplicationController
         @user = User.create_with_oauth2(provider, code)
         create_accounts(provider)
         log_in @user
+        params[:session][:remember_me] == '1' ? remember(user) : forget(user)
         flash[:success] = "Welcome to Promo Posts, #{@user.name}."
         redirect_to root_url
       end
