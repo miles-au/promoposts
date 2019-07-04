@@ -27,6 +27,29 @@
 	<% end %>
 <% end %>
 
+<div style="margin-bottom: 10px;">
+	<!--link to create post-->
+	<% if logged_in? %>
+	  
+		<%= link_to microposts_new_path, :class => "createPost" do%>
+			<div class="pop-button">
+				<span class="glyphicon glyphicon-pencil"></span>
+				<h3 class = "top_icons">create post</h3>
+			</div>
+		<% end %>
+
+		<%= link_to new_campaign_path, :class => "createPost" do%>
+			<div class="pop-button">
+				<span class="glyphicon glyphicon-flag"></span>
+				<h3 class = "top_icons">create campaign</h3>
+			</div>
+		<% end %>
+
+	<% end %>
+</div>
+
+<hr>
+
 <!--search-->
 <div class="searchBar">
 	<%= form_tag root_path, :method => 'get', id: 'searchPosts' do %>
@@ -162,49 +185,6 @@
 		<a href="/?feed=infographic">Infographics</a>
 		<a href="/?feed=meme">Memes</a>
 	</div>
-</div>
-
-<hr>
-
-<!--link to create post-->
-<% if logged_in? %>
-  
-	<%= link_to microposts_new_path, :id => "createPostBtn" do%>
-		<div class="createPost pop-button">
-			<span class="glyphicon glyphicon-pencil"></span>
-			<h3 class = "top_icons">create post</h3>
-		</div>
-	<% end %>
-
-	<%= link_to new_campaign_path, :id => "campaignPostBtn" do%>
-		<div class="createPost pop-button">
-			<span class="glyphicon glyphicon-flag"></span>
-			<h3 class = "top_icons">create campaign</h3>
-		</div>
-	<% end %>
-
-<% end %>
-
-<!--grid views-->
-<div id="grid-views">
-	<%= link_to({:controller => "static_pages", :action => "change_grid_view", :remote => true, :columns => "2"}) do%>
-		<img id="grid-view-icon-2" class="grid-view-icon-active <%= @columns == '2'? '':'hide' %>" src="/assets/grid-active-2.svg"/>
-	<% end %>
-	<%= link_to({:controller => "static_pages", :action => "change_grid_view", :remote => true, :columns => "2"}) do%>
-		<img id="grid-view-icon-2-dark" class="grid-view-icon <%= @columns == '2'? 'hide':'' %>" src="/assets/grid-dark-2.svg"/>
-	<% end %>
-	<%= link_to({:controller => "static_pages", :action => "change_grid_view", :remote => true, :columns => "3"}) do%>
-		<img id="grid-view-icon-3" class="grid-view-icon-active <%= @columns == '3'? '':'hide' %>" src="/assets/grid-active-3.svg"/>
-	<% end %>
-	<%= link_to({:controller => "static_pages", :action => "change_grid_view", :remote => true, :columns => "3"}) do%>
-		<img id="grid-view-icon-3-dark" class="grid-view-icon <%= @columns == '3'? 'hide':'' %>" src="/assets/grid-dark-3.svg"/>
-	<% end %>
-	<%= link_to({:controller => "static_pages", :action => "change_grid_view", :remote => true, :columns => "4"}) do%>
-		<img id="grid-view-icon-4" class="grid-view-icon-active <%= @columns == '4'? '':'hide' %>" src="/assets/grid-active-4.svg"/>
-	<% end %>
-	<%= link_to({:controller => "static_pages", :action => "change_grid_view", :remote => true, :columns => "4"}) do%>
-		<img id="grid-view-icon-4-dark" class="grid-view-icon <%= @columns == '4'? 'hide':'' %>" src="/assets/grid-dark-4.svg"/>
-	<% end %>
 </div>
 
 <!--feed-->

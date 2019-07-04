@@ -1,6 +1,8 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+/* mixins, variables, etc. */
+
 //Color Palette:
 $yellow0: #f4af0c;
 $yellow1: #ffb400;
@@ -30,15 +32,18 @@ $red2: #b72e35;
 $red3: #ea5455;
 $red4: #ef9297;
 
-$buttonShadow: 5px 5px $grey2;
-$buttonShadowHover: 13px 13px $grey3;
-
 @mixin vertical-align($position: relative) {
   position: $position;
   /*top: 50%;*/
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
+}
+
+@mixin box_sizing {
+  -moz-box-sizing:    border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing:         border-box;
 }
 
 /* universal */
@@ -66,13 +71,10 @@ textarea {
 }
 
 .pop-button{
-  border-top: 3px solid $yellow3;
-  border-left: 3px solid $yellow3;
-  border-bottom: 3px solid $grey4;
-  border-right: 3px solid $grey4;
-  border-radius: 20px;
+  text-align: center;
+  border-radius: 5px;
   background-color: $yellow1;
-  color: $grey1;
+  color: $blue1;
   padding: 10px 20px;
   font-weight: 700;
 
@@ -81,15 +83,12 @@ textarea {
   }
 
   &:hover{
-    background-color: $yellow1;
-    border-top: 3px solid $grey4;
-    border-left: 3px solid $grey4;
-    border-bottom: 3px solid $yellow3;
-    border-right: 3px solid $yellow3;
+    background-color: $yellow3;
     text-decoration: none !important;
-    color: $grey5;
+    color: $blue1;
+    cursor: pointer;
     p, h3, span{
-      color: $grey5;
+      color: $blue1;
       margin-bottom: 0px;
     }
   }
@@ -100,12 +99,12 @@ textarea {
 }
 
 .pop-button-grey{
+  text-align: center;
   border: none;
   background-color: $grey3;
   color: $grey5;
   padding: 10px 20px;
   font-weight: 700;
-  box-shadow: $buttonShadow;
 
   &:hover{
     background-color: $grey4;
@@ -118,24 +117,6 @@ textarea {
   color: $grey5;
   padding: 10px 20px;
   font-weight: 700;
-  box-shadow: $buttonShadow;
-
-  &:hover{
-    box-shadow: $buttonShadowHover;
-  }
-}
-
-#product-missing-fields, #micropost-missing-fields, .grey-submit{
-  background-color: grey;
-  width: 100%;
-  color: $grey5;
-  padding: 10px;
-  text-align: center;
-  border-top: none;
-  border-left: none;
-  border-bottom: 3px solid $grey3;
-  border-right: 3px solid $grey3;
-  border-radius: 20px;
 }
 
 .grey-submit{
@@ -278,7 +259,7 @@ header, .navbar-inverse, .navbar-fixed-top{
   background-color: $blue6;  
 }
 
-/* typography */
+/* TYPOGRAPHY */
 
 h1, h2, h3, h4, h5, h6, ul, li, p, div, span, body{
   font-family: 'Bai Jamjuree', sans-serif;
@@ -288,7 +269,6 @@ a{
   font-family: 'Bai Jamjuree', sans-serif;
   color: $blue3;
 }
-
 
 h1 {
   font-size: 3em;
@@ -310,7 +290,7 @@ p {
   line-height: 1.4em;
 }
 
-/* header */
+/* HEADER */
 
 #logo {
   float: left;
@@ -338,19 +318,38 @@ p {
   }
 }
 
-/*drop down*/
+/* DROP DOWN */
 .navbar .open a{
     background-color: $grey4 !important;
     color: $grey1 !important;
     white-space: normal !important;
-    margin-bottom: -1px;
+    border-bottom: 1px solid $grey4 !important;
     span{
       color: $blue1;
     }
+    &:hover{
+      border-bottom: 1px solid $grey4 !important;
+    }
 }
 
-.dropdown open{
-  background-color: $yellow1;
+.dropdown-menu{
+  padding: 0px;
+  width: 300px;
+  border-radius: 0px;
+  border: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  max-height: calc(100vh - 50px);
+  overflow: scroll;
+  background-color: $grey4;
+
+  li a:hover{
+    background-color: $yellow1 !important;
+    color: $grey1 !important;
+    span{
+      color: $grey2;
+    }
+  }
 }
 
 li > .dropdown > .open:focus {
@@ -383,29 +382,7 @@ li > .dropdown > .open:focus {
   position: static;
 }
 
-.dropdown-menu{
-  padding: 0px;
-  width: 300px;
-  margin-top: 1px !important;
-  border-radius: 0px;
-  border:none;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: $buttonShadow;
-  max-height: calc(100vh - 50px);
-  overflow: scroll;
-  background-color: $grey4;
-
-  li a:hover{
-    background-color: $yellow1 !important;
-    color: $grey1 !important;
-    span{
-      color: $grey2;
-    }
-  }
-}
-
-/* footer */
+/* FOOTER */
 
 footer {
   margin-top: 45px;
@@ -439,42 +416,10 @@ footer {
 
 }
 
-/* mixins, variables, etc. */
-
-@mixin box_sizing {
-  -moz-box-sizing:    border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing:         border-box;
-}
-
 /* post form */
 
 .post_block{
   padding: 10px 5px;
-
-  span{
-    display: inline-block;
-    margin-bottom: 3px;
-    margin-left: 10px;
-    line-height: 1;
-    vertical-align: top;
-  }
-
-  .wrapper{
-    text-align: right;
-  }
-
-  h1{
-    font-size: 1.4em;
-    text-align: left;
-    letter-spacing: -1px;
-    margin-bottom: 3px;
-    margin-top: 0px;
-  }
-
-  textarea{
-    margin-bottom: 3px;
-  }
 }
 
 .avatar_edit {
@@ -554,12 +499,16 @@ input, textarea, select, .uneditable-input {
 }
 
 input[type="text"], input[type="email"], input[type="password"], input[type="textbox"]{
-  border-top: none !important;
-  border-left: none !important;
-  border-right: none !important;
-  border-bottom: 1px solid $grey3 !important;
-  border-radius: 0px !important;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid $grey3;
+  border-radius: 5px;
   background-color: $grey6;
+}
+
+input[type="submit"]{
+  border: none;
 }
 
 .form-control[readonly]{
@@ -571,6 +520,10 @@ input {
   &:focus{
     outline: none;
   }
+}
+
+button{
+  border-radius: 5px;
 }
 
 #error_explanation {  
@@ -984,40 +937,34 @@ span.picture {
   font-weight: 800;
   background-color: $yellow1;
   color: $grey1;
-  border-radius: 8px;
-  box-shadow: $buttonShadow;
+  border-radius: 5px;
   margin: 10px 5px;
   &:hover{
-    position: relative;
-    top: 5px;
-    left: 5px;
-    background-color: $blue1;
-    color: $grey5;
-    box-shadow: none;
+    background-color: $yellow3;
+    color: $blue1;
   }
 }
 
 .tab-active{
-  position: relative;
-  top: 5px;
-  left: 5px;
-  background-color: $blue1 !important;
-  color: $grey5;
+  background-color: $yellow3 !important;
+  color: $blue1;
   box-shadow: none;
 }
 
 .tab-digital{
   padding-top: 8px;
   padding-bottom: 8px;
-  background-color: $yellow3;
+  background-color: $yellow1;
 }
 
 .createPost{
   display: inline-block;
-  float: right;
-  margin-right: 5%;
+  margin-left: 5px;
+  margin-right: 5px;
   padding: 5px 7px;
-  text-align: center;
+  &:hover{
+    text-decoration: none;
+  }
 }
 
 .feed{
@@ -1312,62 +1259,38 @@ span.picture {
   }
 }
 
-.action-wrapper{
-  display: inline-block;
+.eventContainer{
   margin-top: 5px;
   margin-bottom: 10px;
   border-bottom: 1px solid $grey4;
 }
 
-.columns-2{
-  width: 50%;
-}
-.columns-3{
-  width: 33%;
-}
-.columns-4{
-  width: 25%;
-}
-
-#microPostsContainer{
-  .action-wrapper{
-    display: block;
-    margin-top: 5px;
-  }
-}
-
 .searchBar{
+  margin-left: 5px; 
+
   form{
-    background-color: $grey6;
-    width: auto;
-    height: auto;
     display: inline-block;
-    clear: right !important;
     height: 30px;
   }
   form, button{
     display: inline-block;
   }
   input{
-    padding-left: 5px;
+    background-color: $grey6;
+    padding-left: 15px;
     display: inline-block;
     width: 500px !important;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: 1px solid $grey3;
   }
   input, button{
     height: 30px !important;
   }
   button{
     vertical-align: top;
-    border: none !important;
-    background-color: $yellow3;
-    text-align: center;
-  }
-  form:hover button{
+    border: none;
     background-color: $yellow1;
+    &:hover{
+      background-color: $yellow3;
+    }
   }
 }
 
@@ -1497,7 +1420,7 @@ span.picture {
 
 #campaign-add-post-container{
   margin-top: 20px;
-  background-color: $yellow4;
+  background-color: $blue5;
   padding: 15px;
 }
 

@@ -1,14 +1,6 @@
 class StaticPagesController < ApplicationController
 
   def home
-    if cookies[:columns]
-      @columns = cookies[:columns]
-      @boot_columns = 12/@columns.to_i
-    else
-      cookies[:columns] = "3"
-      @columns = cookies[:columns]
-      @boot_columns = 12/@columns.to_i
-    end
     @digital_asset_types = ['general_update', 'cover_photo', 'email_banner', 'infographic', 'meme']
 
     @feed_type = params[:feed]
