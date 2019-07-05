@@ -490,6 +490,12 @@ footer {
   vertical-align: top;
 }
 
+.sidebar{
+  width: 200px;
+  min-height: 100px;
+  display: inline-block;
+}
+
 /* forms */
 
 input, textarea, select, .uneditable-input {
@@ -836,17 +842,7 @@ button{
 .microposts-full{
   .content{
     img{
-      width: 80%;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .square{
-      padding-top: 75%;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      position: relative;
+      max-height: 750px;
     }
 
   }  
@@ -1657,6 +1653,9 @@ span.picture {
       width: 60%;
     }
   }
+  .sidebar{
+    display: none;
+  }
   .comment_message{
     font-size: 1.4em;
     display: block;
@@ -1672,6 +1671,7 @@ span.picture {
       display: inline-block;
     }
   }
+
 }
 
 @media (max-width: 415px){
