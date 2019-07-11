@@ -359,6 +359,8 @@ class User < ApplicationRecord
     #POST https://api.bufferapp.com/1/user/deauthorize.json
     user.buffer_uid = nil
     user.buffer_oauth_token = nil
+    accounts = Accounts.where(:user_id => user.id, :provider => 'buffer')
+    accounts.destroy_all
     user.save!
   end
 

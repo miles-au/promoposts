@@ -140,7 +140,7 @@ class AccountsController < ApplicationController
       when "linkedin"
         User.unauthorize_linkedin(user)
       when "buffer"
-  		User.unauthorize_buffer(user)
+  		  User.unauthorize_buffer(user)
   	end
 
   	flash[:success] = "Disconnected #{provider} account."
