@@ -47,7 +47,7 @@
       <% end %>
   <% end %>
 
-  <% if micropost.category == "campaign" %>
+  <% if micropost.category == "campaign" && controller_name != "campaigns" %>
     <%=link_to(campaign_path(:id => micropost.campaign_id)) do %>
       <%= render :partial => 'microposts/content', :locals => {:micropost => micropost, :bgcolor => bgcolor} %>
     <% end %>

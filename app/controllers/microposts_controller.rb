@@ -518,6 +518,9 @@ class MicropostsController < ApplicationController
       end
       micropost.save
     end
+
+    download_log.info("#{current_user.name}-#{current_user.id} | Post-#{micropost.id} ")
+
     if Rails.env.production?
       send_data(open(micropost.picture.url.read.force_encoding('BINARY')), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
     else
@@ -537,6 +540,10 @@ class MicropostsController < ApplicationController
       else
         redirect_to root_url
       end
+    end
+
+    def download_log
+      @download_logger ||= Logger.new("#{Rails.root}/log/downloads.log")
     end
 
 end
