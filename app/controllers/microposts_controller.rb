@@ -469,15 +469,20 @@ class MicropostsController < ApplicationController
 
   def share_to_buffer(micropost, profiles, message)
     #get permissions
+    if Rails.env.production?
+      base_url = ""
+    else
+      base_url = root_url
+    end
 
     client = @user.buffer
     
     if micropost.picture.url
       if micropost.external_url
-        picture = root_url + micropost.picture.url
+        picture = base_url + micropost.picture.url
         response = client.create_update(:body => {:profile_ids => profiles, :text => message, :now => true, :media => {:photo => picture, :link => micropost.external_url}})
       else
-        picture = root_url + micropost.picture.url
+        picture = base_url + micropost.picture.url
         response = client.create_update(:body => {:profile_ids => profiles, :text => message, :now => true, :media => {:photo => picture}})
       end
     else
@@ -488,7 +493,7 @@ class MicropostsController < ApplicationController
       end
     end
     
-    #puts "RESPONSE: #{response}"
+    puts "RESPONSE: #{response}"
     @post_success << 'Buffer'
   end
 
