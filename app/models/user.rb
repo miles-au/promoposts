@@ -320,6 +320,8 @@ class User < ApplicationRecord
     user.facebook.delete_object("me/permissions")
     user.fb_uid = nil
     user.fb_oauth_token = nil
+    accounts = Account.where(:user_id => user.id, :provider => 'facebook')
+    accounts.destroy_all
     user.save!
   end
 
@@ -338,6 +340,8 @@ class User < ApplicationRecord
     #disconnect linkedin
     user.linkedin_uid = nil
     user.linkedin_oauth_token = nil
+    accounts = Account.where(:user_id => user.id, :provider => 'linkedin')
+    accounts.destroy_all
     user.save!
   end
 
