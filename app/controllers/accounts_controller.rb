@@ -21,6 +21,7 @@ class AccountsController < ApplicationController
 
   end
 
+=begin
   def update
   	@account = Account.new
   	@user = current_user
@@ -126,6 +127,7 @@ class AccountsController < ApplicationController
   	redirect_to '/accounts/edit'
 
   end
+=end
 
   def connect
   end

@@ -2,29 +2,16 @@
 
 <h1>your connected social networks:</h1>
 
-<%= form_for @account, url: accounts_edit_path( :provider => "facebook"), html: {method: :post} do |f| %>
-
-<p>&nbsp;</p>
+  <p>&nbsp;</p>
   <!--display Facebook pages-->
   <h4 class="facebook-login social-login"><img src='<%= ActionController::Base.helpers.asset_path('facebook.svg')%>'/> Your Facebook accounts: </h4>
   <div class="social-accounts-wrap">
 
     <!--if logged_in and facebook accounts exist in user's name-->
     <% if logged_in? && @data['facebook'].count > 0 %>
-      <p>Tick the checkbox to enable autoshare. <%= link_to "What is autoshare?", what_is_autoshare_path %><br><span style="font-size: 0.8em;">Autoshares via Facebook will show up on your page, but will not be shareable by other Promo Posts members to their own platforms.</span></p>
       <% accounts = @data['facebook'] %>
       <% accounts.each do |page| %>
         <div class="fb-settings-wrapper">
-          <% if page['autoshare'] %>
-            <!-- if autoshare is already turned on, unsubscribe -->
-            <input name="unsubscribe_hidden[]" type="hidden" value="<%= page.id %>">
-            <input name="unsubscribe[]" type="checkbox" value="<%= page.id %>" checked="checked" id="account_unsubscribe">
-
-          <% else %>
-            <!-- else, subscribe-->
-            <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page.id, "" %>
-          <% end %>
-
           <div class="img-holder">
             <img class="thumbnail-page" src="<%= page.picture %>"/>
           </div>
@@ -32,11 +19,7 @@
         </div>
 
       <% end %>
-
-      <p>&nbsp;</p>
-
-      <%= f.submit "Update Autoshare Settings", class: "pop-button" %>
-
+      
       <%= link_to accounts_disconnect_path(:provider => 'facebook'), :class => "connect_link" do %>
         <h5> Disconnect your Facebook Account </h5>
       <% end %>
@@ -65,15 +48,6 @@
       <% accounts = @data['linkedin'] %>
       <% accounts.each do |page| %>
         <div class="fb-settings-wrapper">
-          <!--
-          <% if page['autoshare'] %>
-            <input name="unsubscribe_hidden[]" type="hidden" value="<%= page.id %>">
-            <input name="unsubscribe[]" type="checkbox" value="<%= page.id %>" checked="checked" id="account_unsubscribe">
-
-          <% else %>
-            <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page.id, "" %>
-          <% end %>
-          -->
 
           <div class="img-holder">
             <img class="thumbnail-page" src="<%= page.picture %>"/>
@@ -113,16 +87,6 @@
       <% accounts = @data['buffer'] %>
       <% accounts.each do |page| %>
         <div class="fb-settings-wrapper">
-          <!--
-          <% if page['autoshare'] %>
-            <input name="unsubscribe_hidden[]" type="hidden" value="<%= page.id %>">
-            <input name="unsubscribe[]" type="checkbox" value="<%= page.id %>" checked="checked" id="account_unsubscribe">
-
-          <% else %>
-            <%= f.check_box :subscribe, { :name => "subscribe[]" , :checked => false }, page.id, "" %>
-          <% end %>
-          -->
-
           <div class="img-holder">
             <img class="thumbnail-page" src="<%= page.picture %>"/>
           </div>
@@ -147,8 +111,4 @@
     <% end %>
 
   </div>
-
-  
-
-<% end %>
 

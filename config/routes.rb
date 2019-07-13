@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   get '/privacy_policy', to: 'static_pages#privacy_policy'
   get '/cookie_policy', to: 'static_pages#cookie_policy'
   get '/terms', to: 'static_pages#terms'
-  get '/what_is_autoshare', to: 'static_pages#what_is_autoshare'
 
   get  '/signup',  to: 'users#new'
 
@@ -37,8 +36,8 @@ Rails.application.routes.draw do
 
   get 'microposts/new'
 
-  post '/webhooks_facebook' => 'webhooks#facebook', as: :facebook_webhooks
-  get '/webhooks_facebook' => 'webhooks#challenge', as: :challenge_webhooks
+  # post '/webhooks_facebook' => 'webhooks#facebook', as: :facebook_webhooks
+  # get '/webhooks_facebook' => 'webhooks#challenge', as: :challenge_webhooks
 
   get '/accounts/edit'
   post '/accounts/edit' => 'accounts#update'

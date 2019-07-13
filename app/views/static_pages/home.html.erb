@@ -86,8 +86,11 @@
 
 	<div id="digital_feeds">
 		<!--<h5 style="margin-bottom: 0px;"><strong>Digital Assets:</strong></h5>-->
+		<%= link_to root_path( :feed => "user") do%>
+			<h5 id="userFeed" class="tab tab-digital <%= 'tab-active' if @feed_type == 'user' %>">Your Feed</h5>
+		<% end %>
 		<%= link_to root_path( :feed => "digital_assets") do%>
-			<h5 id="digitalAssetsFeed-All" class="tab tab-digital <%= 'tab-active' if @feed_type == 'digital_assets' %>">All</h5>
+			<h5 id="digitalAssetsFeed-All" class="tab tab-digital <%= 'tab-active' if @feed_type == 'digital_assets' %>">All Digital Assets</h5>
 		<% end %>
 		<%= link_to root_path( :feed => "campaign") do%>
 			<h5 id="digitalAssetsFeed-campaign" class="tab tab-digital <%= 'tab-active' if @feed_type == 'campaign' %>">Campaigns</h5>

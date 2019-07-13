@@ -1,3 +1,4 @@
+=begin
 class WebhooksController < ApplicationController
 	protect_from_forgery :except => :facebook
 	protect_from_forgery :except => :delete_data
@@ -176,3 +177,5 @@ class WebhooksController < ApplicationController
 	end
 
 end
+
+=end
