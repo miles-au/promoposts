@@ -523,12 +523,8 @@ class MicropostsController < ApplicationController
       end
       micropost.save
     end
-
-    if current_user
-      download_log.info("#{current_user.name}-#{current_user.id} | Post-#{micropost.id} ")
-    else
-      download_log.info("unknown user | Post-#{micropost.id} ")
-    end
+    
+    download_log.info("#{current_user.name}-#{current_user.id} | Post-#{micropost.id} ")
 
     if Rails.env.production?
       send_data(open(micropost.picture.url.read.force_encoding('BINARY')), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')

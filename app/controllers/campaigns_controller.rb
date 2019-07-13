@@ -106,12 +106,8 @@ class CampaignsController < ApplicationController
     end
 
     send_data( open("#{Rails.root}/public/#{current_user.id}.zip").read.force_encoding('BINARY'), :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
-
-    if current_user
-      download_log.info("#{current_user.name}-#{current_user.id} | Campaign-#{campaign.id} | #{campaign.name}")
-    else
-      download_log.info("unknown user | Campaign-#{campaign.id} | #{campaign.name}")
-    end
+    
+    download_log.info("#{current_user.name}-#{current_user.id} | Campaign-#{campaign.id} | #{campaign.name}")
 
     if Rails.env.production?
       File.delete("#{Rails.root}/public/#{current_user.id}.zip") if File.exist?("#{Rails.root}/public/#{current_user.id}.zip")
