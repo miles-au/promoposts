@@ -495,8 +495,11 @@ class MicropostsController < ApplicationController
       end
     end
     
-    puts "RESPONSE: #{response}"
-    @post_success << 'Buffer'
+    if response.success?
+      @post_success << 'Buffer'
+    else
+      @post_failure << 'Buffer'
+    end
   end
 
   def generate_url(url, params = {})
