@@ -65,6 +65,7 @@ Rails.application.routes.draw do
   post 'unauthorize_facebook', to: 'webhooks#unauthorize_facebook'
 
   get  "accounts/disconnect", to: "accounts#disconnect"
+  get "accounts/remove_page", to: "accounts#remove_page"
 
   get 'comments/reply', to: 'comments#reply'
   get 'comments/mark_top_comment', to: 'microposts#mark_top_comment', as: :mark_top_comment

@@ -21,6 +21,12 @@ class AccountsController < ApplicationController
 
   end
 
+  def remove_page
+    @account = current_user.accounts.find(params[:id])
+    @account.destroy
+    redirect_to accounts_edit_path
+  end
+
 =begin
   def update
   	@account = Account.new

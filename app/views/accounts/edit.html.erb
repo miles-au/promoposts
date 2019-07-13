@@ -16,6 +16,9 @@
             <img class="thumbnail-page" src="<%= page.picture %>"/>
           </div>
           <h5 class="page-name"><%= page['name'] %></h5>
+          <%= link_to accounts_remove_page_path(:id => page.id), data: { confirm: "You sure?" } do %>
+            <span class="glyphicon glyphicon-trash"></span>
+          <% end %>
         </div>
 
       <% end %>
