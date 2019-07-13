@@ -8,12 +8,8 @@
 		</div>
 
 		<div>
-			<% if current_user %>
-				<%= link_to download_assets_path(:id => @campaign.id), :class => 'pop-button download-button', data: { turbolinks: false }  do %>
-		    		<span style="color: inherit;" class="glyphicon glyphicon-cloud-download"></span> download campaign assets
-		    	<% end %>
-	    	<% else %>
-	    		<span><%= link_to 'Sign in', social_login_path %> to download campaign assets </span><span class="glyphicon glyphicon-cloud-download"></span>
+			<%= link_to download_assets_path(:id => @campaign.id), :class => 'pop-button download-button', data: { turbolinks: false }  do %>
+	    		<span style="color: inherit;" class="glyphicon glyphicon-cloud-download"></span> download campaign assets
 	    	<% end %>
     	</div>
 

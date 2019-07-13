@@ -33,12 +33,8 @@
 		        <% if @micropost.picture? %>
 		        	<div class="row" style="height: 50px; padding: 5px;">
 			        	<div class="col-md-4 col-sm-12">
-			        		<% if current_user %>
-				        		<%= link_to download_picture_path(:id => @micropost.id), data: { turbolinks: false }, style: "width: 100%; text-align: center;", class: "pop-button download-button" do %>
-						        	<span style="color: inherit;" class="glyphicon glyphicon-cloud-download"></span> download image
-						        <% end %>
-					        <% else %>
-					        	<span><%= link_to 'Sign in', social_login_path %> to download image </span><span class="glyphicon glyphicon-cloud-download"></span>
+			        		<%= link_to download_picture_path(:id => @micropost.id), data: { turbolinks: false }, style: "width: 100%; text-align: center;", class: "pop-button download-button" do %>
+					        	<span style="color: inherit;" class="glyphicon glyphicon-cloud-download"></span> download image
 					        <% end %>
 			        	</div>
 			        	<div class="col-md-4 col-sm-12" style="text-align: center;">
