@@ -1,4 +1,5 @@
 class StaticPagesController < ApplicationController
+  before_action :admin_user,   only: [:admin_panel, :tracking]
 
   def home
     @digital_asset_types = ['general_update', 'cover_photo', 'email_banner', 'infographic', 'meme']
@@ -197,5 +198,10 @@ class StaticPagesController < ApplicationController
   def tracking
     @tracks = Track.all.order(:created_at => :desc).paginate(:page => params[:page], :per_page => 50)
   end
+
+  private
+    def admin_user
+      redirect_to(root_url) unless current_user.admin?
+    end
 
 end
