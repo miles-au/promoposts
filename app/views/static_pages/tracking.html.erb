@@ -1,0 +1,10 @@
+<h1>Tracking</h1>
+
+<div class="feed">
+  <ol id="postsContainer" class="microposts microposts-grid">
+    <%= render @tracks %>
+  </ol>
+  <% if @tracks.any? %>
+	<%= will_paginate @tracks %>
+  <% end %>
+</div>

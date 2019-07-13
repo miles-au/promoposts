@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_09_020744) do
+ActiveRecord::Schema.define(version: 2019_07_13_012506) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -158,6 +158,14 @@ ActiveRecord::Schema.define(version: 2019_05_09_020744) do
     t.string "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "tracks", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "category"
+    t.integer "asset_num"
+    t.string "act"
+    t.datetime "created_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

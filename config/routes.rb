@@ -85,6 +85,9 @@ Rails.application.routes.draw do
 
   get '/landing_page', to: "static_pages#landing_page"
 
+  get '/admin_panel', to: "static_pages#admin_panel"
+  get '/tracking', to: "static_pages#tracking"
+
   resources :users do
     member do
       get :following, :followers

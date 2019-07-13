@@ -185,6 +185,8 @@ class MicropostsController < ApplicationController
         micropost.shares = 1
       end
       micropost.save
+      track = Track.new(user_id: current_user.id, category: micropost.category, asset_num: micropost.id, act: "share")
+      track.save
     end
 
     redirect_to micropost
@@ -523,8 +525,9 @@ class MicropostsController < ApplicationController
       end
       micropost.save
     end
-    
-    download_log.info("#{current_user.name}-#{current_user.id} | Post-#{micropost.id} ")
+
+    track = Track.new(user_id: current_user.id, category: micropost.category, asset_num: micropost.id, act: "download")
+    track.save
 
     if Rails.env.production?
       send_data(open(micropost.picture.url.read.force_encoding('BINARY')), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')

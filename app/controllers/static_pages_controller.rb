@@ -190,4 +190,12 @@ class StaticPagesController < ApplicationController
   def landing_page
   end
 
+  def admin_panel
+    @tracks = Track.all.order(:created_at => :desc).limit(10)
+  end
+
+  def tracking
+    @tracks = Track.all.order(:created_at => :desc).paginate(:page => params[:page], :per_page => 50)
+  end
+
 end
