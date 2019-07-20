@@ -1,0 +1,14 @@
+<div class="profile_user_display">
+	<div>
+		<img src="<%= current_user.avatar %>" id="profile_pic" style="width: 200px; object-fit: cover; object-position: center; display: inline-block; vertical-align: top;" />
+	</div>
+	<div style="display: inline-block; vertical-align: top;">
+		<h1><%= link_to current_user.name, current_user %></h1>
+		<h4><%= current_user.company %></h4>
+		<%= render :partial => 'shared/accolades', :locals => {:user => current_user} %>
+	</div>     
+</div>
+
+<script>
+
+</script>

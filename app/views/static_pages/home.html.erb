@@ -1,236 +1,79 @@
-<!--modal-->
-	<div id="modal-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content"></div>
-	  </div>
-	</div>
+<div class="row" >
 
-<% if !logged_in? %>
-	<% if params['source'] == 'linkedin' %>
-		<div class="center jumbotron">
-		  <h1>Online Campaigns Start Here</h1>
-		  <h2>
-		    Click on a campaign below to see and download the digital assets.
-		  </h2>
-		</div>
-	<% else %>
-		<div class="center jumbotron">
-		  <h1>social media for promo made easy.</h1>
-		  <div class="row">
-			<div class="col-md-6 col-sm-12"><h2>1. Click on a post you like.</h2><img style="width: 100%;" src="/assets/social_media_1.gif"/></div>
-			<div class="col-md-6 col-sm-12"><h2>2. Share the pre-captioned picture to your social media.</h2><img style="width: 100%;" src="/assets/social_media_2.gif"/></div>
-		  </div>
-		  <div style="text-align: center; margin-top: 50px;">
-		  	<%= link_to "log in / sign up", social_login_path, class: "pop-button pop-button-big" %>
-		  </div>
-		</div>
-	<% end %>
-<% end %>
-
-<div style="margin-bottom: 10px;">
-	<!--link to create post-->
-	<% if logged_in? %>
-	  
-		<%= link_to microposts_new_path, :class => "createPost" do%>
-			<div class="pop-button">
-				<span class="glyphicon glyphicon-pencil"></span>
-				<h3 class = "top_icons">create post</h3>
-			</div>
-		<% end %>
-
-		<%= link_to new_campaign_path, :class => "createPost" do%>
-			<div class="pop-button">
-				<span class="glyphicon glyphicon-flag"></span>
-				<h3 class = "top_icons">create campaign</h3>
-			</div>
-		<% end %>
-
-	<% end %>
-</div>
-
-<hr>
-
-<!--search-->
-<div class="searchBar">
-	<%= form_tag root_path, :method => 'get', id: 'searchPosts' do %>
-	  <%= text_field_tag :search, params[:search], :placeholder => 'search posts' %>
-	  <%= hidden_field_tag :feed , "search" %>
-	  <%= button_tag(type: "submit", :name => nil,class: "search-btn") do %>
-	    <span class="glyphicon glyphicon-search" ></span>
-	  <% end %>
-	<% end %>
-</div>
-
-<!--feeds-->
-<div id="feeds" class="mobile-hide" style="display:inline-block;">
-
-	<% if false #commenting out %>
+	<!-- sidebar -->
+	<div class="col-sm-12 col-md-3 sidebar">
 		<% if logged_in? %>
-			<%= link_to root_path( :feed => "user") do%>
-				<h5 id="userFeed" class="tab <%= 'tab-active' if @feed_type == 'user' %>">Your Feed</h5>
+			<%= link_to microposts_new_path, :class => "side_button" do%>
+				<div class="pop-button">
+					<span class="glyphicon glyphicon-pencil"></span>
+					<h3 class = "top_icons">create post</h3>
+				</div>
 			<% end %>
-		<% end %>
-		<%= link_to root_path( :feed => "global") do%>
-			<h5 id="globalFeed" class="tab <%= 'tab-active' if @feed_type == 'global' %>">Global Feed</h5>
-		<% end %>
-		<%= link_to root_path( :feed => "questions") do%>
-			<h5 id="questionsFeed" class="tab <%= 'tab-active' if @feed_type == 'questions' %>">Questions</h5>
-		<% end %>
-		<%= link_to root_path( :feed => "news") do%>
-			<h5 id="newsFeed" class="tab <%= 'tab-active' if @feed_type == 'news' %>">News</h5>
-		<% end %>
-		<%= link_to root_path( :feed => "careers") do%>
-			<h5 id="careersFeed" class="tab <%= 'tab-active' if @feed_type == 'careers' %>">Careers</h5>
-		<% end %>
-	<% end %>
-
-	<div id="digital_feeds">
-		<!--<h5 style="margin-bottom: 0px;"><strong>Digital Assets:</strong></h5>-->
-		<%= link_to root_path( :feed => "user") do%>
-			<h5 id="userFeed" class="tab tab-digital <%= 'tab-active' if @feed_type == 'user' %>">Your Feed</h5>
-		<% end %>
-		<%= link_to root_path( :feed => "digital_assets") do%>
-			<h5 id="digitalAssetsFeed-All" class="tab tab-digital <%= 'tab-active' if @feed_type == 'digital_assets' %>">All Digital Assets</h5>
-		<% end %>
-		<%= link_to root_path( :feed => "campaign") do%>
-			<h5 id="digitalAssetsFeed-campaign" class="tab tab-digital <%= 'tab-active' if @feed_type == 'campaign' %>">Campaigns</h5>
-		<% end %>
-		<%= link_to root_path( :feed => "general_update") do%>
-			<h5 id="digitalAssetsFeed-general_update" class="tab tab-digital <%= 'tab-active' if @feed_type == 'general_update' %>">General Updates</h5>
-		<% end %>
-		<%= link_to root_path( :feed => "cover_photo") do%>
-			<h5 id="digitalAssetsFeed-cover_photo" class="tab tab-digital <%= 'tab-active' if @feed_type == 'cover_photo' %>">Cover Photos</h5>
-		<% end %>
-		<%= link_to root_path( :feed => "email_banner") do%>
-			<h5 id="digitalAssetsFeed-email_banner" class="tab tab-digital <%= 'tab-active' if @feed_type == 'email_banner' %>">Email Banners</h5>
-		<% end %>
-		<%= link_to root_path( :feed => "infographic") do%>
-			<h5 id="digitalAssetsFeed-All" class="tab tab-digital <%= 'tab-active' if @feed_type == 'infographic' %>">Infographics</h5>
-		<% end %>
-		<%= link_to root_path( :feed => "meme") do%>
-			<h5 id="digitalAssetsFeed-All" class="tab tab-digital <%= 'tab-active' if @feed_type == 'meme' %>">Memes</h5>
+			<%= link_to new_campaign_path, :class => "side_button" do%>
+				<div class="pop-button">
+					<span class="glyphicon glyphicon-flag"></span>
+					<h3 class = "top_icons">create campaign</h3>
+				</div>
+			<% end %>
+		<% else %>
+			<p><%= link_to 'Sign in', social_login_path %> to join the community.</p>
 		<% end %>
 	</div>
 
-</div>
-
-<div id="feed-select" class="mobile-show feedSelect">
-	<% if false #commenting out %>
-		<span id="select-title" class="selectTitle">Feed:</span>
-
-		<div id="feed-names" class="mobile-show feedNames" >
-			<% case params["feed"] %>
-				<% when 'user'%>
-					<p style="display: inline-block;">Your Feed</p>
-				<% when 'global' %>
-					<p style="display: inline-block;">Global Feed</p>
-				<% when 'questions' %>
-					<p style="display: inline-block;">Questions</p>
-				<% when 'news' %>
-					<p style="display: inline-block;">News Feed</p>
-				<% when 'careers' %>
-					<p style="display: inline-block;">Careers</p>
-				<% when 'search' %>
-					<p style="display: inline-block;"><%= "'#{params[:search]}'" %></p>
-				<% else %>
+	<div class="col-sm-12 col-md-9">
+		<div class="feed row">
+			<div class="col-md-12">
+				<div class="feed_buttons">
 					<% if logged_in? %>
-						<p style="display: inline-block;">Your Feed</p>
-					<% else %>
-						<p style="display: inline-block;">Global Feed</p>
+						<%= link_to root_path( :feed => "user") do%>
+							<h5 id="userFeed" class="tab <%= 'tab-active' if @feed_type == 'user' %>">Your Feed</h5>
+						<% end %>
 					<% end %>
-			<% end %>
-			<span id="slide-glyph" class="glyphicon glyphicon-triangle-right"></span>
+					<%= link_to root_path( :feed => "global") do%>
+						<h5 id="globalFeed" class="tab <%= 'tab-active' if @feed_type == 'global' %>">Global Feed</h5>
+					<% end %>
+				</div>
+
+				<div style="margin-top: 5px;">
+					<% digital_assets_array = Micropost.category_array.unshift(['Campaign', 'campaign']) %>
+					<% digital_assets_array = digital_assets_array.unshift(['All Digital Assets', 'digital_assets']) %>
+
+					<%= form_tag root_path, :method => 'get' do %>
+						<span>Get digital assets by category:</span>
+						<%= select_tag "feed", options_for_select(digital_assets_array), onchange: 'this.form.submit();', :prompt => "Choose a category", :style => "margin-bottom: 5px;" %>
+					<% end %>
+				</div>
+
+				<!--search-->
+				<div class="searchBar">
+					<%= form_tag root_path, :method => 'get', id: 'searchPosts' do %>
+					  <%= text_field_tag :search, params[:search], :placeholder => 'search posts' %>
+					  <%= hidden_field_tag :feed , "search" %>
+					  <%= button_tag(type: "submit", :name => nil,class: "search-btn") do %>
+					    <span class="glyphicon glyphicon-search" ></span>
+					  <% end %>
+					<% end %>
+				</div>
+
+			</div>
 		</div>
+
+	</div>
+
+</div>
+
+<div id="feedContainer">
+	<% if @feed_type == "user" %>
+		<h1 style="text-align: left;">Your Feed</h1>
+	<% elsif @feed_type == "global" %>
+		<h1 style="text-align: left;">Global Activity</h1>
+	<% else %>
+		<h1 style="text-align: left;"><%= @feed_type.titlecase.tr("_", " ") %><%= 's' unless (@feed_type == "digital_assets" || @feed_type = "search") %></h1>
 	<% end %>
+
+	<%= render 'shared/feed' %>
 	
-	<div id="feeds-slide" style="display: none;" class="slide-close feedSlide">
-		<% if logged_in? %>
-			<a href="/?feed=user">Your Feed</a>
-		<% end %>
-		<a href="/?feed=global">Global Feed</a>
-		<a href="/?feed=questions">Questions</a>
-		<a href="/?feed=news">News</a>
-		<a href="/?feed=careers">Careers</a>
-	</div>
+	<div id="end" class="hide">
+  	  <hr><h3>end</h3>
+  	</div>
 </div>
-
-<div id="digi-feed-select" class="mobile-show feedSelect">
-	<span id="digi-select-title" class="selectTitle">Digital Assets:</span>
-	<div id="digi-feed-names" class="mobile-show feedNames" >
-		<% case params["feed"] %>
-			<% when 'digital_assets'%>
-				<p style="display: inline-block;">All</p>
-			<% when 'campaign' %>
-				<p style="display: inline-block;">Campaigns</p>
-			<% when 'general_update' %>
-				<p style="display: inline-block;">General Updates</p>
-			<% when 'cover_photo' %>
-				<p style="display: inline-block;">Cover Photos</p>
-			<% when 'email_banner' %>
-				<p style="display: inline-block;">Email Banners</p>
-			<% when 'infographic' %>
-				<p style="display: inline-block;">Infographics</p>
-			<% when 'meme' %>
-				<p style="display: inline-block;">Memes</p>
-			<% when 'search' %>
-				<p style="display: inline-block;"><%= "'#{params[:search]}'" %></p>
-			<% else %>
-				<p style="display: inline-block;">All</p>
-		<% end %>
-		<span id="digi-slide-glyph" class="glyphicon glyphicon-triangle-right"></span>
-	</div>
-	<div id="digi-feeds-slide" style="display: none;" class="slide-close feedSlide">
-		<a href="/?feed=digital_assets">All</a>
-		<a href="/?feed=campaign">Campaigns</a>
-		<a href="/?feed=general_update">General Updates</a>
-		<a href="/?feed=cover_photo">Cover Photos</a>
-		<a href="/?feed=email_banner">Email Banners</a>
-		<a href="/?feed=infographic">Infographics</a>
-		<a href="/?feed=meme">Memes</a>
-	</div>
-</div>
-
-<!--feed-->
-<div class="feed row">
-	<div id="feedContainer" class="col-md-12">
-		<%= render 'shared/feed' %>
-		<div id="end" class="hide">
-	  	  <hr><h3>end</h3>
-	  	</div>
-	</div>
-</div>
-
-<script>
-	$( "#feed-names" ).click(function() {
-	  if($("#feeds-slide").hasClass("slide-close")){
-	  	$("#feeds-slide").show('slow');
-	  	$("#feeds-slide").removeClass("slide-close");
-	  	$("#feeds-slide").addClass("slide-open");
-	  	$("#slide-glyph").removeClass("glyphicon-triangle-right");
-	  	$("#slide-glyph").addClass("glyphicon-triangle-bottom");
-	  }else{
-	  	$("#feeds-slide").hide('slow');
-	  	$("#feeds-slide").addClass("slide-close");
-	  	$("#feeds-slide").removeClass("slide-open");
-	  	$("#slide-glyph").removeClass("glyphicon-triangle-bottom");
-	  	$("#slide-glyph").addClass("glyphicon-triangle-right");
-	  } 
-	});
-
-	$( "#digi-feed-names" ).click(function() {
-	  if($("#digi-feeds-slide").hasClass("slide-close")){
-	  	$("#digi-feeds-slide").show('slow');
-	  	$("#digi-feeds-slide").removeClass("slide-close");
-	  	$("#digi-feeds-slide").addClass("slide-open");
-	  	$("#digi-slide-glyph").removeClass("glyphicon-triangle-right");
-	  	$("#digi-slide-glyph").addClass("glyphicon-triangle-bottom");
-	  }else{
-	  	$("#digi-feeds-slide").hide('slow');
-	  	$("#digi-feeds-slide").addClass("slide-close");
-	  	$("#digi-feeds-slide").removeClass("slide-open");
-	  	$("#digi-slide-glyph").removeClass("glyphicon-triangle-bottom");
-	  	$("#digi-slide-glyph").addClass("glyphicon-triangle-right");
-	  } 
-	});
-
-</script>

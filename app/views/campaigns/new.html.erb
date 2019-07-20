@@ -1,3 +1,11 @@
-<h1>New Campaign</h1>
+<% provide(:title, "Create a campaign") %>
 
-<%= render 'form', campaign: @campaign %>
+<div class="row">
+	<div class="col-md-3 col-sm-12 sidebar">
+		<%= render 'shared/current_user_info' %>
+	</div>
+	<div class="col-md-9 col-sm-12">
+		<h1>Create a Campaign</h1>
+		<%= render 'form', campaign: @campaign %>
+	</div>
+</div>

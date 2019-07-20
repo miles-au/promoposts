@@ -1,33 +1,10 @@
-<% if micropost.content %>
-  <% if micropost.content.empty? || micropost.content.blank? || micropost.content == nil %>
-    <% micropost.content = "<image only>" %>
-  <% end %>
-<% else %>
-  <% micropost.content = "<image only>" %>
-<% end %>
 <% snippet_length = 75 %>
 <div class="section">
   <span class="content">
     <p class="content-minified" style="font-size: 1.2em; overflow: hidden;"><%= micropost.content.length > snippet_length ? micropost.content[0..snippet_length-3] : micropost.content %> <span class="go-to-post"><%= micropost.content.length > snippet_length ? '...' : '' %><span class="go-to-post-link">go to post</span></span></p>
     <p class="content-full" style="font-size: 1.2em; overflow: hidden;"><%= micropost.content %></p>
 
-    <% if micropost.picture.present? %>
-      <% if controller_name == "users" || controller_name == "campaigns" %>
-        <img src="<%= micropost.picture.url %>" />
-      <% else %>
-        <div class="square" style="background-image: url('<%= micropost.picture.url %>');"></div>
-      <% end %>
-    <% elsif micropost.external_url.present? %>
-      <% if controller_name == "users" %>
-        <img src="/assets/ext_link.svg" />
-      <% else %>
-        <div class="square" style="background-image: url('/assets/ext_link.svg');"></div>
-      <% end %>
-    <% else %>
-      <div class="noPic square <%= bgcolor %>">
-      <span></span><strong>"<%= sanitize micropost.content %>"</strong>
-      </div>
-    <% end %>
+    <img src="<%= micropost.picture.url %>" style="max-height: 500px; max-width: 1000px;" />
 
   </span>
 </div>

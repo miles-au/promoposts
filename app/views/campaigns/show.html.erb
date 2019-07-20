@@ -1,50 +1,77 @@
 <% provide(:title, @campaign.name) %>
 
 <div class="row">
-	<div class="col-md-4 col-sm-12">
-		<div class="campaign-text">
-			<h2><span class="glyphicon glyphicon-flag"></span> campaign: </h2>
-			<p class="campaign-title"><strong><%= @campaign.name %></strong></p>
-		</div>
+  <div class="col-md-3 col-sm-12 sidebar">
+    <h2 class="campaign_label"><span class="glyphicon glyphicon-flag"></span> campaign: </h2>
+    <div class="profile_user_display">
+      <div>
+        <img src="<%= @campaign.user.avatar %>" id="profile_pic" style="width: 50%; object-fit: cover; object-position: center; display: inline-block; vertical-align: top;" />
+      </div>
+      <div style="display: inline-block; vertical-align: top;">
+        <h1><%= link_to @campaign.user.name, @campaign.user %></h1>
+        <h4><%= @campaign.user.company %></h4>
+        <%= render :partial => 'shared/accolades', :locals => {:user => @campaign.user} %>       
+      </div>
+    </div>
 
-		<div>
-			<% if current_user %>
-				<%= link_to download_assets_path(:id => @campaign.id), :class => 'pop-button download-button', data: { turbolinks: false }  do %>
-		    		<span style="color: inherit;" class="glyphicon glyphicon-cloud-download"></span> download campaign assets
-		    	<% end %>
-	    	<% else %>
-	    		<span><%= link_to 'Sign in', social_login_path %> to download campaign assets </span><span class="glyphicon glyphicon-cloud-download"></span>
-	    	<% end %>
-    	</div>
+    <% if current_user %>
+      <%= link_to download_assets_path(:id => @campaign.id), :class => "side_button" do%>
+        <div class="pop-button">
+          <h3 class = "top_icons"><span class="glyphicon glyphicon-cloud-download"></span> Download Campaign Assets</h3>
+        </div>
+      <% end %>
+    <% else %>
+    	<span><%= link_to 'Sign in', social_login_path %> to download campaign assets </span><span class="glyphicon glyphicon-cloud-download"></span>
+    <% end %>
 
-    	<div style="display: block; margin-top: 20px; ">
-			<div class="avatar avatar-thumbnail" style="background-image: url('<%= @campaign.user.avatar %>'); display: inline-block;" ></div>
-			<div style="display: inline-block;">
-				<h3 class="user" style="display: block; margin: 0px;"><%= link_to @campaign.user.name, @campaign.user %></h3>
-				<%= render :partial => 'shared/accolades', :locals => {:user => @campaign.user} %>
-			</div>
-		</div>
+    <% if @campaign.user == current_user %>
 
-		<div class="timestamp">
-		  Campaign created <%= time_ago_in_words(@campaign.created_at) %> ago.
-		  <% if current_user %>
-		    <% if current_user?(@campaign.user) || current_user.admin? %>
-		      <%= link_to "delete campaign", @campaign, method: :delete,
-		                                       data: { confirm: "You sure?" } %>
-		    <% end %>
-		  <% end %>
-		</div>
+      <div class="accordion side_button">
+        <h3 class="pop-button"><span class="glyphicon glyphicon-pencil"></span> Edit Campaign</h3>
+      </div>
+      <div class="sub-accordion" id="edit_campaign_container">
+        <%= render 'edit_campaign_form' %>
+      </div>
+      <div class="accordion side_button">
+        <h3 class="pop-button"><span class="glyphicon glyphicon-plus"></span> Add Post</h3>
+      </div>
+      <div class="sub-accordion"  id="add_post_container">
+        <%= render 'add_post_form' %>
+      </div>
 
-		<% if @campaign.user == current_user %>
-			<%= render 'add_post_form' %>
-		<% end %>
+    <% end %>
 
-	</div>
+  </div>
 
-	<div class="col-md-8 col-sm-12">
-		<div class="microposts microposts-full" style="width: 100%;">
-			<%= render @campaign.microposts.reverse %>
-		</div>
-	</div>
+  <div class="col-md-9 col-sm-12">
+    <div class="campaign-text">
+  		<h1 class="campaign-title" style="display: inline-block;"><strong><%= @campaign.name %></strong></h1>
+  		<div class="timestamp">
+  		  Campaign created <%= time_ago_in_words(@campaign.created_at) %> ago.
+  		  <% if current_user %>
+  		    <% if current_user?(@campaign.user) || current_user.admin? %>
+  		      <%= link_to "delete campaign", @campaign, method: :delete, data: { confirm: "Delete this campaign?" } %>
+  		    <% end %>
+  		  <% end %>
+  		</div>
+  		<p><%= @campaign.content %></p>
+  	</div>
+
+	<%= render @campaign.microposts.reverse %>
+
+  </div>
 
 </div>
+
+<script>
+	var coverWidth = $("#coverPhoto").width();
+  $("#coverPhoto").height(coverWidth * 0.35);
+
+  var profileWidth = $("#profile_pic").width();
+  $("#profile_pic").height(profileWidth);
+
+  $( ".accordion" ).click(function() {
+    $(this).next(".sub-accordion").toggle();
+  });
+
+</script>

@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_many :microposts, dependent: :destroy
   has_many :accounts, dependent: :destroy
   has_many :events, dependent: :destroy
+  has_many :comments
   has_many :votes, dependent: :destroy
   has_many :active_relationships, class_name:  "Relationship",
                                   foreign_key: "follower_id",
@@ -11,7 +12,6 @@ class User < ApplicationRecord
                                    dependent:   :destroy
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
-  has_many :lists, dependent: :destroy
   has_many :notifications, dependent: :destroy
   has_many :campaigns, dependent: :destroy
   has_many :tracks
@@ -144,9 +144,8 @@ class User < ApplicationRecord
   # Returns a user's feed.
   def feed
     following_ids = Relationship.where(:follower_id => id).pluck(:followed_id)
-    #following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
     relevant = Event.where("events.user_id IN (?)", following_ids).or(Event.where(:user_id => id))
-    relevant.joins(:micropost).where("campaign_id is null OR category = 'campaign'")
+    #relevant.joins(:micropost).where("campaign_id is null OR category = 'campaign'")
   end
 
   # Follows a user.

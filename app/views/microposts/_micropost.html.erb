@@ -1,84 +1,39 @@
-<% @user = micropost.user %>
-
-<li id="micropost-<%= micropost.id %>" >
-
-  <% if controller_name != "campaigns" %>
-
-    <div class="user-info">
-      <div class="avatar avatar-thumbnail" style="background-image: url('<%= micropost.user.avatar %>');"></div>
-      <div class="user" style="display: inline-block;">
-        <%= link_to micropost.user.name, micropost.user %>
-        <p class="user-company"><%= micropost.user.company || "&nbsp;".html_safe %></p>
+<div class="micropost_item">
+  <div class="row" style="height: 100%;">
+    <div class="col-md-4 col-sm-12" style="margin-bottom: 5px;">
+      <div class="user-info">
+        <img class="avatar avatar-thumbnail" src="<%= micropost.user.avatar %>" style="display: inline-block;"/>
+        <div style="display: inline-block;">
+          <h4><%= link_to micropost.user.name, micropost.user %></h4>
+          <p class="user-company"><%= micropost.user.company || "&nbsp;".html_safe %></p>
+          <%= render :partial => 'shared/accolades', :locals => {:user => micropost.user} %>
+        </div>
       </div>
-    </div>
-
-    <% case micropost.category %>
-      <% when 'question' %>
-        <% bgcolor = 'questionBack' %>
-      <% when 'careers' %>
-        <% bgcolor = 'careersBack' %>
-      <% else %>
-        <% bgcolor = 'defaultBack' %>
-    <% end %>
-
-    <% if controller_name != "users" && logged_in? %>
-      <div style="height: 20px; margin-bottom: 5px;">
-        <%= render 'shared/follow_form'%>
-      </div>
-    <% end %>
-    <%= render :partial => 'shared/accolades', :locals => {:user => @user } %>
-
-    <span class="timestamp">
-      <%= time_ago_in_words(micropost.created_at) %> ago.
-      <% if current_user %>
-        <% if current_user?(micropost.user) || current_user.admin? %>
-          <%= link_to "delete", micropost, method: :delete,
-                                           data: { confirm: "You sure?" } %>
-        <% end %>
-      <% end %>
-    </span>
-  <% else %>
-    <p class="campaign-category"><%= micropost.category ? micropost.category.titlecase.tr("_", " ") : 'Post' %></p>
-    <% if current_user && micropost.category != 'campaign' %>
-        <% if current_user?(micropost.user) || current_user.admin? %>
-          <%= link_to "delete this post", micropost, method: :delete,
-                                           data: { confirm: "You sure?" } %>
-        <% end %>
-      <% end %>
-  <% end %>
-
-  <% if micropost.category == "campaign" && controller_name != "campaigns" %>
-    <%=link_to(campaign_path(:id => micropost.campaign_id)) do %>
-      <%= render :partial => 'microposts/content', :locals => {:micropost => micropost, :bgcolor => bgcolor} %>
-    <% end %>
-  <% else %>
-    <%=link_to(micropost) do %>
-      <%= render :partial => 'microposts/content', :locals => {:micropost => micropost, :bgcolor => bgcolor} %>
-    <% end %>
-  <% end %>
-    
-
-    <div>
-      <%= link_to micropost, :data=> {:micropost_id => micropost.id} do %>
-        <span class="click-to-comments" style="display: inline-block;"><%= pluralize( micropost.comments.count, 'Comment' ) %>
+      <div class="content-container">
+        <span class="timestamp">
+          <%= time_ago_in_words(micropost.created_at) %> ago.
+          <% if current_user %>
+            <% if current_user?(micropost.user) || current_user.admin? %>
+              <%= link_to "delete", micropost, method: :delete,
+                                               data: { confirm: "You sure?" } %>
+            <% end %>
+          <% end %>
         </span>
-      <% end %>
-      <% if micropost.external_url.present? %>
-        <%= link_to(micropost.external_url, :class => "go-to-external-link", :style => "float:right;", :target => "_blank") do %>
-          <span class="glyphicon glyphicon-link"></span>
-          go to link
+        <% if micropost.content.length > 100 %>
+          <p><%= micropost.content[0,100] %>...</p>
+        <% else %>
+          <p><%= micropost.content %></p>
         <% end %>
-      <% end %>
+      </div>
     </div>
 
-    <% if (controller_name == "users" || controller_name == "campaigns") && @user == current_user %>
-      <div>
-        <p><span class="glyphicon glyphicon-stats"></span> Shares: <%= micropost.shares %> | Downloads: <%= micropost.downloads %></p>
-      </div>
-    <% end %>
+    <div class="col-md-8 col-sm-12" style="height: 100%;">
+      <%= link_to micropost do %>
+        <p class="category-title"><%= micropost.category.titlecase.tr("_", " ") %></p>
+        <img src="<%= micropost.picture.url %>" />
+      <% end %>
+    </div>
+  </div>
+</div>
 
-</li>
-
-<script>
-  show_tooltips();
-</script>
+<hr>

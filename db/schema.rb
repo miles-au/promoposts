@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_13_012506) do
+ActiveRecord::Schema.define(version: 2019_07_18_213639) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 2019_07_13_012506) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "content"
     t.index ["user_id"], name: "index_campaigns_on_user_id"
     t.index [nil, "created_at"], name: "index_campaigns_on_micropost_id_and_created_at"
   end
@@ -67,6 +68,7 @@ ActiveRecord::Schema.define(version: 2019_07_13_012506) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "contribution"
+    t.integer "campaign_id"
     t.index ["passive_user_id"], name: "index_events_on_passive_user_id"
     t.index ["user_id", "passive_user_id"], name: "index_events_on_user_id_and_passive_user_id"
     t.index ["user_id"], name: "index_events_on_user_id"

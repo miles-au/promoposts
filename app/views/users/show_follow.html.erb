@@ -1,21 +1,14 @@
 <% provide(:title, @title) %>
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-3 col-sm-12 sidebar">
     <div id="user_display">
-      <section class="user_info">
-        <div id="avatarBacking" style="display: inline-block; vertical-align: top;">
-          <div class="avatar" style="background-image: url('<%= @user.avatar %>');"></div>
-        </div>
-        <h1>
-          <%= link_to @user.name, @user %>
-        </h1>
-      </section>
+      <%= render 'shared/current_user_info' %>
     </div>
     <section class="stats">
       <%= render 'shared/stats' %>
     </section>
   </div>
-  <div class="col-md-8">
+  <div class="col-md-9 col-sm-12">
     <h3><%= @title %></h3>
     <% if @users.any? %>
       <div class="users-gallery" id="usersList">

@@ -29,8 +29,8 @@ class CampaignsController < ApplicationController
 
   def create
     @campaign = current_user.campaigns.build(campaign_params)
-    @campaign.microposts.first.user_id = current_user.id
-    @campaign.microposts.first.shareable = true
+    #@campaign.microposts.first.user_id = current_user.id
+    #@campaign.microposts.first.shareable = true
 
     if @campaign.save
       flash[:success] = "Your campaign has been created."
@@ -87,6 +87,7 @@ class CampaignsController < ApplicationController
     end
 
     Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
+      files_added = []
       campaign.microposts.each do |asset|
         if current_user.id != asset.user_id
           if asset.downloads
@@ -96,12 +97,28 @@ class CampaignsController < ApplicationController
           end
           asset.save
         end
+
+        #handle duplicate names
+        new_file_name = "#{asset.category}.png"
+        if files_added.include?(new_file_name)
+          n = 2
+          ext = File.extname(new_file_name)
+          base = File.basename(new_file_name, ext)
+          new_name = "#{base}_#{n}#{ext}"
+          while files_added.include? new_name
+            n += 1
+            new_name = "#{base}_#{n}#{ext}"
+          end
+          new_file_name = new_name
+        end
+
         if Rails.env.production?
           file_name = asset.picture.url.split('/').last
-          zipfile.add("#{asset.category}.png", File.join(folder_path,file_name))
+          zipfile.add(new_file_name, File.join(folder_path,file_name))
         else
-          zipfile.add("#{asset.category}.png", asset.picture.path)
+          zipfile.add(new_file_name, asset.picture.path)
         end
+        files_added << new_file_name
       end
     end
 
@@ -120,7 +137,7 @@ class CampaignsController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def campaign_params
-      params.require(:campaign).permit(:name, microposts_attributes: [ :content, :picture, :category ])
+      params.require(:campaign).permit(:name, :content, microposts_attributes: [ :content, :picture, :category ])
     end
 
     def correct_or_admin_user

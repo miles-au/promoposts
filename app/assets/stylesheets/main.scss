@@ -112,11 +112,17 @@ textarea {
 }
 
 .admin-button{
-  border: none;
   background-color: $red3;
-  color: $grey5;
-  padding: 10px 20px;
-  font-weight: 700;
+  h3, span{
+    color: $grey6;
+  }
+
+  &:hover{
+    background-color: $red4;
+    h3, span{
+      color: $grey6;
+    }
+  }
 }
 
 .grey-submit{
@@ -170,12 +176,6 @@ textarea {
   }
 }
 
-.follow-large{
-  width: 150px;
-  height: 50px;
-  font-size: 1.5em;
-}
-
 .follow-small{
   font-size: 0.9em;
 }
@@ -210,25 +210,6 @@ header, .navbar-inverse, .navbar-fixed-top{
   }
 }
 
-#footerContainer{
-  position: fixed;
-  left: 0px;
-  bottom: 0px;
-  padding: 0px 20px;
-  background-color: $grey5;
-  width: 100%;
-  border-top: 1px solid $grey4;
-  p{
-    display: inline-block;
-    color: $grey3;
-    font-size: 0.7;
-  }
-  .policy-link{
-    font-size: 0.6em;
-    margin-right: 5px;
-  }
-}
-
 #quickstart-wizard{
   h2{
     font-size: 2.5em;
@@ -253,10 +234,6 @@ header, .navbar-inverse, .navbar-fixed-top{
     font-size: 1.1em;
     color: $blue3;
   }
-}
-
-.heading-blue{
-  background-color: $blue6;  
 }
 
 /* TYPOGRAPHY */
@@ -382,53 +359,105 @@ li > .dropdown > .open:focus {
   position: static;
 }
 
-/* FOOTER */
+/* SIDEBAR */
 
-footer {
-  margin-top: 45px;
-  padding-top: 5px;
-  border-top: 1px solid #eaeaea;
-  color: #777;
+.sidebar{
+  border-right: 1px solid $grey4;
+  margin-bottom: 15px;
+  h3{
+    font-size: 1em;
+    font-weight: 100;
+    margin-top: 5px;
+  }
+}
 
-  a {
-    color: $blue1;
+.side_button{
+  .pop-button{
+    margin-bottom: 5px;
+  }
 
-    &:hover {
-    color: $yellow1;
+  &:hover{
+    text-decoration: none;
+  }
+}
+
+.searchBar{
+  form{
+    width: 100%;
+    display: inline-block;
+    height: 30px;
+  }
+  form, button{
+    display: inline-block;
+  }
+  input{
+    width: calc(100% - 35px);
+    background-color: $grey6;
+    padding-left: 15px;
+    display: inline-block;
+  }
+  input, button{
+    height: 30px !important;
+  }
+  button{
+    vertical-align: top;
+    border: none;
+    background-color: $yellow1;
+    width: 30px;
+    &:hover{
+      background-color: $yellow3;
     }
   }
+}
 
-  small {
-    float: left;
-    margin-left: 5%;
+.sub-accordion{
+  display: none;
+}
+
+.sidebar-form{
+  margin-bottom: 20px;
+  background-color: $blue5;
+  padding: 15px;
+  border-radius: 5px;
+  h3{
+    margin-top: 10px;
   }
+}
 
-  ul {
-  float: right;
-  list-style: none;
-  margin-right: 5%;
+/* PROFILE */
+
+.profile_user_display{
+  h1{
+    margin-top: 0px;
+    margin-bottom: 5px;
+    text-align: left;
+    font-size: 2.3em;
   }
-
-  ul li {
-  float: left;
-  margin-left: 15px;
+  h4{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: $grey2;
   }
-
 }
 
-/* post form */
-
-.post_block{
-  padding: 10px 5px;
+.follow_user{
+  button{
+    border: none;
+    padding: 0px;
+    width: 100%;
+  }
 }
 
-.avatar_edit {
-  margin-top: 15px;
+#cover_photo{
+  width: 100%;
+  margin-bottom: 10px;
+  img{
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
 }
 
-#avatarBacking{
-  background-color: $grey5;
-}
 .stats {
   overflow: auto;
   margin-top: 0;
@@ -452,48 +481,49 @@ footer {
   }
 }
 
-.user_avatars {
-  overflow: auto;
-  margin-top: 10px;
-  .avatar {
-    margin: 1px 1px;
-  }
-  a {
-    padding: 0;
+.feed_buttons{
+  &:hover a{
+    text-decoration: none;
   }
 }
 
-#user_display{
-  display: inline-block;
-  width: 200px;
-  h1{
-    font-size: 2.2em;
+/* FOOTER */
+
+#footerContainer{
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  padding: 0px 20px;
+  background-color: $grey2;
+  width: 100%;
+  p{
+    display: inline-block;
+    color: $grey4;
+    font-size: 0.8em;
   }
-  .avatar{
-      height: 150px;
-      width: 150px;
-      background-position: center;
-      margin: 0 auto;
+  a{
+    color: $grey5;
+  }
+  .footer-link{
+    font-size: 0.6em;
+    margin-right: 5px;
+  }
+  .social_links{
+    display: inline-block;
+    float: right;
+    margin: 0px 5px 0px 5px;
+    img{
+      height: 15px;
+      display: inline-block;
+      opacity: 0.7;
     }
-}
-.user_company span{
-  color: $grey3;
-}
-
-#mobile_user_display{
-  display: none;
-}
-
-#coverPhoto{
-  width: calc( 100% - 250px );
-  display: inline-block;
-  vertical-align: top;
-}
-
-.sidebar{
-  width: 200px;
-  min-height: 100px;
-  display: inline-block;
+    a:hover{
+      text-decoration: none;
+      img{
+        opacity: 1;
+      }
+    }
+  }
 }
 
 /* forms */
@@ -504,7 +534,7 @@ input, textarea, select, .uneditable-input {
   @include box_sizing;
 }
 
-input[type="text"], input[type="email"], input[type="password"], input[type="textbox"]{
+input[type="text"], input[type="email"], input[type="password"], input[type="textbox"], textarea, select{
   border-top: none;
   border-left: none;
   border-right: none;
@@ -603,13 +633,6 @@ button{
   margin-bottom: 15px;
 }
 
-.fb_autoshare_box{
-  label, input{
-    display: inline-block;
-    width: auto;
-  }
-}
-
 .fb-settings-wrapper{
   display: block;
   margin: 10px;
@@ -664,108 +687,7 @@ button{
   color: $grey5;
 }
 
-/* microposts */
-
-.microposts {
-  list-style: none;
-  padding: 0;
-
-  .user {
-    display: inline-block;
-    padding-top: 0;
-    font-size: 1.3em;
-    vertical-align: top;
-  }
-  li{
-    padding: 10px 0;
-  }
-  .user-info{
-    min-height: 50px;
-    .user{
-      width: calc(100% - 85px);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .user-company{
-      color: $grey3;
-      font-size: 0.8em;
-    }
-  }
-  .content {
-    display: block;
-    
-    img {
-      display: block;
-      padding: 5px 0;
-      max-width: 100%;
-    }
-  }
-  .avatar {
-    display: inline-block;
-    margin-right: 10px;
-  }
-  .noPic{
-    display: none;
-  }
-}
-
-.microposts-grid{
-  .section{
-    display: block;
-    clear: both;
-  }
-  li{
-    display: inline-block;
-    vertical-align: top;
-    width: 95%;
-
-    border: none;
-  }
-  
-  .content{
-    vertical-align: top;
-    overflow: hidden;
-    margin-left: 0px;
-
-    img{
-      width: 100%;
-      object-fit: cover;
-      padding: 0px;
-    }
-
-    .square{
-      padding-top: 100%;
-      background-size: cover;
-      background-position: center;
-      position: relative;
-    }
-
-    .noPic{
-      display: block;
-      width: 100%;
-      font-size: 1.2em;
-      white-space: normal;
-      text-align: center;
-      height: 0px;
-
-      strong{
-        margin-top: -50%;
-        display: block;
-        @include vertical-align;
-      }
-    }
-
-    .content-minified{
-      height: 5em;
-      display: block;
-    }
-    .content-full{
-      display: none;
-    }
-
-  }
-}
+/* FEED */
 
 .timestamp{
   display: block;
@@ -800,92 +722,6 @@ button{
   }
 }
 
-.top-comment{
-  color: $yellow1;
-}
-
-.questionBack{
-  background-color: $blue3;
-  color: $grey5;
-}
-
-.careersBack{
-  background-color: $blue2;
-  color: $yellow3;
-}
-
-.defaultBack{
-  background-color: $blue1;
-  color: $yellow1;
-}
-
-.clickToShare{
-  opacity: 0.8;
-  transition: .3s ease;
-  position: absolute;
-  bottom: 0px;
-  padding: 10px 10px 0px 10px;
-  left: 0px;
-  z-index: 100;
-  background-color: $yellow1;
-  color: $blue1;
-  font-size: 14px;
-}
-
-.clickToView{
-  background-color: $blue1 !important;
-  p{
-    color: $grey5 !important;
-  }
-}
-
-.microposts-full{
-  .content{
-    img{
-      max-height: 750px;
-    }
-
-  }  
-  p{
-    height: auto !important;
-  }
-  .content-minified{
-    display: none;
-  }
-  .content-full{
-    display: block;
-  }
-}
-
-#micropost-page{
-  .content{
-    p{
-      padding: 10px;
-      border-top: 2px solid $grey4;
-      border-bottom: 2px solid $grey4;
-    }
-  }
-}
-
-.create_post_buttons{
-  padding: 5px;
-}
-
-.download-button{
-  margin: 10px 5px 15px 5px;
-  &:hover{
-    text-decoration: none !important;
-  }
-}
-
-#digital_asset_buttons{
-  background-color: $teal6;
-}
-
-.modal-dialog{
-  width: 75%;
-}
-
 .link_to_post{
   display: inline-block;
   vertical-align: middle;
@@ -906,35 +742,14 @@ button{
 
 }
 
-aside {
-  textarea {
-    height: 100px;
-    margin-bottom: 5px;
-  }
-}
-
-span.picture {
-  margin-top: 10px;
-  input {
-    border: 0;
-  }
-}
-
-#feeds{
-  margin-bottom: 5px;
-  a{
-    text-decoration: none;
-  }
-}
-
 .tab{
   display: inline-block;
-  padding: 15px;
+  padding: 8px 15px 8px 15px;
   font-weight: 800;
   background-color: $yellow1;
   color: $grey1;
   border-radius: 5px;
-  margin: 10px 5px;
+  margin: 0px 5px;
   &:hover{
     background-color: $yellow3;
     color: $blue1;
@@ -947,40 +762,53 @@ span.picture {
   box-shadow: none;
 }
 
-.tab-digital{
-  padding-top: 8px;
-  padding-bottom: 8px;
-  background-color: $yellow1;
-}
-
-.createPost{
-  display: inline-block;
-  margin-left: 5px;
-  margin-right: 5px;
-  padding: 5px 7px;
-  &:hover{
-    text-decoration: none;
+.user-info{
+  h4{
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
-}
-
-.feed{
-  ul, ol, li, .pagination{
+  p{
     margin: 0px;
   }
 }
 
-.col-md-3{
-  .user{
-    &:after{
-      content: "\A";
-      white-space: pre; 
-    }  
+.campaign_item{
+  h2{
+    margin: 2px 0px 2px 0px;
+    text-align: left;
+    font-size: 1.5em;
+    color: $blue3;
   }
-  .timestamp a::after{
-    content: "\A";
-    white-space: pre; 
+  p{
+    margin: 2px 0px 2px 0px;
+  }
+  .category-title{
+    margin: 0px;
   }
 }
+
+.slider{
+    height: 300px;
+    width: 100%;
+    overflow: scroll;
+    white-space: nowrap;
+    padding: 0px;
+    .slider-block{
+      display: inline-block;
+      height: 100%;
+      margin-right: 20px;
+      img{
+        height: calc(100% - 20px);
+      }
+    }
+}
+
+.category-title{
+  height: 20px;
+  margin: 0px;
+}
+
+/* MICROPOST */
 
 .comment{
   .avatar{
@@ -995,106 +823,15 @@ span.picture {
   padding-left: 15px;
 }
 
-.voted{
-  color: $yellow1;
-}
-
-#profile-edit-link{
-  display: inline-block;
-  margin-bottom: 15px;
-}
-
-#allLists{
-  h3{
-    background-color: $grey1 !important;
-    border: none;
-    color: $grey1;
-    font-size: 1.3em;
+.micropost_item{
+  max-height: 350px;
+  .content-container{
+    padding: 20px 0px 5px 0px;
   }
-  .ui-state-active{
-    background-color: $yellow1 !important;
-    border: none;
-    color: $blue1;
+  img{
+    max-height: 350px;
+    max-width: 100%;
   }
-  .ui-accordion-header-collapsed{
-    background-color: $blue1 !important;
-    border: none;
-    color: $grey5;
-  }
-}
-
-#createList{
-  border-radius: 3px;
-  background-color: #ffb400;
-  padding: .5em .5em .5em .7em;
-  margin: 2px 0 0 0;
-  font-size: 100%;
-  line-height: 1.1;
-}
-
-.listingsContainer{
-  padding: 10px 0px;
-  a{
-    display: inline-block;
-  }
-}
-
-.listEditContainer{
-  a{
-    margin-right: 10px;
-  }
-  a, span{
-    color: $blue3 !important;
-  }
-}
-
-.productContainer{
-  margin: 5px;
-  display: inline-block;
-}
-
-#activity{
- width: calc( 100% - 250px ); 
- display: inline-block;
- vertical-align: top;
- padding: 10px;
-
- h3{
-  margin: 0px;
- }
-}
-
-#topPicksTitle{
-  background-color: $yellow1;
-  padding: 5px;
-}
-
-.product{
-  width: 150px;
-  height: 150px;
-  background-size: cover;
-  background-position: center;
-  margin: 0 auto;
-  span{
-    line-height: 150px;
-  }
-}
-
-.addProduct{
-  text-align: center;
-  background-color: $yellow1;
-  background-size: cover;
-  height: 150px;
-  background-position: center;
-
-  span{
-    color: $blue1;
-  }
-}
-
-.productInnerText{
-  display: block;
-  font-size: 5em;
 }
 
 /* page display */
@@ -1163,6 +900,65 @@ span.picture {
   }
 }
 
+/* CAMPAIGN */
+
+.campaign_label{
+  background-color: $teal3;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+  font-size: 1.6em;
+  text-align: left;
+  color: $grey5;
+  span{
+    color: $grey5;
+  }
+}
+
+#add-to-campaign{
+  text-align: center;
+  display: inline-block;
+  text-align: center;
+}
+
+#campaign-add-post-container{
+  margin-bottom: 20px;
+  background-color: $blue5;
+  padding: 15px;
+  border-radius: 5px;
+  h3{
+    margin-top: 10px;
+  }
+}
+
+.campaign-category{
+  text-align: left;
+  font-size: 1.3em;
+  border-bottom: 2px solid $blue1;
+}
+
+.campaign_tag{
+  background-color: $teal3;
+  padding: 5px;
+  display: inline-block;
+  color: $grey5;
+  span{
+    color: $grey5;
+  }
+  &:hover{
+    background-color: $teal4;
+  }
+}
+
+/* EVENT */
+
+.event_user_header{
+    .contribution_line{
+      display: inline-block;
+      font-size: 14px;
+    }
+}
+
 /* miscellaneous */
 
 .debug_dump {
@@ -1223,9 +1019,11 @@ span.picture {
   display: inline-block;
 }
 
+//attach avatars to image
 .avatar{
-  background-size: cover;
   vertical-align: top;
+  object-position: center;
+  object-fit: cover;
 }
 
 .avatar-thumbnail{
@@ -1253,97 +1051,6 @@ span.picture {
     width: 30px;
     height: 30px;
   }
-}
-
-.eventContainer{
-  margin-top: 5px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid $grey4;
-}
-
-.searchBar{
-  margin-left: 5px; 
-
-  form{
-    display: inline-block;
-    height: 30px;
-  }
-  form, button{
-    display: inline-block;
-  }
-  input{
-    background-color: $grey6;
-    padding-left: 15px;
-    display: inline-block;
-    width: 500px !important;
-  }
-  input, button{
-    height: 30px !important;
-  }
-  button{
-    vertical-align: top;
-    border: none;
-    background-color: $yellow1;
-    &:hover{
-      background-color: $yellow3;
-    }
-  }
-}
-
-.feedSelect{
-  position: relative;
-  width: 300px;
-
-  .selectTitle{
-    display: inline-block;
-    width: 40%;
-    font-size: 0.9em;
-    text-align: right;
-    background-color: $yellow3;
-    padding: 0px 10px 0px 5px;
-    margin-top: 10px;
-    height: 50px;
-    line-height: 50px;
-  }
-  .feedNames{
-    position: relative;
-    margin-top: 10px;
-    background-color: $yellow1;
-    border-radius: 0px;
-    border-width: 1px;
-    border-color: $grey2;
-    border-style: solid;
-    padding: 0px 5px 5px 10px;
-    font-size: 0.9em;
-    float: right;
-    height: 50px;
-    width: 60%;
-    line-height: 50px;
-  }
-}
-
-.feedSlide{
-  background-color: $yellow3;
-  padding: 20px 10px 20px 10px;
-  text-align: center;
-  a{
-    display: block;
-    font-size: 1.5em;
-    text-decoration: none;
-    width: 100%;
-    color: $blue1;
-    padding: 10px 0px;
-    &:hover{
-      background-color: $yellow2;
-    }
-  }
-  hr{
-    border-color: $blue1;
-  }
-}
-
-.slideDivider{
-  background-color: $yellow4
 }
 
 .connect_link{
@@ -1385,63 +1092,6 @@ span.picture {
 .email-notif-disabled{
   label, h3{
     color: grey;
-  }
-}
-
-.campaign-text{
-  h2{
-    background-color: $teal3;
-    padding: 5px 10px;
-    margin: 0px;
-    display: inline-block;
-    font-size: 1.6em;
-    text-align: left;
-    color: $grey5;
-    span{
-      color: $grey5;
-    }
-  }
-  .campaign-title{
-    font-size: 2.4em;
-    color: $blue2;
-    margin-left: 20px;
-  }
-}
-
-#add-to-campaign{
-  text-align: center;
-  display: inline-block;
-  text-align: center;
-}
-
-#campaign-add-post-container{
-  margin-top: 20px;
-  background-color: $blue5;
-  padding: 15px;
-}
-
-.campaign-add-post-title{
-  margin-top: 0px;
-  margin-bottom: 10px;
-  font-size: 1.7em;
-  color: $blue1;
-  text-align: left;
-  display: inline-block;
-}
-
-.campaign-category{
-  text-align: left;
-  font-size: 1.3em;
-  border-bottom: 2px solid $blue1;
-}
-
-.campaign_tag{
-  background-color: $teal3;
-  padding: 5px;
-  display: inline-block;
-  color: $grey5;
-  &:hover{
-    background-color: $teal4;
   }
 }
 
@@ -1541,6 +1191,18 @@ span.picture {
     width: calc(100% - 5px);
   }
 
+  .slider{
+    height: 200px;
+  }
+
+  .micropost_item{
+    max-height: none;
+    height: auto;
+    img{
+      max-height: 200px;
+    }
+  }
+
 //navigation
   #mobileNav{
     display: block;
@@ -1567,28 +1229,8 @@ span.picture {
   .row{
     margin: 0px;
   }
-  .microposts-grid{
-    li{
-      width: 100%;
-    }
-  }
-  .content{
-    width: 100%;
-    text-indent: 15px;
-    strong{
-      text-indent: 0px;
-    }
-  }
-  .content-minified{
-    height: auto !important;
-  }
   .action-wrapper{
     width: 100%;
-  }
-  .createPost{
-    float: left;
-    margin-bottom: 10px;
-    width: calc(100% - 5px);
   }
   .navbar-right{
     margin: 0px;
@@ -1596,25 +1238,12 @@ span.picture {
   .dropdown-menu{
     float: right !important;
   }
-  .searchBar{
-    form{
-      width: 100%;
-      text-align: center;
-    }
-    input{
-      width: calc(100% - 50px) !important;
-      margin-bottom: 0px;
-    }
-  }
   #footerContainer{
     position: static;
     
   }
 
 //profile
-  #coverPhoto{
-    width: 100vw;
-  }
   #user_display{
     position: absolute;
     width: auto;
@@ -1638,23 +1267,12 @@ span.picture {
   #activity{
     width: 100vw;
   }
-  .microposts-full{
-    img{
-      width: 100% !important;
-    }
-    .square{
-      padding-top: 100% !important;
-    }
-  }
   .feedSelect{
     font-size: 1.3em;
     width: 100%;
     #feed-names{
       width: 60%;
     }
-  }
-  .sidebar{
-    display: none;
   }
   .comment_message{
     font-size: 1.4em;

@@ -1,188 +1,138 @@
 <% provide(:title, @user.name) %>
 
-<!--modal-->
-<!--
-  <div id="modal-window" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content"></div>
+<div class="row">
+  <div class="col-md-3 col-sm-12 sidebar">
+    <div id="mobile_cover_photo" class="mobile-show" style="margin-bottom: 15px;">
+      <img id="mobile_cover_photo_img" style="width: 100%;" src='<%= @user.cover_photo? ? @user.cover_photo : "/assets/default-cover-photo.png" %>' />
+    </div>
+    <div class="profile_user_display">
+        <div>
+          <img src="<%= @user.avatar %>" id="profile_pic" style="width: 50%; object-fit: cover; object-position: center; display: inline-block; vertical-align: top;" />
+          <div style="width: 45%; display: inline-block; float: right; text-align: center;">
+            <strong>
+              <a href="<%= following_user_path(@user) %>">
+                <p><%= @user.following.count %><br>following</p>
+              </a>
+            <hr>
+              <a href="<%= followers_user_path(@user) %>">
+                <p><%= @user.followers.count %><br>followers</p>
+              </a>
+            <strong>
+          </div>
+        </div>
+        <div style="display: inline-block; vertical-align: top;">
+          <h1><%= @user.name %></h1>
+          <h4><%= @user.company %></h4>
+          <%= render :partial => 'shared/accolades', :locals => {:user => @user} %>       
+        </div>
+      </div>
+  </div>
+
+  <div class="col-md-9 col-sm-12">
+    <div id="cover_photo" class="mobile-hide">
+      <img id="cover_photo_img" src='<%= @user.cover_photo? ? @user.cover_photo : "/assets/default-cover-photo.png" %>' />
     </div>
   </div>
--->
 
-<% if @user == current_user %>
-  <%= link_to edit_user_path, id:"profile-edit-link", class:"pop-button mobile-button" do%>
-    <span class='glyphicon glyphicon-user'></span><p style="display: inline-block; margin-left: 5px;">edit my profile</p>
-  <% end %>
-
-  <%= link_to microposts_new_path, :id => "createPostBtn" do%>
-    <div class="createPost pop-button">
-      <span class="glyphicon glyphicon-pencil"></span>
-      <h3 class = "top_icons">create post</h3>
-    </div>
-  <% end %>
-
-  <%= link_to new_campaign_path, :id => "campaignPostBtn" do%>
-    <div class="createPost pop-button">
-      <span class="glyphicon glyphicon-flag"></span>
-      <h3 class = "top_icons">create campaign</h3>
-    </div>
-  <% end %>
-
-<% end %>
-
-<% if current_user && current_user.admin? %>
-  <%= link_to "delete this user", @user, method: :delete,
-                                data: { confirm: "You sure?" }, class: "admin-button" %>
-<% end %>
-
-<div style="position: relative;">
-<div id="user_display">
-  <section class="user_info">
-    <div id="avatarBacking" style="display: inline-block; vertical-align: top;">
-      <div class="avatar" style="background-image: url('<%= @user.avatar %>');"></div>
-    </div>
-    <h1>
-      <span style="text-align: left; display: block;"><%= @user.name %></span>
-    </h1>
-    <h4 class="user_company">
-      <span style="text-align: left; display: block;"><%= @user.company %></span>
-    </h4>
-  </section>
-</div>
-
-<% default_cover_photo = "/assets/default-cover-photo.png" %>
-<div id="coverPhoto" style="background-image: url('<%= @user.cover_photo? ? @user.cover_photo : default_cover_photo %>'); background-position: center; background-size: cover;">
-</div>
-
-<div id="mobile_user_display">
-  <h4 style="font-size: 1.5em;">
-    <span style="text-align: left; display: block;"><%= @user.name %></span>
-  </h4>
-  <h4 class="user_company">
-    <span style="text-align: left; display: block;"><%= @user.company %></span>
-  </h4>
-</div>
-
-<div class="row" >
-  <div class='col-md-4 col-sm-12'>
-    <%= render :partial => 'shared/accolades', :locals => {:user => @user} %>
-  </div>
-  <div class='col-md-4 col-sm-0'>
-    
-  </div>
-  <div class='col-md-4 col-sm-12'>
-    <%= render 'shared/stats' %>
-  </div>
-</div>
-
-<div class="mobile-button" style="display: inline-block;">
-  <%= render 'follow_form' if logged_in? %>
-  <%#= link_to show_lists_path(:id => @user.id) do %>
-    <!--
-    <div id="favoriteProducts" class="pop-button" style="margin-top: 20px;">
-      <%= "My Product Lists (#{@user.lists.count})" %>
-    </div>
-    -->
-  <%# end %>
 </div>
 
 <div class="row">
-  <div class="sidebar">
+  <div class="col-md-3 col-sm-12 sidebar" style="">
+    <div class="follow_user">
+      <%= render 'follow_form' if logged_in? %>
+    </div>
 
-  </div>
-  <div id="activity">
-    <h3>Activity (<%= @events.count %>)</h3>
-
-    <div id="feed-select" class="feedSelect">
-      <span id="select-title" class="selectTitle">Filter:</span>
-      <div id="feed-names" class="feedNames">
-        <% case params["feed"] %>
-            <% when ''%>
-              <p style="display: inline-block;">All Posts</p>
-            <% when 'digital_assets' %>
-              <p style="display: inline-block;">All Digital Assets</p>
-            <% when 'campaign' %>
-              <p style="display: inline-block;">Campaigns</p>
-            <% when 'general_update' %>
-              <p style="display: inline-block;">General Updates</p>
-            <% when 'cover_photo' %>
-              <p style="display: inline-block;">Cover Photos</p>
-            <% when 'email_banner' %>
-              <p style="display: inline-block;">Email Banners</p>
-            <% when 'infographic' %>
-              <p style="display: inline-block;">Infographics</p>
-            <% when 'memes' %>
-              <p style="display: inline-block;">Memes</p>
-            <% when 'news' %>
-              <p style="display: inline-block;">News</p>
-            <% when 'careers' %>
-              <p style="display: inline-block;">Careers</p>
-            <% else %>
-              <p style="display: inline-block;">All Posts</p>
-          <% end %>
-        <span id="slide-glyph" class="glyphicon glyphicon-triangle-right"></span>
-      </div>
-      <div id="feeds-slide" style="display: none;" class="slide-close feedSlide">
-        <a href="<%= user_path(:id => @user) %>"><strong>All Posts</strong></a>
-        <div class="slideDivider">
-          <a href="<%= user_path(:id => @user, :feed => 'digital_assets') %>"><strong>All Digital Assets</strong></a>
-          <a href="<%= user_path(:id => @user, :feed => 'campaign') %>">Campaigns</a>
-          <a href="<%= user_path(:id => @user, :feed => 'general_update') %>">General Updates</a>
-          <a href="<%= user_path(:id => @user, :feed => 'cover_photo') %>">Cover Photos</a>
-          <a href="<%= user_path(:id => @user, :feed => 'email_banner') %>">Email Banners</a>
-          <a href="<%= user_path(:id => @user, :feed => 'infographic') %>">Infograpics</a>
-          <a href="<%= user_path(:id => @user, :feed => 'meme') %>">Memes</a>
+    <% if @user == current_user %>
+      <%= link_to edit_user_path, :class => "side_button" do%>
+        <div class="pop-button">
+          <span class="glyphicon glyphicon-user"></span>
+          <h3 class = "top_icons">edit my profile</h3>
         </div>
-        <a href="<%= user_path(:id => @user, :feed => 'news') %>">News</a>
-        <a href="<%= user_path(:id => @user, :feed => 'careers') %>">Careers</a>
-      </div>
-    </div>
+      <% end %>
 
-    <div class="feed">
-      <ol id="microPostsContainer" class="microposts microposts-full">
-        <%= render @events %>
-      </ol>
-      <div id="infinite-scrolling">
-        <% if @events.any? %>
-          <%= will_paginate @events %>
-        <% else %>
-          <p>No posts were found.</p>
-        <% end %>
-      </div>
-    </div>
+      <%= link_to microposts_new_path, :class => "side_button" do%>
+        <div class="pop-button">
+          <span class="glyphicon glyphicon-pencil"></span>
+          <h3 class = "top_icons">create post</h3>
+        </div>
+      <% end %>
+
+      <%= link_to new_campaign_path, :class => "side_button" do%>
+        <div class="pop-button">
+          <span class="glyphicon glyphicon-flag"></span>
+          <h3 class = "top_icons">create campaign</h3>
+        </div>
+      <% end %>
+
+    <% end %>
+
+    <% if current_user && current_user.admin? %>
+      <%= link_to @user, :method => :delete, data: { confirm: "You sure?" }, :class => "side_button" do%>
+        <div class="pop-button admin-button">
+          <span class="glyphicon glyphicon-trash"></span>
+          <h3 class = "top_icons">delete user</h3>
+        </div>
+      <% end %>
+    <% end %>
   </div>
+
+  <div class="col-md-9 col-sm-12">
+      <div style=" padding-left: 10px; ">
+        
+        <% if @feed_type == "user" %>
+          <h3 style="text-align: left;">Activity</h3>
+        <% else %>
+          <h3 style="text-align: left;"><%= @feed_type.titlecase.tr("_", " ") %><%= 's' unless (@feed_type == "digital_assets" ) %></h3>
+        <% end %>
+
+        <%= link_to user_path(:id => @user.id, :feed => "user") do%>
+          <h5 id="userFeed" class="tab <%= 'tab-active' if @feed_type == 'user' %>">User Activity</h5>
+        <% end %>
+
+        <div style="margin-top: 5px;">
+          <p>Get Digital Assets by type:</p>
+          <% digital_assets_array = Micropost.category_array.unshift(['All Digital Assets', 'digital_assets']) %>
+          <% digital_assets_array = Micropost.category_array.unshift(['Campaign', 'campaign']) %>
+
+          <%= form_tag @user, :method => 'get' do %>
+            <%= select_tag "feed", options_for_select(digital_assets_array), onchange: 'this.form.submit();', :prompt => "Select a category" %>
+          <% end %>
+        </div>
+
+        <div class="feed">
+          <ol id="microPostsContainer" class="microposts microposts-full" style="padding: 0px;">
+            <%= render @feed_items %>
+          </ol>
+          <div id="infinite-scrolling">
+            <% if @feed_items.any? %>
+              <%= will_paginate @feed_items %>
+            <% else %>
+              <p>No posts were found.</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
 
 </div>
 
 <script>
-  function togglePanel (){
-     var w = $(window).width();
-     if (w <= 768) {
-        $('#collapseOne').removeClass('in');
-     } else {
-        $('#collapseOne').addClass('in');
-     }
-  }
-
   $( document ).ready(function() {
-    togglePanel();
 
     $(".eventContainer").removeClass("col-md-4");
     $(".eventContainer").addClass("col-md-12");
     
     history.pushState(null, '<%= :title %>', '/users/<%= @user.slug %>');
 
-    var coverWidth = $("#coverPhoto").width();
-    $("#coverPhoto").height(coverWidth * 0.35);
+    var coverWidth = $("#mobile_cover_photo_img").width();
+    $("#mobile_cover_photo_img").height(coverWidth * 0.35);
+
+    var coverWidth = $("#cover_photo_img").width();
+    $("#cover_photo_img").height(coverWidth * 0.35);
+
+    var profileWidth = $("#profile_pic").width();
+    $("#profile_pic").height(profileWidth);
 
   });
-
-  function shuffleArray (array){
-    for (let i = array.length - 1; i > 0; i--) {
-        const rand = Math.floor(Math.random() * (i + 1));
-        [array[i], array[rand]] = [array[rand], array[i]];
-    }
-  }
 
   show_tooltips();
 
@@ -201,5 +151,11 @@
       $("#slide-glyph").addClass("glyphicon-triangle-right");
     } 
   });
+
+  //set cover photo to 3:1 aspect ratio
+  var img = $('#cover_photo_img');
+  var width = img.width();
+  
+  img.css('height', width/3);
   
 </script>

@@ -1,0 +1,45 @@
+<% if campaign.microposts.count > 0 %>
+
+	<div class="campaign_item">
+		<div class="row">
+			<div class="col-md-4 col-sm-12 user-info" style="margin-bottom: 5px;">
+			  <img class="avatar avatar-thumbnail" src="<%= campaign.user.avatar %>" style="display: inline-block;" />
+			  <div style="display: inline-block;">
+			    <h4><%= link_to campaign.user.name, campaign.user %></h4>
+			    <p class="user-company"><%= campaign.user.company || "&nbsp;".html_safe %></p>
+			    <%= render :partial => 'shared/accolades', :locals => {:user => campaign.user} %>
+			  </div>
+			</div>
+
+			<div class="col-md-8 col-sm-12">
+				<%= link_to campaign do %>
+					<h2><strong><%= campaign.name %></strong> (<%= campaign.microposts.count %>)</h2>
+					<p><%= campaign.content %></p>
+				<% end %>
+				<span class="timestamp">
+			      <%= time_ago_in_words(campaign.created_at) %> ago.
+			      <% if current_user %>
+			        <% if current_user?(campaign.user) || current_user.admin? %>
+			          <%= link_to "delete", campaign, method: :delete,
+			                                           data: { confirm: "You sure?" } %>
+			        <% end %>
+			      <% end %>
+			    </span>
+			</div>
+		</div>
+		<div class="slider">
+			<% campaign_posts = campaign.microposts.sort_by { |p| p.created_at } %>
+			<% campaign_posts.each do |post| %>
+				<div class="slider-block">
+					<%= link_to post do %>
+						<p class="category-title"><%= post.category.titlecase.tr("_", " ") %></p>
+						<img src="<%= post.picture.url %>" />
+					<% end %>
+				</div>
+			<% end %>
+		</div>
+	</div>
+
+	<hr>
+
+<% end %>

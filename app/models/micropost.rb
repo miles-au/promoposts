@@ -4,13 +4,14 @@ class Micropost < ActiveRecord::Base
   default_scope -> { order(created_at: :desc) }
   mount_uploader :picture, PictureUploader
   validates :user_id, presence: true
-  validates :content, length: { maximum: 400 }
+  validates :category, presence: true
+  validates :content, length: { maximum: 400 }, presence: true
   validates :external_url, length: {maximum: 500}
+  validates :picture, presence: true
   validate  :picture_size
   validate :content_exists
   validate :valid_url
   validate :digital_asset_has_picture
-  validate :campaign_has_picture_and_text
   has_many :events, dependent: :destroy
   has_many :comments, dependent: :destroy
   before_save
@@ -23,6 +24,25 @@ class Micropost < ActiveRecord::Base
 
   before_destroy :delete_notifications
 
+  def self.category_array
+    array = [ ['Facebook Cover Photo','facebook_cover_photo'],
+              ['Facebook Post', 'facebook_post'],
+              ['Facebook Linked Image', 'facebook_linked_image'],
+              ['LinkedIn Personal Cover Photo', 'linkedin_personal_cover_photo'],
+              ['LinkedIn Business Cover Photo', 'linkedin_business_cover_photo'],
+              ['LinkedIn Post', 'linkedin_post'],
+              ['LinkedIn Linked Post', 'linkedin_linked_post'],
+              ['Instagram Post', 'instagram_post'],
+              ['Twitter Cover Photo', 'twitter_cover_photo'],
+              ['Twitter Post', 'twitter_post'],
+              ['Twitter Linked Post', 'twitter_linked_post'],
+              ['Pinterest Pin', 'pinterest_pin'],
+              ['Pinterest Board Cover', 'pinterest_board_cover'],
+              ['Email Banner', 'email_banner'],
+              ['Meme', 'meme'],
+              ['Infographic', 'infographic']]
+  end
+
   private
 
     # Validates the size of an uploaded picture.
@@ -34,7 +54,7 @@ class Micropost < ActiveRecord::Base
 
     def content_exists
         if campaign_id.blank? && picture.blank? && content.blank?
-          errors[:base] << "Please include a photo or text."
+          errors[:base] << "Must include a photo or text."
         end
     end
 
@@ -98,23 +118,11 @@ class Micropost < ActiveRecord::Base
         if category == "cover_photo" || category == "email_banner" || category == "infographic" || category == "meme"
           if picture.blank?
             #cover photo must have a picture
-            errors[:base] << "Please include a picture with your #{category.tr("_", " ")}."
+            errors[:base] << "Must include a picture with your #{category.tr("_", " ")}."
           else
             return
           end
         end
-      end
-    end
-
-    def campaign_has_picture_and_text
-      if category == "campaign" 
-        errors[:base] << "Please include a campaign poster." if picture.blank?
-        if content.blank?
-          self.update_attribute('content', self.campaign.name)
-        end
-      elsif campaign_id
-        errors[:base] << "Please include a picture." if picture.blank?
-        errors[:base] << "Please include a caption." if content.blank?
       end
     end
 

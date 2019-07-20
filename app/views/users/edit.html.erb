@@ -4,7 +4,7 @@
 
 <div class="row">
 	<div class="col-md-3">
-		<div class="avatar" style="background-image: url('<%= current_user.avatar %>'); height: 150px; width: 150px; border: 2px solid $sigBlue;"></div>
+		<img class="avatar" src="<%= current_user.avatar %>" style="height: 150px; width: 150px;"/>
 	</div>
 	<div class="col-md-6">
 		<%= render 'form' %>

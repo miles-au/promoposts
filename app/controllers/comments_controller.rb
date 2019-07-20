@@ -71,4 +71,11 @@ class CommentsController < ApplicationController
     def comment_params
       params.require(:comment).permit(:message, :user_id, :micropost_id, :score, :head)
     end
+
+    def correct_or_admin_user
+      if current_user.admin == true || current_user.comments.find_by(id: params[:id])
+      else
+        redirect_to root_url
+      end
+    end
 end

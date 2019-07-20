@@ -18,9 +18,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= render 'layouts/rails_default' %>
     <%= render 'layouts/shim' %>
-    <!--<meta property="fb:app_id" content="<%= ENV['FACEBOOK_KEY'] %>" />-->
     <%= favicon_link_tag asset_path('favicon.png') %>
-    <%#= render 'layouts/facebook_pixel' %>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
   </head>
 
   <body>
@@ -29,9 +28,6 @@
       <div id="flash_wrapper">
         <%= render 'shared/flash' %>
       </div>
-      <% if logged_in? %>
-        <%= render 'shared/quickstart_wizard' %>
-      <% end %>
       <%= yield %>
       <%= render 'layouts/footer' %>
       <%= debug(params) if Rails.env.development? %>
@@ -42,7 +38,6 @@
     src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
     integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
     crossorigin="anonymous"></script>-->
-
 
     <script type="text/javascript">
     _linkedin_partner_id = "1190068";
@@ -56,6 +51,10 @@
     s.parentNode.insertBefore(b, s);})();
     </script>
     <script>
+      var profileWidth = $("#profile_pic").width();
+      $("#profile_pic").height(profileWidth);
+
+      //infinite scroll
       $(window).on( 'scroll', function(){
          more_posts_url = $('.pagination .next_page a').attr('href');
          if(more_posts_url && $(window).scrollTop() > $(document).height() - $(window).height() - 60){

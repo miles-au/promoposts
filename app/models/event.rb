@@ -1,6 +1,7 @@
 class Event < ApplicationRecord
 	belongs_to :user, optional: true
-  	belongs_to :micropost
+  	belongs_to :micropost, optional: true
+  	belongs_to :campaign, optional: true
 
 	default_scope -> { order(created_at: :desc) }
 

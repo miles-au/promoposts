@@ -92,7 +92,7 @@ class MicropostsController < ApplicationController
     @user = @micropost.user
     @token = SecureRandom.urlsafe_base64
 
-    if logged_in? && @micropost.shareable
+    if logged_in?
       #current_user.activation_digest = @token
       #current_user.save
       platform_accounts = current_user.accounts

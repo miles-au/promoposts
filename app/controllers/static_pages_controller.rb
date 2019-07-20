@@ -10,97 +10,47 @@ class StaticPagesController < ApplicationController
       case @feed_type
         when "user"
           if logged_in?
-            @feed_items_raw = current_user.feed
-            @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
+            #get events by following, or self
+            user_feed = current_user.feed
+            @feed_items = user_feed.paginate(:page => params[:page], :per_page => 24)
           else
             redirect_to login_path
           end
 
         when "global"
-          @feed_items_raw = Event.global
-          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
-
-        when "vendor"
-          @feed_items_raw = Event.vendors
-          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
+          @feed_items = Event.all.paginate(:page => params[:page], :per_page => 24)
 
         when 'digital_assets'
-          @feed_items_raw = Event.digital_assets
-          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
+          merged_items = (Campaign.all + Micropost.where(:campaign_id => nil)).sort_by {|obj| obj.created_at}.reverse
+          @feed_items = merged_items.paginate(:page => params[:page], :per_page => 24)
 
         when 'campaign'
-          @feed_items_raw = Event.campaigns
-          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
-
-        when 'general_update'
-          @feed_items_raw = Event.general_updates
-          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
-        
-        when 'cover_photo'
-          @feed_items_raw = Event.cover_photos
-          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
-
-        when 'email_banner'
-          @feed_items_raw = Event.email_banners
-          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
-
-        when 'infographic'
-          @feed_items_raw = Event.infographics
-          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)    
-
-        when 'meme'
-          @feed_items_raw = Event.memes
-          @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24) 
-
-        # when 'questions'
-        #   @feed_items_raw = Event.questions
-        #   @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
-
-        # when 'careers'
-        #   @feed_items_raw = Event.careers
-        #   @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
-
-        # when "news"
-        #   @feed_items_raw = Event.news
-        #   @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
+          @feed_items = Campaign.all.reverse.paginate(:page => params[:page], :per_page => 24)
 
         when 'search'
           query = params[:search]
 
           if Rails.env.production?
             safe_query = ActiveRecord::Base.connection.quote("#{query}%")
-            @feed_items_raw = Event.joins(:micropost).where("content ILIKE ?", "%#{query}%").reorder("content ILIKE #{safe_query} DESC")
-            @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
+            @feed_items = (Micropost.where("content ILIKE ?", "%#{query}%") + Campaign.where("content ILIKE ? OR name ILIKE ?", "%#{query}%", "%#{query}%")).paginate(:page => params[:page], :per_page => 24)
           else
             safe_query = ActiveRecord::Base.connection.quote("#{query}%")
-            @feed_items_raw = Event.joins(:micropost).where("content LIKE ?", "%#{query}%").reorder("content LIKE #{safe_query} DESC")
-            @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
+            @feed_items = (Micropost.where("content LIKE ?", "%#{query}%") + Campaign.where("content LIKE ? OR name LIKE ?", "%#{query}%", "%#{query}%")).paginate(:page => params[:page], :per_page => 24)
           end 
 
         else
-          redirect_to root_path(:feed => 'digital_assets')
+          @feed_items = Micropost.where(:category => params[:feed]).paginate(:page => params[:page], :per_page => 24)
 
       end
+      
     else
-      #render defaults
-=begin
-      if logged_in?
-        @feed_items_raw = current_user.feed
-        @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
-        @feed_type = "user"
-      else
-        @feed_items_raw = Event.global
-        @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
-        @feed_type = "global"
-      end
-=end
-      @feed_items_raw = Event.digital_assets
-      @feed_items = condense_feed_items(@feed_items_raw).paginate(:page => params[:page], :per_page => 24)
+
+      #default to digital assets
+      merged_items = (Campaign.all + Micropost.where(:campaign_id => nil)).sort_by {|obj| obj.created_at}.reverse
+      @feed_items = merged_items.paginate(:page => params[:page], :per_page => 24)
       @feed_type = "digital_assets"
 
     end
-
-    
 
     #newcomer accolade
     if current_user
@@ -120,23 +70,6 @@ class StaticPagesController < ApplicationController
       format.js
     end
 
-  end
-
-  def condense_feed_items(items)
-  
-    #get events
-    item_counts = items.select('COUNT(id)', :micropost_id).group(:micropost_id, :created_at).size
-    event_ids = []
-    @event_counts = {}
-    item_counts.each do |key, value|
-      event_ids << items.find_by(:micropost => key)
-      post_events = items.where(:micropost => key)
-      @event_counts[key] = post_events.pluck(:user_id).uniq.count
-    end
-
-    feed_items = items.where(:id => event_ids)
-
-    return feed_items
   end
 
   def change_grid_view

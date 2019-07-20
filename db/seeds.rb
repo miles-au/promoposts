@@ -10,7 +10,6 @@ unless User.find_by( email: "contact@promoposts.net" )
 end
 
 =begin
-
 99.times do |n|
   num = 1
   10.times do |i|
@@ -36,13 +35,48 @@ end
                 category: cat)
   end
 end
+=end
 
-users = User.order(:created_at).take(6)
-50.times do
-  content = Faker::Lorem.sentence(5)
-  users.each { |user| user.microposts.create!(content: content) }
+
+#users = User.order(:created_at).take(6)
+
+10.times do |n|
+  num = 1
+  10.times do |i|
+    num = rand(1..3) 
+  end
+  if num == 1
+    cat = "distributor"
+  elsif num == 2
+    cat = "vendor"
+  else
+    cat = "none"
+  end
+  name  = Faker::Name.name
+  email = "example-#{n+1}@railstutorial.org"
+  password = "password"
+  unless User.find_by( email: email )
+    User.create!(name:  name,
+                email: email,
+                password:              password,
+                password_confirmation: password,
+                activated: true,
+                activated_at: Time.zone.now,
+                category: cat)
+  end
 end
 
+users = User.all
+
+5.times do
+  content = Faker::Lorem.sentence(5)
+  users.each do |user|
+    picture = File.open(Rails.root + "app/assets/images/travel/#{rand(60)}.jpg")
+    user.microposts.create!(content: content, picture: picture, category: 'general_update')
+  end
+end
+
+=begin
 # Following relationships
 users = User.all
 user  = users.first

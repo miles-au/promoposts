@@ -5,6 +5,7 @@
     </div>
     <ul>
     <% object.errors.full_messages.each do |msg| %>
+      <% msg.gsub("Microposts","Post")%>
       <li><%= msg %></li>
     <% end %>
     </ul>

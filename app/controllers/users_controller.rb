@@ -40,20 +40,31 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by_slug(params[:id]) || User.find(params[:id])
-    if params["feed"].present? || !params["feed"].blank?
-      if params["feed"] == "digital_assets"
-        relevant = Event.where(:user_id => @user.id).joins(:micropost).where("category = ? OR category = ? OR category = ? OR category = ? OR category = ? OR category = ?", "campaign", "cover_photo", "email_banner" , "infographic", "general_update" , "meme")
-        activity = relevant.joins(:micropost).where("campaign_id is null OR category = 'campaign'")
-      else
-        activity = Event.where(:user_id => @user.id).joins(:micropost).where("category = ?", params["feed"])
+    @feed_type = params[:feed] || "digital_assets"
+
+    if @feed_type
+      
+      case @feed_type
+        when "user"
+          @feed_items = @user.events.paginate(:page => params[:page], :per_page => 24)
+
+        when 'digital_assets'
+          merged_items = (@user.campaigns.all + @user.microposts.where(:campaign_id => nil)).sort_by {|obj| obj.created_at}.reverse
+          @feed_items = merged_items.paginate(:page => params[:page], :per_page => 24)
+
+        when 'campaign'
+          @feed_items = @user.campaigns.all.reverse.paginate(:page => params[:page], :per_page => 24)
+
+        else
+          @feed_items = @user.microposts.where(:category => params[:feed]).paginate(:page => params[:page], :per_page => 24)
       end
+
     else
-      relevant = Event.joins(:micropost).where("campaign_id is null OR category = 'campaign'")
-      activity = relevant.where(:user_id => @user.id)
+      @events = Event.where(:user_id => @user.id).paginate(page: params[:page], :per_page => 10)
     end
-    @events = activity.paginate(page: params[:page], :per_page => 10)
-    #@microposts = @user.microposts.paginate(page: params[:page], :per_page => 10)
+
     redirect_to root_url and return unless @user.activated == true
+
   end
 
   def create
