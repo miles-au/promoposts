@@ -1,0 +1,9 @@
+<div class="page-wrapper">
+	<%= check_box_tag("pages[]", value = page.id, checked = false, options = { :onchange => "check_fields()"})%>
+
+	<div class="img-holder">
+		<%= image_tag "#{page.provider}.svg", :class => "thumbnail-page #{page.provider}-bg", :style => "padding: 2px;" %>
+		<img class="thumbnail-page" src="<%= page.picture %>"/>
+	</div>
+	<h6 class="page-name"><%= page.name %></h6>
+</div>

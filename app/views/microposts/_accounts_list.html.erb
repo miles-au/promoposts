@@ -1,0 +1,28 @@
+<% platform_accounts = current_user.accounts.where( :platform => platform.downcase ) %>
+
+<div class="row" style="margin-top: 10px;">
+	<h4 class="social-login <%= platform.downcase %>-bg">
+		<%= image_tag "#{platform.downcase}.svg", :style => "margin-right: 10px;" %>Share to <%= platform %> <span style="font-size: 0.8em; color: inherit;"><%= @micropost.category == "#{platform.downcase}_post" ? "(recommended for this post)" : "" %></span></h4>
+	<div class="col-md-7 col-sm-12">
+		<% if platform_accounts.empty? %>
+			<h6><span class="glyphicon glyphicon-exclamation-sign"></span> No <%= platform %> pages to share to</h6>
+		<% else %>
+			<%#= label_tag "event[microposts][#{platform.downcase}][post_caption]", "Caption for #{platform} post:" %>
+			<%#= text_area_tag "event[microposts][#{platform.downcase}][post_caption]", nil, :class => "captionText", :maxlength => 240, :val => "" %>
+			<% platform_accounts.each do |page| %>
+				<div class="page-wrapper">
+					<%= check_box_tag("pages[]", value = page.id, checked = false )%>
+
+					<div class="img-holder">
+						<%= image_tag "#{page.provider}.svg", :class => "thumbnail-page #{page.provider}-bg", :style => "padding: 2px;" %>
+						<img class="thumbnail-page" src="<%= page.picture %>"/>
+					</div>
+					<h6 class="page-name"><%= page.name %></h6>
+				</div>
+			<% end %>
+		<% end %>
+	</div>
+	<div class="col-md-5 col-sm-12">
+		
+	</div>
+</div>

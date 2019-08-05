@@ -1,0 +1,138 @@
+<h2 style="text-align: left;">Share campaign:</h2>
+<h1 style="text-align: left;"><%= link_to @campaign.name, @campaign %></h1>
+
+<%= form_tag(share_campaign_path(@campaign.id), method: :post, html: { id: "shareContainer" } ) do %>
+	<%= label_tag :message, "Enter a caption for all posts:" %>
+	<div class="pop-button" style="margin-bottom: 10px;" id="useOriginalText">Use/edit original campaign text</div>
+	<%= text_area_tag :message, nil, :id => "inputText", :maxlength => 240 %>
+	<!--<div class="pop-button" style="margin-bottom: 10px;" id="updateText">Update posts with text above</div>-->
+	
+	<%= link_to "Manage Accounts", '/accounts/edit' %>
+	<% Account.platform_array.each do |platform| %>
+		<%= render :partial => 'accounts_list', locals: { platform: platform }%>
+	<% end %>
+
+
+  	<div>
+		<%= submit_tag "Share", class: "pop-button hidden", id: "share-button" %>
+		<div id="campaign-missing-fields" class="pop-button pop-button-grey" style="display: block; margin: 5px 0;">Share</div>
+		<ul style="text-align: left;">
+			<li id="missing-text">Missing text</li>
+			<li id="missing-pages">Missing pages to share to</li>
+		</ul>
+	</div>
+<% end %>
+
+<script>
+	$( document ).ready(function() {
+	    show_first();
+	    first_radio_buttons();
+	});
+
+	$('#useOriginalText').click(function() {
+	  $( "#inputText" ).val("<%= escape_javascript(raw(@campaign.content)) %>");
+	  check_fields();
+	});
+
+	$("#inputText").on("change keyup paste", function(){
+		check_fields();
+	})
+
+	function check_fields(){
+		text = document.getElementById("inputText");
+		var str_length = text.value.length;
+
+		var checkboxes = document.getElementsByName('pages[]');
+		var pageChecked = false;
+
+		for(var i = 0; i < checkboxes.length; i++) {
+		    if(checkboxes[i].type.toLowerCase() == 'checkbox') {
+		        if(checkboxes[i].checked == true){
+		        	pageChecked = true;
+		        }
+		    }
+		}
+
+		if(str_length > 0 && pageChecked == true){
+			all_fields();
+		}else{
+			missing_fields(str_length, pageChecked);
+		}
+	}
+
+	function missing_fields(str_length, pageChecked){
+		if(str_length > 0){
+			$('#missing-text').addClass('hidden');
+		}else{
+			$('#missing-text').removeClass('hidden');
+		}
+
+		if(pageChecked){
+			$('#missing-pages').addClass('hidden');
+		}else{
+			$('#missing-pages').removeClass('hidden');
+		}
+
+		$('#share-button').addClass('hidden');
+		$('#campaign-missing-fields').removeClass('hidden');
+	}
+	function all_fields(){
+		$('#missing-text').addClass('hidden');
+		$('#missing-pages').addClass('hidden');
+		$('#share-button').removeClass('hidden');
+		$('#campaign-missing-fields').addClass('hidden');
+	}
+
+	//CAROUSEL CODE
+	//show first image
+	function show_first(){
+		$( ".post_carousel_container" ).each(function( index ) {
+		  $( this ).find(">:first-child").removeClass("inactive");
+		  $( this ).find(">:first-child").addClass("active-img");
+		});
+	}
+	
+	//when clicking arrows
+	//select all first options
+	function first_radio_buttons(){
+		$(".carousel_radio_buttons").each(function(i, obj) {
+	    	$(this).find(">:first-child").attr('checked', true);//.trigger("click");
+		});
+	}
+
+	$(".arrow-right").click(function() {
+		//cycle through images
+		var img_container = $(this).parent().next(".post_carousel_container")
+		var current_img = $(this).parent().next(".post_carousel_container").find(".active-img:first");
+		current_img.removeClass("active-img");
+		current_img.addClass("inactive");
+		img_container.append(current_img);
+		show_first();
+		//cycle through radio buttons
+		var radio_buttons = $(this).next(".carousel_radio_buttons");
+		var current_selection = radio_buttons.find("input[checked='checked']");
+		current_selection.attr('checked', false);
+		radio_buttons.append(current_selection);
+		first_radio_buttons();
+	});
+
+	$(".arrow-left").click(function() {
+		//cycle through images
+		var img_container = $(this).parent().next(".post_carousel_container")
+		var current_img = $(this).parent().next(".post_carousel_container").find(".active-img:first");
+		var last_img = $(this).parent().next(".post_carousel_container").find(".inactive:last");
+		current_img.removeClass("active-img");
+		current_img.addClass("inactive");
+		img_container.prepend(last_img);
+		show_first();
+		//cycle through radio buttons
+		var radio_buttons = $(this).siblings( ".carousel_radio_buttons" );
+		var current_selection = radio_buttons.find("input[checked='checked']");
+		var last_selection = radio_buttons.children().last();
+		current_selection.attr('checked', false);
+		radio_buttons.prepend(last_selection);
+		first_radio_buttons();
+	});
+
+
+</script>

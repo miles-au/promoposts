@@ -848,7 +848,6 @@ button{
 }
 
 .img-holder{
-  width: 32px;
   height: 32px;
   padding: 0px;
   display: inline-block;
@@ -864,10 +863,6 @@ button{
   }
   .img-holder{
     display: inline-block;
-  }
-  img{
-    padding: 5%;
-    width: 100%;
   }
 }
 
@@ -950,6 +945,25 @@ button{
   }
 }
 
+.post_carousel{
+    img{
+      max-height: 300px;
+      max-width: 100%;
+    }
+    .arrow{
+      margin: 0px 5px;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+}
+
+.carousel_radio_buttons{
+    input{
+      display: none;
+    }
+}
+
 /* EVENT */
 
 .event_user_header{
@@ -988,7 +1002,7 @@ button{
   color: white;
   display: block; 
   padding: 5px 10px;
-  margin: 10px;
+  margin: 5px 0px 5px 0px;
 
   img{
     width: 32px;
@@ -1002,16 +1016,25 @@ button{
   }
 }
 
-.facebook-login{
+.facebook-bg{
   background-color: #3b5998;
 }
-.linkedin-login{
+.linkedin-bg{
   background-color: #0077b5;
 }
-.buffer-login{
+.instagram-bg{
+  background-color: #E1306C;
+}
+.twitter-bg{
+  background-color: #38A1F3;
+}
+.pinterest-bg{
+  background-color: #c92228;
+}
+.buffer-bg{
   background-color: #323b43;
 }
-.email-login{
+.email-bg{
   background-color: $teal3;
 }
 

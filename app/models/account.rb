@@ -8,6 +8,10 @@ class Account < ApplicationRecord
   def self.get_token(val)
   	decrypt_value(val)
   end
+
+  def self.platform_array
+  	array = ['Facebook', 'LinkedIn', 'Instagram', 'Twitter', 'Pinterest']
+  end
   	
   private
 

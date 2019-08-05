@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_18_213639) do
+ActiveRecord::Schema.define(version: 2019_08_05_041511) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 2019_07_18_213639) do
     t.string "name"
     t.string "picture"
     t.datetime "last_share_time"
+    t.string "platform"
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
@@ -115,6 +116,7 @@ ActiveRecord::Schema.define(version: 2019_07_18_213639) do
     t.boolean "read", default: false
     t.string "category"
     t.integer "destination_id"
+    t.string "obj"
   end
 
   create_table "oauth_accounts", force: :cascade do |t|

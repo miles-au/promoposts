@@ -328,7 +328,6 @@ class User < ApplicationRecord
   def linkedin
     decrypted_token = User.decrypt_value(self.linkedin_oauth_token)
     @linkedin = HTTParty.get("https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))&oauth2_access_token=#{decrypted_token}")
-    #@linkedin = HTTParty.get("https://api.linkedin.com/v2/me?oauth2_access_token=#{decrypted_token}")
   end
 
   def linkedin_companies

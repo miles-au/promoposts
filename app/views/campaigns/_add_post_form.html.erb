@@ -15,7 +15,7 @@
       </div>
       <div class="field" style="">
         <p style="display: inline-block; text-align: top;">Add Caption:</p>
-        <div class="pop-button" style="margin-bottom: 10px;" id="useOriginalText">Use campaign caption</div>
+        <div class="pop-button" style="margin-bottom: 10px;" id="useOriginalText" onclick="use_campaign_text();">Use campaign caption</div>
         <%= micropost.text_area :content, :id => 'postInputContent' , placeholder: "Tell us about your campaign...", maxlength: 500 %>
       </div>
     <% end %>
@@ -49,10 +49,10 @@
     check_fields();
   })
 
-  $('#useOriginalText').click(function() {
+  function use_campaign_text(){
     $( "#postInputContent" ).val("<%= escape_javascript(raw(@campaign.content)) %>");
     check_fields();
-  });
+  };
 
   function check_fields(){
     var has_select = document.getElementById("postInputSelect").value;

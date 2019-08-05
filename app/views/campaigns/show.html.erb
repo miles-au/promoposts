@@ -20,8 +20,15 @@
           <h3 class = "top_icons"><span class="glyphicon glyphicon-cloud-download"></span> Download Campaign Assets</h3>
         </div>
       <% end %>
+      <%= link_to share_campaign_path(:id => @campaign.id), :class => "side_button" do%>
+        <div class="pop-button">
+          <h3 class = "top_icons"><span class="glyphicon glyphicon-share-alt"></span> Share to Social Platforms</h3>
+        </div>
+      <% end %>
     <% else %>
-    	<span><%= link_to 'Sign in', social_login_path %> to download campaign assets </span><span class="glyphicon glyphicon-cloud-download"></span>
+    	<p><%= link_to 'Sign in', social_login_path %> to:<br>
+          <span class="glyphicon glyphicon-cloud-download"></span> download this campaign<br>
+          <span class="glyphicon glyphicon glyphicon-share-alt"></span> share to social platforms</p>
     <% end %>
 
     <% if @campaign.user == current_user %>

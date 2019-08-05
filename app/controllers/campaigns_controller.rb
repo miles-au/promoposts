@@ -1,5 +1,6 @@
 class CampaignsController < ApplicationController
-  before_action :correct_or_admin_user, only: [:destroy]
+  before_action :logged_in_user, only: [:new, :edit, :create, :share_campaign, :submit_share_campaign, :update, :download_assets]
+  before_action :correct_or_admin_user, only: [:destroy, :edit, :update]
 
   # GET /campaigns
   # GET /campaigns.json
@@ -11,6 +12,7 @@ class CampaignsController < ApplicationController
   # GET /campaigns/1.json
   def show
     @campaign = Campaign.find(params[:id])
+
   end
 
   # GET /campaigns/new
@@ -131,6 +133,69 @@ class CampaignsController < ApplicationController
       File.delete("#{Rails.root}/public/#{current_user.id}.zip") if File.exist?("#{Rails.root}/public/#{current_user.id}.zip")
       FileUtils.rm_rf("#{Rails.root}/public/downloads/#{current_user.id}") if File.exist?("#{Rails.root}/public/downloads/#{current_user.id}")
     end
+
+  end
+
+  def share_campaign
+    @campaign = Campaign.find(params[:id])
+    
+  end
+
+  def submit_share_campaign
+    campaign = Campaign.find(params[:id])
+    message = params['message']
+    accounts = current_user.accounts.where('id IN (?)', params[:pages])
+    @success_string = []
+    @create_share_event = false
+
+    if Rails.env.production?
+      base_url = ""
+    else
+      base_url = root_url
+    end
+
+    accounts.each do |page|
+      micropost = Micropost.find(params[:microposts]["#{page.platform}"][:post_id])
+      case page.provider
+      when "facebook"
+        resp = Micropost.share_to_facebook(micropost, page, message, base_url, current_user)
+      when "linkedin"
+        resp = Micropost.share_to_linkedin(micropost, page, message, base_url, current_user)
+      when "buffer"
+        resp = Micropost.share_to_buffer(micropost, page, message, base_url, current_user)
+      else
+      end
+
+      if resp == "success"
+        @success_string << "<span class='glyphicon glyphicon-ok'></span> #{page.name} - Success"
+        @create_share_event = true
+        if micropost.shares
+          micropost.shares += 1
+        else 
+          micropost.shares = 1
+        end
+        micropost.save
+      else
+        @success_string << "<span class='glyphicon glyphicon-remove'></span> #{page.name} - Failed"
+      end
+    end
+
+    if @create_share_event && current_user != campaign.user_id
+      #create event
+      @event = Event.new(user_id: current_user.id, passive_user_id: campaign.user.id, campaign_id: campaign.id, contribution: 'share')
+      @event.save!
+
+      #create notification
+      @notification = Notification.new(:user_id => campaign.user_id, :message => "#{current_user.name} shared your campaign.", :category => "share", :destination_id => campaign.id, :obj => "campaign" )
+      @notification.save!
+
+      track = Track.new(user_id: current_user.id, category: "campaign", asset_num: campaign.id, act: "share")
+      track.save
+    end
+
+    flash[:success] = @success_string.join("<br/>").html_safe 
+
+    redirect_to campaign
 
   end
 

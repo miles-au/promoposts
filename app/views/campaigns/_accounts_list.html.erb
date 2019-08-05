@@ -1,0 +1,47 @@
+<% platform_accounts = current_user.accounts.where( :platform => platform.downcase ) %>
+<% platform_posts = @campaign.microposts.where(:category => "#{platform.downcase}_post") %>
+
+<div class="row" style="margin-top: 10px;">
+	<h4 class="social-login <%= platform.downcase %>-bg">
+		<%= image_tag "#{platform.downcase}.svg", :style => "margin-right: 10px;" %>Share to <%= platform %>: </h4>
+	<div class="col-md-7 col-sm-12">
+		<div class="post_carousel" >
+			<% if platform_posts.count > 1 %>
+				<div>
+					<span class="arrow arrow-left glyphicon glyphicon-chevron-left"></span> Choose a <%= platform %> post
+					<span class="arrow arrow-right glyphicon glyphicon-chevron-right"></span>
+					<div class="carousel_radio_buttons">
+						<% platform_posts.each do |post| %>
+							<%= radio_button_tag "microposts[#{platform.downcase}][post_id]", post.id %>
+						<% end %>
+					</div>
+				</div>
+			<% else %>
+				<div style="display: none;">
+					<% platform_posts.each do |post| %>
+						<%= radio_button_tag "microposts[#{platform.downcase}][post_id]", post.id, :checked => "checked" %>
+					<% end %>
+				</div>
+			<% end %>
+			<div class="post_carousel_container">
+				<% platform_posts.each do |post| %>
+					<%= image_tag post.picture.url, :class => "inactive" %>
+				<% end %>
+			</div>
+		</div>
+
+	</div>
+	<div class="col-md-5 col-sm-12">
+		<% if platform_posts.empty? %>
+			<h6><span class="glyphicon glyphicon-exclamation-sign"></span> This campaign doesn't have a <%= platform %> post.</h6>
+		<% elsif platform_accounts.empty? %>
+			<h6><span class="glyphicon glyphicon-exclamation-sign"></span> No <%= platform %> pages to share to</h6>
+		<% else %>
+			<%#= label_tag "microposts[#{platform.downcase}][post_caption]", "Caption for #{platform} post:" %>
+			<%#= text_area_tag "microposts[#{platform.downcase}][post_caption]", nil, :class => "captionText", :maxlength => 240, :val => "" %>
+			<% platform_accounts.each do |page| %>
+				<%= render(:partial => 'shared/page_display', :object => page, :as => "page") %>
+			<% end %>
+		<% end %>
+	</div>
+</div>

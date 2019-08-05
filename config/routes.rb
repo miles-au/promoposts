@@ -31,8 +31,8 @@ Rails.application.routes.draw do
   
   delete '/logout',  to: 'sessions#destroy'
 
-  get 'sessions/resend_activation', to: 'sessions#resend_activation'
-  get 'microposts/share_to_socials', to: 'microposts#share_to_socials', as: 'share_to_socials'
+  get '/microposts/:id/share_micropost', to: 'microposts#share_post', as: 'share_post'
+  post '/microposts/:id/share_micropost', to: 'microposts#submit_share_post'
 
   get 'microposts/new'
 
@@ -44,6 +44,9 @@ Rails.application.routes.draw do
 
   get 'static_pages/change_grid_view'
   post '/microposts/share_to_socials'
+
+  get '/campaigns/:id/share_campaign', to: 'campaigns#share_campaign', as: 'share_campaign'
+  post '/campaigns/:id/share_campaign', to: 'campaigns#submit_share_campaign'
 
   get 'users/add_product' => 'lists#add_product'
   post 'users/add_product' => 'lists#submit_product'

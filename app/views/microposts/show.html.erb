@@ -2,7 +2,7 @@
 	<div class="col-md-3 col-sm-12 sidebar">
 		<div class="profile_user_display">
 	      <div>
-	        <img src="<%= @campaign.user.avatar %>" id="profile_pic" style="width: 50%; object-fit: cover; object-position: center; display: inline-block; vertical-align: top;" />
+	        <img src="<%= @micropost.user.avatar %>" id="profile_pic" style="width: 50%; object-fit: cover; object-position: center; display: inline-block; vertical-align: top;" />
 	      </div>
 	      <div style="display: inline-block; vertical-align: top;">
 	        <h1><%= link_to @micropost.user.name, @micropost.user %></h1>
@@ -29,12 +29,11 @@
 	          <h3 class = "top_icons">Download Picture</h3>
 	        </div>
 	      <% end %>
-	      <div class="accordion side_button">
-	        <h3 class="pop-button"><span class="glyphicon glyphicon-share-alt"></span> Share this post</h3>
-	      </div>
-	      <div class="sub-accordion"  id="add_post_container">
-	        <%= render 'share_form' %>
-	      </div>
+	      <%= link_to share_post_path(:id => @micropost.id), :class => "side_button" do%>
+	        <div class="pop-button">
+	          <h3 class = "top_icons"><span class="glyphicon glyphicon-share-alt"></span> Share to Social Platforms</h3>
+	        </div>
+	      <% end %>
 	    <% else %>
 	    	<p><%= link_to 'Sign in', social_login_path %> to:<br>
 	    		<span class="glyphicon glyphicon-cloud-download"></span> download this image<br>

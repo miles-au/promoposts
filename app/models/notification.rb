@@ -5,8 +5,11 @@ class Notification < ApplicationRecord
   def destination_link
   	case self.category
   	when "share"
-  		micropost = Micropost.find(self.destination_id)
-  		return micropost
+      if self.obj == "micropost"
+  		  return Micropost.find(self.destination_id)
+      else
+        return Campaign.find(self.destination_id)
+      end
   	when "comment"
   		micropost = Micropost.find(self.destination_id)
   		return micropost

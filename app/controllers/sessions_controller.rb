@@ -137,9 +137,9 @@ class SessionsController < ApplicationController
 
       a = Account.find_by(:account_id => page['id'],:user_id => @user.id)
       if a
-        a.update(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
+        a.update(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url, :platform => "facebook")
       else
-        a = Account.new(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
+        a = Account.new(:name => page['name'], :account_id => page['id'] , :provider => @provider, :user_id => @user.id, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url, :platform => "facebook")
         a.save
         a
       end
@@ -182,9 +182,9 @@ class SessionsController < ApplicationController
     profile_id = client['id']
     a = Account.find_by(:account_id => profile_id)
     if a
-      a.update(:name => "#{client['firstName']["localized"]["en_US"]} #{client['lastName']["localized"]["en_US"]} | profile", :account_id => profile_id , :provider => "linkedin", :user_id => @user.id, :picture => picture_url)
+      a.update(:name => "#{client['firstName']["localized"]["en_US"]} #{client['lastName']["localized"]["en_US"]} | profile", :account_id => profile_id , :provider => "linkedin", :user_id => @user.id, :picture => picture_url, :platform => "linkedin")
     else
-      a = Account.new(:name => "#{client['firstName']["localized"]["en_US"]} #{client['lastName']["localized"]["en_US"]} | profile", :account_id => profile_id , :provider => "linkedin", :user_id => @user.id, :picture => picture_url)
+      a = Account.new(:name => "#{client['firstName']["localized"]["en_US"]} #{client['lastName']["localized"]["en_US"]} | profile", :account_id => profile_id , :provider => "linkedin", :user_id => @user.id, :picture => picture_url, :platform => "linkedin")
       a.save
       a
     end
@@ -197,9 +197,9 @@ class SessionsController < ApplicationController
 
     a = Account.find_by(:account_id => client.user.id)
     if a
-      a.update(:name => client.user.full_name, :account_id => client.user.id , :provider => @provider, :user_id => @user.id, :access_token => @auth.credentials.token, :uid => @auth['uid'])
+      a.update(:name => client.user.full_name, :account_id => client.user.id , :provider => @provider, :user_id => @user.id, :access_token => @auth.credentials.token, :uid => @auth['uid'], :platform => "instagram")
     else
-      a = Account.new(:name => client.user.full_name, :account_id => client.user.id , :provider => @provider, :user_id => @user.id, :access_token => @auth.credentials.token, :uid => @auth['uid'])
+      a = Account.new(:name => client.user.full_name, :account_id => client.user.id , :provider => @provider, :user_id => @user.id, :access_token => @auth.credentials.token, :uid => @auth['uid'], :platform => "instagram")
         a.save
         a
     end
@@ -223,9 +223,9 @@ class SessionsController < ApplicationController
         end
         a = Account.find_by(:account_id => page.id)
         if a
-          a.update(:name => "#{page.service_username} | #{page.service} - #{page.service_type}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
+          a.update(:name => "#{page.service_username} | #{page.service} - #{page.service_type}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url, :platform => page.service )
         else
-          a = Account.new(:name => "#{page.service_username} | #{page.service} - #{page.service_type}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url)
+          a = Account.new(:name => "#{page.service_username} | #{page.service} - #{page.service_type}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url, :platform => page.service )
           a.save
           a
         end

@@ -12,9 +12,6 @@
 	    <br>
 	    <%= f.check_box :email_when_followed, {style: "display: inline-block; width: auto;", disabled: !current_user.verify_email} %>
 	    <%= f.label :email_when_followed, "Someone follows you", style: "display: inline-block;" %>
-	    <br>
-	    <%= f.check_box :email_when_new_question, {style: "display: inline-block; width: auto;", disabled: !current_user.verify_email } %>
-	    <%= f.label :email_when_new_question, "Someone posts a question", style: "display: inline-block;" %>
 	</div>
 
     <%= f.submit "Update Settings", class: "pop-button form-submit" %>
