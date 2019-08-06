@@ -125,6 +125,8 @@ class StaticPagesController < ApplicationController
   end
 
   def admin_panel
+    @topshares = Micropost.all.reorder(:shares => :desc).limit(5)
+    @topdownloads = Micropost.all.reorder(:downloads => :desc).limit(5)
     @tracks = Track.all.order(:created_at => :desc).limit(10)
   end
 

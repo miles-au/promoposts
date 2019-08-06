@@ -773,6 +773,8 @@ button{
 }
 
 .campaign_item{
+  margin-bottom: 10px;
+  border-bottom: 1px solid $grey4;
   h2{
     margin: 2px 0px 2px 0px;
     text-align: left;
@@ -803,6 +805,13 @@ button{
     }
 }
 
+.subrow{
+  .pop-button{
+    padding: 2px;
+    width: 100%;
+  }
+}
+
 .category-title{
   height: 20px;
   margin: 0px;
@@ -824,7 +833,8 @@ button{
 }
 
 .micropost_item{
-  max-height: 350px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid $grey4;
   .content-container{
     padding: 20px 0px 5px 0px;
   }

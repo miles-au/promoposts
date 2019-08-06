@@ -2,8 +2,30 @@
 
 <div class="row">
 	<div class="col-md-6 col-sm-12">
-		<h4>Tracking</h4>
+		<h3>Top Downloads</h3>
+		<% @topdownloads.each_with_index do |dl, n| %>
+			<div>
+				<%= link_to "#{n+1}. #{dl.id} - #{dl.category}", dl, :style => "display: block;" %>
+				<img src="<%= dl.picture.url %>" style="max-height: 200px; max-width: 100%;" />
+			</div>
+		<% end %>
+	</div>
+	<div class="col-md-6 col-sm-12">
+		<h3>Top Shares</h3>
+		<% @topshares.each_with_index do |dl, n| %>
+			<div>
+				<%= link_to "#{n+1}. #{dl.id} - #{dl.category}", dl, :style => "display: block;" %>
+				<img src="<%= dl.picture.url %>" style="max-height: 200px; max-width: 100%;" />
+			</div>
+		<% end %>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 col-sm-12">
+		<h4>Recent Shares/Downloads</h4>
 		<%= render @tracks %>
 		<%= link_to "see all", tracking_path %>
+	</div>
+	<div class="col-md-6 col-sm-12">
 	</div>
 </div>
