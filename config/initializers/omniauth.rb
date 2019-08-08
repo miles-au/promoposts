@@ -15,10 +15,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
 			:scope => 'r_liteprofile r_emailaddress w_member_social',
 			:fields => ['id', 'first-name', 'last-name', 'picture-url', 'email-address']
 
- end
+	provider :twitter, ENV["TWITTER_KEY"], ENV["TWITTER_SECRET"],{
+			:secure_image_url => 'true',
+			:image_size => 'original',
+		}
 
-=begin
-provider :linkedin, ENV['LINKEDIN_CLIENT_ID'], ENV['LINKEDIN_CLIENT_SECRET'],
-			:scope => 'r_liteprofile r_emailaddress rw_organization_admin w_organization_social w_member_social',
-			:fields => ['id', 'first-name', 'last-name', 'picture-url', 'email-address']
-=end
+end

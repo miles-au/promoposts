@@ -58,7 +58,7 @@ class SessionsController < ApplicationController
       flash[:success] = "Your #{@provider} account has been connected, #{@user.name}."
       redirect_back_or accounts_edit_path
     else
-      puts "Facebook Login Error"
+      puts "Login Error"
       puts "Request: #{request.env['omniauth.params']}"
       flash[:danger] = "There was an error while authenticating your account, we apologize for the inconvenience."
       redirect_to root_url
@@ -80,8 +80,6 @@ class SessionsController < ApplicationController
       else
         redirect_back_or root_url
     end
-
-    
   end
 
   def outh2_callback
@@ -117,6 +115,8 @@ class SessionsController < ApplicationController
         facebook
       when "linkedin"
         linkedin
+      when "twitter"
+        twitter
       when "instagram"
         instagram
       when "buffer"
@@ -188,8 +188,23 @@ class SessionsController < ApplicationController
       a.save
       a
     end
+  end
 
-
+  def twitter
+    client = @user.twitter
+    picture_url = @auth[:extra][:raw_info][:profile_image_url]
+    if !picture_url
+      picture_url = ActionController::Base.helpers.asset_path('page.svg')
+    end
+    profile_id = client.user.id
+    a = Account.find_by(:account_id => profile_id)
+    if a
+      a.update(:name => "#{client.user.name} | profile", :account_id => profile_id , :provider => "twitter", :user_id => @user.id, :picture => picture_url, :platform => "twitter")
+    else
+      a = Account.new(:name => "#{client.user.name} | profile", :account_id => profile_id , :provider => "twitter", :user_id => @user.id, :picture => picture_url, :platform => "twitter")
+      a.save
+      a
+    end
   end
 
   def instagram

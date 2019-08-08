@@ -26,8 +26,8 @@ gem 'omniauth-buffer2'
 gem 'koala'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin-oauth2'
-#gem "linkedin-oauth2"
-#gem 'omniauth-twitter'
+gem 'omniauth-twitter'
+gem 'twitter'
 #gem 'omniauth-instagram'
 #gem "instagram", :git => 'git://github.com/Instagram/instagram-ruby-gem.git'
 

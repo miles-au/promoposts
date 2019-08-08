@@ -47,7 +47,6 @@ class User < ApplicationRecord
   pg_search_scope :search, against: [:name, :company]
 
   require 'rubygems'
-  #require 'linkedin'
 
   # Returns the hash digest of the given string.
   def User.digest(string)
@@ -227,7 +226,6 @@ class User < ApplicationRecord
   end
 
   def self.connect_accounts(auth, id)
-    #puts "AUTH: #{auth}"
 
     encrypted_token = User.encrypt_value(auth.credentials.token)
 
@@ -238,8 +236,11 @@ class User < ApplicationRecord
         user.fb_uid = auth.uid
       when "linkedin"
         user.linkedin_oauth_token = encrypted_token
-        #user.linkedin_oauth_secret = auth.credentials.secret
         user.linkedin_uid = auth.uid
+      when "twitter"
+        encrypted_token = User.encrypt_value(auth.credentials.secret)
+        user.twitter_oauth_token = encrypted_token
+        user.twitter_uid = auth.credentials.token
       when "instagram"
         user.instagram_oauth_token = encrypted_token
         user.instagram_uid = auth.uid
@@ -340,6 +341,26 @@ class User < ApplicationRecord
     user.linkedin_uid = nil
     user.linkedin_oauth_token = nil
     accounts = Account.where(:user_id => user.id, :provider => 'linkedin')
+    accounts.destroy_all
+    user.save!
+  end
+
+  def twitter
+    decrypted_token = User.decrypt_value(self.twitter_oauth_token)
+    client = Twitter::REST::Client.new do |config|
+      config.consumer_key        = ENV["TWITTER_KEY"]
+      config.consumer_secret     = ENV["TWITTER_SECRET"]
+      config.access_token        = self.twitter_uid
+      config.access_token_secret = decrypted_token
+    end
+    @twitter = client
+  end
+
+  def self.unauthorize_twitter(user)
+    #disconnect twitter
+    user.twitter_uid = nil
+    user.twitter_oauth_token = nil
+    accounts = Account.where(:user_id => user.id, :provider => 'twitter')
     accounts.destroy_all
     user.save!
   end

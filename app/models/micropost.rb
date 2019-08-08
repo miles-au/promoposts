@@ -222,6 +222,23 @@ class Micropost < ActiveRecord::Base
 
   end
 
+  def self.share_to_twitter(micropost, page, message, base_url, current_user)
+    #get permissions
+
+    client = current_user.twitter
+    picture = base_url + micropost.picture.url
+    response = client.update_with_media(message, open(picture))
+
+    puts "RESPONSE: #{response}"
+    puts "ID: #{response.id}"
+    
+    if response.id
+      return "success"
+    else
+      return "failed"
+    end
+  end
+
   def self.share_to_buffer(micropost, page, message, base_url, current_user)
     #get permissions
 

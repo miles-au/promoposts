@@ -2,122 +2,157 @@
 
 <h1>your connected social networks:</h1>
 
-  <p>&nbsp;</p>
-  <!--display Facebook pages-->
-  <h4 class="facebook-bg social-login"><img src='<%= ActionController::Base.helpers.asset_path('facebook.svg')%>'/> Your Facebook accounts: </h4>
-  <div class="social-accounts-wrap">
+<p>&nbsp;</p>
 
-    <!--if logged_in and facebook accounts exist in user's name-->
-    <% if logged_in? && @data['facebook'].count > 0 %>
-      <% accounts = @data['facebook'] %>
-      <% accounts.each do |page| %>
-        <div class="fb-settings-wrapper">
-          <div class="img-holder">
-            <img class="thumbnail-page" src="<%= page.picture %>"/>
-          </div>
-          <h5 class="page-name"><%= page['name'] %></h5>
-          <%= link_to accounts_remove_page_path(:id => page.id), data: { confirm: "You sure?" } do %>
-            <span class="glyphicon glyphicon-trash"></span>
-          <% end %>
+<!--display Buffer pages-->
+<p>To get the most out of Promo Posts, connect a Buffer account. <a href="https://buffer.com/" target="_blank">What the heck is Buffer?</a></p>
+<h4 class="buffer-bg social-login"><img src='<%= ActionController::Base.helpers.asset_path('buffer.svg')%>'/> Your Buffer accounts: </h4>
+<div class="social-accounts-wrap">
+
+  <!--buffer accounts exist in user's name-->
+  <% if @data['buffer'].count > 0 %>
+    <% accounts = @data['buffer'] %>
+    <% accounts.each do |page| %>
+      <div class="fb-settings-wrapper">
+        <div class="img-holder">
+          <img class="thumbnail-page" src="<%= page.picture %>"/>
         </div>
-
-      <% end %>
-      
-      <%= link_to accounts_disconnect_path(:provider => 'facebook'), :class => "connect_link" do %>
-        <h5> Disconnect your Facebook Account </h5>
-      <% end %>
-
-    <% else %>
-      <% if current_user.fb_uid %>
-        <h6>No sharable pages available.</h6>
-        <%= link_to accounts_disconnect_path(:provider => 'facebook'), :class => "connect_link" do %>
-          <h5> Disconnect your Facebook Account </h5>
+        <h5 class="page-name"><%= page['name'] %></h5>
+        <%= link_to accounts_remove_page_path(:id => page.id), data: { confirm: "You sure?" } do %>
+          <span class="glyphicon glyphicon-trash"></span>
         <% end %>
-      <% else %>
-        <%= render(:partial => 'shared/connect_account', :locals => { :provider => 'facebook'}) %>
-      <% end %>
-    <% end %>
-  </div>
-
-
-
-
-  <!--display Linkedin pages-->
-  <h4 class="linkedin-bg social-login"><img src='<%= ActionController::Base.helpers.asset_path('linkedin.svg')%>'/> Your LinkedIn accounts: </h4>
-  <div class="social-accounts-wrap">
-
-    <!--if logged_in and linkedin accounts exist in user's name-->
-    <% if logged_in? && @data['linkedin'].count > 0 %>
-      <% accounts = @data['linkedin'] %>
-      <% accounts.each do |page| %>
-        <div class="fb-settings-wrapper">
-
-          <div class="img-holder">
-            <img class="thumbnail-page" src="<%= page.picture %>"/>
-          </div>
-          <h5 class="page-name"><%= page['name'] %></h5>
-          <%= link_to accounts_remove_page_path(:id => page.id), data: { confirm: "You sure?" } do %>
-            <span class="glyphicon glyphicon-trash"></span>
-          <% end %>
-        </div>
-
-      <% end %>
-
-      <%= link_to accounts_disconnect_path(:provider => 'linkedin'), :class => "connect_link" do %>
-        <h5> Disconnect your LinkedIn Account </h5>
-      <% end %>
-
-    <% else %>
-      <% if current_user.linkedin_uid %>
-        <h6>No sharable pages available.</h6>
-        <%= link_to accounts_disconnect_path(:provider => 'linkedin'), :class => "connect_link" do %>
-          <h5> Disconnect your LinkedIn Account </h5>
-        <% end %>
-      <% else %>
-          <%= render(:partial => 'shared/connect_account', :locals => { :provider => 'linkedin'}) %>
-      <% end %>
+      </div>
 
     <% end %>
 
-  </div>
+    <%= link_to accounts_disconnect_path(:provider => 'buffer'), :class => "connect_link" do %>
+      <h5> Disconnect your Buffer Account </h5>
+    <% end %>
 
-
-
-
-  <!--display Buffer pages-->
-  <h4 class="buffer-bg social-login"><img src='<%= ActionController::Base.helpers.asset_path('buffer.svg')%>'/> Your Buffer accounts: </h4>
-  <div class="social-accounts-wrap">
-
-    <!--if logged_in and buffer accounts exist in user's name-->
-    <% if logged_in? && @data['buffer'].count > 0 %>
-      <% accounts = @data['buffer'] %>
-      <% accounts.each do |page| %>
-        <div class="fb-settings-wrapper">
-          <div class="img-holder">
-            <img class="thumbnail-page" src="<%= page.picture %>"/>
-          </div>
-          <h5 class="page-name"><%= page['name'] %></h5>
-          <%= link_to accounts_remove_page_path(:id => page.id), data: { confirm: "You sure?" } do %>
-            <span class="glyphicon glyphicon-trash"></span>
-          <% end %>
-        </div>
-
-      <% end %>
-
+  <% else %>
+    <% if current_user.buffer_uid %>
+      <h6>No sharable pages available.</h6>
       <%= link_to accounts_disconnect_path(:provider => 'buffer'), :class => "connect_link" do %>
         <h5> Disconnect your Buffer Account </h5>
       <% end %>
-
     <% else %>
-      <% if current_user.buffer_uid %>
-        <h6>No sharable pages available.</h6>
-        <%= link_to accounts_disconnect_path(:provider => 'buffer'), :class => "connect_link" do %>
-          <h5> Disconnect your Buffer Account </h5>
+      <%= render(:partial => 'shared/connect_account', :locals => { :provider => 'buffer'}) %>
+    <% end %>
+  <% end %>
+
+</div>
+
+<!--display Facebook pages-->
+<h4 class="facebook-bg social-login"><img src='<%= ActionController::Base.helpers.asset_path('facebook.svg')%>'/> Your Facebook accounts: </h4>
+<div class="social-accounts-wrap">
+
+  <!--facebook accounts exist in user's name-->
+  <% if @data['facebook'].count > 0 %>
+    <% accounts = @data['facebook'] %>
+    <% accounts.each do |page| %>
+      <div class="fb-settings-wrapper">
+        <div class="img-holder">
+          <img class="thumbnail-page" src="<%= page.picture %>"/>
+        </div>
+        <h5 class="page-name"><%= page['name'] %></h5>
+        <%= link_to accounts_remove_page_path(:id => page.id), data: { confirm: "You sure?" } do %>
+          <span class="glyphicon glyphicon-trash"></span>
         <% end %>
-      <% else %>
-        <%= render(:partial => 'shared/connect_account', :locals => { :provider => 'buffer'}) %>
-      <% end %>
+      </div>
+
+    <% end %>
+    
+    <%= link_to accounts_disconnect_path(:provider => 'facebook'), :class => "connect_link" do %>
+      <h5> Disconnect your Facebook Account </h5>
     <% end %>
 
-  </div>
+  <% else %>
+    <% if current_user.fb_uid %>
+      <h6>No sharable pages available.</h6>
+      <%= link_to accounts_disconnect_path(:provider => 'facebook'), :class => "connect_link" do %>
+        <h5> Disconnect your Facebook Account </h5>
+      <% end %>
+    <% else %>
+      <%= render(:partial => 'shared/connect_account', :locals => { :provider => 'facebook'}) %>
+    <% end %>
+  <% end %>
+</div>
+
+<!--display Linkedin pages-->
+<h4 class="linkedin-bg social-login"><img src='<%= ActionController::Base.helpers.asset_path('linkedin.svg')%>'/> Your LinkedIn accounts: </h4>
+<div class="social-accounts-wrap">
+
+  <!--linkedin accounts exist in user's name-->
+  <% if @data['linkedin'].count > 0 %>
+    <% accounts = @data['linkedin'] %>
+    <% accounts.each do |page| %>
+      <div class="fb-settings-wrapper">
+
+        <div class="img-holder">
+          <img class="thumbnail-page" src="<%= page.picture %>"/>
+        </div>
+        <h5 class="page-name"><%= page['name'] %></h5>
+        <%= link_to accounts_remove_page_path(:id => page.id), data: { confirm: "You sure?" } do %>
+          <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+      </div>
+
+    <% end %>
+
+    <%= link_to accounts_disconnect_path(:provider => 'linkedin'), :class => "connect_link" do %>
+      <h5> Disconnect your LinkedIn Account </h5>
+    <% end %>
+
+  <% else %>
+    <% if current_user.linkedin_uid %>
+      <h6>No sharable pages available.</h6>
+      <%= link_to accounts_disconnect_path(:provider => 'linkedin'), :class => "connect_link" do %>
+        <h5> Disconnect your LinkedIn Account </h5>
+      <% end %>
+    <% else %>
+        <%= render(:partial => 'shared/connect_account', :locals => { :provider => 'linkedin'}) %>
+    <% end %>
+
+  <% end %>
+
+</div>
+
+<!--display Twitter pages-->
+<h4 class="twitter-bg social-login"><img src='<%= ActionController::Base.helpers.asset_path('twitter.svg')%>'/> Your Twitter accounts: </h4>
+<div class="social-accounts-wrap">
+
+  <!--linkedin accounts exist in user's name-->
+  <% if @data['twitter'].count > 0 %>
+    <% accounts = @data['twitter'] %>
+    <% accounts.each do |page| %>
+      <div class="fb-settings-wrapper">
+
+        <div class="img-holder">
+          <img class="thumbnail-page" src="<%= page.picture %>"/>
+        </div>
+        <h5 class="page-name"><%= page['name'] %></h5>
+        <%= link_to accounts_remove_page_path(:id => page.id), data: { confirm: "You sure?" } do %>
+          <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+      </div>
+
+    <% end %>
+
+    <%= link_to accounts_disconnect_path(:provider => 'twitter'), :class => "connect_link" do %>
+      <h5> Disconnect your Twitter Account </h5>
+    <% end %>
+
+  <% else %>
+    <% if current_user.twitter_uid %>
+      <h6>No sharable pages available.</h6>
+      <%= link_to accounts_disconnect_path(:provider => 'twitter'), :class => "connect_link" do %>
+        <h5> Disconnect your Twitter Account </h5>
+      <% end %>
+    <% else %>
+        <%= render(:partial => 'shared/connect_account', :locals => { :provider => 'twitter'}) %>
+    <% end %>
+
+  <% end %>
+
+</div>
 
