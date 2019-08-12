@@ -33,6 +33,7 @@ class Micropost < ActiveRecord::Base
               ['LinkedIn Post', 'linkedin_post'],
               ['LinkedIn Linked Post', 'linkedin_linked_post'],
               ['Instagram Post', 'instagram_post'],
+              ['Instagram Story', 'instagram_story'],
               ['Twitter Cover Photo', 'twitter_cover_photo'],
               ['Twitter Post', 'twitter_post'],
               ['Twitter Linked Post', 'twitter_linked_post'],
