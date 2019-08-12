@@ -3,7 +3,9 @@
 <div class="row" style="margin-bottom:10px;">
 	<div class="col-md-6 col-sm-12">
 		<p><%= @micropost.category.titlecase.tr("_", " ") %></p>
-		<img style="max-width: 100%; max-height: 300px;" src="<%= @micropost.picture.url %>" />
+		<%= link_to @micropost do %>
+			<img style="max-width: 100%; max-height: 300px;" src="<%= @micropost.picture.url %>" />
+		<% end %>
 	</div>
 	<div class="col-md-6 col-sm-12">
 		<p><%= @micropost.content %></p>

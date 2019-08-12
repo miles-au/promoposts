@@ -25,7 +25,9 @@
 			<% end %>
 			<div class="post_carousel_container">
 				<% platform_posts.each do |post| %>
-					<%= image_tag post.picture.url, :class => "inactive" %>
+					<%= link_to post, :class => "inactive" do %>
+						<%= image_tag post.picture.url %>
+					<% end %>
 				<% end %>
 			</div>
 		</div>
