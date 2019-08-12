@@ -19,21 +19,19 @@ class Account < ApplicationRecord
   end
 
   def self.check_account_facebook(user)
-  	accounts = user.facebook.get_connection("me", "accounts")
-  	accounts.pluck("id")
+  	accounts = user.facebook.get_connection("me", "accounts").pluck("id") rescue []
   end
 
   def self.check_account_linkedin(current_user)
-  	account = [ current_user.linkedin['id'].to_s ]
+  	account = [ current_user.linkedin['id'].to_s ] rescue []
   end
 
   def self.check_account_buffer(user)
-  	accounts = user.buffer.profiles
-  	accounts.pluck("id")
+  	accounts = user.buffer.profiles.pluck("id") rescue []
   end
 
   def self.check_account_twitter(current_user)
-  	account = [ current_user.twitter.user.id.to_s ]
+  	account = [ current_user.twitter.user.id.to_s ] rescue []
   end
 
   def self.check_account_pinterest(user)
