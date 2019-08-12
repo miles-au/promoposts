@@ -86,6 +86,7 @@ class SessionsController < ApplicationController
     code = params['code']
     provider = params['provider']
     error = params['error'] unless params['error'].nil?
+    puts "ERROR: #{error}"
 
     if error
       flash[:danger] = "There was an error while authenticating your account, we apologize for the inconvenience."
@@ -121,6 +122,8 @@ class SessionsController < ApplicationController
         instagram
       when "buffer"
         buffer
+      when "pinterest"
+        pinterest
     end
   end
 
@@ -245,6 +248,37 @@ class SessionsController < ApplicationController
           a
         end
       end
+    end
+  end
+
+  def pinterest
+    @boards = @user.pinterest.get_boards.data rescue nil
+    return if @boards.nil?
+
+    user_info = @user.pinterest.me.data rescue nil
+    return if user_info.nil?
+
+    pic = @user.pinterest.me({fields: "image"})
+    picture_url = pic.data.image.first.last.url rescue nil
+    return if picture_url.nil?
+
+    @boards.each do |page|
+      page_token = @auth.credentials.token
+      encrypted_token = Account.set_token(page_token)
+
+      if !picture_url
+        picture_url = ActionController::Base.helpers.asset_path('page.svg')
+      end
+      a = Account.find_by(:account_id => page.id)
+
+      if a
+        a.update( :name => "#{user_info.first_name} #{user_info.last_name} | #{page.name}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url, :platform => "pinterest" )
+      else
+        a = Account.new( :name => "#{user_info.first_name} #{user_info.last_name} | #{page.name}", :account_id => page.id , :provider => @provider, :user_id => @user.id, :access_token => encrypted_token, :uid => @auth['uid'], :picture => picture_url, :platform => "pinterest" )
+        a.save
+        a
+      end
+
     end
 
   end

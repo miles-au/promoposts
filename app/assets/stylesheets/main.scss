@@ -905,6 +905,12 @@ button{
   }
 }
 
+.lost-access{
+  color: $red2;
+  font-size: 0.8em;
+  margin-left: 5px;
+}
+
 /* CAMPAIGN */
 
 .campaign_label{
@@ -1090,7 +1096,6 @@ button{
   span, h5{
     color: $teal3;
     display: inline-block;
-    margin-left: 10px;
   }
 
   &:hover{

@@ -15,7 +15,7 @@
 	<div class="pop-button" style="margin-bottom: 10px;" id="useOriginalText">Use/edit original caption</div>
 	<%= text_area_tag :message, nil, :id => "inputText", :maxlength => 240 %>
 	
-	<%= link_to "Manage Accounts", '/accounts/edit' %>
+	<%= link_to "Click here to manage social media accounts", '/accounts/edit' %>
 	<% Account.platform_array.each do |platform| %>
 		<%= render :partial => 'accounts_list', locals: { platform: platform }%>
 	<% end %>

@@ -23,16 +23,20 @@ gem 'dotenv-rails'
 gem 'omniauth'
 gem 'omniauth-oauth2'
 gem 'omniauth-buffer2'
-gem 'koala'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin-oauth2'
 gem 'omniauth-twitter'
+gem 'omniauth-pinterest'
+gem 'koala'
 gem 'twitter'
+gem 'pinterest-api'
+gem 'buffer', :github => 'bufferapp/buffer-ruby'
+
 #gem 'omniauth-instagram'
 #gem "instagram", :git => 'git://github.com/Instagram/instagram-ruby-gem.git'
 
 #gem 'ransack', github: 'activerecord-hackery/ransack'
-gem 'buffer', :github => 'bufferapp/buffer-ruby'
+
 gem "popper_js"
 gem 'possessive'
 gem "pg_search"

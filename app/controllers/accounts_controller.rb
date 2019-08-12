@@ -6,14 +6,14 @@ class AccountsController < ApplicationController
   	@account = Account.new
   	@user = current_user
 
-  	providers = ["facebook", "linkedin", "twitter", "buffer"]
+  	@providers = Account.provider_array
   	@data = {}
 
     #sort accounts by platform
-  	providers.each do |provider|
+  	@providers.each do |provider|
   		@data[provider] = []
   		@user.accounts.each do |account|
-  			if account['provider'] == provider
+  			if account['provider'] == provider.downcase
   				@data[provider].push(account)
   			end
   		end
@@ -43,6 +43,8 @@ class AccountsController < ApplicationController
         User.unauthorize_twitter(user)
       when "buffer"
   		  User.unauthorize_buffer(user)
+      when "pinterest"
+        User.unauthorize_pinterest(user)
   	end
 
   	flash[:success] = "Disconnected #{provider} account."

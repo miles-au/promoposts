@@ -247,6 +247,9 @@ class User < ApplicationRecord
       when "buffer"
         user.buffer_oauth_token = encrypted_token
         user.buffer_uid = auth.uid
+      when "pinterest"
+        user.pinterest_oauth_token = encrypted_token
+        user.pinterest_uid = auth.uid
     end
     user.save
     user
@@ -318,7 +321,7 @@ class User < ApplicationRecord
   end
 
   def self.unauthorize_facebook(user)
-    user.facebook.delete_object("me/permissions")
+    #user.facebook.delete_object("me/permissions")
     user.fb_uid = nil
     user.fb_oauth_token = nil
     accounts = Account.where(:user_id => user.id, :provider => 'facebook')
@@ -361,6 +364,19 @@ class User < ApplicationRecord
     user.twitter_uid = nil
     user.twitter_oauth_token = nil
     accounts = Account.where(:user_id => user.id, :provider => 'twitter')
+    accounts.destroy_all
+    user.save!
+  end
+
+  def pinterest
+    decrypted_token = User.decrypt_value(self.pinterest_oauth_token)
+    @pinterest = Pinterest::Client.new(decrypted_token)
+  end
+
+  def self.unauthorize_pinterest(user)
+    user.pinterest_uid = nil
+    user.pinterest_oauth_token = nil
+    accounts = Account.where(:user_id => user.id, :provider => 'pinterest')
     accounts.destroy_all
     user.save!
   end
@@ -435,6 +451,15 @@ class User < ApplicationRecord
     end 
     
     return notifications
+  end
+
+  def check_accounts
+    providers = self.accounts.pluck("provider").uniq
+    accounts = []
+    providers.each do |provider|
+      accounts += Account.send("check_account_#{provider.downcase}", self)
+    end
+    return accounts
   end
 
   private

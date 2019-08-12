@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_07_125228) do
+ActiveRecord::Schema.define(version: 2019_08_08_183249) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -201,6 +201,8 @@ ActiveRecord::Schema.define(version: 2019_08_07_125228) do
     t.string "company"
     t.string "twitter_oauth_token"
     t.string "twitter_uid"
+    t.string "pinterest_oauth_token"
+    t.string "pinterest_uid"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

@@ -20,4 +20,5 @@ Rails.application.config.middleware.use OmniAuth::Builder do
 			:image_size => 'original',
 		}
 
+	provider :pinterest, ENV['PINTEREST_APP_ID'], ENV['PINTEREST_APP_SECRET']
 end

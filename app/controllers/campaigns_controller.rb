@@ -138,7 +138,7 @@ class CampaignsController < ApplicationController
 
   def share_campaign
     @campaign = Campaign.find(params[:id])
-    
+    @check_accounts = current_user.check_accounts
   end
 
   def submit_share_campaign
@@ -161,8 +161,12 @@ class CampaignsController < ApplicationController
         resp = Micropost.share_to_facebook(micropost, page, message, base_url, current_user)
       when "linkedin"
         resp = Micropost.share_to_linkedin(micropost, page, message, base_url, current_user)
+      when "twitter"
+        resp = Micropost.share_to_twitter(micropost, page, message, base_url, current_user)
       when "buffer"
         resp = Micropost.share_to_buffer(micropost, page, message, base_url, current_user)
+      when "pinterest"
+        resp = Micropost.share_to_pinterest(micropost, page, message, base_url, current_user)
       else
       end
 

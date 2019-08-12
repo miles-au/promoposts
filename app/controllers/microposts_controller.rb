@@ -81,6 +81,7 @@ class MicropostsController < ApplicationController
   def share_post
     @event = Event.new
     @micropost = Micropost.find(params[:id])
+    @check_accounts = current_user.check_accounts
   end
 
   def submit_share_post
@@ -106,6 +107,8 @@ class MicropostsController < ApplicationController
         resp = Micropost.share_to_twitter(micropost, page, message, base_url, current_user)
       when "buffer"
         resp = Micropost.share_to_buffer(micropost, page, message, base_url, current_user)
+      when "pinterest"
+        resp = Micropost.share_to_pinterest(micropost, page, message, base_url, current_user)
       else
       end
 

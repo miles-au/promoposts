@@ -172,6 +172,7 @@ class Micropost < ActiveRecord::Base
 
     puts "UPDATE: #{update}"
     puts "UPDATE: #{update['created']}"
+    puts "UPDATE: #{update['status']}"
 
 =begin AWAITING LINKEDIN APPROVAL FOR COMPANY PAGES
     client = @user.linkedin
@@ -212,9 +213,7 @@ class Micropost < ActiveRecord::Base
     
 =end
 
-    puts "RESPONSE: #{response}"
-
-    if response.success?
+    if update['created']
       return "success"
     else
       return "failed"
@@ -263,6 +262,27 @@ class Micropost < ActiveRecord::Base
     puts "RESPONSE: #{response}"
     
     if response.success?
+      return "success"
+    else
+      return "failed"
+    end
+  end
+
+  def self.share_to_pinterest(micropost, page, message, base_url, current_user)
+    #get permissions
+
+    picture = base_url + micropost.picture.url
+    response = current_user.pinterest.create_pin({
+      board: page.account_id,
+      note: message,
+      image_url: picture
+    })
+
+    puts "RESPONSE: #{response}"
+    success = response.data.id rescue nil
+    puts "ID: #{success}"
+
+    if success
       return "success"
     else
       return "failed"
