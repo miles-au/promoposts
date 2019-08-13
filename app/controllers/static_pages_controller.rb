@@ -12,34 +12,34 @@ class StaticPagesController < ApplicationController
           if logged_in?
             #get events by following, or self
             user_feed = current_user.feed
-            @feed_items = user_feed.paginate(:page => params[:page], :per_page => 24)
+            @feed_items = user_feed.paginate(:page => params[:page], :per_page => Micropost.per_page)
           else
             redirect_to login_path
           end
 
         when "global"
-          @feed_items = Event.all.paginate(:page => params[:page], :per_page => 24)
+          @feed_items = Event.all.paginate(:page => params[:page], :per_page => Micropost.per_page)
 
         when 'digital_assets'
           merged_items = (Campaign.all + Micropost.where(:campaign_id => nil)).sort_by {|obj| obj.created_at}.reverse
-          @feed_items = merged_items.paginate(:page => params[:page], :per_page => 24)
+          @feed_items = merged_items.paginate(:page => params[:page], :per_page => Micropost.per_page)
 
         when 'campaign'
-          @feed_items = Campaign.all.reverse.paginate(:page => params[:page], :per_page => 24)
+          @feed_items = Campaign.all.reverse.paginate(:page => params[:page], :per_page => Micropost.per_page)
 
         when 'search'
           query = params[:search]
 
           if Rails.env.production?
             safe_query = ActiveRecord::Base.connection.quote("#{query}%")
-            @feed_items = (Micropost.where("content ILIKE ?", "%#{query}%") + Campaign.where("content ILIKE ? OR name ILIKE ?", "%#{query}%", "%#{query}%")).paginate(:page => params[:page], :per_page => 24)
+            @feed_items = (Micropost.where("content ILIKE ?", "%#{query}%") + Campaign.where("content ILIKE ? OR name ILIKE ?", "%#{query}%", "%#{query}%")).paginate(:page => params[:page], :per_page => Micropost.per_page)
           else
             safe_query = ActiveRecord::Base.connection.quote("#{query}%")
-            @feed_items = (Micropost.where("content LIKE ?", "%#{query}%") + Campaign.where("content LIKE ? OR name LIKE ?", "%#{query}%", "%#{query}%")).paginate(:page => params[:page], :per_page => 24)
+            @feed_items = (Micropost.where("content LIKE ?", "%#{query}%") + Campaign.where("content LIKE ? OR name LIKE ?", "%#{query}%", "%#{query}%")).paginate(:page => params[:page], :per_page => Micropost.per_page)
           end 
 
         else
-          @feed_items = Micropost.where(:category => params[:feed]).paginate(:page => params[:page], :per_page => 24)
+          @feed_items = Micropost.where(:category => params[:feed]).paginate(:page => params[:page], :per_page => Micropost.per_page)
 
       end
       
@@ -47,7 +47,7 @@ class StaticPagesController < ApplicationController
 
       #default to digital assets
       merged_items = (Campaign.all + Micropost.where(:campaign_id => nil)).sort_by {|obj| obj.created_at}.reverse
-      @feed_items = merged_items.paginate(:page => params[:page], :per_page => 24)
+      @feed_items = merged_items.paginate(:page => params[:page], :per_page => Micropost.per_page)
       @feed_type = "digital_assets"
 
     end
