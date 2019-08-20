@@ -1,98 +1,39 @@
-<h2 style="text-align: left;">Share campaign:</h2>
+<h2 style="text-align: left;">Download campaign:</h2>
 <h1 style="text-align: left;"><%= link_to @campaign.name, @campaign %></h1>
 
-<%= form_tag(share_campaign_path(@campaign.id), method: :post, id: "shareContainer" ) do %>
-	<%= label_tag :message, "Enter a caption for all posts:" %>
-	<div class="pop-button" style="margin-bottom: 10px;" id="useOriginalText">Use/edit original campaign text</div>
-	<%= text_area_tag :message, nil, :id => "inputText", :maxlength => 240 %>
-	<!--<div class="pop-button" style="margin-bottom: 10px;" id="updateText">Update posts with text above</div>-->
-	
-	<%= link_to "Click here to manage social media accounts", '/accounts/edit' %>
-	<%= link_to "Click here to manage your overlays", "/overlays", style: "display: block;" %>
-	<% Account.platform_array.each do |platform| %>
-		<%= render :partial => 'accounts_list', locals: { platform: platform }%>
+<%= form_tag(download_assets_path(@campaign.id), method: :post, id: "shareContainer" ) do %>
+	<%= link_to "Click here to manage your overlays", "/overlays" %>
+	<% @campaign.microposts.each do |micropost| %>
+		<h3 style="text-align: left;"><%= micropost.category.titlecase.tr("_", " ") %></h3>
+		<div style="position: relative;">
+			<img class="new_image_bg" id="<%= micropost.id %>_image" src="<%= micropost.picture.url %>" />
+			<div id="overlay_box_<%= micropost.id %>" class="overlay_container" style="top: 0px; left: 0px;">
+				<img id="overlay_image_<%= micropost.id %>" src=""/>
+				<div id="overlay_handle_<%= micropost.id %>" class="overlay_handle"></div>
+			</div>
+		</div>
+		<div>
+			Overlays (logos and banners):
+			<span class="arrow arrow-prev-overlay glyphicon glyphicon-chevron-left" id="<%= micropost.id %>-prev"></span>
+			<p id="overlay_name_<%= micropost.id %>" style="display: inline-block;"></p>
+			<span class="arrow arrow-next-overlay glyphicon glyphicon-chevron-right"  id="<%= micropost.id %>-next"></span>
+		</div>
+		<%= text_field_tag "microposts[#{micropost.id}][overlay][id]", "", :id => "overlay_input_id_#{micropost.id}", style: "", class: "overlay_input" %>
+		<%= text_field_tag "microposts[#{micropost.id}][overlay][left]", "", :id => "overlay_input_left_#{micropost.id}", style: "", class: "overlay_input" %>
+		<%= text_field_tag "microposts[#{micropost.id}][overlay][top]", "", :id => "overlay_input_top_#{micropost.id}", style: "", class: "overlay_input" %>
+		<%= text_field_tag "microposts[#{micropost.id}][overlay][width]", "", :id => "overlay_input_width_#{micropost.id}", style: "", class: "overlay_input" %>
+		<%= text_field_tag "microposts[#{micropost.id}][overlay][height]", "", :id => "overlay_input_height_#{micropost.id}", style: "", class: "overlay_input" %>
 	<% end %>
 
-
   	<div>
-		<%= submit_tag "Share", class: "pop-button hidden", id: "share-button" %>
-		<div id="campaign-missing-fields" class="pop-button pop-button-grey" style="display: block; margin: 5px 0;">Share</div>
-		<ul style="text-align: left;">
-			<li id="missing-text">Missing text</li>
-			<li id="missing-pages">Missing pages to share to</li>
-		</ul>
+		<%= submit_tag "Download", class: "pop-button", id: "download-button" %>
 	</div>
 <% end %>
 
 <script>
-	$( document ).ready(function() {
-	    //show_first();
-	    //first_radio_buttons();
-	});
-
-	$('#useOriginalText').click(function() {
-	  $( "#inputText" ).val("<%= escape_javascript(raw(@campaign.content)) %>");
-	  check_fields();
-	});
-
-	$("#inputText").on("change keyup paste", function(){
-		check_fields();
-	})
-
-	function check_fields(){
-		text = document.getElementById("inputText");
-		var str_length = text.value.length;
-
-		var checkboxes = document.getElementsByName('pages[]');
-		var pageChecked = false;
-
-		for(var i = 0; i < checkboxes.length; i++) {
-		    if(checkboxes[i].type.toLowerCase() == 'checkbox') {
-		        if(checkboxes[i].checked == true){
-		        	pageChecked = true;
-		        }
-		    }
-		}
-
-		if(str_length > 0 && pageChecked == true){
-			all_fields();
-		}else{
-			missing_fields(str_length, pageChecked);
-		}
-	}
-
-	function missing_fields(str_length, pageChecked){
-		if(str_length > 0){
-			$('#missing-text').addClass('hidden');
-		}else{
-			$('#missing-text').removeClass('hidden');
-		}
-
-		if(pageChecked){
-			$('#missing-pages').addClass('hidden');
-		}else{
-			$('#missing-pages').removeClass('hidden');
-		}
-
-		$('#share-button').addClass('hidden');
-		$('#campaign-missing-fields').removeClass('hidden');
-	}
-	function all_fields(){
-		$('#missing-text').addClass('hidden');
-		$('#missing-pages').addClass('hidden');
-		$('#share-button').removeClass('hidden');
-		$('#campaign-missing-fields').addClass('hidden');
-	}
-
-	//Overlay + Carousel
+	//Overlay
 	var overlay_arr = <%= raw @overlays.to_json %>;
-	var platform_types = <%= raw Account.platform_array.map(&:downcase).to_json %>;
-
-	function Platform(type, overlay, image) {
-	    this.type = type;
-	    this.overlay = overlay;
-	    this.image = image;
-	}
+	var bg_images_arr = <%= raw @bg_images.to_json %>;
 
 	var active_overlay = {
 		moving: false,
@@ -102,7 +43,7 @@
 		mouse_offset_top: 0
 	};
 
-	function Overlay( elem, img_url, overlay_index, og_width, og_height, handle, name_elem, bg_img, platform_type){
+	function Overlay( elem, img_url, overlay_index, og_width, og_height, handle, name_elem, bg_img, micropost_id){
 		this.og_width = og_width;
 		this.og_height = og_height;
 		this.ratio = this.og_width / this.og_height;
@@ -116,10 +57,10 @@
 		this.box = elem.parentNode;
 		this.handle = handle;
 		this.name_elem = name_elem;
-		this.bg_img = bg_img;
-		this.platform_type = platform_type;
-		this.prev_arrow = document.getElementById(platform_type.concat("-prev"));
-		this.next_arrow = document.getElementById(platform_type.concat("-next"));
+		this.bg_img = bg_img
+		this.micropost_id = micropost_id;
+		this.prev_arrow = document.getElementById(micropost_id.toString().concat("-prev"));
+		this.next_arrow = document.getElementById(micropost_id.toString().concat("-next"));
 	}
 
 	Overlay.prototype.setOverlayNameAndImage = function() {
@@ -170,11 +111,11 @@
 
 	function loadOverlay(item){
 		if (overlay_arr[0][1] == "") {
-			createPlatforms(item, 0, 0);
+			setUpImages(item, 0, 0);
 		}else{
 			var newImg = new Image();
 			newImg.addEventListener("load", function () {
-		    	createPlatforms(item, newImg.width, newImg.height);
+		    	setUpImages(item, newImg.width, newImg.height);
 			});
 			newImg.src = overlay_arr[0][1];
 		}
@@ -204,18 +145,16 @@
 		}
 	}
 
-	function Background_Image( elem, img_index, og_width, og_height, platform_type){
+	function Background_Image( elem, img_index, og_width, og_height, micropost_id){
 		this.og_width = og_width;
 		this.og_height = og_height;
 		this.img_width = 0;
 		this.img_height = 0;
 		this.img_index = img_index;
 		this.elem = elem;
-		this.platform_type = platform_type;
-		this.prev_arrow = document.getElementById(platform_type.concat("-prev-image"));
-		this.next_arrow = document.getElementById(platform_type.concat("-next-image"));
-		this.carousel_container = document.getElementById(platform_type.concat("_post_carousel"));
-		this.radio_buttons_container = document.getElementById(platform_type.concat("_radio_buttons"));
+		this.micropost_id = micropost_id;
+		this.carousel_container = document.getElementById(micropost_id.toString().concat("_post_carousel"));
+		this.radio_buttons_container = document.getElementById(micropost_id.toString().concat("_radio_buttons"));
 	}
 
 	Background_Image.prototype.setBackgroundImageDimensions = function() {
@@ -226,8 +165,8 @@
 		this.img_height = this.elem.offsetHeight;
 	}
 
-	function createPlatforms(platform_type, og_overlay_width, og_overlay_height) {
-		var image = new Background_Image( document.getElementsByClassName(platform_type.concat("_image"))[0], 0, 0, 0,platform_type);
+	function setUpImages(micropost, og_overlay_width, og_overlay_height) {
+		var image = new Background_Image( document.getElementById( micropost[0].toString().concat("_image")), 0, 0, 0, micropost[0] );
 		image.setBackgroundImageDimensions();
 		if(image.prev_arrow){
 			image.prev_arrow.addEventListener('mousedown', function(e) {
@@ -247,7 +186,6 @@
 				var newImg = new Image();
 				newImg.addEventListener("load", function () {
 					image.elem = last_img;
-			    	image.setBackgroundImageDimensions();
 			    	image.overlay.setOverlayNameAndImage();
 				});
 				newImg.src = last_img.getAttribute("src");
@@ -276,7 +214,6 @@
 				var newImg = new Image();
 				newImg.addEventListener("load", function () {
 					image.elem = image.carousel_container.firstElementChild;
-			    	image.setBackgroundImageDimensions();
 			    	image.overlay.setOverlayNameAndImage();
 				});
 				newImg.src = image.carousel_container.firstElementChild.getAttribute("src");
@@ -288,7 +225,7 @@
 				radio_buttons.firstElementChild.setAttribute( "checked", true );
 			});
 		}
-		var overlay = new Overlay(document.getElementById("overlay_image_".concat(platform_type)),overlay_arr[0][1],0,og_overlay_width,og_overlay_height,document.getElementById("overlay_handle_".concat(platform_type)),document.getElementById("overlay_name_".concat(platform_type)),image,platform_type);
+		var overlay = new Overlay(document.getElementById("overlay_image_".concat(micropost[0].toString())),overlay_arr[0][1],0,og_overlay_width,og_overlay_height,document.getElementById("overlay_handle_".concat(micropost[0])),document.getElementById("overlay_name_".concat(micropost[0])),image, micropost[0]);
 		overlay.bg_img.overlay = overlay;
 		overlay.setOverlayNameAndImage();
 		overlay.elem.addEventListener('mousedown', function(e) {
@@ -319,18 +256,15 @@
 			}
 			change_overlay(overlay);
 		}, true);
-		var platform_obj = new Platform( platform_type, overlay, image);
 	}
 
 	function load_bg_image(item, index){
-		images = document.getElementsByClassName( item.concat("_image"));
-		if ( images.length > 0 ) {
-			var newImg = new Image();
-			newImg.addEventListener("load", function () {
-		    	loadOverlay(item);
-			});
-			newImg.src = images[0].getAttribute("src");
-		}
+		image = document.getElementsByClassName( item[0].toString().concat("_image"));
+		var newImg = new Image();
+		newImg.addEventListener("load", function () {
+	    	loadOverlay(item);
+		});
+		newImg.src = item[1];
 	}
 
 	//show first image
@@ -351,7 +285,7 @@
 	{
 	   radio_buttons[radio_buttons_i].firstElementChild.setAttribute( "checked", true );
 	}
-	platform_types.forEach(load_bg_image);
+	bg_images_arr.forEach(load_bg_image);
 
 	function getImgSize(imgSrc) {
     	var newImg = new Image();
@@ -409,9 +343,6 @@
     			console.log("vertical");
     			active_overlay.overlay.box.style.top = (e.clientY + offset_limit_top) + 'px';
     		}
-			console.log(overlay_top);
-			console.log(overlay_height);
-			console.log(bg_height);
 	   	}else if(active_overlay.resizing){
 	   		var ratio = active_overlay.overlay.ratio;
 	   		var initial_left = active_overlay.mouse_offset_left;
@@ -453,11 +384,11 @@
 
 	function updateOverlayDimensions(overlay){
 		var scale = overlay.bg_img.og_width / overlay.bg_img.img_width;
-		$("#overlay_input_id_".concat(overlay.platform_type)).val(overlay_arr[overlay.overlay_index][2]);
-		$("#overlay_input_left_".concat(overlay.platform_type)).val(Math.round(overlay.box.offsetLeft*scale));
-		$("#overlay_input_top_".concat(overlay.platform_type)).val(Math.round(overlay.box.offsetTop*scale));
-		$("#overlay_input_width_".concat(overlay.platform_type)).val(Math.round(overlay.overlay_width*scale));
-		$("#overlay_input_height_".concat(overlay.platform_type)).val(Math.round(overlay.overlay_height*scale));
+		$("#overlay_input_id_".concat(overlay.micropost_id)).val(overlay_arr[overlay.overlay_index][2]);
+		$("#overlay_input_left_".concat(overlay.micropost_id)).val(Math.round(overlay.box.offsetLeft*scale));
+		$("#overlay_input_top_".concat(overlay.micropost_id)).val(Math.round(overlay.box.offsetTop*scale));
+		$("#overlay_input_width_".concat(overlay.micropost_id)).val(Math.round(overlay.overlay_width*scale));
+		$("#overlay_input_height_".concat(overlay.micropost_id)).val(Math.round(overlay.overlay_height*scale));
 	}
 
 </script>

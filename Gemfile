@@ -41,7 +41,7 @@ gem "popper_js"
 gem 'possessive'
 gem "pg_search"
 gem 'rack-attack'
-gem 'rubyzip', '>= 1.0.0'
+gem 'rubyzip'
 gem 'zip-zip'
 
 # Use Puma as the app server

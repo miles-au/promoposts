@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_08_183249) do
+ActiveRecord::Schema.define(version: 2019_08_16_193822) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -39,8 +39,8 @@ ActiveRecord::Schema.define(version: 2019_08_08_183249) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "content"
+    t.index ["created_at"], name: "index_campaigns_on_created_at"
     t.index ["user_id"], name: "index_campaigns_on_user_id"
-    t.index [nil, "created_at"], name: "index_campaigns_on_micropost_id_and_created_at"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -73,20 +73,6 @@ ActiveRecord::Schema.define(version: 2019_08_08_183249) do
     t.index ["passive_user_id"], name: "index_events_on_passive_user_id"
     t.index ["user_id", "passive_user_id"], name: "index_events_on_user_id_and_passive_user_id"
     t.index ["user_id"], name: "index_events_on_user_id"
-  end
-
-  create_table "listings", force: :cascade do |t|
-    t.integer "product_id"
-    t.integer "list_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "lists", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "user_id"
   end
 
   create_table "microposts", force: :cascade do |t|
@@ -132,13 +118,14 @@ ActiveRecord::Schema.define(version: 2019_08_08_183249) do
     t.index ["user_id"], name: "index_oauth_accounts_on_user_id"
   end
 
-  create_table "products", force: :cascade do |t|
+  create_table "overlays", force: :cascade do |t|
     t.integer "user_id"
-    t.string "url"
     t.string "picture"
+    t.string "category"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "title"
+    t.string "name"
+    t.string "permissions"
   end
 
   create_table "relationships", force: :cascade do |t|

@@ -1,114 +1,76 @@
-<h2 style="text-align: left;">Share this <%= @micropost.category.titlecase.tr("_", " ") %></h2>
-
-<div class="row" style="margin-bottom:10px;">
-	<div >
-		<%= link_to "< Post page", @micropost %>
-		<div style="position: relative;">
-			<img class="new_image_bg" id="image_bg" src="<%= @micropost.picture.url %>" />
-			<div id="overlay_box" class="overlay_container" style="top: 0px; left: 0px;">
-				<img id="overlay_image" src=""/>
-				<div id="handle_bottom_right" class="overlay_handle" ></div>
-			</div>
-		</div>
-		<div>
-			Overlays (logos and banners):
-			<span class="arrow glyphicon glyphicon-chevron-left" id="arrow-prev-overlay"></span>
-			<p id="overlay-name" style="display: inline-block;"></p>
-			<span class="arrow glyphicon glyphicon-chevron-right" id="arrow-next-overlay"></span>
-		</div>
-		<%= link_to "Click here to manage your overlays", "/overlays" %>
+<div class="row">
+	<div class="col-md-3 col-sm-12 sidebar">
+		<div class="profile_user_display">
+      <div>
+        <img src="<%= @micropost.user.avatar %>" id="profile_pic" style="width: 50%; object-fit: cover; object-position: center; display: inline-block; vertical-align: top;" />
+      </div>
+      <div style="display: inline-block; vertical-align: top;">
+        <h1><%= link_to @micropost.user.name, @micropost.user %></h1>
+        <h4><%= @micropost.user.company %></h4>
+        <%= render :partial => 'shared/accolades', :locals => {:user => @micropost.user} %>       
+      </div>
+  	</div>
+    <span class="timestamp">
+      Posted <%= time_ago_in_words(@micropost.created_at) %> ago.
+      <% if current_user %>
+        <% if current_user?(@micropost.user) || current_user.admin? %>
+          <%= link_to "delete", @micropost, method: :delete,
+                                           data: { confirm: "You sure?" } %>
+        <% end %>
+      <% end %>
+    </span>
+    <hr>
 	</div>
+
+	<div class="col-md-9 col-sm-12">
+	  <% if @campaign %>
+	  	<%= link_to @campaign do %>
+	  		<p class="campaign_tag"><span class="glyphicon glyphicon-flag"></span> This post is part of the <em>"<%= @campaign.name %>"</em> campaign.</p>
+	  	<% end %>
+	  <% end %>
+
+		<div >
+			<%= link_to "< Post page", @micropost %>
+			<div style="position: relative;">
+				<img class="new_image_bg" id="image_bg" src="<%= @micropost.picture.url %>" />
+				<div id="overlay_box" class="overlay_container" style="top: 0px; left: 0px;">
+					<img id="overlay_image" src=""/>
+					<div id="handle_bottom_right" class="overlay_handle" ></div>
+				</div>
+			</div>
+			<div>
+				Overlays (logos and banners):
+				<span class="arrow glyphicon glyphicon-chevron-left" id="arrow-prev-overlay"></span>
+				<p id="overlay-name" style="display: inline-block;"></p>
+				<span class="arrow glyphicon glyphicon-chevron-right" id="arrow-next-overlay"></span>
+			</div>
+			<%= link_to "Click here to manage your overlays", "/overlays" %>
+		</div>
+
+		<%= form_tag(download_post_path(@micropost.id), method: :post ) do %>
+
+			<%= text_field_tag "overlay[id]", "", :id => "overlay_input_id", style: "", class: "overlay_input" %>
+			<%= text_field_tag "overlay[left]", "", :id => "overlay_input_left", style: "", class: "overlay_input" %>
+			<%= text_field_tag "overlay[top]", "", :id => "overlay_input_top", style: "", class: "overlay_input" %>
+			<%= text_field_tag "overlay[width]", "", :id => "overlay_input_width", style: "", class: "overlay_input" %>
+			<%= text_field_tag "overlay[height]", "", :id => "overlay_input_height", style: "", class: "overlay_input" %>
+
+	  	<div>
+				<%= submit_tag "Download", class: "pop-button", id: "share-button" %>
+			</div>
+		<% end %>
+
+	</div>
+
 </div>
 
-<%= form_tag(share_post_path(@micropost.id), method: :post, id: "shareContainer") do %>
-
-	<%= text_field_tag "overlay[id]", "", :id => "overlay_input_id", style: "", class: "overlay_input" %>
-	<%= text_field_tag "overlay[left]", "", :id => "overlay_input_left", style: "", class: "overlay_input" %>
-	<%= text_field_tag "overlay[top]", "", :id => "overlay_input_top", style: "", class: "overlay_input" %>
-	<%= text_field_tag "overlay[width]", "", :id => "overlay_input_width", style: "", class: "overlay_input" %>
-	<%= text_field_tag "overlay[height]", "", :id => "overlay_input_height", style: "", class: "overlay_input" %>
-
-	<h2 style="text-align: left; margin-bottom: 0px;">Post caption: </h2>
-	<p>"<%= @micropost.content %>"</p>
-	<div class="pop-button" style="margin-bottom: 10px;" id="useOriginalText">Use/edit original caption</div>
-	<%= text_area_tag :message, nil, :id => "inputText", :maxlength => 240 %>
-	
-	<%= link_to "Click here to manage social media accounts", '/accounts/edit' %>
-	<% Account.platform_array.each do |platform| %>
-		<%= render :partial => 'accounts_list', locals: { platform: platform }%>
-	<% end %>
-
-
-  	<div>
-			<%= submit_tag "Share", class: "pop-button hidden", id: "share-button" %>
-			<div id="micropost-missing-fields" class="pop-button pop-button-grey" style="display: block; margin: 5px 0;">Share</div>
-			<ul style="text-align: left;">
-				<li id="missing-text">Missing text</li>
-				<li id="missing-pages">Missing pages to share to</li>
-			</ul>
-		</div>
-<% end %>
-
 <script>
-	$('#useOriginalText').click(function() {
-	  $( "#inputText" ).val("<%= escape_javascript(raw(@micropost.content)) %>");
-	  check_fields();
-	});
+	show_tooltips();
 
-	$( "input[type='checkbox']" ).change(function() {
-	  check_fields();
-	});
-
-	$("#inputText").on("change keyup paste", function(){
-		check_fields();
-	})
-
-	function check_fields(){
-		text = document.getElementById("inputText");
-		var str_length = text.value.length;
-
-		var checkboxes = document.getElementsByName('pages[]');
-		var pageChecked = false;
-
-		for(var i = 0; i < checkboxes.length; i++) {
-		    if(checkboxes[i].type.toLowerCase() == 'checkbox') {
-		        if(checkboxes[i].checked == true){
-		        	pageChecked = true;
-		        }
-		    }
-		}
-
-		if(str_length > 0 && pageChecked == true){
-			all_fields();
-		}else{
-			missing_fields(str_length, pageChecked);
-		}
-	}
-
-	function missing_fields(str_length, pageChecked){
-		if(str_length > 0){
-			$('#missing-text').addClass('hidden');
-		}else{
-			$('#missing-text').removeClass('hidden');
-		}
-
-		if(pageChecked){
-			$('#missing-pages').addClass('hidden');
-		}else{
-			$('#missing-pages').removeClass('hidden');
-		}
-
-		$('#share-button').addClass('hidden');
-		$('#micropost-missing-fields').removeClass('hidden');
-	}
-	function all_fields(){
-		$('#missing-text').addClass('hidden');
-		$('#missing-pages').addClass('hidden');
-		$('#share-button').removeClass('hidden');
-		$('#micropost-missing-fields').addClass('hidden');
-	}
-
-	//Overlay
+	var profileWidth = $("#profile_pic").width();
+  	$("#profile_pic").height(profileWidth);
+  	
+  //Overlay
 	var overlay_arr = <%= raw @overlays.to_json %>;
 	var overlay_index = 0;
 

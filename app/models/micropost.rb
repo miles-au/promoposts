@@ -44,127 +44,85 @@ class Micropost < ActiveRecord::Base
               ['Infographic', 'infographic']]
   end
 
-  def self.share_to_facebook(micropost, page, message, base_url, current_user)
+  def self.share_to_facebook(micropost, page, message, picture_url, current_user)
     fb_page = Koala::Facebook::API.new(page.user.facebook.get_page_access_token(page.account_id))
 
+    puts "PICTURE_URL : #{picture_url}"
     begin
-        if micropost.picture?
-          picture_url = base_url + micropost.picture.url
-          if micropost.external_url?
-            graph_post = fb_page.put_picture(picture_url, 'image' ,{:message => message, :link => micropost.external_url})
-          else
-            graph_post = fb_page.put_picture(picture_url, 'image' ,{:message => message})
-          end
+        if micropost.external_url?
+          graph_post = fb_page.put_picture(picture_url, 'image' ,{:message => message, :link => micropost.external_url})
         else
-          if micropost.external_url?
-            graph_post = fb_page.put_connections(page_id, "feed", :message => message, :link => micropost.external_url)
-          else
-            graph_post = fb_page.put_connections(page_id, "feed", :message => message)
-          end
+          graph_post = fb_page.put_picture(picture_url, 'image' ,{:message => message})
         end
+        puts "GRAPH POST #{graph_post}"
         return "success"
     rescue => e
-        return "failed"
         puts e.message
+        return "failed"
     end
 
   end
 
-  def self.share_to_linkedin(micropost, page, message, base_url, current_user)
+  def self.share_to_linkedin(micropost, page, message, picture_url, current_user)
     client = current_user.linkedin
     decrypted_token = User.get_token(current_user.linkedin_oauth_token)
 
     #create share
-    if micropost.picture.url
-      picture_url = base_url + micropost.picture.url
-
-      if micropost.external_url
-        #article with picture
-        share = {
-            "content": {
-                "contentEntities": [
-                    {
-                        "entityLocation": micropost.external_url,
-                        "thumbnails": [
-                            { 
-                                "imageSpecificContent": {},
-                                "resolvedUrl": picture_url
-                            }
-                        ]
-                    }
-                ],
-                "title": message,
-                "shareMediaCategory": "ARTICLE"
-            },
-            "owner": "urn:li:person:#{page.account_id}",
-        }.to_json
-        #share = {:content => {:'title' => message, :'submitted-url' => micropost.picture.url}, :'submitted-url' => micropost.external_url}.to_json
-      else
-        #picture
-=begin AWAITING APPROVAL FOR RICH MEDIA SHARES
-        if Rails.env.production?
-          pic_upload = RestClient.post('https://api.linkedin.com/media/upload', 
-            :fileupload => File.new(micropost.picture.url),
-            Authorization: "Bearer #{decrypted_token}")
-        else
-          RestClient.post('https://api.linkedin.com/media/upload', 
-            pic_upload = :fileupload => File.new(open("#{request.protocol}#{request.subdomain}.#{request.domain}#{micropost.picture.url}"),
-            { Authorization: "Bearer #{decrypted_token}" }))
-        end
-        puts "PIC_UPLOAD: #{pic_upload}"
-=end
-
-        share = {
-            "content": {
-                "contentEntities": [
-                    {
-                        "entityLocation": picture_url,
-                        "thumbnails": [
-                            {
-                                "imageSpecificContent": {},
-                                "resolvedUrl": picture_url
-                            }
-                        ]
-                    }
-                ],
-                "title": message
-            },
-            "owner": "urn:li:person:#{page.account_id}",
-        }.to_json
-
-        puts "SHARE: #{share}"
-      end
+    if micropost.external_url
+      #article with picture
+      share = {
+          "content": {
+              "contentEntities": [
+                  {
+                      "entityLocation": micropost.external_url,
+                      "thumbnails": [
+                          { 
+                              "imageSpecificContent": {},
+                              "resolvedUrl": picture_url
+                          }
+                      ]
+                  }
+              ],
+              "title": message,
+              "shareMediaCategory": "ARTICLE"
+          },
+          "owner": "urn:li:person:#{page.account_id}",
+      }.to_json
     else
-      #link without picture
-      if micropost.external_url
-        #share = {:content=>{ :'submitted-url' => micropost.external_url },comment: message, visibility: {code: "anyone"} }.to_json
-        share = {
-            "content": {
-                "contentEntities": [
-                    {
-                        "entityLocation": micropost.external_url,
-                    }
-                ],
-                "title": message,
-                "shareMediaCategory": "ARTICLE"
-            },
-            "owner": "urn:li:person:#{page.account_id}",
-        }.to_json
+=begin AWAITING APPROVAL FOR RICH MEDIA SHARES
+      if Rails.env.production?
+        pic_upload = RestClient.post('https://api.linkedin.com/media/upload', 
+          :fileupload => File.new(micropost.picture.url),
+          Authorization: "Bearer #{decrypted_token}")
       else
-        #share = {comment: message, visibility: {code: "anyone"} }.to_json
-        share = {
-            "owner": "urn:li:person:#{page.account_id}",
-            "text": {
-                "text": message
-            }
-        }.to_json
+        RestClient.post('https://api.linkedin.com/media/upload', 
+          pic_upload = :fileupload => File.new(open("#{request.protocol}#{request.subdomain}.#{request.domain}#{micropost.picture.url}"),
+          { Authorization: "Bearer #{decrypted_token}" }))
       end
+      puts "PIC_UPLOAD: #{pic_upload}"
+=end
+      share = {
+          "content": {
+              "contentEntities": [
+                  {
+                      "entityLocation": picture_url,
+                      "thumbnails": [
+                          {
+                              "imageSpecificContent": {},
+                              "resolvedUrl": picture_url
+                          }
+                      ]
+                  }
+              ],
+              "title": message
+          },
+          "owner": "urn:li:person:#{page.account_id}",
+      }.to_json
     end
 
-    decrypted_token = User.get_token(current_user.linkedin_oauth_token)
+    puts "SHARE: #{share}"
 
-    #header = { "Content-Type" => "application/json", 'Host' => 'api.linkedin.com', 'Connection' => 'Keep-Alive', 'Authorization' => "Bearer #{token}" }
-    #HTTParty.post("https://api.linkedin.com/v2/organizationalEntityAcls?q=roleAssignee&oauth2_access_token=#{decrypted_token}")
+    decrypted_token = User.get_token(current_user.linkedin_oauth_token)
 
     header = { "Content-Type" => "application/json", 'Host' => 'api.linkedin.com', 'Connection' => 'Keep-Alive', 'Authorization' => "Bearer #{decrypted_token}" }
     update = HTTParty.post("https://api.linkedin.com/v2/shares", 
@@ -222,12 +180,11 @@ class Micropost < ActiveRecord::Base
 
   end
 
-  def self.share_to_twitter(micropost, page, message, base_url, current_user)
+  def self.share_to_twitter(micropost, page, message, picture_url, current_user)
     #get permissions
 
     client = current_user.twitter
-    picture = base_url + micropost.picture.url
-    response = client.update_with_media(message, open(picture))
+    response = client.update_with_media(message, open(picture_url))
 
     puts "RESPONSE: #{response}"
     puts "ID: #{response.id}"
@@ -239,25 +196,15 @@ class Micropost < ActiveRecord::Base
     end
   end
 
-  def self.share_to_buffer(micropost, page, message, base_url, current_user)
+  def self.share_to_buffer(micropost, page, message, picture_url, current_user)
     #get permissions
 
     client = current_user.buffer
 
-    if micropost.picture.url
-      if micropost.external_url
-        picture = base_url + micropost.picture.url
-        response = client.create_update(:body => {:profile_ids => [page.account_id], :text => message, :now => true, :media => {:photo => picture, :link => micropost.external_url}})
-      else
-        picture = base_url + micropost.picture.url
-        response = client.create_update(:body => {:profile_ids => [page.account_id], :text => message, :now => true, :media => {:photo => picture}})
-      end
+    if micropost.external_url
+      response = client.create_update(:body => {:profile_ids => [page.account_id], :text => message, :now => true, :media => {:photo => picture_url, :link => micropost.external_url}})
     else
-      if micropost.external_url
-        response = client.create_update(:body => {:profile_ids => [page.account_id], :text => message, :now => true, :media => {:link => micropost.external_url}} )
-      else
-        response = client.create_update(:body => {:profile_ids => [page.account_id], :text => message, :now => true} )
-      end
+      response = client.create_update(:body => {:profile_ids => [page.account_id], :text => message, :now => true, :media => {:photo => picture_url}})
     end
 
     puts "RESPONSE: #{response}"
@@ -269,14 +216,13 @@ class Micropost < ActiveRecord::Base
     end
   end
 
-  def self.share_to_pinterest(micropost, page, message, base_url, current_user)
+  def self.share_to_pinterest(micropost, page, message, picture_url, current_user)
     #get permissions
 
-    picture = base_url + micropost.picture.url
     response = current_user.pinterest.create_pin({
       board: page.account_id,
       note: message,
-      image_url: picture
+      image_url: picture_url
     })
 
     puts "RESPONSE: #{response}"
@@ -288,6 +234,32 @@ class Micropost < ActiveRecord::Base
     else
       return "failed"
     end
+  end
+
+  def self.create_overlay_picture(bg_url, overlay, left, top, width, height)
+    #create overlay
+    filter = MiniMagick::Image.open("public#{overlay.picture_url}")
+
+    if Rails.env.production?
+      img = MiniMagick::Image.open(bg_url)
+    else
+      img = MiniMagick::Image.open("public#{bg_url}")
+    end
+
+    filter.resize "#{width}x#{height}"
+    result = img.composite(filter) do |c|
+      c.compose "Over"
+      c.geometry "+#{left}+#{top}"
+    end
+
+    directory = "public/filters"
+    Dir.mkdir directory unless File.exists?(directory)
+
+    time = Time.now.to_i
+    path = "#{directory}/#{time}-#{rand(1000..9999)}.jpg"
+    result.write(path)
+
+    return path
   end
 
   private

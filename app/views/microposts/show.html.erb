@@ -23,7 +23,7 @@
 	    <hr>
 
 	    <% if current_user %>
-	      <%= link_to download_picture_path(:id => @micropost.id), data: { turbolinks: false }, :class => "side_button" do%>
+	      <%= link_to download_post_page_path(:id => @micropost.id), :class => "side_button" do%>
 	        <div class="pop-button">
 	          <span class="glyphicon glyphicon-cloud-download"></span>
 	          <h3 class = "top_icons">Download Picture</h3>

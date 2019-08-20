@@ -40,11 +40,8 @@ end
 
 #users = User.order(:created_at).take(6)
 
-10.times do |n|
-  num = 1
-  10.times do |i|
-    num = rand(1..3) 
-  end
+15.times do |n|
+  num = rand(1..3) 
   if num == 1
     cat = "distributor"
   elsif num == 2
@@ -66,13 +63,49 @@ end
   end
 end
 
+cat_array = [ 'facebook_cover_photo',
+              'facebook_post',
+              'facebook_linked_image',
+              'linkedin_personal_cover_photo',
+              'linkedin_business_cover_photo',
+              'linkedin_post',
+              'linkedin_linked_post',
+              'instagram_post',
+              'instagram_story',
+              'twitter_cover_photo',
+              'twitter_post',
+              'twitter_linked_post',
+              'pinterest_pin',
+              'pinterest_board_cover',
+              'email_banner',
+              'meme',
+              'infographic']
+
 users = User.all
 
-5.times do
-  content = Faker::Lorem.sentence(5)
-  users.each do |user|
+users.each do |user|
+  5.times do
+    content = Faker::Lorem.sentence(5)
     picture = File.open(Rails.root + "app/assets/images/travel/#{rand(60)}.jpg")
-    user.microposts.create!(content: content, picture: picture, category: 'general_update')
+    category = cat_array.sample
+    user.microposts.create!(content: content, picture: picture, category: category)
+  end
+end
+
+campaign_users = User.order("RANDOM()").limit(5)
+
+campaign_users.each do |user|
+  rand(1..2).times do
+    content = Faker::Lorem.sentence(5)
+    campaign_name = Faker::Lorem.sentence(1)
+    new_campaign = user.campaigns.create!(content: content, name: campaign_name )
+    
+    rand(3..8).times do
+      category = cat_array.sample
+      picture = File.open(Rails.root + "app/assets/images/travel/#{rand(60)}.jpg")
+      user.microposts.create!(content: content, picture: picture, category: category, campaign_id: new_campaign.id)
+    end
+    
   end
 end
 

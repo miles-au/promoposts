@@ -966,12 +966,13 @@ button{
       max-height: 300px;
       max-width: 100%;
     }
-    .arrow{
-      margin: 0px 5px;
-      &:hover{
-        cursor: pointer;
-      }
-    }
+}
+
+.arrow{
+  margin: 0px 5px;
+  &:hover{
+    cursor: pointer;
+  }
 }
 
 .carousel_radio_buttons{
@@ -987,6 +988,35 @@ button{
       display: inline-block;
       font-size: 14px;
     }
+}
+
+/* OVERLAYS */
+
+.new_image_bg{
+  max-width: 100%;
+  max-height: 300px;
+}
+
+.overlay_container{
+  position: absolute;
+  cursor: all-scroll;
+}
+
+.overlay_input{
+  display: none;
+}
+
+.overlay_handle {
+  width: 0px;
+  height: 0px;
+  margin-right: -10px;
+  margin-bottom: -10px;
+  border-left: 10px solid transparent;
+  border-bottom: 10px solid $yellow1;
+  cursor: se-resize;
+  position:absolute;
+  right: 0;
+  bottom: 0;
 }
 
 /* miscellaneous */

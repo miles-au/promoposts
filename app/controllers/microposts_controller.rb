@@ -1,5 +1,5 @@
 class MicropostsController < ApplicationController
-  before_action :logged_in_user, only: [:create, :destroy, :new, :share_post]
+  before_action :logged_in_user, only: [:create, :destroy, :new, :share_post, :download_post_page]
   before_action :correct_or_admin_user, only: [:destroy]
 
   protect_from_forgery with: :exception
@@ -82,33 +82,69 @@ class MicropostsController < ApplicationController
     @event = Event.new
     @micropost = Micropost.find(params[:id])
     @check_accounts = current_user.check_accounts
+
+    @overlays = current_user.overlays.map{ | k | [k.name, k.picture.url, k.id] }
+    @overlays.unshift(["none", "", ""])
+
   end
 
   def submit_share_post
     micropost = Micropost.find(params[:id])
+    overlay = Overlay.find(params[:overlay][:id]) rescue nil
     message = params['message']
     accounts = current_user.accounts.where('id IN (?)', params[:pages])
     @success_string = []
     @create_share_event = false
+    post_to_buffer = false
 
-    if Rails.env.production?
-      base_url = ""
+    #create overlay
+    if overlay.present?
+    
+      filter = MiniMagick::Image.open("public#{overlay.picture_url}")
+
+      if Rails.env.production?
+        img = MiniMagick::Image.open(micropost.picture_url)
+      else
+        img = MiniMagick::Image.open("public#{micropost.picture_url}")
+      end
+
+      filter.resize "#{params[:overlay][:width]}x#{params[:overlay][:height]}"
+      result = img.composite(filter) do |c|
+        c.compose "Over"
+        c.geometry "+#{params[:overlay][:left]}+#{params[:overlay][:top]}"
+      end
+
+      directory = "public/filters"
+      Dir.mkdir directory unless File.exists?(directory)
+
+      time = Time.now.to_i
+      file_name = "#{micropost.id}-filter-#{time}.jpg"
+      path = "#{directory}/#{micropost.id}-filter-#{time}.jpg"
+      result.write(path)
+
+    end
+
+    if overlay.present?
+      picture_url = root_url + "filters/#{file_name}"
+    elsif Rails.env.production?
+      picture_url = "" + micropost.picture.url
     else
-      base_url = root_url
+      picture_url = root_url + micropost.picture.url
     end
     
     accounts.each do |page|
       case page.provider
       when "facebook"
-        resp = Micropost.share_to_facebook(micropost, page, message, base_url, current_user)
+        resp = Micropost.share_to_facebook(micropost, page, message, picture_url, current_user)
       when "linkedin"
-        resp = Micropost.share_to_linkedin(micropost, page, message, base_url, current_user)
+        resp = Micropost.share_to_linkedin(micropost, page, message, picture_url, current_user)
       when "twitter"
-        resp = Micropost.share_to_twitter(micropost, page, message, base_url, current_user)
+        resp = Micropost.share_to_twitter(micropost, page, message, picture_url, current_user)
       when "buffer"
-        resp = Micropost.share_to_buffer(micropost, page, message, base_url, current_user)
+        post_to_buffer = true
+        resp = Micropost.share_to_buffer(micropost, page, message, picture_url, current_user)
       when "pinterest"
-        resp = Micropost.share_to_pinterest(micropost, page, message, base_url, current_user)
+        resp = Micropost.share_to_pinterest(micropost, page, message, picture_url, current_user)
       else
       end
 
@@ -139,7 +175,11 @@ class MicropostsController < ApplicationController
       track.save
     end
 
-    flash[:success] = @success_string.join("<br/>").html_safe 
+    if post_to_buffer
+      buffer_link = "https://publish.buffer.com/profile/#{current_user.buffer_uid}/tab/queue"
+      @success_string << "<a target='_blank' href='#{buffer_link}'>Go to your Buffer Queue</a>"
+    end
+    flash[:success] = @success_string.join("<br/>").html_safe
 
     redirect_to micropost
   end
@@ -153,9 +193,56 @@ class MicropostsController < ApplicationController
     redirect_to micropost
   end
 
-  def download_picture
+  def download_post_page
+    @micropost = Micropost.find(params[:id])
+    if @micropost.campaign_id
+      @campaign = Campaign.find(@micropost.campaign_id)
+    end
+    @check_accounts = current_user.check_accounts
+
+    @overlays = current_user.overlays.map{ | k | [k.name, k.picture.url, k.id] }
+    @overlays.unshift(["none", "", ""])
+  end
+
+  def download_post
     micropost = Micropost.find(params[:id])
     category = micropost.category || "picture"
+    overlay = Overlay.find(params[:overlay][:id]) rescue nil
+
+    #create overlay
+    if overlay.present?
+      filter = MiniMagick::Image.open("public#{overlay.picture_url}")
+
+      if Rails.env.production?
+        img = MiniMagick::Image.open(micropost.picture_url)
+      else
+        img = MiniMagick::Image.open("public#{micropost.picture_url}")
+      end
+
+      filter.resize "#{params[:overlay][:width]}x#{params[:overlay][:height]}"
+      result = img.composite(filter) do |c|
+        c.compose "Over"
+        c.geometry "+#{params[:overlay][:left]}+#{params[:overlay][:top]}"
+      end
+
+      directory = "public/filters"
+      Dir.mkdir directory unless File.exists?(directory)
+
+      time = Time.now.to_i
+      file_name = "#{micropost.id}-filter-#{time}.jpg"
+      path = "#{directory}/#{micropost.id}-filter-#{time}.jpg"
+      result.write(path)
+
+    end
+
+    if overlay.present?
+      picture_url = root_url + "/filters/#{file_name}"
+    elsif Rails.env.production?
+      picture_url = "" + micropost.picture.url
+    else
+      picture_url = root_url+ micropost.picture.url
+    end
+
     if current_user != micropost.user
       if micropost.downloads
         micropost.downloads += 1
@@ -169,9 +256,9 @@ class MicropostsController < ApplicationController
     track.save
 
     if Rails.env.production?
-      send_data(open(micropost.picture.url.read.force_encoding('BINARY')), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
+      send_data(open(picture_url.read.force_encoding('BINARY')), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
     else
-      send_data(open("#{request.protocol}#{request.subdomain}.#{request.domain}#{micropost.picture.url}").read.force_encoding('BINARY'), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
+      send_data(open(picture_url).read.force_encoding('BINARY'), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
     end
   end
 

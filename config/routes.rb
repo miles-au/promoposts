@@ -83,13 +83,19 @@ Rails.application.routes.draw do
 
   get '/submit_vote', to: 'votes#submit_vote'
 
-  get '/microposts/:id/download_picture', to: "microposts#download_picture", as: 'download_picture'
-  get '/campaigns/:id/download_assets', to: "campaigns#download_assets", as: 'download_assets'
+  get '/microposts/:id/download_post', to: "microposts#download_post_page", as: 'download_post_page'
+  post '/microposts/:id/download_post', to: "microposts#download_post", as: 'download_post'
+  get '/campaigns/:id/download_assets', to: "campaigns#download_campaign_page", as: 'download_campaign_page'
+  post '/campaigns/:id/download_assets', to: "campaigns#download_assets", as: 'download_assets'
 
   get '/landing_page', to: "static_pages#landing_page"
 
   get '/admin_panel', to: "static_pages#admin_panel"
   get '/tracking', to: "static_pages#tracking"
+
+  get '/overlays', to: "overlays#show"
+  post '/overlays', to: "overlays#create"
+  post '/delete_overlay', to: "overlays#destroy"
 
   resources :users do
     member do

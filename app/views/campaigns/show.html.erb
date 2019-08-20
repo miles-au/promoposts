@@ -15,7 +15,7 @@
     </div>
 
     <% if current_user %>
-      <%= link_to download_assets_path(:id => @campaign.id), :class => "side_button" do%>
+      <%= link_to download_campaign_page_path(:id => @campaign.id), :class => "side_button" do%>
         <div class="pop-button">
           <h3 class = "top_icons"><span class="glyphicon glyphicon-cloud-download"></span> Download Campaign</h3>
         </div>

@@ -70,15 +70,30 @@ class CampaignsController < ApplicationController
     redirect_to root_url
   end
 
+  def download_campaign_page
+    @campaign = Campaign.find(params[:id])
+    @bg_images = @campaign.microposts.map { |key| [ key.id, key.picture.url ] }
+    @overlays = current_user.overlays.map{ | k | [k.name, k.picture.url, k.id] }
+    @overlays.unshift(["none", "", ""])
+  end
+
   def download_assets
+    @campaign = Campaign.find(params[:id])
+    #delete current zip file if it exists
     File.delete("#{Rails.root}/public/#{current_user.id}.zip") if File.exist?("#{Rails.root}/public/#{current_user.id}.zip")
+    #delete current user's downloads folder if it exists
     FileUtils.remove_dir("#{Rails.root}/public/downloads/#{current_user.id}") if Dir.exist?("#{Rails.root}/public/downloads/#{current_user.id}/")
+    #recreate the user's download folder
     FileUtils.mkdir_p("#{Rails.root}/public/downloads/#{current_user.id}")
 
     campaign = Campaign.find(params[:id])
+    #destination zip file
     zipfile_name = "#{Rails.root}/public/#{current_user.id}.zip"
+    #working folder
     folder_path = "#{Rails.root}/public/downloads/#{current_user.id}/"
 
+
+=begin not sure what this does
     if Rails.env.production?
       campaign.microposts.each do |post|
         file_name = post.picture.url.split('/').last
@@ -87,10 +102,16 @@ class CampaignsController < ApplicationController
         end
       end
     end
+=end
 
     Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
       files_added = []
-      campaign.microposts.each do |asset|
+      @campaign.microposts.each do |asset|
+        overlay = Overlay.find(params[:microposts][:"#{asset.id}"][:overlay][:id]) rescue ""
+        puts "OVERLAY ID: #{overlay.id}" rescue "NO OVERLAY"
+        puts "ASSET URL: #{asset.picture.url}"
+
+        #track downloads
         if current_user.id != asset.user_id
           if asset.downloads
             asset.downloads += 1
@@ -114,13 +135,24 @@ class CampaignsController < ApplicationController
           new_file_name = new_name
         end
 
-        if Rails.env.production?
+        if overlay.present?
+          picture_url = Micropost.create_overlay_picture(
+          asset.picture.url,
+          overlay,
+          params[:microposts][:"#{asset.id}"][:overlay][:left],
+          params[:microposts][:"#{asset.id}"][:overlay][:top],
+          params[:microposts][:"#{asset.id}"][:overlay][:width],
+          params[:microposts][:"#{asset.id}"][:overlay][:height])
+          file_name = picture_url.split('/').last
+          zipfile.add(new_file_name, picture_url)
+        elsif Rails.env.production?
           file_name = asset.picture.url.split('/').last
           zipfile.add(new_file_name, File.join(folder_path,file_name))
         else
           zipfile.add(new_file_name, asset.picture.path)
         end
         files_added << new_file_name
+
       end
     end
 
@@ -139,6 +171,10 @@ class CampaignsController < ApplicationController
   def share_campaign
     @campaign = Campaign.find(params[:id])
     @check_accounts = current_user.check_accounts
+
+    @overlays = current_user.overlays.map{ | k | [k.name, k.picture.url, k.id] }
+    @overlays.unshift(["none", "", ""])
+
   end
 
   def submit_share_campaign
@@ -156,17 +192,31 @@ class CampaignsController < ApplicationController
 
     accounts.each do |page|
       micropost = Micropost.find(params[:microposts]["#{page.platform}"][:post_id])
+      overlay = Overlay.find(params[:microposts]["#{page.platform}"][:overlay][:id]) rescue nil
+      if overlay
+        file_url = Micropost.create_overlay_picture(
+          micropost.picture.url,
+          overlay,
+          params[:microposts]["#{page.platform}"][:overlay][:left],
+          params[:microposts]["#{page.platform}"][:overlay][:top],
+          params[:microposts]["#{page.platform}"][:overlay][:width],
+          params[:microposts]["#{page.platform}"][:overlay][:height])
+        file_name = file_url.split('/').last
+        picture_url = "#{root_url}/filters/#{file_name}"
+      else
+        picture_url = base_url + micropost.picture.url
+      end
       case page.provider
       when "facebook"
-        resp = Micropost.share_to_facebook(micropost, page, message, base_url, current_user)
+        resp = Micropost.share_to_facebook(micropost, page, message, picture_url, current_user)
       when "linkedin"
-        resp = Micropost.share_to_linkedin(micropost, page, message, base_url, current_user)
+        resp = Micropost.share_to_linkedin(micropost, page, message, picture_url, current_user)
       when "twitter"
-        resp = Micropost.share_to_twitter(micropost, page, message, base_url, current_user)
+        resp = Micropost.share_to_twitter(micropost, page, message, picture_url, current_user)
       when "buffer"
-        resp = Micropost.share_to_buffer(micropost, page, message, base_url, current_user)
+        resp = Micropost.share_to_buffer(micropost, page, message, picture_url, current_user)
       when "pinterest"
-        resp = Micropost.share_to_pinterest(micropost, page, message, base_url, current_user)
+        resp = Micropost.share_to_pinterest(micropost, page, message, picture_url, current_user)
       else
       end
 

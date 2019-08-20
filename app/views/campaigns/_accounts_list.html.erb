@@ -8,9 +8,9 @@
 		<div class="post_carousel" >
 			<% if platform_posts.count > 1 %>
 				<div>
-					<span class="arrow arrow-left glyphicon glyphicon-chevron-left"></span> Choose a <%= platform %> post
-					<span class="arrow arrow-right glyphicon glyphicon-chevron-right"></span>
-					<div class="carousel_radio_buttons">
+					<span class="arrow glyphicon glyphicon-chevron-left" id="<%= platform.downcase %>-prev-image"></span> Choose a <%= platform %> post
+					<span class="arrow glyphicon glyphicon-chevron-right" id="<%= platform.downcase %>-next-image"></span>
+					<div class="carousel_radio_buttons" id="<%= platform.downcase %>_radio_buttons">
 						<% platform_posts.each do |post| %>
 							<%= radio_button_tag "microposts[#{platform.downcase}][post_id]", post.id %>
 						<% end %>
@@ -23,13 +23,33 @@
 					<% end %>
 				</div>
 			<% end %>
-			<div class="post_carousel_container">
-				<% platform_posts.each do |post| %>
-					<%= link_to post, :class => "inactive" do %>
-						<%= image_tag post.picture.url %>
+			<div style="position: relative;">
+				<div class="post_carousel_container" id="<%= platform.downcase%>_post_carousel">
+					<% platform_posts.each do |post| %>
+						<%= image_tag post.picture.url, class: "#{platform.downcase}_image inactive"%>
 					<% end %>
+				</div>
+				<% if platform_posts.count > 0 %>
+					<div id="overlay_box_<%= platform.downcase %>" class="overlay_container" style="top: 0px; left: 0px;">
+						<img id="overlay_image_<%= platform.downcase %>" src=""/>
+						<div id="overlay_handle_<%= platform.downcase %>" class="overlay_handle"></div>
+					</div>
 				<% end %>
 			</div>
+			<% if platform_posts.count > 0 %>
+				<div>
+					Overlays (logos and banners):
+					<span class="arrow arrow-prev-overlay glyphicon glyphicon-chevron-left" id="<%= platform.downcase %>-prev"></span>
+					<p id="overlay_name_<%= platform.downcase %>" style="display: inline-block;"></p>
+					<span class="arrow arrow-next-overlay glyphicon glyphicon-chevron-right"  id="<%= platform.downcase %>-next"></span>
+
+					<%= text_field_tag "microposts[#{platform.downcase}][overlay][id]", "", :id => "overlay_input_id_#{platform.downcase}", style: "", class: "overlay_input" %>
+					<%= text_field_tag "microposts[#{platform.downcase}][overlay][left]", "", :id => "overlay_input_left_#{platform.downcase}", style: "", class: "overlay_input" %>
+					<%= text_field_tag "microposts[#{platform.downcase}][overlay][top]", "", :id => "overlay_input_top_#{platform.downcase}", style: "", class: "overlay_input" %>
+					<%= text_field_tag "microposts[#{platform.downcase}][overlay][width]", "", :id => "overlay_input_width_#{platform.downcase}", style: "", class: "overlay_input" %>
+					<%= text_field_tag "microposts[#{platform.downcase}][overlay][height]", "", :id => "overlay_input_height_#{platform.downcase}", style: "", class: "overlay_input" %>
+				</div>
+			<% end %>
 		</div>
 
 	</div>

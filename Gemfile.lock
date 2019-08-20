@@ -649,7 +649,7 @@ DEPENDENCIES
   rack-attack
   rails (~> 5.2.1)
   rails-controller-testing
-  rubyzip (>= 1.0.0)
+  rubyzip
   sass-rails (~> 5.0)
   selenium-webdriver
   spring
