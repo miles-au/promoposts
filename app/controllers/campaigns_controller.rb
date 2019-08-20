@@ -78,7 +78,6 @@ class CampaignsController < ApplicationController
   end
 
   def download_assets
-    @campaign = Campaign.find(params[:id])
     #delete current zip file if it exists
     File.delete("#{Rails.root}/public/#{current_user.id}.zip") if File.exist?("#{Rails.root}/public/#{current_user.id}.zip")
     #delete current user's downloads folder if it exists
@@ -106,7 +105,7 @@ class CampaignsController < ApplicationController
 
     Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
       files_added = []
-      @campaign.microposts.each do |asset|
+      campaign.microposts.each do |asset|
         overlay = Overlay.find(params[:microposts][:"#{asset.id}"][:overlay][:id]) rescue ""
         puts "OVERLAY ID: #{overlay.id}" rescue "NO OVERLAY"
         puts "ASSET URL: #{asset.picture.url}"
