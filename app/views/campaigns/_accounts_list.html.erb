@@ -24,7 +24,7 @@
 				</div>
 			<% end %>
 			<div style="position: relative;">
-				<div class="post_carousel_container" id="<%= platform.downcase%>_post_carousel">
+				<div class="post_carousel_container" id="<%= platform.downcase%>_post_carousel" >
 					<% platform_posts.each do |post| %>
 						<%= image_tag post.picture.url, class: "#{platform.downcase}_image inactive"%>
 					<% end %>

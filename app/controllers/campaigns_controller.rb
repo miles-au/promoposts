@@ -202,7 +202,7 @@ class CampaignsController < ApplicationController
           params[:microposts]["#{page.platform}"][:overlay][:width],
           params[:microposts]["#{page.platform}"][:overlay][:height])
         file_name = file_url.split('/').last
-        picture_url = "#{root_url}/filters/#{file_name}"
+        picture_url = "#{root_url}filters/#{file_name}"
       else
         picture_url = base_url + micropost.picture.url
       end

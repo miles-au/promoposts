@@ -97,35 +97,16 @@ class MicropostsController < ApplicationController
     @create_share_event = false
     post_to_buffer = false
 
-    #create overlay
     if overlay.present?
-    
-      filter = MiniMagick::Image.open("public#{overlay.picture_url}")
-
-      if Rails.env.production?
-        img = MiniMagick::Image.open(micropost.picture_url)
-      else
-        img = MiniMagick::Image.open("public#{micropost.picture_url}")
-      end
-
-      filter.resize "#{params[:overlay][:width]}x#{params[:overlay][:height]}"
-      result = img.composite(filter) do |c|
-        c.compose "Over"
-        c.geometry "+#{params[:overlay][:left]}+#{params[:overlay][:top]}"
-      end
-
-      directory = "public/filters"
-      Dir.mkdir directory unless File.exists?(directory)
-
-      time = Time.now.to_i
-      file_name = "#{micropost.id}-filter-#{time}.jpg"
-      path = "#{directory}/#{micropost.id}-filter-#{time}.jpg"
-      result.write(path)
-
-    end
-
-    if overlay.present?
-      picture_url = root_url + "filters/#{file_name}"
+      file_url = Micropost.create_overlay_picture(
+        micropost.picture.url,
+        overlay,
+        params[:overlay][:left],
+        params[:overlay][:top],
+        params[:overlay][:width],
+        params[:overlay][:height])
+      file_name = file_url.split('/').last
+      picture_url = "#{root_url}filters/#{file_name}"
     elsif Rails.env.production?
       picture_url = "" + micropost.picture.url
     else
@@ -209,34 +190,16 @@ class MicropostsController < ApplicationController
     category = micropost.category || "picture"
     overlay = Overlay.find(params[:overlay][:id]) rescue nil
 
-    #create overlay
     if overlay.present?
-      filter = MiniMagick::Image.open("public#{overlay.picture_url}")
-
-      if Rails.env.production?
-        img = MiniMagick::Image.open(micropost.picture_url)
-      else
-        img = MiniMagick::Image.open("public#{micropost.picture_url}")
-      end
-
-      filter.resize "#{params[:overlay][:width]}x#{params[:overlay][:height]}"
-      result = img.composite(filter) do |c|
-        c.compose "Over"
-        c.geometry "+#{params[:overlay][:left]}+#{params[:overlay][:top]}"
-      end
-
-      directory = "public/filters"
-      Dir.mkdir directory unless File.exists?(directory)
-
-      time = Time.now.to_i
-      file_name = "#{micropost.id}-filter-#{time}.jpg"
-      path = "#{directory}/#{micropost.id}-filter-#{time}.jpg"
-      result.write(path)
-
-    end
-
-    if overlay.present?
-      picture_url = root_url + "/filters/#{file_name}"
+      file_url = Micropost.create_overlay_picture(
+        micropost.picture.url,
+        overlay,
+        params[:overlay][:left],
+        params[:overlay][:top],
+        params[:overlay][:width],
+        params[:overlay][:height])
+      file_name = file_url.split('/').last
+      picture_url = "#{root_url}filters/#{file_name}"
     elsif Rails.env.production?
       picture_url = "" + micropost.picture.url
     else
