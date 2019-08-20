@@ -146,7 +146,7 @@ class CampaignsController < ApplicationController
           zipfile.add(new_file_name, picture_url)
         elsif Rails.env.production?
           file_name = asset.picture.url.split('/').last
-          zipfile.add(new_file_name, File.join(folder_path,file_name))
+          zipfile.add(new_file_name, asset.picture.url)
         else
           zipfile.add(new_file_name, asset.picture.path)
         end
