@@ -92,7 +92,6 @@ class CampaignsController < ApplicationController
     folder_path = "#{Rails.root}/public/downloads/#{current_user.id}/"
 
 
-=begin not sure what this does
     if Rails.env.production?
       campaign.microposts.each do |post|
         file_name = post.picture.url.split('/').last
@@ -101,7 +100,6 @@ class CampaignsController < ApplicationController
         end
       end
     end
-=end
 
     Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
       files_added = []
@@ -146,7 +144,7 @@ class CampaignsController < ApplicationController
           zipfile.add(new_file_name, picture_url)
         elsif Rails.env.production?
           file_name = asset.picture.url.split('/').last
-          zipfile.add(new_file_name, asset.picture.url)
+          zipfile.add(new_file_name, File.join(folder_path,file_name))
         else
           zipfile.add(new_file_name, asset.picture.path)
         end
