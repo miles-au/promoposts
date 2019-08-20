@@ -238,11 +238,11 @@ class Micropost < ActiveRecord::Base
 
   def self.create_overlay_picture(bg_url, overlay, left, top, width, height)
     #create overlay
-    filter = MiniMagick::Image.open("public#{overlay.picture_url}")
-
     if Rails.env.production?
+      filter = MiniMagick::Image.open(overlay.picture_url)
       img = MiniMagick::Image.open(bg_url)
     else
+      filter = MiniMagick::Image.open("public#{overlay.picture_url}")
       img = MiniMagick::Image.open("public#{bg_url}")
     end
 
