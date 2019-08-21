@@ -91,7 +91,6 @@ class CampaignsController < ApplicationController
     #working folder
     folder_path = "#{Rails.root}/public/downloads/#{current_user.id}/"
 
-
     if Rails.env.production?
       campaign.microposts.each do |post|
         file_name = post.picture.url.split('/').last
@@ -180,6 +179,7 @@ class CampaignsController < ApplicationController
     accounts = current_user.accounts.where('id IN (?)', params[:pages])
     @success_string = []
     @create_share_event = false
+    @post_to_buffer = false
 
     if Rails.env.production?
       base_url = ""
@@ -211,6 +211,7 @@ class CampaignsController < ApplicationController
       when "twitter"
         resp = Micropost.share_to_twitter(micropost, page, message, picture_url, current_user)
       when "buffer"
+        post_to_buffer = true
         resp = Micropost.share_to_buffer(micropost, page, message, picture_url, current_user)
       when "pinterest"
         resp = Micropost.share_to_pinterest(micropost, page, message, picture_url, current_user)
@@ -244,6 +245,10 @@ class CampaignsController < ApplicationController
       track.save
     end
 
+    if post_to_buffer
+      buffer_link = "https://publish.buffer.com/profile/#{current_user.buffer_uid}/tab/queue"
+      @success_string << "<a target='_blank' href='#{buffer_link}'>Go to your Buffer Queue</a>"
+    end
     flash[:success] = @success_string.join("<br/>").html_safe 
 
     redirect_to campaign

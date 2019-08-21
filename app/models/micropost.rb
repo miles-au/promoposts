@@ -34,6 +34,7 @@ class Micropost < ActiveRecord::Base
               ['LinkedIn Linked Post', 'linkedin_linked_post'],
               ['Instagram Post', 'instagram_post'],
               ['Instagram Story', 'instagram_story'],
+              ['Instagram Story Cover', 'instagram_story_cover'],
               ['Twitter Cover Photo', 'twitter_cover_photo'],
               ['Twitter Post', 'twitter_post'],
               ['Twitter Linked Post', 'twitter_linked_post'],
@@ -41,7 +42,8 @@ class Micropost < ActiveRecord::Base
               ['Pinterest Board Cover', 'pinterest_board_cover'],
               ['Email Banner', 'email_banner'],
               ['Meme', 'meme'],
-              ['Infographic', 'infographic']]
+              ['Infographic', 'infographic'],
+              ['Other', 'other']]
   end
 
   def self.share_to_facebook(micropost, page, message, picture_url, current_user)

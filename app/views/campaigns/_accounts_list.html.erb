@@ -42,6 +42,9 @@
 					<span class="arrow arrow-prev-overlay glyphicon glyphicon-chevron-left" id="<%= platform.downcase %>-prev"></span>
 					<p id="overlay_name_<%= platform.downcase %>" style="display: inline-block;"></p>
 					<span class="arrow arrow-next-overlay glyphicon glyphicon-chevron-right"  id="<%= platform.downcase %>-next"></span>
+					<% if @overlays.count <= 1 %>
+						<span class="mini-error" >You don't have any overlays set up yet!</span>
+					<% end %>
 
 					<%= text_field_tag "microposts[#{platform.downcase}][overlay][id]", "", :id => "overlay_input_id_#{platform.downcase}", style: "", class: "overlay_input" %>
 					<%= text_field_tag "microposts[#{platform.downcase}][overlay][left]", "", :id => "overlay_input_left_#{platform.downcase}", style: "", class: "overlay_input" %>

@@ -1,34 +1,58 @@
-<h2 style="text-align: left;">Download campaign:</h2>
-<h1 style="text-align: left;"><%= link_to @campaign.name, @campaign %></h1>
-
-<%= form_tag(download_assets_path(@campaign.id), method: :post, id: "shareContainer" ) do %>
-	<%= link_to "Click here to manage your overlays", "/overlays" %>
-	<% @campaign.microposts.each do |micropost| %>
-		<h3 style="text-align: left;"><%= micropost.category.titlecase.tr("_", " ") %></h3>
-		<div style="position: relative;">
-			<img class="new_image_bg" id="<%= micropost.id %>_image" src="<%= micropost.picture.url %>" />
-			<div id="overlay_box_<%= micropost.id %>" class="overlay_container" style="top: 0px; left: 0px;">
-				<img id="overlay_image_<%= micropost.id %>" src="" draggable="false"/>
-				<div id="overlay_handle_<%= micropost.id %>" class="overlay_handle"></div>
-			</div>
-		</div>
-		<div>
-			Overlays (logos and banners):
-			<span class="arrow arrow-prev-overlay glyphicon glyphicon-chevron-left" id="<%= micropost.id %>-prev"></span>
-			<p id="overlay_name_<%= micropost.id %>" style="display: inline-block;"></p>
-			<span class="arrow arrow-next-overlay glyphicon glyphicon-chevron-right"  id="<%= micropost.id %>-next"></span>
-		</div>
-		<%= text_field_tag "microposts[#{micropost.id}][overlay][id]", "", :id => "overlay_input_id_#{micropost.id}", style: "", class: "overlay_input" %>
-		<%= text_field_tag "microposts[#{micropost.id}][overlay][left]", "", :id => "overlay_input_left_#{micropost.id}", style: "", class: "overlay_input" %>
-		<%= text_field_tag "microposts[#{micropost.id}][overlay][top]", "", :id => "overlay_input_top_#{micropost.id}", style: "", class: "overlay_input" %>
-		<%= text_field_tag "microposts[#{micropost.id}][overlay][width]", "", :id => "overlay_input_width_#{micropost.id}", style: "", class: "overlay_input" %>
-		<%= text_field_tag "microposts[#{micropost.id}][overlay][height]", "", :id => "overlay_input_height_#{micropost.id}", style: "", class: "overlay_input" %>
-	<% end %>
-
-  	<div>
-		<%= submit_tag "Download", class: "pop-button", id: "download-button" %>
+<div class="row">
+	<%= form_tag(download_assets_path(@campaign.id), method: :post, id: "shareContainer" ) do %>
+	<div class="col-md-3 col-sm-12 sidebar">
+		<h1 style="text-align: left;">Download campaign:</h1>
+		<%= link_to overlays_path, :class => "side_button" do%>
+      <div class="pop-button">
+        <h3 class = "top_icons">Manage Overlays</h3>
+      </div>
+    <% end %>
+    <%= button_tag(type: "submit", class: "pop-button side_button", id: "download-button", style: "border: none; width: 100%;") do %>
+    	<h3><span class="glyphicon glyphicon-cloud-download"></span> Download</h3>
+		<% end %>
 	</div>
-<% end %>
+	<div class="col-md-9 col-sm-12">
+		<h1 class="campaign-title" style="display: inline-block;"><strong><%= link_to @campaign.name, @campaign %></strong></h1>
+		<div class="timestamp">
+		  Campaign created <%= time_ago_in_words(@campaign.created_at) %> ago.
+		  <% if current_user %>
+		    <% if current_user?(@campaign.user) || current_user.admin? %>
+		      <%= link_to "delete campaign", @campaign, method: :delete, data: { confirm: "Delete this campaign?" } %>
+		    <% end %>
+		  <% end %>
+		</div>
+		<hr>
+		<% @campaign.microposts.each do |micropost| %>
+			<h3 style="text-align: left;"><%= micropost.category.titlecase.tr("_", " ") %></h3>
+			<div style="position: relative;">
+				<img class="new_image_bg" id="<%= micropost.id %>_image" src="<%= micropost.picture.url %>" />
+				<div id="overlay_box_<%= micropost.id %>" class="overlay_container" style="top: 0px; left: 0px;">
+					<img id="overlay_image_<%= micropost.id %>" src="" draggable="false"/>
+					<div id="overlay_handle_<%= micropost.id %>" class="overlay_handle"></div>
+				</div>
+			</div>
+			<div>
+				Overlays (logos and banners):
+				<span class="arrow arrow-prev-overlay glyphicon glyphicon-chevron-left" id="<%= micropost.id %>-prev"></span>
+				<p id="overlay_name_<%= micropost.id %>" style="display: inline-block;"></p>
+				<span class="arrow arrow-next-overlay glyphicon glyphicon-chevron-right"  id="<%= micropost.id %>-next"></span>
+				<% if @overlays.count <= 1 %>
+					<span class="mini-error" >You don't have any overlays set up yet!</span>
+				<% end %>
+			</div>
+			<%= text_field_tag "microposts[#{micropost.id}][overlay][id]", "", :id => "overlay_input_id_#{micropost.id}", style: "", class: "overlay_input" %>
+			<%= text_field_tag "microposts[#{micropost.id}][overlay][left]", "", :id => "overlay_input_left_#{micropost.id}", style: "", class: "overlay_input" %>
+			<%= text_field_tag "microposts[#{micropost.id}][overlay][top]", "", :id => "overlay_input_top_#{micropost.id}", style: "", class: "overlay_input" %>
+			<%= text_field_tag "microposts[#{micropost.id}][overlay][width]", "", :id => "overlay_input_width_#{micropost.id}", style: "", class: "overlay_input" %>
+			<%= text_field_tag "microposts[#{micropost.id}][overlay][height]", "", :id => "overlay_input_height_#{micropost.id}", style: "", class: "overlay_input" %>
+
+			<hr>
+		<% end %>
+
+	</div>
+
+	<% end %>
+</div>
 
 <script>
 	//Overlay

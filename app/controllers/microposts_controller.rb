@@ -223,6 +223,7 @@ class MicropostsController < ApplicationController
     else
       send_data(open(picture_url).read.force_encoding('BINARY'), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
     end
+    
   end
 
   private

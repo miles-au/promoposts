@@ -2,8 +2,8 @@ class OverlaysController < ApplicationController
 	before_action :logged_in_user
 
 	def show
+		@overlays = current_user.overlays
 	  @new_overlay = current_user.overlays.build
-	  @overlays = current_user.overlays
 	end
 
 	def create
@@ -18,7 +18,10 @@ class OverlaysController < ApplicationController
 	end
 
 	def destroy
-
+		@overlay = Overlay.find(params[:id])
+		@overlay.destroy
+    flash[:success] = "Overlay deleted"
+    redirect_to overlays_path
 	end
 
 	private

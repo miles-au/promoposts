@@ -95,7 +95,7 @@ Rails.application.routes.draw do
 
   get '/overlays', to: "overlays#show"
   post '/overlays', to: "overlays#create"
-  post '/delete_overlay', to: "overlays#destroy"
+  delete '/overlays', to: "overlays#destroy"
 
   resources :users do
     member do

@@ -15,6 +15,9 @@
 			<span class="arrow glyphicon glyphicon-chevron-left" id="arrow-prev-overlay"></span>
 			<p id="overlay-name" style="display: inline-block;"></p>
 			<span class="arrow glyphicon glyphicon-chevron-right" id="arrow-next-overlay"></span>
+			<% if @overlays.count <= 1 %>
+				<span class="mini-error" >You don't have any overlays set up yet!</span>
+			<% end %>
 		</div>
 		<%= link_to "Click here to manage your overlays", "/overlays" %>
 	</div>

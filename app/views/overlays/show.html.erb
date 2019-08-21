@@ -1,24 +1,38 @@
-<h1>Your Overlays</h1>
+<div class="row">
+  <div class="col-md-3 col-sm-12 sidebar">
+    <h1 style="text-align: left;">Add a new Overlay</h1>
+    <%= form_for(@new_overlay) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
 
-<%= form_for(@new_overlay) do |f| %>
-  <%= render 'shared/error_messages', object: f.object %>
+      <%= f.label :name, "Overlay name:" %>
+      <%= f.text_field :name, maxlength: 75 %>
 
-  <%= f.label :name, "Overlay name:" %>
-  <%= f.text_field :name, maxlength: 75 %>
-
-  <div class="picture">
-    <span style="display: inline-block; font-size: 1.2em;" class="glyphicon glyphicon-picture"></span>
-    <p style="display: inline-block; text-align: top;">Add an overlay (10mb max)</p>
-    <%= f.file_field :picture, accept: 'image/jpeg,image/png' %>
+      <div class="picture">
+        <span style="display: inline-block; font-size: 1.2em;" class="glyphicon glyphicon-picture"></span>
+        <p style="display: inline-block; text-align: top;">Add an overlay (10mb max)</p>
+        <%= f.file_field :picture, accept: 'image/jpeg,image/png' %>
+      </div>
+      
+      <%= f.submit "Add new overlay", class: "pop-button side_button" %>
+    <% end %>
   </div>
-  
-  <%= f.submit "Add new overlay", class: "pop-button" %>
-<% end %>
-
-
-<% @overlays.each_with_index do |overlay| %>
-  <img src="<%= overlay.picture.url %>" /> 
-<% end %>
+  <div class="col-md-9 col-sm-12">
+    <h1>Your Overlays</h1>
+    <% @overlays.each_with_index do |overlay| %>
+      <% if overlay.id %>
+        <div style="margin-bottom: 10px;">
+          <h3 style="text-align: left;"><%= overlay.name %></h3>
+          <img src="<%= overlay.picture.url %>" style="max-height: 300px; max-width: 100%;" />
+        </div>
+        <div>
+          <%= link_to overlays_path( id: overlay.id), method: :delete do %>
+            <span class="glyphicon glyphicon-trash" ></span>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
 
 <script type="text/javascript">
   $('#micropost_picture').bind('change', function() {

@@ -19,7 +19,7 @@
 					</div>
 					<h6 class="page-name"><%= page.name %></h6>
 					<% if @check_accounts.exclude?(page.account_id) %>
-					  <p class="lost-access">Unable to access this account. <%= link_to "Click here to manage accounts", '/accounts/edit' %></p>
+					  <p class="mini-error">Unable to access this account. <%= link_to "Click here to manage accounts", '/accounts/edit' %></p>
 					<% end %>
 				</div>
 			<% end %>
