@@ -125,17 +125,6 @@ textarea {
   }
 }
 
-.grey-submit{
-  &:hover{
-    background-color: $grey4;
-    color: $grey2;
-    border-top: 3px solid $grey3;
-    border-left: 3px solid $grey3;
-    border-bottom: none;
-    border-right: none;
-  }
-}
-
 .follow-btn{
   border: none;
   border-radius: 0px;

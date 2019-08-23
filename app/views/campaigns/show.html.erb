@@ -62,11 +62,47 @@
   		    <% end %>
   		  <% end %>
   		</div>
-      <hr>
   		<p><%= @campaign.content %></p>
+      <hr>
   	</div>
 
-	<%= render @campaign.microposts.reverse %>
+	<%#= render @campaign.microposts.reverse %>
+  <% @campaign.microposts.reverse.each do | micropost | %>
+    <div class="micropost_item">
+      <div class="row" style="height: 100%;">
+
+        <div class="col-md-12 col-sm-12" style="height: 100%;">
+          <%= link_to micropost do %>
+            <p class="category-title"><%= micropost.category.titlecase.tr("_", " ") %></p>
+            <img src="<%= micropost.picture.url %>" />
+          <% end %>
+        </div>
+      </div>
+
+      <div class="row subrow" style="margin-top: 5px; margin-bottom: 5px;">
+          <% if current_user %>
+            <div class="col-md-3 col-sm-12">
+                <%= link_to download_assets_path(:id => micropost.id) do%>
+                  <div class="pop-button">
+                    <p class = "top_icons"><span class="glyphicon glyphicon-cloud-download"></span> Download Post</p>
+                  </div>
+                <% end %>
+              </div>
+              <div class="col-md-3 col-sm-12">
+                <%= link_to share_post_path(:id => micropost.id) do%>
+                  <div class="pop-button">
+                    <p class = "top_icons"><span class="glyphicon glyphicon-share-alt"></span> Share to Social Media</p>
+                  </div>
+                <% end %>
+              </div>
+            <% else %>
+              <p><%= link_to 'Sign in', social_login_path %> to 
+                  <span class="glyphicon glyphicon-cloud-download"></span> download this post and 
+                  <span class="glyphicon glyphicon glyphicon-share-alt"></span> share to social media</p>
+            <% end %>
+        </div>
+    </div>
+  <% end %>
 
   </div>
 

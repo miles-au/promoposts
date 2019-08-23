@@ -6,9 +6,13 @@
 	<div class="pop-button" style="margin-bottom: 10px;" id="useOriginalText">Use/edit original campaign text</div>
 	<%= text_area_tag :message, nil, :id => "inputText", :maxlength => 240 %>
 	<!--<div class="pop-button" style="margin-bottom: 10px;" id="updateText">Update posts with text above</div>-->
-	
+	<h4>Edit all overlays:</h4>
+	<%= select_tag nil, options_for_select(@overlay_select), id: "update_overlay_id" %>
+	<%= select_tag nil, options_for_select(@overlay_locations), id: "update_overlay_location" %>
+	<p class="pop-button" id="update_overlays" onclick="updateOverlays();" >Update</p>
 	<%= link_to "Click here to manage social media accounts", '/accounts/edit' %>
 	<%= link_to "Click here to manage your overlays", "/overlays", style: "display: block;" %>
+
 	<% Account.platform_array.each do |platform| %>
 		<%= render :partial => 'accounts_list', locals: { platform: platform }%>
 	<% end %>
@@ -87,12 +91,7 @@
 	//Overlay + Carousel
 	var overlay_arr = <%= raw @overlays.to_json %>;
 	var platform_types = <%= raw Account.platform_array.map(&:downcase).to_json %>;
-
-	function Platform(type, overlay, image) {
-	    this.type = type;
-	    this.overlay = overlay;
-	    this.image = image;
-	}
+	var overlay_obj_arr = [];
 
 	var active_overlay = {
 		moving: false,
@@ -291,6 +290,24 @@
 		var overlay = new Overlay(document.getElementById("overlay_image_".concat(platform_type)),overlay_arr[0][1],0,og_overlay_width,og_overlay_height,document.getElementById("overlay_handle_".concat(platform_type)),document.getElementById("overlay_name_".concat(platform_type)),image,platform_type);
 		overlay.bg_img.overlay = overlay;
 		overlay.setOverlayNameAndImage();
+		<% case @default_location %>
+		<% when "nw" %>
+			//do nothing
+		<% when "ne" %>
+			console.log("NE");
+			overlay.left = overlay.bg_img.img_width - overlay.overlay_width
+		<% when "sw" %>
+			console.log("SW");
+			overlay.top = overlay.bg_img.img_height - overlay.overlay_height
+		<% when "se" %>
+			console.log("SE");
+			overlay.top = overlay.bg_img.img_height - overlay.overlay_height
+			overlay.left = overlay.bg_img.img_width - overlay.overlay_width
+		<% else %>
+			//do nothing
+		<% end %>
+		overlay.box.style.left = overlay.left + "px";
+		overlay.box.style.top = overlay.top + "px";
 		overlay.elem.addEventListener('mousedown', function(e) {
 			active_overlay.moving = true;
 			active_overlay.overlay = overlay;
@@ -319,7 +336,7 @@
 			}
 			change_overlay(overlay);
 		}, true);
-		var platform_obj = new Platform( platform_type, overlay, image);
+		overlay_obj_arr.push(overlay);
 	}
 
 	function load_bg_image(item, index){
@@ -458,6 +475,61 @@
 		$("#overlay_input_top_".concat(overlay.platform_type)).val(Math.round(overlay.box.offsetTop*scale));
 		$("#overlay_input_width_".concat(overlay.platform_type)).val(Math.round(overlay.overlay_width*scale));
 		$("#overlay_input_height_".concat(overlay.platform_type)).val(Math.round(overlay.overlay_height*scale));
+	}
+
+	function updateOverlays(){
+	    var update_overlay_id = document.getElementById("update_overlay_id");
+	    var update_overlay_location = document.getElementById("update_overlay_location");
+	    var update_id = update_overlay_id.options[update_overlay_id.selectedIndex].value;
+	    var update_location = update_overlay_location.options[update_overlay_location.selectedIndex].value;
+	    for(var j = 0; j < overlay_arr.length; j++){
+	    		if(overlay_arr[j][2] == update_id){
+	    			var new_index = j;
+	    			break;
+	    		}
+	    	}
+	    for(var i = 0; i < overlay_obj_arr.length; i++){
+	    	var overlay = overlay_obj_arr[i];
+	    	overlay.overlay_index = new_index;
+	    	update_over_change(overlay, update_location);		  
+	    }
+	}
+
+	function update_over_change(overlay, update_location){
+		if(overlay_arr[overlay.overlay_index][1] == ""){
+			overlay.og_width = 0;
+			overlay.og_height = 0;
+	    overlay.setOverlayNameAndImage();
+		}else{
+			var newImg = new Image();
+			newImg.addEventListener("load", function () {
+				overlay.og_width = newImg.width;
+				overlay.og_height = newImg.height;
+		    overlay.setOverlayNameAndImage();
+		    switch (update_location) {
+				  case "nw":
+				    overlay.left = 0;
+				    overlay.top = 0;
+				    break;
+				  case "ne":
+				  	overlay.left = overlay.bg_img.img_width - overlay.overlay_width;
+				    overlay.top = 0;
+				    break;
+				  case "sw":
+				   	overlay.left = 0;
+				    overlay.top = overlay.bg_img.img_height - overlay.overlay_height;
+				    break;
+				  case "se":
+				  	overlay.left = overlay.bg_img.img_width - overlay.overlay_width
+				    overlay.top = overlay.bg_img.img_height - overlay.overlay_height
+				    break;
+				}
+			  overlay.box.style.left = overlay.left + "px";
+				overlay.box.style.top = overlay.top + "px";
+
+			});
+			newImg.src = overlay_arr[overlay.overlay_index][1];
+		}
 	}
 
 </script>

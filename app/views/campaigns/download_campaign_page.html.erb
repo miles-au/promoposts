@@ -21,6 +21,12 @@
 		    <% end %>
 		  <% end %>
 		</div>
+
+		<h4>Edit all overlays:</h4>
+		<%= select_tag nil, options_for_select(@overlay_select), id: "update_overlay_id" %>
+		<%= select_tag nil, options_for_select(@overlay_locations), id: "update_overlay_location" %>
+		<p class="pop-button" id="update_overlays" onclick="updateOverlays();" >Update</p>
+
 		<hr>
 		<% @campaign.microposts.each do |micropost| %>
 			<h3 style="text-align: left;"><%= micropost.category.titlecase.tr("_", " ") %></h3>
@@ -58,6 +64,7 @@
 	//Overlay
 	var overlay_arr = <%= raw @overlays.to_json %>;
 	var bg_images_arr = <%= raw @bg_images.to_json %>;
+	var overlay_obj_arr = [];
 
 	var active_overlay = {
 		moving: false,
@@ -149,13 +156,13 @@
 		if(overlay_arr[overlay.overlay_index][1] == ""){
 			overlay.og_width = 0;
 			overlay.og_height = 0;
-	    	overlay.setOverlayNameAndImage();
+	    overlay.setOverlayNameAndImage();
 		}else{
 			var newImg = new Image();
 			newImg.addEventListener("load", function () {
 				overlay.og_width = newImg.width;
 				overlay.og_height = newImg.height;
-		    	overlay.setOverlayNameAndImage();
+		    overlay.setOverlayNameAndImage();
 			});
 			newImg.src = overlay_arr[overlay.overlay_index][1];
 		}
@@ -250,36 +257,52 @@
 			});
 		}
 		var overlay = new Overlay(document.getElementById("overlay_image_".concat(micropost[0].toString())),overlay_arr[0][1],0,og_overlay_width,og_overlay_height,document.getElementById("overlay_handle_".concat(micropost[0])),document.getElementById("overlay_name_".concat(micropost[0])),image, micropost[0]);
-		overlay.bg_img.overlay = overlay;
-		overlay.setOverlayNameAndImage();
-		overlay.elem.addEventListener('mousedown', function(e) {
-			active_overlay.moving = true;
-			active_overlay.overlay = overlay;
-			active_overlay.mouse_offset_left = parseInt(active_overlay.overlay.box.style.left) - e.clientX;
-			active_overlay.mouse_offset_top = parseInt(active_overlay.overlay.box.style.top) - e.clientY;
-		}, true);
-		overlay.handle.addEventListener('mousedown', function(e) {
-			active_overlay.resizing = true;
-			active_overlay.overlay = overlay;
-			active_overlay.mouse_offset_left = e.clientX;
-			active_overlay.mouse_offset_top = e.clientY;
-		}, true);
-		overlay.prev_arrow.addEventListener('mousedown', function(e) {
-			if(overlay.overlay_index > 0){
-				overlay.overlay_index -= 1;
-			}else{
-				overlay.overlay_index = overlay_arr.length - 1;
-			}
-			change_overlay(overlay);
-		}, true);
-		overlay.next_arrow.addEventListener('mousedown', function(e) {
-			if(overlay.overlay_index < overlay_arr.length - 1){
-				overlay.overlay_index += 1;
-			}else{
-				overlay.overlay_index = 0;
-			}
-			change_overlay(overlay);
-		}, true);
+			overlay.bg_img.overlay = overlay;
+			overlay.setOverlayNameAndImage();
+			<% case @default_location %>
+			<% when "nw" %>
+				//do nothing
+			<% when "ne" %>
+				overlay.left = overlay.bg_img.img_width - overlay.overlay_width
+			<% when "sw" %>
+				overlay.top = overlay.bg_img.img_height - overlay.overlay_height
+			<% when "se" %>
+				overlay.top = overlay.bg_img.img_height - overlay.overlay_height
+				overlay.left = overlay.bg_img.img_width - overlay.overlay_width
+			<% else %>
+				//do nothing
+			<% end %>
+			overlay.box.style.left = overlay.left + "px";
+			overlay.box.style.top = overlay.top + "px";
+			overlay.elem.addEventListener('mousedown', function(e) {
+				active_overlay.moving = true;
+				active_overlay.overlay = overlay;
+				active_overlay.mouse_offset_left = parseInt(active_overlay.overlay.box.style.left) - e.clientX;
+				active_overlay.mouse_offset_top = parseInt(active_overlay.overlay.box.style.top) - e.clientY;
+			}, true);
+			overlay.handle.addEventListener('mousedown', function(e) {
+				active_overlay.resizing = true;
+				active_overlay.overlay = overlay;
+				active_overlay.mouse_offset_left = e.clientX;
+				active_overlay.mouse_offset_top = e.clientY;
+			}, true);
+			overlay.prev_arrow.addEventListener('mousedown', function(e) {
+				if(overlay.overlay_index > 0){
+					overlay.overlay_index -= 1;
+				}else{
+					overlay.overlay_index = overlay_arr.length - 1;
+				}
+				change_overlay(overlay);
+			}, true);
+			overlay.next_arrow.addEventListener('mousedown', function(e) {
+				if(overlay.overlay_index < overlay_arr.length - 1){
+					overlay.overlay_index += 1;
+				}else{
+					overlay.overlay_index = 0;
+				}
+				change_overlay(overlay);
+			}, true);
+			overlay_obj_arr.push(overlay);
 	}
 
 	function load_bg_image(item, index){
@@ -400,9 +423,9 @@
 			}
 
 	   		active_overlay.overlay.box.style.width = new_width + 'px';
-			active_overlay.overlay.box.style.height = Math.round(new_width/ratio)+'px';
-			active_overlay.overlay.elem.style.width = new_width + 'px';
-			active_overlay.overlay.elem.style.height = Math.round(new_width/ratio)+'px';
+				active_overlay.overlay.box.style.height = Math.round(new_width/ratio)+'px';
+				active_overlay.overlay.elem.style.width = new_width + 'px';
+				active_overlay.overlay.elem.style.height = Math.round(new_width/ratio)+'px';
 	   	}
 	}, true);
 
@@ -413,6 +436,61 @@
 		$("#overlay_input_top_".concat(overlay.micropost_id)).val(Math.round(overlay.box.offsetTop*scale));
 		$("#overlay_input_width_".concat(overlay.micropost_id)).val(Math.round(overlay.overlay_width*scale));
 		$("#overlay_input_height_".concat(overlay.micropost_id)).val(Math.round(overlay.overlay_height*scale));
+	}
+
+	function updateOverlays(){
+    var update_overlay_id = document.getElementById("update_overlay_id");
+    var update_overlay_location = document.getElementById("update_overlay_location");
+    var update_id = update_overlay_id.options[update_overlay_id.selectedIndex].value;
+    var update_location = update_overlay_location.options[update_overlay_location.selectedIndex].value;
+    for(var j = 0; j < overlay_arr.length; j++){
+    		if(overlay_arr[j][2] == update_id){
+    			var new_index = j;
+    			break;
+    		}
+    	}
+    for(var i = 0; i < overlay_obj_arr.length; i++){
+    	var overlay = overlay_obj_arr[i];
+    	overlay.overlay_index = new_index;
+    	update_over_change(overlay, update_location);		  
+    }
+	}
+
+	function update_over_change(overlay, update_location){
+		if(overlay_arr[overlay.overlay_index][1] == ""){
+			overlay.og_width = 0;
+			overlay.og_height = 0;
+	    overlay.setOverlayNameAndImage();
+		}else{
+			var newImg = new Image();
+			newImg.addEventListener("load", function () {
+				overlay.og_width = newImg.width;
+				overlay.og_height = newImg.height;
+		    overlay.setOverlayNameAndImage();
+		    switch (update_location) {
+				  case "nw":
+				    overlay.left = 0;
+				    overlay.top = 0;
+				    break;
+				  case "ne":
+				  	overlay.left = overlay.bg_img.img_width - overlay.overlay_width;
+				    overlay.top = 0;
+				    break;
+				  case "sw":
+				   	overlay.left = 0;
+				    overlay.top = overlay.bg_img.img_height - overlay.overlay_height;
+				    break;
+				  case "se":
+				  	overlay.left = overlay.bg_img.img_width - overlay.overlay_width
+				    overlay.top = overlay.bg_img.img_height - overlay.overlay_height
+				    break;
+				}
+			  overlay.box.style.left = overlay.left + "px";
+				overlay.box.style.top = overlay.top + "px";
+
+			});
+			newImg.src = overlay_arr[overlay.overlay_index][1];
+		}
 	}
 
 </script>

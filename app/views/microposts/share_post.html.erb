@@ -186,7 +186,25 @@
 			newImg.addEventListener("load", function () {
 				overlay.og_width = newImg.width;
 				overlay.og_height = newImg.height;
-		    overlay.setOverlayNameAndImage();
+		    	overlay.setOverlayNameAndImage();
+		    	<% case @default_location %>
+				<% when "nw" %>
+					//do nothing
+				<% when "ne" %>
+					console.log("NE");
+					overlay.left = bg_img.img_width - overlay.overlay_width
+				<% when "sw" %>
+					console.log("SW");
+					overlay.top = bg_img.img_height - overlay.overlay_height
+				<% when "se" %>
+					console.log("SE");
+					overlay.top = bg_img.img_height - overlay.overlay_height
+					overlay.left = bg_img.img_width - overlay.overlay_width
+				<% else %>
+					//do nothing
+				<% end %>
+				overlay.box.style.left = overlay.left + "px";
+				overlay.box.style.top = overlay.top + "px";
 			});
 			newImg.src = overlay_arr[overlay_index][1];
 		}
@@ -228,7 +246,7 @@
 			newImg.addEventListener("load", function () {
 				overlay.og_width = newImg.width;
 				overlay.og_height = newImg.height;
-		    overlay.setOverlayNameAndImage();
+		    	overlay.setOverlayNameAndImage();
 			});
 			newImg.src = overlay_arr[overlay_index][1];
 		}
@@ -250,7 +268,7 @@
 			bg_img.og_height = newImg.height;
 			bg_img.img_width = image.offsetWidth;
 			bg_img.img_height = image.offsetHeight;
-	    loadOverlay();
+	    	loadOverlay();
 		});
 		newImg.src = image.getAttribute("src");
 	}

@@ -83,8 +83,14 @@ class MicropostsController < ApplicationController
     @micropost = Micropost.find(params[:id])
     @check_accounts = current_user.check_accounts
 
-    @overlays = current_user.overlays.map{ | k | [k.name, k.picture.url, k.id] }
+    default_overlay = Overlay.find(current_user.setting.default_overlay_id) rescue nil
+    @default_location = current_user.setting.default_overlay_location rescue nil
+
+    @overlays = current_user.overlays.map{ | k | k.id == current_user.setting.default_overlay_id ? nil : [k.name, k.picture.url, k.id] }.compact
     @overlays.unshift(["none", "", ""])
+    if default_overlay
+      @overlays.unshift( [ default_overlay.name, default_overlay.picture.url, default_overlay.id ] )
+    end
 
   end
 
@@ -181,8 +187,15 @@ class MicropostsController < ApplicationController
     end
     @check_accounts = current_user.check_accounts
 
-    @overlays = current_user.overlays.map{ | k | [k.name, k.picture.url, k.id] }
+    default_overlay = Overlay.find(current_user.setting.default_overlay_id) rescue nil
+    @default_location = current_user.setting.default_overlay_location rescue nil
+
+    @overlays = current_user.overlays.map{ | k | k.id == current_user.setting.default_overlay_id ? nil : [k.name, k.picture.url, k.id] }.compact
     @overlays.unshift(["none", "", ""])
+    if default_overlay
+      @overlays.unshift( [ default_overlay.name, default_overlay.picture.url, default_overlay.id ] )
+    end
+
   end
 
   def download_post
@@ -223,7 +236,7 @@ class MicropostsController < ApplicationController
     else
       send_data(open(picture_url).read.force_encoding('BINARY'), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
     end
-    
+
   end
 
   private

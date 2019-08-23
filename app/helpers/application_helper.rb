@@ -9,4 +9,5 @@ module ApplicationHelper
       "Promo Posts | " + page_title
     end
   end
+  
 end

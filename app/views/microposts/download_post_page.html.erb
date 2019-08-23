@@ -19,6 +19,7 @@
         <% end %>
       <% end %>
     </span>
+
     <hr>
 	</div>
 
@@ -58,7 +59,7 @@
 			<%= text_field_tag "overlay[width]", "", :id => "overlay_input_width", style: "", class: "overlay_input" %>
 			<%= text_field_tag "overlay[height]", "", :id => "overlay_input_height", style: "", class: "overlay_input" %>
 
-	  	<div>
+	  		<div>
 				<%= submit_tag "Download", class: "pop-button", id: "share-button" %>
 			</div>
 		<% end %>
@@ -135,8 +136,8 @@
 			this.box.style.height = this.overlay_height + "px";
 			this.elem.style.width = this.overlay_width + "px";
 			this.elem.style.height = this.overlay_height + "px";
-			this.box.style.left = "0px";
-			this.box.style.top = "0px";
+			this.box.style.left = this.left + "px";
+			this.box.style.top = this.top + "px";
 		}
 	}
 
@@ -148,7 +149,25 @@
 			newImg.addEventListener("load", function () {
 				overlay.og_width = newImg.width;
 				overlay.og_height = newImg.height;
-		    overlay.setOverlayNameAndImage();
+		    	overlay.setOverlayNameAndImage();
+				<% case @default_location %>
+				<% when "nw" %>
+					//do nothing
+				<% when "ne" %>
+					console.log("NE");
+					overlay.left = bg_img.img_width - overlay.overlay_width
+				<% when "sw" %>
+					console.log("SW");
+					overlay.top = bg_img.img_height - overlay.overlay_height
+				<% when "se" %>
+					console.log("SE");
+					overlay.top = bg_img.img_height - overlay.overlay_height
+					overlay.left = bg_img.img_width - overlay.overlay_width
+				<% else %>
+					//do nothing
+				<% end %>
+				overlay.box.style.left = overlay.left + "px";
+				overlay.box.style.top = overlay.top + "px";
 			});
 			newImg.src = overlay_arr[overlay_index][1];
 		}

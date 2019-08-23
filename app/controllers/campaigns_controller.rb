@@ -73,8 +73,23 @@ class CampaignsController < ApplicationController
   def download_campaign_page
     @campaign = Campaign.find(params[:id])
     @bg_images = @campaign.microposts.map { |key| [ key.id, key.picture.url ] }
-    @overlays = current_user.overlays.map{ | k | [k.name, k.picture.url, k.id] }
+    default_overlay = Overlay.find(current_user.setting.default_overlay_id) rescue nil
+    @default_location = current_user.setting.default_overlay_location rescue nil
+
+    @overlays = current_user.overlays.map{ | k | k.id == current_user.setting.default_overlay_id ? nil : [k.name, k.picture.url, k.id] }.compact
     @overlays.unshift(["none", "", ""])
+    if default_overlay
+      @overlays.unshift( [ default_overlay.name, default_overlay.picture.url, default_overlay.id ] )
+    end
+
+    @overlay_locations = [  [ "Top Left" , "nw" ],
+                            [ "Top Right" , "ne" ],
+                            [ "Bottom Left" , "sw" ],
+                            [ "Bottom Right" , "se" ]
+                          ]
+    @overlay_select = current_user.overlays.pluck(:name, :id)
+    @overlay_select.unshift(["none" , nil])
+
   end
 
   def download_assets
@@ -168,8 +183,22 @@ class CampaignsController < ApplicationController
     @campaign = Campaign.find(params[:id])
     @check_accounts = current_user.check_accounts
 
-    @overlays = current_user.overlays.map{ | k | [k.name, k.picture.url, k.id] }
+    default_overlay = Overlay.find(current_user.setting.default_overlay_id) rescue nil
+    @default_location = current_user.setting.default_overlay_location rescue nil
+
+    @overlays = current_user.overlays.map{ | k | k.id == current_user.setting.default_overlay_id ? nil : [k.name, k.picture.url, k.id] }.compact
     @overlays.unshift(["none", "", ""])
+    if default_overlay
+      @overlays.unshift( [ default_overlay.name, default_overlay.picture.url, default_overlay.id ] )
+    end
+
+    @overlay_locations = [  [ "Top Left" , "nw" ],
+                            [ "Top Right" , "ne" ],
+                            [ "Bottom Left" , "sw" ],
+                            [ "Bottom Right" , "se" ]
+                          ]
+    @overlay_select = current_user.overlays.pluck(:name, :id)
+    @overlay_select.unshift(["none" , nil])
 
   end
 

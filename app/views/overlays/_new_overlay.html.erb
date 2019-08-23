@@ -1,0 +1,19 @@
+<%= form_for @new_overlay, :remote => true do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <div class="sidebar-form">
+
+    <%= f.label :name, "Overlay name:" %>
+    <%= f.text_field :name, maxlength: 75 %>
+
+    <div class="picture">
+      <span style="display: inline-block; font-size: 1.2em;" class="glyphicon glyphicon-picture"></span>
+      <p style="display: inline-block; text-align: top;">Add an overlay (10mb max)</p>
+      <%= f.file_field :picture, accept: 'image/jpeg,image/png' %>
+    </div>
+    
+    <%= f.submit "Add new overlay", class: "pop-button side_button" %>
+
+  </div>
+  
+<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_16_193822) do
+ActiveRecord::Schema.define(version: 2019_08_22_233945) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -143,6 +143,8 @@ ActiveRecord::Schema.define(version: 2019_08_16_193822) do
     t.string "user_id"
     t.boolean "email_when_followed", default: true
     t.boolean "email_when_new_question", default: false
+    t.integer "default_overlay_id"
+    t.string "default_overlay_location"
   end
 
   create_table "tickets", force: :cascade do |t|
