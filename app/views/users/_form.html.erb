@@ -6,57 +6,52 @@
       <h5>Upload a new profile picture (10mb max)</h5>
       <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
     </div>
-    <div>
-      <h5>Upload a new cover photo (10mb max)</h5>
-      <%= f.file_field :cover_photo, accept: 'image/jpeg,image/gif,image/png' %>
-    </div>
   <% end %>
 
-  <%= f.label :category, "Category: I am a..." %><br />
-  <div class="categoryLabel">
-  <%= f.label :category, "distributor" %>
-  <%= f.radio_button :category, "distributor", :checked => logged_in? && @user.category == "distributor" %>
-  </div>
-  <div class="categoryLabel">
-  <%= f.label :category, "vendor" %>
-  <%= f.radio_button :category, "vendor", :checked => logged_in? && @user.category == "vendor" %>
-  </div>
-  <div class="categoryLabel">
-  <%= f.label :category, "neither" %>
-  <%= f.radio_button :category, "none", :checked => logged_in? && @user.category == "none" %>
-  </div><br />
-
   <%= f.label :name, "Name"%>
-  <%= f.text_field :name, class: 'form-control', maxlength: 50 %>
-
-  <%= f.label :company, "Organization"%>
-  <%= f.text_field :company, class: 'form-control', maxlength: 50  %>
+  <%= f.text_field :name, maxlength: 50 %>
   
   <%= f.label :email %>
   <% if @user.verify_email %>
-    <%= f.email_field :email, class: 'form-control' %>
+    <%= f.email_field :email %>
   <% else %>
-    <%= f.email_field :email, class: 'form-control', value: '' %>
+    <%= f.email_field :email, value: '' %>
   <% end %>
 
   <%= f.label :password %>
-  <%= f.password_field :password, class: 'form-control' %>
+  <%= f.password_field :password %>
 
   <%= f.label :password_confirmation %>
-  <%= f.password_field :password_confirmation, class: 'form-control' %>
+  <%= f.password_field :password_confirmation %>
 
   <% if current_user %>
+    <%= f.label :company, "Organization"%>
+    <%= f.text_field :company, maxlength: 50  %>
+
+    <%= f.label :category, "Category: I am a..." %><br />
+    <div class="categoryLabel">
+    <%= f.label :category, "distributor" %>
+    <%= f.radio_button :category, "distributor", :checked => logged_in? && @user.category == "distributor" %>
+    </div>
+    <div class="categoryLabel">
+    <%= f.label :category, "vendor" %>
+    <%= f.radio_button :category, "vendor", :checked => logged_in? && @user.category == "vendor" %>
+    </div>
+    <div class="categoryLabel">
+    <%= f.label :category, "neither" %>
+    <%= f.radio_button :category, "none", :checked => logged_in? && @user.category == "none" %>
+    </div><br />
+
     <%= f.label :slug, "Profile Url" %>
-    <input type="textbox" class="form-control" placeholder="<%= @user.slug %>" id="slug-input" maxlength='75' />
+    <input type="textbox" placeholder="<%= @user.slug %>" id="slug-input" maxlength='75' />
     <div>
       <p style="display: inline-block; ">www.promoposts.net/users/</p>
-      <%= f.text_field :slug, class: 'form-control', readonly: true, id: "real-slug", style: 'display: inline-block; width: auto;' %>
+      <%= f.text_field :slug, readonly: true, id: "real-slug", style: 'display: inline-block; width: auto;' %>
     </div>
   <% else %>
     <%= f.hidden_field :slug, :value => "" %>
   <% end %>
-
-  <%= f.submit yield(:button_text), class: "pop-button form-submit" %>
+  <%= f.submit yield(:button_text), class: "pop-button" %>
 <% end %>
 
 <script>

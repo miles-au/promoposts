@@ -1,122 +1,79 @@
 <% provide(:title, @campaign.name) %>
 
-<div class="row">
-  <div class="col-md-3 col-sm-12 sidebar">
-    <h2 class="campaign_label"><span class="glyphicon glyphicon-flag"></span> campaign </h2>
-    <p>created by:</p>
-    <div class="profile_user_display">
-      <div>
-        <img src="<%= @campaign.user.avatar %>" id="profile_pic" style="width: 50%; object-fit: cover; object-position: center; display: inline-block; vertical-align: top;" />
-      </div>
-      <div style="display: inline-block; vertical-align: top;">
-        <h1><%= link_to @campaign.user.name, @campaign.user %></h1>
-        <h4><%= @campaign.user.company %></h4>
-        <%= render :partial => 'shared/accolades', :locals => {:user => @campaign.user} %>       
+<div class="row dashboard">
+    <div class="col col-md-3 col-sm-12">
+      <%= render partial: "shared/action_button", locals: { text: "download campaign", glyphicon: "cloud-download", goto: download_campaign_page_path(:id => @campaign.id) } %>
+    </div>
+    <div class="col col-md-3 col-sm-12">
+      <%= render partial: "shared/action_button", locals: { text: "share to social media", glyphicon: "share-alt", goto: share_campaign_path(:id => @campaign.id) } %>
+    </div>
+  <% if @campaign.user == current_user %>
+
+    <div class="col col-md-3 col-sm-12">
+      <div class="btn-large" id="edit_campaign_button" style="cursor: pointer;">
+        <div class="icon">
+          <span class="glyphicon glyphicon-pencil"></span>
+        </div>
+        <div class="text">
+          edit campaign
+        </div>
       </div>
     </div>
 
-    <% if current_user %>
-      <%= link_to download_campaign_page_path(:id => @campaign.id), :class => "side_button" do%>
-        <div class="pop-button">
-          <h3 class = "top_icons"><span class="glyphicon glyphicon-cloud-download"></span> Download Campaign</h3>
+    <div class="col col-md-3 col-sm-12">
+      <div class="btn-large" id="add_post_button" style="cursor: pointer;">
+        <div class="icon">
+          <span class="glyphicon glyphicon-plus"></span>
         </div>
-      <% end %>
-      <%= link_to share_campaign_path(:id => @campaign.id), :class => "side_button" do%>
-        <div class="pop-button">
-          <h3 class = "top_icons"><span class="glyphicon glyphicon-share-alt"></span> Share to Social Media</h3>
-        </div>
-      <% end %>
-    <% else %>
-    	<p><%= link_to 'Sign in', social_login_path %> to:<br>
-          <span class="glyphicon glyphicon-cloud-download"></span> download this campaign<br>
-          <span class="glyphicon glyphicon glyphicon-share-alt"></span> share to social media</p>
-    <% end %>
-
-    <% if @campaign.user == current_user %>
-
-      <div class="accordion side_button">
-        <h3 class="pop-button"><span class="glyphicon glyphicon-pencil"></span> Edit Campaign</h3>
-      </div>
-      <div class="sub-accordion" id="edit_campaign_container">
-        <%= render 'edit_campaign_form' %>
-      </div>
-      <div class="accordion side_button">
-        <h3 class="pop-button"><span class="glyphicon glyphicon-plus"></span> Add Post</h3>
-      </div>
-      <div class="sub-accordion"  id="add_post_container">
-        <%= render 'add_post_form' %>
-      </div>
-
-    <% end %>
-
-  </div>
-
-  <div class="col-md-9 col-sm-12">
-    <div class="campaign-text">
-  		<h1 class="campaign-title" style="display: inline-block;"><strong><%= link_to @campaign.name, @campaign %></strong></h1>
-  		<div class="timestamp">
-  		  Campaign created <%= time_ago_in_words(@campaign.created_at) %> ago.
-  		  <% if current_user %>
-  		    <% if current_user?(@campaign.user) || current_user.admin? %>
-  		      <%= link_to "delete campaign", @campaign, method: :delete, data: { confirm: "Delete this campaign?" } %>
-  		    <% end %>
-  		  <% end %>
-  		</div>
-  		<p><%= @campaign.content %></p>
-      <hr>
-  	</div>
-
-	<%#= render @campaign.microposts.reverse %>
-  <% @campaign.microposts.reverse.each do | micropost | %>
-    <div class="micropost_item">
-      <div class="row" style="height: 100%;">
-
-        <div class="col-md-12 col-sm-12" style="height: 100%;">
-          <%= link_to micropost do %>
-            <p class="category-title"><%= micropost.category.titlecase.tr("_", " ") %></p>
-            <img src="<%= micropost.picture.url %>" />
-          <% end %>
+        <div class="text">
+          add post
         </div>
       </div>
-
-      <div class="row subrow" style="margin-top: 5px; margin-bottom: 5px;">
-          <% if current_user %>
-            <div class="col-md-3 col-sm-12">
-                <%= link_to download_assets_path(:id => micropost.id) do%>
-                  <div class="pop-button">
-                    <p class = "top_icons"><span class="glyphicon glyphicon-cloud-download"></span> Download Post</p>
-                  </div>
-                <% end %>
-              </div>
-              <div class="col-md-3 col-sm-12">
-                <%= link_to share_post_path(:id => micropost.id) do%>
-                  <div class="pop-button">
-                    <p class = "top_icons"><span class="glyphicon glyphicon-share-alt"></span> Share to Social Media</p>
-                  </div>
-                <% end %>
-              </div>
-            <% else %>
-              <p><%= link_to 'Sign in', social_login_path %> to 
-                  <span class="glyphicon glyphicon-cloud-download"></span> download this post and 
-                  <span class="glyphicon glyphicon glyphicon-share-alt"></span> share to social media</p>
-            <% end %>
-        </div>
     </div>
+
   <% end %>
-
-  </div>
 
 </div>
 
+<div id="dash-sub">
+
+</div>
+
+<div class="container">
+  <div class="row base-layout">
+
+    <div class="col-md-9 col-sm-12 left-panel">
+      <h3><%= @campaign.name %></h3>
+      <% @campaign.microposts.reverse.each do | micropost | %>
+        <%= link_to micropost, style: "display: inline-block;" do %>
+          <p class="category-title" ><%= micropost.category.titlecase.tr("_", " ") %></p>
+          <img src="<%= micropost.picture.url %>" style="max-height: 50vh; max-width: 100%;" />
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="col-md-3 col-sm-12 right-panel" >
+        <p>submitted by:</p>
+        <%= render partial: "shared/user_info", locals: { user:  @campaign.user, thumbnail_width: 50 } %>
+        <hr>
+        <h4><strong>caption:</strong></h4>
+        <p>"<%= @campaign.content %>" </p>
+    </div>
+
+  </div>
+</div>
+
 <script>
-	var coverWidth = $("#coverPhoto").width();
-  $("#coverPhoto").height(coverWidth * 0.35);
+  var edit_campaign_button = document.getElementById("edit_campaign_button");
+  var add_post_button = document.getElementById("add_post_button");
+  var dash_sub = document.getElementById("dash-sub");
 
-  var profileWidth = $("#profile_pic").width();
-  $("#profile_pic").height(profileWidth);
+  edit_campaign_button.onclick = function(){
+    dash_sub.innerHTML = "<%= j render 'edit_campaign_form' %>";
+  };
 
-  $( ".accordion" ).click(function() {
-    $(this).next(".sub-accordion").toggle();
-  });
+  add_post_button.onclick = function(){
+    dash_sub.innerHTML = "<%= j render 'add_post_form' %>";
+  };
 
 </script>

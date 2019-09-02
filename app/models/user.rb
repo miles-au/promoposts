@@ -37,7 +37,6 @@ class User < ApplicationRecord
   validates :slug, uniqueness: { case_sensitive: false }, length: { maximum: 75 }
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
-  validates :category, presence: true
   validates :company, length: { maximum: 50 }
 
   mount_uploader :picture, PictureUploader

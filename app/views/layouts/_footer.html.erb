@@ -1,13 +1,15 @@
-<div id="footerContainer">
-  <p>&copy; 2019 Sigmatic Studio</p>
-  <div style="display: inline-block; margin-left: 10px;">
-    <%= link_to "Privacy Policy", privacy_policy_path, :class => "footer-link" %>
-    <%= link_to "Cookie Policy", cookie_policy_path, :class => "footer-link" %>
-    <%= link_to "Terms of Use", terms_path, :class => "footer-link" %>
-    <%= link_to "Contact", contact_path, :class => "footer-link" %>
+<footer>
+  <div class="docs_links">
+    <p>&copy; 2019 Promo Posts</p>
+    <div>
+      <%= link_to "Privacy Policy", privacy_policy_path, :class => "footer-link" %>
+      <%= link_to "Cookie Policy", cookie_policy_path, :class => "footer-link" %>
+      <%= link_to "Terms of Use", terms_path, :class => "footer-link" %>
+      <%= link_to "Contact", contact_path, :class => "footer-link" %>
+    </div>
   </div>
   <div class="social_links">
-  	<p style="margin-right: 10px;">Follow Promo Posts for updates!</p>
+  	<p>Follow Promo Posts</p>
   	<%= link_to "https://www.instagram.com/promoposts.net_/" do %>
   		<img src="/assets/instagram.svg" />
   	<% end %>
@@ -18,4 +20,4 @@
   		<img src="/assets/linkedin.svg" />
   	<% end %>
   </div>
-</div>
+</footer>

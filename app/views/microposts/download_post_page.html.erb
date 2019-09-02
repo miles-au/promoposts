@@ -1,55 +1,19 @@
-<div class="row">
-	<div class="col-md-3 col-sm-12 sidebar">
-		<div class="profile_user_display">
-      <div>
-        <img src="<%= @micropost.user.avatar %>" id="profile_pic" style="width: 50%; object-fit: cover; object-position: center; display: inline-block; vertical-align: top;" />
-      </div>
-      <div style="display: inline-block; vertical-align: top;">
-        <h1><%= link_to @micropost.user.name, @micropost.user %></h1>
-        <h4><%= @micropost.user.company %></h4>
-        <%= render :partial => 'shared/accolades', :locals => {:user => @micropost.user} %>       
-      </div>
-  	</div>
-    <span class="timestamp">
-      Posted <%= time_ago_in_words(@micropost.created_at) %> ago.
-      <% if current_user %>
-        <% if current_user?(@micropost.user) || current_user.admin? %>
-          <%= link_to "delete", @micropost, method: :delete,
-                                           data: { confirm: "You sure?" } %>
-        <% end %>
-      <% end %>
-    </span>
+<div class="container">
+  <%= render partial: "shared/campaign_tag" %> 
+  <h2 style="text-align: left;">Download post</h2>
 
-    <hr>
-	</div>
+  <%= link_to "< Post page", @micropost %>
 
-	<div class="col-md-9 col-sm-12">
-	  <% if @campaign %>
-	  	<%= link_to @campaign do %>
-	  		<p class="campaign_tag"><span class="glyphicon glyphicon-flag"></span> This post is part of the <em>"<%= @campaign.name %>"</em> campaign.</p>
-	  	<% end %>
-	  <% end %>
-
-		<div >
-			<%= link_to "< Post page", @micropost %>
-			<div style="position: relative;">
-				<img class="new_image_bg" id="image_bg" src="<%= @micropost.picture.url %>" />
-				<div id="overlay_box" class="overlay_container" style="top: 0px; left: 0px;">
-					<img id="overlay_image" src="" draggable="false"/>
-					<div id="handle_bottom_right" class="overlay_handle" ></div>
-				</div>
+	<div style="text-align: center;">
+		<div style="position: relative; display: inline-block;">
+			<img class="new_image_bg" id="image_bg" src="<%= @micropost.picture.url %>" />
+			<div id="overlay_box" class="overlay_container" style="top: 0px; left: 0px;">
+				<img id="overlay_image" src="" draggable="false"/>
+				<div id="handle_bottom_right" class="overlay_handle" ></div>
 			</div>
-			<div>
-				Overlays (logos and banners):
-				<span class="arrow glyphicon glyphicon-chevron-left" id="arrow-prev-overlay"></span>
-				<p id="overlay-name" style="display: inline-block;"></p>
-				<span class="arrow glyphicon glyphicon-chevron-right" id="arrow-next-overlay"></span>
-				<% if @overlays.count <= 1 %>
-					<span class="mini-error" >You don't have any overlays set up yet!</span>
-				<% end %>
-			</div>
-			<%= link_to "Click here to manage your overlays", "/overlays" %>
 		</div>
+
+		<%= render partial: "shared/overlay_interface" %>
 
 		<%= form_tag(download_post_path(@micropost.id), method: :post ) do %>
 
@@ -59,9 +23,8 @@
 			<%= text_field_tag "overlay[width]", "", :id => "overlay_input_width", style: "", class: "overlay_input" %>
 			<%= text_field_tag "overlay[height]", "", :id => "overlay_input_height", style: "", class: "overlay_input" %>
 
-	  		<div>
-				<%= submit_tag "Download", class: "pop-button", id: "share-button" %>
-			</div>
+			<%= submit_tag "Download", class: "btn-submit" %>
+
 		<% end %>
 
 	</div>
@@ -69,8 +32,6 @@
 </div>
 
 <script>
-	show_tooltips();
-
 	var profileWidth = $("#profile_pic").width();
   	$("#profile_pic").height(profileWidth);
   	
@@ -171,6 +132,8 @@
 			});
 			newImg.src = overlay_arr[overlay_index][1];
 		}
+
+		//on mouse down
 		overlay.elem.addEventListener('mousedown', function(e) {
 			overlay.moving = true;
 			overlay.mouse_offset_left = parseInt(overlay.box.style.left) - e.clientX;
@@ -181,7 +144,45 @@
 			overlay.mouse_offset_left = e.clientX;
 			overlay.mouse_offset_top = e.clientY;
 		}, true);
-		overlay.prev_arrow.addEventListener('mousedown', function(e) {
+		
+		// on touch start
+		overlay.elem.ontouchstart = function(e){
+			overlay.moving = true;
+			overlay.mouse_offset_left = parseInt(overlay.box.style.left) - e.touches[0].clientX;
+			overlay.mouse_offset_top = parseInt(overlay.box.style.top) - e.touches[0].clientY;
+		};
+		overlay.handle.ontouchstart = function(e){
+			overlay.resizing = true;
+			overlay.mouse_offset_left = e.touches[0].clientX;
+			overlay.mouse_offset_top = e.touches[0].clientY;
+		};
+		overlay.elem.ontouchmove = function(e){
+			console.log("touchmove elem");
+			console.log("event", e);
+			adjust(e);
+		};
+		overlay.handle.ontouchmove = function(e){
+			console.log("touchmove handle");
+			console.log("event", e);
+			adjust(e);
+		};
+
+		// on touch stop
+		overlay.elem.ontouchend = function(e){
+			release();
+		};
+		overlay.elem.ontouchcancel = function(e){
+			release();
+		};
+		overlay.handle.ontouchend = function(e){
+			release();
+		};
+		overlay.handle.ontouchcancel = function(e){
+			release();
+		};
+
+		// on clicking arrows
+		overlay.prev_arrow.addEventListener('click', function(e) {
 			if(overlay_index > 0){
 				overlay_index -= 1;
 			}else{
@@ -189,7 +190,7 @@
 			}
 			change_overlay();
 		}, true);
-		overlay.next_arrow.addEventListener('mousedown', function(e) {
+		overlay.next_arrow.addEventListener('click', function(e) {
 			if(overlay_index < overlay_arr.length - 1){
 				overlay_index += 1;
 			}else{
@@ -246,52 +247,63 @@
 
 	//mouse events
 	document.addEventListener('mouseup', function() {
-	  	overlay.moving = false;
+	  release();
+	}, true);
+
+	// mouse release
+	function release(){
+		overlay.moving = false;
 	  	if(overlay.resizing){
 	  		overlay.overlay_width = parseInt(overlay.box.style.width);
 				overlay.overlay_height = parseInt(overlay.box.style.height);
 				overlay.resizing = false;
 	  	}
 	  	updateOverlayDimensions();
-			overlay.left = 0;
-			overlay.top = 0;
-	}, true);
+		overlay.left = 0;
+		overlay.top = 0;
+	};
 
-	document.addEventListener('mousemove', function(e) {
-	    event.preventDefault();
+	//mouse/touch move
+	function adjust(e){
+		event.preventDefault();
+		xCoord = e.clientX || e.touches[0].clientX;
+		yCoord = e.clientY || e.touches[0].clientY;
+		
 	    if (overlay.moving) {
-    		var overlay_left = parseInt(overlay.box.style.left);
-    		var overlay_top = parseInt(overlay.box.style.top);
-    		var overlay_width = Math.round(overlay.overlay_width);
-    		var overlay_height = Math.round(overlay.overlay_height);
-    		var offset_limit_left = overlay.mouse_offset_left;
-    		var offset_limit_top = overlay.mouse_offset_top;
-    		var bg_width = bg_img.img_width;
-    		var bg_height = bg_img.img_height;
+	  		var overlay_left = parseInt(overlay.box.style.left);
+	  		var overlay_top = parseInt(overlay.box.style.top);
+	  		var overlay_width = Math.round(overlay.overlay_width);
+	  		var overlay_height = Math.round(overlay.overlay_height);
+	  		var offset_limit_left = overlay.mouse_offset_left;
+	  		var offset_limit_top = overlay.mouse_offset_top;
+	  		var bg_width = bg_img.img_width;
+	  		var bg_height = bg_img.img_height;
 
-    		if( overlay_left <= 0 && ( e.clientX + offset_limit_left ) <= 0 ){
-    			//left bound
-    			overlay.box.style.left = '0px';
-    		}else if( overlay_left + overlay_width >= bg_width && ((e.clientX + offset_limit_left + overlay_width) >= bg_width ) ){
-    			//right bound
-    			overlay.box.style.left = (bg_width - overlay_width) + 'px';
-    		}else{
-    			overlay.box.style.left = (e.clientX + offset_limit_left + 'px');
-    		}
+	  		if( overlay_left <= 0 && ( xCoord + offset_limit_left ) <= 0 ){
+	  			//left bound
+	  			overlay.box.style.left = '0px';
+	  		}else if( overlay_left + overlay_width >= bg_width && ((xCoord + offset_limit_left + overlay_width) >= bg_width ) ){
+	  			//right bound
+	  			overlay.box.style.left = (bg_width - overlay_width) + 'px';
+	  		}else{
+	  			console.log("horizontal");
+	  			overlay.box.style.left = (xCoord + offset_limit_left + 'px');
+	  		}
 
-    		if( overlay_top <= 0 && ( e.clientY + offset_limit_top ) <= 0 ){
-    			//top bound
-    			console.log("top");
-    			overlay.box.style.top = '0px';
-    		}else if( overlay_top + overlay_height >= bg_height && ((e.clientY + offset_limit_top + overlay_height) >= bg_height ) ){
-    			//bottom bound
-    			console.log("bottom");
-    			overlay.box.style.top = (bg_height - overlay_height) + 'px';
-    		}else{
-    			console.log("vertical");
-    			overlay.box.style.top = (e.clientY + offset_limit_top) + 'px';
-    		}
-	   	}else if(overlay.resizing){
+	  		if( overlay_top <= 0 && ( yCoord + offset_limit_top ) <= 0 ){
+	  			//top bound
+	  			console.log("top");
+	  			overlay.box.style.top = '0px';
+	  		}else if( overlay_top + overlay_height >= bg_height && ((yCoord + offset_limit_top + overlay_height) >= bg_height ) ){
+	  			//bottom bound
+	  			console.log("bottom");
+	  			overlay.box.style.top = (bg_height - overlay_height) + 'px';
+	  		}else{
+	  			console.log("vertical");
+	  			overlay.box.style.top = (yCoord + offset_limit_top) + 'px';
+	  		}
+
+	 		}else if(overlay.resizing){
 	   		var ratio = overlay.overlay_width / overlay.overlay_height;
 	   		var initial_left = overlay.mouse_offset_left;
 	   		var overlay_width = Math.round(overlay.overlay_width);
@@ -299,17 +311,17 @@
 	   		var bg_width = bg_img.img_width;
 	   		var bg_height = bg_img.img_height;
 
-	   		if( overlay_width + (e.clientX - initial_left) >= bg_width - parseInt(overlay.box.style.left) && (overlay_height + (e.clientX - initial_left)/ratio) < bg_height - parseInt(overlay.box.style.top) ){
+	   		if( overlay_width + (xCoord - initial_left) >= bg_width - parseInt(overlay.box.style.left) && (overlay_height + (xCoord - initial_left)/ratio) < bg_height - parseInt(overlay.box.style.top) ){
 	   			console.log("1");
 				//if mouse is past right edge but not below bottom edge
 				var new_width = bg_width - parseInt(overlay.box.style.left);
 
-			}else if( (overlay_height + (e.clientX - initial_left)/ratio) >= bg_height - parseInt(overlay.box.style.top) && overlay_width + (e.clientX - initial_left) < bg_width - parseInt(overlay.box.style.left) ){
+			}else if( (overlay_height + (xCoord - initial_left)/ratio) >= bg_height - parseInt(overlay.box.style.top) && overlay_width + (xCoord - initial_left) < bg_width - parseInt(overlay.box.style.left) ){
 				console.log("2");
 				//if mouse is below bottom edge but not past right edge
 				var new_width = ( bg_height - parseInt(overlay.box.style.top) ) * ratio;
 
-			}else if( overlay_width + (e.clientX - initial_left) >= bg_width - parseInt(overlay.box.style.left) && (overlay_height + (e.clientX - initial_left)/ratio) >= bg_height - parseInt(overlay.box.style.top) ){
+			}else if( overlay_width + (xCoord - initial_left) >= bg_width - parseInt(overlay.box.style.left) && (overlay_height + (exCoord - initial_left)/ratio) >= bg_height - parseInt(overlay.box.style.top) ){
 				console.log("3");
 				//if mouse is past both, take smaller width
 				if( bg_width - parseInt(overlay.box.style.left) < (bg_height - parseInt(overlay.box.style.top)) * ratio ){
@@ -320,7 +332,7 @@
 				
 			}else{
 				console.log("4");
-				var new_width = overlay_width + (e.clientX - initial_left);
+				var new_width = overlay_width + (xCoord - initial_left);
 			}
 
 	   	overlay.box.style.width = new_width + 'px';
@@ -328,6 +340,10 @@
 			overlay.elem.style.width = new_width + 'px';
 			overlay.elem.style.height = Math.round(new_width/ratio)+'px';
 	   	}
+	};
+
+	document.addEventListener('mousemove', function(e) {
+	    adjust(e);
 	}, true);
 
 	function updateOverlayDimensions(){

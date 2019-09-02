@@ -8,21 +8,8 @@ class StaticPagesController < ApplicationController
     if @feed_type
       #go to specified feed
       case @feed_type
-        when "user"
-          if logged_in?
-            #get events by following, or self
-            user_feed = current_user.feed
-            @feed_items = user_feed.paginate(:page => params[:page], :per_page => Micropost.per_page)
-          else
-            redirect_to login_path
-          end
-
-        when "global"
-          @feed_items = Event.all.paginate(:page => params[:page], :per_page => Micropost.per_page)
-
         when 'digital_assets'
-          merged_items = (Campaign.all + Micropost.where(:campaign_id => nil)).sort_by {|obj| obj.created_at}.reverse
-          @feed_items = merged_items.paginate(:page => params[:page], :per_page => Micropost.per_page)
+          @feed_items = Micropost.all.paginate(:page => params[:page], :per_page => Micropost.per_page)
 
         when 'campaign'
           @feed_items = Campaign.all.reverse.paginate(:page => params[:page], :per_page => Micropost.per_page)
@@ -32,10 +19,10 @@ class StaticPagesController < ApplicationController
 
           if Rails.env.production?
             safe_query = ActiveRecord::Base.connection.quote("#{query}%")
-            @feed_items = (Micropost.where("content ILIKE ?", "%#{query}%") + Campaign.where("content ILIKE ? OR name ILIKE ?", "%#{query}%", "%#{query}%")).paginate(:page => params[:page], :per_page => Micropost.per_page)
+            @feed_items = Micropost.where("content ILIKE ?", "%#{query}%").paginate(:page => params[:page], :per_page => Micropost.per_page)
           else
             safe_query = ActiveRecord::Base.connection.quote("#{query}%")
-            @feed_items = (Micropost.where("content LIKE ?", "%#{query}%") + Campaign.where("content LIKE ? OR name LIKE ?", "%#{query}%", "%#{query}%")).paginate(:page => params[:page], :per_page => Micropost.per_page)
+            @feed_items = Micropost.where("content LIKE ?", "%#{query}%").paginate(:page => params[:page], :per_page => Micropost.per_page)
           end 
 
         else
@@ -46,53 +33,18 @@ class StaticPagesController < ApplicationController
     else
 
       #default to digital assets
-      merged_items = (Campaign.all + Micropost.where(:campaign_id => nil)).sort_by {|obj| obj.created_at}.reverse
-      @feed_items = merged_items.paginate(:page => params[:page], :per_page => Micropost.per_page)
+      @feed_items = Micropost.all.paginate(:page => params[:page], :per_page => Micropost.per_page)
       @feed_type = "digital_assets"
 
     end
 
-    #newcomer accolade
-    if current_user
-      if current_user.picture.url && current_user.accounts.count > 0 && current_user.microposts.count > 0
-        current_user.accolade.newcomer = false
-        current_user.accolade.save!
-      end
-      if current_user.accolade && current_user.accolade.newcomer
-        @newcomer = current_user
-      end
-    end
-
-    #sponsored posts
+    #sponsored posts to be done
     
     respond_to do |format|
       format.html
-      format.js
+      format.js { render '/shared/feed.js.erb' }
     end
 
-  end
-
-  def change_grid_view
-    @columns = params["columns"]
-    cookies[:columns] = @columns
-    @boot_columns = 12/@columns.to_i
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
-
-  def wizard
-    @user = current_user
-  end
-
-  def decline_wizard
-    current_user.accolade.newcomer = false
-    current_user.accolade.save!
-    respond_to do |format|
-      format.html
-      format.js { flash.now[:success] = "Yer a wizard, #{current_user.name}." }
-    end
   end
 
   def help
@@ -118,12 +70,6 @@ class StaticPagesController < ApplicationController
     end
   end
 
-  def what_is_autoshare
-  end
-
-  def landing_page
-  end
-
   def admin_panel
     @topshares = Micropost.all.reorder(:shares => :desc).limit(5)
     @topdownloads = Micropost.all.reorder(:downloads => :desc).limit(5)
@@ -132,6 +78,10 @@ class StaticPagesController < ApplicationController
 
   def tracking
     @tracks = Track.all.order(:created_at => :desc).paginate(:page => params[:page], :per_page => 50)
+  end
+
+  def how_does_it_work
+    
   end
 
   private

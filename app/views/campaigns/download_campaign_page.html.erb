@@ -1,63 +1,62 @@
-<div class="row">
-	<%= form_tag(download_assets_path(@campaign.id), method: :post, id: "shareContainer" ) do %>
-	<div class="col-md-3 col-sm-12 sidebar">
-		<h1 style="text-align: left;">Download campaign:</h1>
-		<%= link_to overlays_path, :class => "side_button" do%>
-      <div class="pop-button">
-        <h3 class = "top_icons">Manage Overlays</h3>
-      </div>
-    <% end %>
-    <%= button_tag(type: "submit", class: "pop-button side_button", id: "download-button", style: "border: none; width: 100%;") do %>
-    	<h3><span class="glyphicon glyphicon-cloud-download"></span> Download</h3>
-		<% end %>
-	</div>
-	<div class="col-md-9 col-sm-12">
-		<h1 class="campaign-title" style="display: inline-block;"><strong><%= link_to @campaign.name, @campaign %></strong></h1>
-		<div class="timestamp">
-		  Campaign created <%= time_ago_in_words(@campaign.created_at) %> ago.
-		  <% if current_user %>
-		    <% if current_user?(@campaign.user) || current_user.admin? %>
-		      <%= link_to "delete campaign", @campaign, method: :delete, data: { confirm: "Delete this campaign?" } %>
-		    <% end %>
-		  <% end %>
-		</div>
+<div class="container">
+	<h2 style="text-align: left;">Download campaign: <%= link_to @campaign.name, @campaign %></h2>
 
-		<h4>Edit all overlays:</h4>
-		<%= select_tag nil, options_for_select(@overlay_select), id: "update_overlay_id" %>
-		<%= select_tag nil, options_for_select(@overlay_locations), id: "update_overlay_location" %>
-		<p class="pop-button" id="update_overlays" onclick="updateOverlays();" >Update</p>
-
-		<hr>
-		<% @campaign.microposts.each do |micropost| %>
-			<h3 style="text-align: left;"><%= micropost.category.titlecase.tr("_", " ") %></h3>
-			<div style="position: relative;">
-				<img class="new_image_bg" id="<%= micropost.id %>_image" src="<%= micropost.picture.url %>" />
-				<div id="overlay_box_<%= micropost.id %>" class="overlay_container" style="top: 0px; left: 0px;">
-					<img id="overlay_image_<%= micropost.id %>" src="" draggable="false"/>
-					<div id="overlay_handle_<%= micropost.id %>" class="overlay_handle"></div>
-				</div>
-			</div>
-			<div>
-				Overlays (logos and banners):
-				<span class="arrow arrow-prev-overlay glyphicon glyphicon-chevron-left" id="<%= micropost.id %>-prev"></span>
-				<p id="overlay_name_<%= micropost.id %>" style="display: inline-block;"></p>
-				<span class="arrow arrow-next-overlay glyphicon glyphicon-chevron-right"  id="<%= micropost.id %>-next"></span>
-				<% if @overlays.count <= 1 %>
-					<span class="mini-error" >You don't have any overlays set up yet!</span>
-				<% end %>
-			</div>
-			<%= text_field_tag "microposts[#{micropost.id}][overlay][id]", "", :id => "overlay_input_id_#{micropost.id}", style: "", class: "overlay_input" %>
-			<%= text_field_tag "microposts[#{micropost.id}][overlay][left]", "", :id => "overlay_input_left_#{micropost.id}", style: "", class: "overlay_input" %>
-			<%= text_field_tag "microposts[#{micropost.id}][overlay][top]", "", :id => "overlay_input_top_#{micropost.id}", style: "", class: "overlay_input" %>
-			<%= text_field_tag "microposts[#{micropost.id}][overlay][width]", "", :id => "overlay_input_width_#{micropost.id}", style: "", class: "overlay_input" %>
-			<%= text_field_tag "microposts[#{micropost.id}][overlay][height]", "", :id => "overlay_input_height_#{micropost.id}", style: "", class: "overlay_input" %>
+		<%= form_tag(download_assets_path(@campaign.id), method: :post, id: "shareContainer" ) do %>
 
 			<hr>
+			<h4>Edit all overlays:</h4>
+			<div class="row" >
+				<div class="col-md-6 col-sm-12">
+					<%= select_tag nil, options_for_select(@overlay_select), id: "update_overlay_id" %>
+				</div>
+				<div class="col-md-6 col-sm-12">
+					<%= select_tag nil, options_for_select(@overlay_locations), id: "update_overlay_location" %>
+				</div>
+			</div>
+			<div style="text-align: center; margin: 10px 0px;">
+				<div class="btn-submit" style="max-width: 500px; width: 100%; text-align: center;" onclick="updateOverlays();" >Update</div>
+			</div>
+
+			<hr>
+
+			<div style="text-align: center;">
+				<%= submit_tag "Download all posts", class: "btn-submit" %>
+			</div>
+
+			<% @campaign.microposts.each do |micropost| %>
+				<h3 style="text-align: left;"><%= micropost.category.titlecase.tr("_", " ") %></h3>
+				<div style="position: relative;">
+					<img class="new_image_bg" id="<%= micropost.id %>_image" src="<%= micropost.picture.url %>" />
+					<div id="overlay_box_<%= micropost.id %>" class="overlay_container" style="top: 0px; left: 0px;">
+						<img id="overlay_image_<%= micropost.id %>" src="" draggable="false"/>
+						<div id="overlay_handle_<%= micropost.id %>" class="overlay_handle"></div>
+					</div>
+				</div>
+
+				<div>
+					Overlays (logos and banners):
+					<span class="arrow arrow-prev-overlay glyphicon glyphicon-chevron-left" id="<%= micropost.id %>-prev"></span>
+					<p id="overlay_name_<%= micropost.id %>" style="display: inline-block;"></p>
+					<span class="arrow arrow-next-overlay glyphicon glyphicon-chevron-right"  id="<%= micropost.id %>-next"></span>
+					<% if @overlays.count <= 1 %>
+						<span class="mini-error" >You don't have any overlays set up yet!</span>
+					<% end %>
+				</div>
+				<%= text_field_tag "microposts[#{micropost.id}][overlay][id]", "", :id => "overlay_input_id_#{micropost.id}", style: "", class: "overlay_input" %>
+				<%= text_field_tag "microposts[#{micropost.id}][overlay][left]", "", :id => "overlay_input_left_#{micropost.id}", style: "", class: "overlay_input" %>
+				<%= text_field_tag "microposts[#{micropost.id}][overlay][top]", "", :id => "overlay_input_top_#{micropost.id}", style: "", class: "overlay_input" %>
+				<%= text_field_tag "microposts[#{micropost.id}][overlay][width]", "", :id => "overlay_input_width_#{micropost.id}", style: "", class: "overlay_input" %>
+				<%= text_field_tag "microposts[#{micropost.id}][overlay][height]", "", :id => "overlay_input_height_#{micropost.id}", style: "", class: "overlay_input" %>
+
+				<hr>
+			<% end %>
+
+			<div style="text-align: center;">
+				<%= submit_tag "Download all posts", class: "btn-submit" %>
+			</div>
+
 		<% end %>
 
-	</div>
-
-	<% end %>
 </div>
 
 <script>
@@ -256,6 +255,7 @@
 				radio_buttons.firstElementChild.setAttribute( "checked", true );
 			});
 		}
+		// load overlay
 		var overlay = new Overlay(document.getElementById("overlay_image_".concat(micropost[0].toString())),overlay_arr[0][1],0,og_overlay_width,og_overlay_height,document.getElementById("overlay_handle_".concat(micropost[0])),document.getElementById("overlay_name_".concat(micropost[0])),image, micropost[0]);
 			overlay.bg_img.overlay = overlay;
 			overlay.setOverlayNameAndImage();
@@ -302,6 +302,41 @@
 				}
 				change_overlay(overlay);
 			}, true);
+
+			// on touch start
+			overlay.elem.ontouchstart = function(e){
+				active_overlay.moving = true;
+				active_overlay.overlay = overlay;
+				active_overlay.mouse_offset_left = parseInt(overlay.box.style.left) - e.touches[0].clientX;
+				active_overlay.mouse_offset_top = parseInt(overlay.box.style.top) - e.touches[0].clientY;
+			};
+			overlay.handle.ontouchstart = function(e){
+				active_overlay.resizing = true;
+				active_overlay.overlay = overlay;
+				active_overlay.mouse_offset_left = e.touches[0].clientX;
+				active_overlay.mouse_offset_top = e.touches[0].clientY;
+			};
+			overlay.elem.ontouchmove = function(e){
+				adjust(e);
+			};
+			overlay.handle.ontouchmove = function(e){
+				adjust(e);
+			};
+
+			// on touch stop
+			overlay.elem.ontouchend = function(e){
+				release();
+			};
+			overlay.elem.ontouchcancel = function(e){
+				release();
+			};
+			overlay.handle.ontouchend = function(e){
+				release();
+			};
+			overlay.handle.ontouchcancel = function(e){
+				release();
+			};
+
 			overlay_obj_arr.push(overlay);
 	}
 
@@ -342,11 +377,16 @@
 
 	//mouse events
 	document.addEventListener('mouseup', function() {
-	  	active_overlay.moving = false;
+	  	release();
+	}, true);
+
+	// mouse release
+	function release(){
+		active_overlay.moving = false;
 	  	if(active_overlay.resizing){
 	  		active_overlay.overlay.overlay_width = parseInt(active_overlay.overlay.box.style.width);
-			active_overlay.overlay.overlay_height = parseInt(active_overlay.overlay.box.style.height);
-			active_overlay.resizing = false;
+				active_overlay.overlay.overlay_height = parseInt(active_overlay.overlay.box.style.height);
+				active_overlay.resizing = false;
 	  	}
 	  	if(active_overlay.overlay){
 	  		updateOverlayDimensions(active_overlay.overlay);
@@ -354,80 +394,88 @@
 		active_overlay.overlay = null;
 		active_overlay.left = 0;
 		active_overlay.top = 0;
-	}, true);
+	};
 
+	// mouse move
 	document.addEventListener('mousemove', function(e) {
-	    event.preventDefault();
-	    if (active_overlay.moving) {
-    		var overlay_left = parseInt(active_overlay.overlay.box.style.left);
-    		var overlay_top = parseInt(active_overlay.overlay.box.style.top);
-    		var overlay_width = Math.round(active_overlay.overlay.overlay_width);
-    		var overlay_height = Math.round(active_overlay.overlay.overlay_height);
-    		var offset_limit_left = active_overlay.mouse_offset_left;
-    		var offset_limit_top = active_overlay.mouse_offset_top;
-    		var bg_width = active_overlay.overlay.bg_img.img_width;
-    		var bg_height = active_overlay.overlay.bg_img.img_height;
-
-    		if( overlay_left <= 0 && ( e.clientX + offset_limit_left ) <= 0 ){
-    			//left bound
-    			active_overlay.overlay.box.style.left = '0px';
-    		}else if( overlay_left + overlay_width >= bg_width && ((e.clientX + offset_limit_left + overlay_width) >= bg_width ) ){
-    			//right bound
-    			active_overlay.overlay.box.style.left = (bg_width - overlay_width) + 'px';
-    		}else{
-    			active_overlay.overlay.box.style.left = (e.clientX + offset_limit_left + 'px');
-    		}
-
-    		if( overlay_top <= 0 && ( e.clientY + offset_limit_top ) <= 0 ){
-    			//top bound
-    			console.log("top");
-    			active_overlay.overlay.box.style.top = '0px';
-    		}else if( overlay_top + overlay_height >= bg_height && ((e.clientY + offset_limit_top + overlay_height) >= bg_height ) ){
-    			//bottom bound
-    			console.log("bottom");
-    			active_overlay.overlay.box.style.top = (bg_height - overlay_height) + 'px';
-    		}else{
-    			console.log("vertical");
-    			active_overlay.overlay.box.style.top = (e.clientY + offset_limit_top) + 'px';
-    		}
-	   	}else if(active_overlay.resizing){
-	   		var ratio = active_overlay.overlay.ratio;
-	   		var initial_left = active_overlay.mouse_offset_left;
-	   		var overlay_width = Math.round(active_overlay.overlay.overlay_width);
-	   		var overlay_height = Math.round(active_overlay.overlay.overlay_height);
-	   		var bg_width = active_overlay.overlay.bg_img.img_width;
-	   		var bg_height = active_overlay.overlay.bg_img.img_height;
-
-	   		if( overlay_width + (e.clientX - initial_left) >= bg_width - parseInt(active_overlay.overlay.box.style.left) && (overlay_height + (e.clientX - initial_left)/ratio) < bg_height - parseInt(active_overlay.overlay.box.style.top) ){
-	   			console.log("1");
-				//if mouse is past right edge but not below bottom edge
-				var new_width = bg_width - parseInt(active_overlay.overlay.box.style.left);
-
-			}else if( (overlay_height + (e.clientX - initial_left)/ratio) >= bg_height - parseInt(active_overlay.overlay.box.style.top) && overlay_width + (e.clientX - initial_left) < bg_width - parseInt(active_overlay.overlay.box.style.left) ){
-				console.log("2");
-				//if mouse is below bottom edge but not past right edge
-				var new_width = ( bg_height - parseInt(active_overlay.overlay.box.style.top) ) * ratio;
-
-			}else if( overlay_width + (e.clientX - initial_left) >= bg_width - parseInt(active_overlay.overlay.box.style.left) && (overlay_height + (e.clientX - initial_left)/ratio) >= bg_height - parseInt(active_overlay.overlay.box.style.top) ){
-				console.log("3");
-				//if mouse is past both, take smaller width
-				if( bg_width - parseInt(active_overlay.overlay.box.style.left) < (bg_height - parseInt(active_overlay.overlay.box.style.top)) * ratio ){
-					var new_width = bg_width - parseInt(active_overlay.overlay.box.style.left);
-				}else{
-					var new_width = (bg_height - parseInt(active_overlay.overlay.box.style.top) ) * ratio;
-				}
-				
-			}else{
-				console.log("4");
-				var new_width = overlay_width + (e.clientX - initial_left);
-			}
-
-	   		active_overlay.overlay.box.style.width = new_width + 'px';
-				active_overlay.overlay.box.style.height = Math.round(new_width/ratio)+'px';
-				active_overlay.overlay.elem.style.width = new_width + 'px';
-				active_overlay.overlay.elem.style.height = Math.round(new_width/ratio)+'px';
-	   	}
+		adjust(e);
 	}, true);
+
+	function adjust(e){
+		event.preventDefault();
+		xCoord = e.clientX || e.touches[0].clientX;
+		yCoord = e.clientY || e.touches[0].clientY;
+
+    if (active_overlay.moving) {
+  		var overlay_left = parseInt(active_overlay.overlay.box.style.left);
+  		var overlay_top = parseInt(active_overlay.overlay.box.style.top);
+  		var overlay_width = Math.round(active_overlay.overlay.overlay_width);
+  		var overlay_height = Math.round(active_overlay.overlay.overlay_height);
+  		var offset_limit_left = active_overlay.mouse_offset_left;
+  		var offset_limit_top = active_overlay.mouse_offset_top;
+  		var bg_width = active_overlay.overlay.bg_img.img_width;
+  		var bg_height = active_overlay.overlay.bg_img.img_height;
+
+  		if( overlay_left <= 0 && ( xCoord + offset_limit_left ) <= 0 ){
+  			//left bound
+  			active_overlay.overlay.box.style.left = '0px';
+  		}else if( overlay_left + overlay_width >= bg_width && ((xCoord + offset_limit_left + overlay_width) >= bg_width ) ){
+  			//right bound
+  			active_overlay.overlay.box.style.left = (bg_width - overlay_width) + 'px';
+  		}else{
+  			active_overlay.overlay.box.style.left = (xCoord + offset_limit_left + 'px');
+  		}
+
+  		if( overlay_top <= 0 && ( yCoord + offset_limit_top ) <= 0 ){
+  			//top bound
+  			console.log("top");
+  			active_overlay.overlay.box.style.top = '0px';
+  		}else if( overlay_top + overlay_height >= bg_height && ((yCoord + offset_limit_top + overlay_height) >= bg_height ) ){
+  			//bottom bound
+  			console.log("bottom");
+  			active_overlay.overlay.box.style.top = (bg_height - overlay_height) + 'px';
+  		}else{
+  			console.log("vertical");
+  			active_overlay.overlay.box.style.top = (yCoord + offset_limit_top) + 'px';
+  		}
+   	}else if(active_overlay.resizing){
+   		var ratio = active_overlay.overlay.ratio;
+   		var initial_left = active_overlay.mouse_offset_left;
+   		var overlay_width = Math.round(active_overlay.overlay.overlay_width);
+   		var overlay_height = Math.round(active_overlay.overlay.overlay_height);
+   		var bg_width = active_overlay.overlay.bg_img.img_width;
+   		var bg_height = active_overlay.overlay.bg_img.img_height;
+
+   		if( overlay_width + (xCoord - initial_left) >= bg_width - parseInt(active_overlay.overlay.box.style.left) && (overlay_height + (xCoord - initial_left)/ratio) < bg_height - parseInt(active_overlay.overlay.box.style.top) ){
+   			console.log("1");
+			//if mouse is past right edge but not below bottom edge
+			var new_width = bg_width - parseInt(active_overlay.overlay.box.style.left);
+
+		}else if( (overlay_height + (xCoord - initial_left)/ratio) >= bg_height - parseInt(active_overlay.overlay.box.style.top) && overlay_width + (xCoord - initial_left) < bg_width - parseInt(active_overlay.overlay.box.style.left) ){
+			console.log("2");
+			//if mouse is below bottom edge but not past right edge
+			var new_width = ( bg_height - parseInt(active_overlay.overlay.box.style.top) ) * ratio;
+
+		}else if( overlay_width + (xCoord - initial_left) >= bg_width - parseInt(active_overlay.overlay.box.style.left) && (overlay_height + (xCoord - initial_left)/ratio) >= bg_height - parseInt(active_overlay.overlay.box.style.top) ){
+			console.log("3");
+			//if mouse is past both, take smaller width
+			if( bg_width - parseInt(active_overlay.overlay.box.style.left) < (bg_height - parseInt(active_overlay.overlay.box.style.top)) * ratio ){
+				var new_width = bg_width - parseInt(active_overlay.overlay.box.style.left);
+			}else{
+				var new_width = (bg_height - parseInt(active_overlay.overlay.box.style.top) ) * ratio;
+			}
+			
+		}else{
+			console.log("4");
+			var new_width = overlay_width + (xCoord - initial_left);
+		}
+
+   		active_overlay.overlay.box.style.width = new_width + 'px';
+			active_overlay.overlay.box.style.height = Math.round(new_width/ratio)+'px';
+			active_overlay.overlay.elem.style.width = new_width + 'px';
+			active_overlay.overlay.elem.style.height = Math.round(new_width/ratio)+'px';
+   	}
+	};
 
 	function updateOverlayDimensions(overlay){
 		var scale = overlay.bg_img.og_width / overlay.bg_img.img_width;

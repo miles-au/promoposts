@@ -1,9 +1,7 @@
 <%= form_for @new_overlay, :remote => true do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <div class="sidebar-form">
-
-    <%= f.label :name, "Overlay name:" %>
+    <p>Overlay name:</p>
     <%= f.text_field :name, maxlength: 75 %>
 
     <div class="picture">
@@ -12,8 +10,6 @@
       <%= f.file_field :picture, accept: 'image/jpeg,image/png' %>
     </div>
     
-    <%= f.submit "Add new overlay", class: "pop-button side_button" %>
-
-  </div>
+    <%= f.submit "Add new overlay", class: "btn-submit" %>
   
 <% end %>

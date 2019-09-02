@@ -1,50 +1,17 @@
-<%= form_for @campaign, :remote => true do |f| %>
-  <%= render 'shared/error_messages', object: f.object %>
+<div id="edit_campaign_container">
+  <%= form_for @campaign, :remote => true do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
 
-  <div class="sidebar-form">
-    <%= f.label :name, "Campaign Name:" %>
-    <%= f.text_field :name, placeholder: "Enter a campaign name...", maxlength: 75, :id => "campaign-name" %>
-    <%= f.label :content, "Campaign Caption:" %>
-    <%= f.text_area :content, placeholder: "Enter a caption...", maxlength: 400, :id => "campaign-caption" %>
-    <p id="c-missing-fields-msg" class="hidden">Missing required fields.</p>
-    <div id="c-post-missing-fields" class="pop-button pop-button-grey hidden" style="display: block; margin: 5px 0;">Edit Campaign</div>
-    <%= f.submit "Edit Campaign", class: "pop-button hidden", :id => "edit-campaign-btn" %>
-  </div>
+    <div class="container">
+      <h4>Edit Campaign</h4>
+      <%= f.label :name, "Campaign Name:" %>
+      <%= f.text_field :name, placeholder: "Enter a campaign name...", maxlength: 75, :id => "campaign-name", required: true %>
+      <%= f.label :content, "Campaign Caption:" %>
+      <%= f.text_area :content, placeholder: "Enter a caption...", maxlength: 400, :id => "campaign-caption", required: true %>
+      <div style="text-align: center;">
+        <%= f.submit "Edit Campaign", class: "btn-submit", :id => "edit-campaign-btn" %>
+      </div>
+    </div>
 
-<% end %>
-
-<script>
-  check_campaign_fields();
-
-  $("#campaign-name").on("change keyup paste", function(){
-    check_campaign_fields();
-  })
-
-  $("#campaign-caption").on("change keyup paste", function(){
-    check_campaign_fields();
-  })
-
-  function check_campaign_fields(){
-    var has_title = document.getElementById("campaign-name").value.length;
-    var has_text = document.getElementById("campaign-caption").value.length;
-
-    if( has_text > 0 && has_title > 0){
-      all_campaign_fields();
-    }else{
-      missing_campaign_fields();
-    }
-  }
-
-  function missing_campaign_fields(){
-    $('#c-post-missing-fields').removeClass('hidden');
-    $('#edit-campaign-btn').addClass('hidden');
-    $('#c-missing-fields-msg').removeClass('hidden');
-  }
-  
-  function all_campaign_fields(){
-    $('#c-missing-fields-msg').addClass('hidden');
-    $('#edit-campaign-btn').removeClass('hidden');
-    $('#c-post-missing-fields').addClass('hidden');
-  }
-
-</script>
+  <% end %>
+</div>

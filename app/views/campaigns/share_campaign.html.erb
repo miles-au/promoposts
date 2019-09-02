@@ -1,39 +1,47 @@
-<h2 style="text-align: left;">Share campaign:</h2>
-<h1 style="text-align: left;"><%= link_to @campaign.name, @campaign %></h1>
+<div class="container">
 
-<%= form_tag(share_campaign_path(@campaign.id), method: :post, id: "shareContainer" ) do %>
-	<%= label_tag :message, "Enter a caption for all posts:" %>
-	<div class="pop-button" style="margin-bottom: 10px;" id="useOriginalText">Use/edit original campaign text</div>
-	<%= text_area_tag :message, nil, :id => "inputText", :maxlength => 240 %>
-	<!--<div class="pop-button" style="margin-bottom: 10px;" id="updateText">Update posts with text above</div>-->
-	<h4>Edit all overlays:</h4>
-	<%= select_tag nil, options_for_select(@overlay_select), id: "update_overlay_id" %>
-	<%= select_tag nil, options_for_select(@overlay_locations), id: "update_overlay_location" %>
-	<p class="pop-button" id="update_overlays" onclick="updateOverlays();" >Update</p>
-	<%= link_to "Click here to manage social media accounts", '/accounts/edit' %>
-	<%= link_to "Click here to manage your overlays", "/overlays", style: "display: block;" %>
+	<h2 style="text-align: left;">Share campaign: <%= link_to @campaign.name, @campaign %></h2>
 
-	<% Account.platform_array.each do |platform| %>
-		<%= render :partial => 'accounts_list', locals: { platform: platform }%>
+	<%= form_tag(share_campaign_path(@campaign.id), method: :post, id: "shareContainer" ) do %>
+		<h3 style="text-align: left; margin-bottom: 0px;">Campaign caption: </h3>
+		<p>"<%= @campaign.content %>"</p>
+		<div class="btn-submit" style="margin-bottom: 10px;" id="useOriginalText">Use/edit original campaign text</div>
+		<%= text_area_tag :message, nil, :id => "inputText", :maxlength => 240 %>
+		<hr>
+		<h4>Edit all overlays:</h4>
+		<div class="row" >
+			<div class="col-md-6 col-sm-12">
+				<%= select_tag nil, options_for_select(@overlay_select), id: "update_overlay_id" %>
+			</div>
+			<div class="col-md-6 col-sm-12">
+				<%= select_tag nil, options_for_select(@overlay_locations), id: "update_overlay_location" %>
+			</div>
+		</div>
+		<div style="text-align: center; margin-top: 10px;">
+			<div class="btn-submit" style="width: 100%; max-width: 500px;" onclick="updateOverlays();" >Update</div>
+		</div>
+
+		<hr>
+		
+		<%= link_to "manage overlays", "/overlays", style: "display: inline-block; margin: 5px 0px;" %><br>
+		<%= link_to "manage social media accounts", '/accounts/edit', style: "display: inline-block; margin: 5px 0px;" %>
+
+		<% Account.platform_array.each do |platform| %>
+			<%= render :partial => 'accounts_list', locals: { platform: platform }%>
+		<% end %>
+
+	  	<div style="max-width: 500px; margin: 5px auto;">
+	  		<%= submit_tag "Share", class: "btn-submit btn-disable", id: "share-button", disabled: true %>
+			<ul style="text-align: left;">
+				<li id="missing-text">Missing text</li>
+				<li id="missing-pages">Missing pages to share to</li>
+			</ul>
+		</div>
 	<% end %>
 
-
-  	<div>
-		<%= submit_tag "Share", class: "pop-button hidden", id: "share-button" %>
-		<div id="campaign-missing-fields" class="pop-button pop-button-grey" style="display: block; margin: 5px 0;">Share</div>
-		<ul style="text-align: left;">
-			<li id="missing-text">Missing text</li>
-			<li id="missing-pages">Missing pages to share to</li>
-		</ul>
-	</div>
-<% end %>
+</div>
 
 <script>
-	$( document ).ready(function() {
-	    //show_first();
-	    //first_radio_buttons();
-	});
-
 	$('#useOriginalText').click(function() {
 	  $( "#inputText" ).val("<%= escape_javascript(raw(@campaign.content)) %>");
 	  check_fields();
@@ -78,14 +86,14 @@
 			$('#missing-pages').removeClass('hidden');
 		}
 
-		$('#share-button').addClass('hidden');
-		$('#campaign-missing-fields').removeClass('hidden');
+		$('#share-button').addClass('btn-disable');
+		$('#share-button').prop('disabled', true);
 	}
 	function all_fields(){
 		$('#missing-text').addClass('hidden');
 		$('#missing-pages').addClass('hidden');
-		$('#share-button').removeClass('hidden');
-		$('#campaign-missing-fields').addClass('hidden');
+		$('#share-button').removeClass('btn-disable');
+		$('#share-button').prop('disabled', false);
 	}
 
 	//Overlay + Carousel
@@ -336,6 +344,41 @@
 			}
 			change_overlay(overlay);
 		}, true);
+
+		// on touch start
+		overlay.elem.ontouchstart = function(e){
+			active_overlay.moving = true;
+			active_overlay.overlay = overlay;
+			active_overlay.mouse_offset_left = parseInt(overlay.box.style.left) - e.touches[0].clientX;
+			active_overlay.mouse_offset_top = parseInt(overlay.box.style.top) - e.touches[0].clientY;
+		};
+		overlay.handle.ontouchstart = function(e){
+			active_overlay.resizing = true;
+			active_overlay.overlay = overlay;
+			active_overlay.mouse_offset_left = e.touches[0].clientX;
+			active_overlay.mouse_offset_top = e.touches[0].clientY;
+		};
+		overlay.elem.ontouchmove = function(e){
+			adjust(e);
+		};
+		overlay.handle.ontouchmove = function(e){
+			adjust(e);
+		};
+
+		// on touch stop
+		overlay.elem.ontouchend = function(e){
+			release();
+		};
+		overlay.elem.ontouchcancel = function(e){
+			release();
+		};
+		overlay.handle.ontouchend = function(e){
+			release();
+		};
+		overlay.handle.ontouchcancel = function(e){
+			release();
+		};
+
 		overlay_obj_arr.push(overlay);
 	}
 
@@ -377,12 +420,17 @@
 	}
 
 	//mouse events
-	document.addEventListener('mouseup', function() {
-	  	active_overlay.moving = false;
+		document.addEventListener('mouseup', function() {
+	  	release();
+	}, true);
+
+	// mouse release
+	function release(){
+		active_overlay.moving = false;
 	  	if(active_overlay.resizing){
 	  		active_overlay.overlay.overlay_width = parseInt(active_overlay.overlay.box.style.width);
-			active_overlay.overlay.overlay_height = parseInt(active_overlay.overlay.box.style.height);
-			active_overlay.resizing = false;
+				active_overlay.overlay.overlay_height = parseInt(active_overlay.overlay.box.style.height);
+				active_overlay.resizing = false;
 	  	}
 	  	if(active_overlay.overlay){
 	  		updateOverlayDimensions(active_overlay.overlay);
@@ -390,83 +438,88 @@
 		active_overlay.overlay = null;
 		active_overlay.left = 0;
 		active_overlay.top = 0;
+	};
+
+	// mouse move
+	document.addEventListener('mousemove', function(e) {
+		adjust(e);
 	}, true);
 
-	document.addEventListener('mousemove', function(e) {
-	    event.preventDefault();
-	    if (active_overlay.moving) {
-    		var overlay_left = parseInt(active_overlay.overlay.box.style.left);
-    		var overlay_top = parseInt(active_overlay.overlay.box.style.top);
-    		var overlay_width = Math.round(active_overlay.overlay.overlay_width);
-    		var overlay_height = Math.round(active_overlay.overlay.overlay_height);
-    		var offset_limit_left = active_overlay.mouse_offset_left;
-    		var offset_limit_top = active_overlay.mouse_offset_top;
-    		var bg_width = active_overlay.overlay.bg_img.img_width;
-    		var bg_height = active_overlay.overlay.bg_img.img_height;
+	function adjust(e){
+		event.preventDefault();
+		xCoord = e.clientX || e.touches[0].clientX;
+		yCoord = e.clientY || e.touches[0].clientY;
 
-    		if( overlay_left <= 0 && ( e.clientX + offset_limit_left ) <= 0 ){
-    			//left bound
-    			active_overlay.overlay.box.style.left = '0px';
-    		}else if( overlay_left + overlay_width >= bg_width && ((e.clientX + offset_limit_left + overlay_width) >= bg_width ) ){
-    			//right bound
-    			active_overlay.overlay.box.style.left = (bg_width - overlay_width) + 'px';
-    		}else{
-    			active_overlay.overlay.box.style.left = (e.clientX + offset_limit_left + 'px');
-    		}
+    if (active_overlay.moving) {
+  		var overlay_left = parseInt(active_overlay.overlay.box.style.left);
+  		var overlay_top = parseInt(active_overlay.overlay.box.style.top);
+  		var overlay_width = Math.round(active_overlay.overlay.overlay_width);
+  		var overlay_height = Math.round(active_overlay.overlay.overlay_height);
+  		var offset_limit_left = active_overlay.mouse_offset_left;
+  		var offset_limit_top = active_overlay.mouse_offset_top;
+  		var bg_width = active_overlay.overlay.bg_img.img_width;
+  		var bg_height = active_overlay.overlay.bg_img.img_height;
 
-    		if( overlay_top <= 0 && ( e.clientY + offset_limit_top ) <= 0 ){
-    			//top bound
-    			console.log("top");
-    			active_overlay.overlay.box.style.top = '0px';
-    		}else if( overlay_top + overlay_height >= bg_height && ((e.clientY + offset_limit_top + overlay_height) >= bg_height ) ){
-    			//bottom bound
-    			console.log("bottom");
-    			active_overlay.overlay.box.style.top = (bg_height - overlay_height) + 'px';
-    		}else{
-    			console.log("vertical");
-    			active_overlay.overlay.box.style.top = (e.clientY + offset_limit_top) + 'px';
-    		}
-			console.log(overlay_top);
-			console.log(overlay_height);
-			console.log(bg_height);
-	   	}else if(active_overlay.resizing){
-	   		var ratio = active_overlay.overlay.ratio;
-	   		var initial_left = active_overlay.mouse_offset_left;
-	   		var overlay_width = Math.round(active_overlay.overlay.overlay_width);
-	   		var overlay_height = Math.round(active_overlay.overlay.overlay_height);
-	   		var bg_width = active_overlay.overlay.bg_img.img_width;
-	   		var bg_height = active_overlay.overlay.bg_img.img_height;
+  		if( overlay_left <= 0 && ( xCoord + offset_limit_left ) <= 0 ){
+  			//left bound
+  			active_overlay.overlay.box.style.left = '0px';
+  		}else if( overlay_left + overlay_width >= bg_width && ((xCoord + offset_limit_left + overlay_width) >= bg_width ) ){
+  			//right bound
+  			active_overlay.overlay.box.style.left = (bg_width - overlay_width) + 'px';
+  		}else{
+  			active_overlay.overlay.box.style.left = (xCoord + offset_limit_left + 'px');
+  		}
 
-	   		if( overlay_width + (e.clientX - initial_left) >= bg_width - parseInt(active_overlay.overlay.box.style.left) && (overlay_height + (e.clientX - initial_left)/ratio) < bg_height - parseInt(active_overlay.overlay.box.style.top) ){
-	   			console.log("1");
-				//if mouse is past right edge but not below bottom edge
+  		if( overlay_top <= 0 && ( yCoord + offset_limit_top ) <= 0 ){
+  			//top bound
+  			console.log("top");
+  			active_overlay.overlay.box.style.top = '0px';
+  		}else if( overlay_top + overlay_height >= bg_height && ((yCoord + offset_limit_top + overlay_height) >= bg_height ) ){
+  			//bottom bound
+  			console.log("bottom");
+  			active_overlay.overlay.box.style.top = (bg_height - overlay_height) + 'px';
+  		}else{
+  			console.log("vertical");
+  			active_overlay.overlay.box.style.top = (yCoord + offset_limit_top) + 'px';
+  		}
+   	}else if(active_overlay.resizing){
+   		var ratio = active_overlay.overlay.ratio;
+   		var initial_left = active_overlay.mouse_offset_left;
+   		var overlay_width = Math.round(active_overlay.overlay.overlay_width);
+   		var overlay_height = Math.round(active_overlay.overlay.overlay_height);
+   		var bg_width = active_overlay.overlay.bg_img.img_width;
+   		var bg_height = active_overlay.overlay.bg_img.img_height;
+
+   		if( overlay_width + (xCoord - initial_left) >= bg_width - parseInt(active_overlay.overlay.box.style.left) && (overlay_height + (xCoord - initial_left)/ratio) < bg_height - parseInt(active_overlay.overlay.box.style.top) ){
+   			console.log("1");
+			//if mouse is past right edge but not below bottom edge
+			var new_width = bg_width - parseInt(active_overlay.overlay.box.style.left);
+
+		}else if( (overlay_height + (xCoord - initial_left)/ratio) >= bg_height - parseInt(active_overlay.overlay.box.style.top) && overlay_width + (xCoord - initial_left) < bg_width - parseInt(active_overlay.overlay.box.style.left) ){
+			console.log("2");
+			//if mouse is below bottom edge but not past right edge
+			var new_width = ( bg_height - parseInt(active_overlay.overlay.box.style.top) ) * ratio;
+
+		}else if( overlay_width + (xCoord - initial_left) >= bg_width - parseInt(active_overlay.overlay.box.style.left) && (overlay_height + (xCoord - initial_left)/ratio) >= bg_height - parseInt(active_overlay.overlay.box.style.top) ){
+			console.log("3");
+			//if mouse is past both, take smaller width
+			if( bg_width - parseInt(active_overlay.overlay.box.style.left) < (bg_height - parseInt(active_overlay.overlay.box.style.top)) * ratio ){
 				var new_width = bg_width - parseInt(active_overlay.overlay.box.style.left);
-
-			}else if( (overlay_height + (e.clientX - initial_left)/ratio) >= bg_height - parseInt(active_overlay.overlay.box.style.top) && overlay_width + (e.clientX - initial_left) < bg_width - parseInt(active_overlay.overlay.box.style.left) ){
-				console.log("2");
-				//if mouse is below bottom edge but not past right edge
-				var new_width = ( bg_height - parseInt(active_overlay.overlay.box.style.top) ) * ratio;
-
-			}else if( overlay_width + (e.clientX - initial_left) >= bg_width - parseInt(active_overlay.overlay.box.style.left) && (overlay_height + (e.clientX - initial_left)/ratio) >= bg_height - parseInt(active_overlay.overlay.box.style.top) ){
-				console.log("3");
-				//if mouse is past both, take smaller width
-				if( bg_width - parseInt(active_overlay.overlay.box.style.left) < (bg_height - parseInt(active_overlay.overlay.box.style.top)) * ratio ){
-					var new_width = bg_width - parseInt(active_overlay.overlay.box.style.left);
-				}else{
-					var new_width = (bg_height - parseInt(active_overlay.overlay.box.style.top) ) * ratio;
-				}
-				
 			}else{
-				console.log("4");
-				var new_width = overlay_width + (e.clientX - initial_left);
+				var new_width = (bg_height - parseInt(active_overlay.overlay.box.style.top) ) * ratio;
 			}
+			
+		}else{
+			console.log("4");
+			var new_width = overlay_width + (xCoord - initial_left);
+		}
 
-	   		active_overlay.overlay.box.style.width = new_width + 'px';
+   		active_overlay.overlay.box.style.width = new_width + 'px';
 			active_overlay.overlay.box.style.height = Math.round(new_width/ratio)+'px';
 			active_overlay.overlay.elem.style.width = new_width + 'px';
 			active_overlay.overlay.elem.style.height = Math.round(new_width/ratio)+'px';
-	   	}
-	}, true);
+   	}
+	};
 
 	function updateOverlayDimensions(overlay){
 		var scale = overlay.bg_img.og_width / overlay.bg_img.img_width;

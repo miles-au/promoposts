@@ -23,6 +23,8 @@ module PromoPosts
     config.middleware.use ActionDispatch::Cookies # Required for all session management
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
     config.middleware.use Rack::Attack
+
+    config.assets.paths << Rails.root.join("vendor","assets", "fonts")
     
   end
 end

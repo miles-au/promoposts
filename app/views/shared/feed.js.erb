@@ -1,0 +1,16 @@
+var items = [];
+
+<% @feed_items.each do |item| %>
+	var element = document.createElement('div');
+  element.innerHTML = "<%= j render item %>".trim();
+  items.push(element.firstChild);
+<% end %>
+
+append_feed(items);
+
+<% if @feed_items.next_page %>
+  $('.pagination').replaceWith("<%= j will_paginate @feed_items %>");
+<% else %>
+  $(window).off('scroll');
+  $('.pagination').replaceWith('<hr><h3>end</h3>');
+<% end %>

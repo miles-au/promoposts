@@ -1,31 +1,31 @@
-<div class="row">
-  <div class="col-md-3 col-sm-12 sidebar">
-    <div class="accordion side_button">
-      <h3 class="pop-button">Add new overlay</h3>
-    </div>
-    <div class="sub-accordion" id="edit_campaign_container">
-      <%= render 'new_overlay' %>
-    </div>
-    <div class="accordion side_button">
-      <h3 class="pop-button">Set Default Overlay</h3>
-    </div>
-    <div class="sub-accordion" id="edit_campaign_container">
-      <%= render 'default_overlay' %>
-    </div>
-
+<div class="row dashboard">
+  <div class="col col-md-3 col-sm-12">
+    <%= render partial: "shared/action_button", locals: { text: "profile info", glyphicon: "user", goto: edit_user_path(current_user) } %>
   </div>
-  <div class="col-md-9 col-sm-12">
-    <h1>Your Overlays</h1>
+  <div class="col col-md-3 col-sm-12">
+    <%= render partial: "shared/action_button", locals: { text: "overlays", glyphicon: "modal-window", goto: overlays_path } %>
+  </div>
+  <div class="col col-md-3 col-sm-12">
+    <%= render partial: "shared/action_button", locals: { text: "social media accounts", glyphicon: "comment", goto: accounts_edit_path } %>
+  </div>
+</div>
+
+<div class="container">
+  <p class="btn-submit" id="add_overlay_btn">Add overlay</p>
+  <p class="btn-submit" id="default_overlay_btn">Default Overlay</p>
+  <div id="form_container">
+  </div>
+  
+  <div>
+    <h2>Your Overlays</h2>
     <% @overlays.each_with_index do |overlay| %>
       <% if overlay.id %>
-        <div style="margin-bottom: 10px;">
-          <h3 style="text-align: left;"><%= overlay.name %></h3>
-          <img src="<%= overlay.picture.url %>" style="max-height: 300px; max-width: 100%;" />
-        </div>
-        <div>
-          <%= link_to overlays_path( id: overlay.id), method: :delete do %>
+        <div style="margin-bottom: 10px; display: inline-block; vertical-align: top;">
+          <h3 style="text-align: left; display: inline-block;"><%= overlay.name %></h3>
+          <%= link_to overlays_path( id: overlay.id), method: :delete, style: "display: inline-block;" do %>
             <span class="glyphicon glyphicon-trash" ></span>
-          <% end %>
+          <% end %><br>
+          <img src="<%= overlay.picture.url %>" style="max-height: 300px; max-width: 100%;" />
         </div>
       <% end %>
     <% end %>
@@ -40,7 +40,11 @@
     }
   });
 
-  $( ".accordion" ).click(function() {
-    $(this).next(".sub-accordion").toggle();
+  $("#add_overlay_btn").click(function(){
+    $("#form_container").html("<%= j render 'new_overlay' %>");
   });
+  $("#default_overlay_btn").click(function(){
+    $("#form_container").html("<%= j render 'default_overlay' %>");
+  });
+
 </script>

@@ -1,11 +1,9 @@
 <%= form_tag(overlays_default_path, method: :post, remote: :true) do |f| %>
-	<div class="sidebar-form">
 		<p>Overlay:</p>
 		<%= select_tag :id, options_for_select(@overlay_select, @default_select_overlay)  %>
 		<p>Location:</p>
 		<%= select_tag :location, options_for_select(@overlay_locations, current_user.setting.default_overlay_location) %>
-		<%= submit_tag "Set default", :class => "pop-button" %>
-	</div>
+		<%= submit_tag "Set default", :class => "btn-submit" %>
 <% end %>
 
 <script>

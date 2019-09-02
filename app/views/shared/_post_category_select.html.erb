@@ -1,0 +1,9 @@
+<div class="select-background post_category_select"">
+	<% digital_assets_array = Micropost.category_array.unshift(['Campaign', 'campaign']) %>
+	<% digital_assets_array = digital_assets_array.unshift(['All Digital Assets', 'digital_assets']) unless include_all == false %>
+	<% if submits %>
+		<%= select_tag input_name, options_for_select(digital_assets_array), onchange: 'this.form.submit();', :prompt => prompt %>
+	<% else %>
+		<%= select_tag input_name, options_for_select(digital_assets_array), :prompt => prompt %>
+	<% end %>
+</div>

@@ -1,52 +1,61 @@
 <% provide(:title, "Social Acccounts") %>
 
-<h1>your connected social networks:</h1>
-
-<p>&nbsp;</p>
-
-<p>To get the most out of Promo Posts, connect a Buffer account. <a href="https://buffer.com/" target="_blank">What the heck is Buffer?</a></p>
-
-<% @providers.each do |provider| %>
-  <h4 class="<%= provider.downcase %>-bg social-login"><img src="/assets/<%= provider.downcase %>.svg"/> Your <%= provider %> accounts: </h4>
-  <div class="social-accounts-wrap">
-
-    <!--accounts exist in user's name-->
-    <% if @data[provider].count > 0 %>
-      <% accounts = @data[provider] %>
-      <% active_accounts = Account.send("check_account_#{provider.downcase}", current_user) %>
-      <%= link_to "/auth/#{provider}?intent=connect", class: 'connect_link' do%>
-        <span class="glyphicon glyphicon-refresh" style="display: inline-block;"></span><h5 style="display: inline-block; margin-left: 5px;">Refresh <%= provider %> accounts </h5>
-      <% end %>
-      <% accounts.each do |page| %>
-        <div class="fb-settings-wrapper">
-          <div class="img-holder">
-            <img class="thumbnail-page" src="<%= page.picture %>"/>
-          </div>
-          <h5 class="page-name"><%= page['name'] %></h5>
-          <%= link_to accounts_remove_page_path(:id => page.id), data: { confirm: "You sure?" } do %>
-            <span class="glyphicon glyphicon-trash"></span>
-          <% end %>
-          <% if active_accounts.exclude?(page.account_id) %>
-            <span class="mini-error">Unable to access this account.</span>
-          <% end %>
-        </div>
-      <% end %>
-
-      <%= link_to accounts_disconnect_path(:provider => "#{provider.downcase}"), :class => "connect_link" do %>
-        <h5><span class="glyphicon glyphicon-remove-sign"></span> Disconnect your <%= provider %> Account </h5>
-      <% end %>
-
-    <% else %>
-      <% if current_user.read_attribute("#{provider.downcase}_uid") %>
-        <h6>No sharable pages available.</h6>
-        <%= link_to accounts_disconnect_path(:provider => "#{provider.downcase}"), :class => "connect_link" do %>
-          <h5> Disconnect your <%= provider %> Account </h5>
-        <% end %>
-      <% else %>
-        <%= render(:partial => 'shared/connect_account', :locals => { :provider => "#{provider.downcase}" }) %>
-      <% end %>
-    <% end %>
-
+<div class="row dashboard">
+  <div class="col col-md-3 col-sm-12">
+    <%= render partial: "shared/action_button", locals: { text: "profile info", glyphicon: "user", goto: edit_user_path(current_user) } %>
   </div>
+  <div class="col col-md-3 col-sm-12">
+    <%= render partial: "shared/action_button", locals: { text: "overlays", glyphicon: "modal-window", goto: overlays_path } %>
+  </div>
+  <div class="col col-md-3 col-sm-12">
+    <%= render partial: "shared/action_button", locals: { text: "social media accounts", glyphicon: "comment", goto: accounts_edit_path } %>
+  </div>
+</div>
 
-<% end %>
+<div class="container">
+  <h2 style="margin-top: 0px;">your connected social networks:</h2>
+
+  <p>To get the most out of Promo Posts, connect a Buffer account. <a href="https://buffer.com/" target="_blank">What the heck is Buffer?</a></p>
+
+  <% @providers.each do |provider| %>
+    <h4 class="<%= provider.downcase %>-bg social-button"><img src="/assets/<%= provider.downcase %>.svg"/> Your <%= provider %> accounts: </h4>
+
+      <!--accounts exist in user's name-->
+      <% if @data[provider].count > 0 %>
+        <% accounts = @data[provider] %>
+        <% active_accounts = Account.send("check_account_#{provider.downcase}", current_user) %>
+        <%= link_to "/auth/#{provider}?intent=connect", class: 'connect_link' do%>
+          <span class="glyphicon glyphicon-refresh" style="display: inline-block;"></span><h5 style="display: inline-block; margin-left: 5px;">Refresh <%= provider %> accounts </h5>
+        <% end %>
+        <% accounts.each do |page| %>
+          <div class="social-accounts-wrap">
+            <div class="img-holder">
+              <img class="thumbnail-page" src="<%= page.picture %>"/>
+            </div>
+            <h5 class="page-name"><%= page['name'] %></h5>
+            <%= link_to accounts_remove_page_path(:id => page.id), data: { confirm: "You sure?" } do %>
+              <span class="glyphicon glyphicon-trash"></span>
+            <% end %>
+            <% if active_accounts.exclude?(page.account_id) %>
+              <span class="mini-error">Unable to access this account.</span>
+            <% end %>
+          </div>
+        <% end %>
+
+        <%= link_to accounts_disconnect_path(:provider => "#{provider.downcase}"), :class => "connect_link" do %>
+          <h5><span class="glyphicon glyphicon-remove-sign"></span> Disconnect your <%= provider %> Account </h5>
+        <% end %>
+
+      <% else %>
+        <% if current_user.read_attribute("#{provider.downcase}_uid") %>
+          <h6>No sharable pages available.</h6>
+          <%= link_to accounts_disconnect_path(:provider => "#{provider.downcase}"), :class => "connect_link" do %>
+            <h5> Disconnect your <%= provider %> Account </h5>
+          <% end %>
+        <% else %>
+          <%= render(:partial => 'shared/connect_account', :locals => { :provider => "#{provider.downcase}" }) %>
+        <% end %>
+      <% end %>
+
+  <% end %>
+</div>

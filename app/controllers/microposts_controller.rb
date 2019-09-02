@@ -1,5 +1,5 @@
 class MicropostsController < ApplicationController
-  before_action :logged_in_user, only: [:create, :destroy, :new, :share_post, :download_post_page]
+  before_action :logged_in_user, only: [:create, :destroy, :new, :share_post, :submit_share_post, :download_post_page, :download_post ]
   before_action :correct_or_admin_user, only: [:destroy]
 
   protect_from_forgery with: :exception

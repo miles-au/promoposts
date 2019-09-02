@@ -1,12 +1,14 @@
 <%= form_for(@micropost) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <div id="digital_asset_buttons" class="create_post_buttons">
-    <p>What type of digital asset is this?</p>
-    <%= f.select :category, options_for_select(Micropost.category_array), :prompt => "Select a category" %>
-  </div>
+  <%= render partial: "/shared/post_category_select", locals: {
+    prompt: "What type of digital asset is this?",
+    include_all: false,
+    input_name: "#{f.object.class.to_s.downcase}[category]",
+    submits: false
+  } %>
 
-  <div class="field" style="">
+  <div class="field">
     <%= f.text_area :content, placeholder: "Compose new post...", maxlength: 400 %>
   </div>
   <div class="picture">
@@ -15,10 +17,10 @@
     <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
   </div>
   <div class="external_url">
-    <%= f.label :external_url, "Include a link:"%>
-    <%= f.text_field :external_url, placeholder: "Include a website url here:", maxlength: 500 %>
+    <%#= f.label :external_url, "Include a link:"%>
+    <%#= f.text_field :external_url, placeholder: "Include a website url here:", maxlength: 500 %>
   </div>
-  <%= f.submit "Post", class: "pop-button" %>
+  <%= f.submit "submit post", class: "pop-button" %>
 <% end %>
 
 <script type="text/javascript">

@@ -1,79 +1,58 @@
-<div class="row" >
+<% if !logged_in? %>
+	<div class="splash" style="background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url('/assets/splash-home.jpg');">
+		<div>
+		  <h1>Promo Products Social Media</h1>
+		  <hr>
+		  <h3>Automated, optimized, and free content for promotional products</h3>
+		</div>
 
-	<!-- sidebar -->
-	<div class="col-sm-12 col-md-3 sidebar">
-		<% if logged_in? %>
-			<%= link_to microposts_new_path, :class => "side_button" do%>
-				<div class="pop-button">
-					<span class="glyphicon glyphicon-pencil"></span>
-					<h3 class = "top_icons">create post</h3>
-				</div>
-			<% end %>
-			<%= link_to new_campaign_path, :class => "side_button" do%>
-				<div class="pop-button">
-					<span class="glyphicon glyphicon-flag"></span>
-					<h3 class = "top_icons">create campaign</h3>
-				</div>
-			<% end %>
-		<% else %>
-			<p><%= link_to 'Sign in', social_login_path %> to join the community.</p>
-		<% end %>
+		<!-- <div>
+		  <a href="<%= how_does_it_work_path %>" class="btn-hero">How does it work?</a>
+		</div> -->
 	</div>
+<% end %>
 
-	<div class="col-sm-12 col-md-9">
-		<div class="feed row">
-			<div class="col-md-12">
-				<div class="feed_buttons">
-					<% if logged_in? %>
-						<%= link_to root_path( :feed => "user") do%>
-							<h5 id="userFeed" class="tab <%= 'tab-active' if @feed_type == 'user' %>">Your Feed</h5>
-						<% end %>
-					<% end %>
-					<%= link_to root_path( :feed => "global") do%>
-						<h5 id="globalFeed" class="tab <%= 'tab-active' if @feed_type == 'global' %>">Global Feed</h5>
-					<% end %>
-				</div>
+<div class="container">
+	<div class="row" >
+		<div class="col-sm-12 col-md-3 action_buttons_container">
 
-				<div style="margin-top: 5px;">
-					<% digital_assets_array = Micropost.category_array.unshift(['Campaign', 'campaign']) %>
-					<% digital_assets_array = digital_assets_array.unshift(['All Digital Assets', 'digital_assets']) %>
+			<% if logged_in? %>
+				<%= render partial: "shared/action_button", locals: { text: "submit post", glyphicon: "pencil", goto: microposts_new_path } %>
+				<%= render partial: "shared/action_button", locals: { text: "submit campaign", glyphicon: "flag", goto: new_campaign_path } %>
+			<% else %>
+				<p><%= link_to 'Sign in', login_path %> to join the community.</p>
+			<% end %>
+		</div>
 
-					<%= form_tag root_path, :method => 'get' do %>
-						<span>Get digital assets by category:</span>
-						<%= select_tag "feed", options_for_select(digital_assets_array), onchange: 'this.form.submit();', :prompt => "Choose a category", :style => "margin-bottom: 5px;" %>
-					<% end %>
-				</div>
+		<div class="col-sm-12 col-md-9">
+			<div class="post-filter">
+				<%= form_tag root_path, :method => 'get' do %>
+					<%= render partial: "/shared/post_category_select", locals: {
+						prompt: "Get digital assets by category...",
+						include_all: true,
+						input_name: 'feed',
+						submits: true
+					} %>
+				<% end %>
 
 				<!--search-->
 				<div class="searchBar">
-					<%= form_tag root_path, :method => 'get', id: 'searchPosts' do %>
+					<%= form_tag root_path, :method => 'get' do %>
 					  <%= text_field_tag :search, params[:search], :placeholder => 'search posts' %>
 					  <%= hidden_field_tag :feed , "search" %>
-					  <%= button_tag(type: "submit", :name => nil,class: "search-btn") do %>
+					  <%= button_tag(type: "submit", :name => nil) do %>
 					    <span class="glyphicon glyphicon-search" ></span>
 					  <% end %>
 					<% end %>
 				</div>
 
 			</div>
+
 		</div>
 
 	</div>
 
-</div>
-
-<div id="feedContainer">
-	<% if @feed_type == "user" %>
-		<h1 style="text-align: left;">Your Feed</h1>
-	<% elsif @feed_type == "global" %>
-		<h1 style="text-align: left;">Global Activity</h1>
-	<% else %>
-		<h1 style="text-align: left;"><%= @feed_type.titlecase.tr("_", " ") %><%= 's' unless (@feed_type == "digital_assets" || @feed_type = "search") %></h1>
-	<% end %>
+	<hr>
 
 	<%= render 'shared/feed' %>
-	
-	<div id="end" class="hide">
-  	  <hr><h3>end</h3>
-  	</div>
 </div>

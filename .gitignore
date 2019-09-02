@@ -35,3 +35,6 @@
 
 # Ignore uploaded test images.
 /public/uploads
+
+# Ignore db seed images
+/assets/images/travel

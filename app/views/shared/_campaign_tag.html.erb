@@ -1,0 +1,7 @@
+<% if @campaign %>
+	<div class="campaign_tag">
+		<%= link_to @campaign do %>
+			<span class="glyphicon glyphicon-flag"></span> This post is part of the <em>"<%= @campaign.name %>"</em> campaign!
+		<% end %>
+	</div>
+<% end %>

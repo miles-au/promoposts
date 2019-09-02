@@ -1,98 +1,51 @@
-<div class="row">
-	<div class="col-md-3 col-sm-12 sidebar">
-		<div class="profile_user_display">
-	      <div>
-	        <img src="<%= @micropost.user.avatar %>" id="profile_pic" style="width: 50%; object-fit: cover; object-position: center; display: inline-block; vertical-align: top;" />
-	      </div>
-	      <div style="display: inline-block; vertical-align: top;">
-	        <h1><%= link_to @micropost.user.name, @micropost.user %></h1>
-	        <h4><%= @micropost.user.company %></h4>
-	        <%= render :partial => 'shared/accolades', :locals => {:user => @micropost.user} %>       
-	      </div>
+<div class="row dashboard">
+  <div class="col col-md-3 col-sm-12">
+  	<%= render partial: "shared/action_button", locals: { text: "download post", glyphicon: "cloud-download", goto: download_post_page_path(:id => @micropost.id) } %>
+  </div>
+  <div class="col col-md-3 col-sm-12">
+  	<%= render partial: "shared/action_button", locals: { text: "share to social media", glyphicon: "share-alt", goto: share_post_path(:id => @micropost.id) } %>
+  </div>
+</div>
+
+<div class="container" >
+
+	<div class="row base-layout">
+		<div class="col-md-9 col-sm-12 left-panel">
+			<%= render partial: "shared/campaign_tag" %> 
+			<div>
+	      <img style="max-width: 100%; max-height: 150vh;" src="<%= @micropost.picture.url %>", alt="promo post picture" />
 	    </div>
-	    <span class="timestamp">
-	      Posted <%= time_ago_in_words(@micropost.created_at) %> ago.
-	      <% if current_user %>
-	        <% if current_user?(@micropost.user) || current_user.admin? %>
-	          <%= link_to "delete", @micropost, method: :delete,
-	                                           data: { confirm: "You sure?" } %>
-	        <% end %>
-	      <% end %>
-	    </span>
+		</div>
 
-	    <hr>
+		<div class="col-md-3 col-sm-12 right-panel" >
+			<div>
+				<p>submitted by:</p>
+				<%= render partial: "shared/user_info", locals: { user: @user, thumbnail_width: 50 } %>
+		    <hr>
+				<h4><strong>caption:</strong></h4>
+				<p>"<%= @micropost.content %>" 
+		  		<% if @micropost.external_url.present? %>
+		  			<br><span class="go-to-external-link"><span class="glyphicon glyphicon-link"></span><%=link_to('go to link',"http://#{@micropost.external_url}", :target=>"_blank") %></span>
+		  		<% end %>
+		  	</p>
+		  </div>
+		  <hr>
+		  <div>
+		  	<% if @micropost.category %>
+		    	<% if Rails.env.production? %>
+	      		<% image = MiniMagick::Image.open(@micropost.picture.url) %>
+	      	<% else %> 
+	      		<% pic_url = "#{request.protocol}#{request.subdomain}.#{request.domain}#{@micropost.picture.url}" %>
+	      		<% image = MiniMagick::Image.open(pic_url) %>
+	      	<% end %>
+	  			<p><%= @micropost.category.titlecase.tr("_", " ") %><br><%= image[:width] %> x <%= image[:height] %> px</p>
+				<% end %>
 
-	    <% if current_user %>
-	      <%= link_to download_post_page_path(:id => @micropost.id), :class => "side_button" do%>
-	        <div class="pop-button">
-	          <span class="glyphicon glyphicon-cloud-download"></span>
-	          <h3 class = "top_icons">Download Picture</h3>
-	        </div>
-	      <% end %>
-	      <%= link_to share_post_path(:id => @micropost.id), :class => "side_button" do%>
-	        <div class="pop-button">
-	          <h3 class = "top_icons"><span class="glyphicon glyphicon-share-alt"></span> Share to Social Media</h3>
-	        </div>
-	      <% end %>
-	    <% else %>
-	    	<p><%= link_to 'Sign in', social_login_path %> to:<br>
-	    		<span class="glyphicon glyphicon-cloud-download"></span> download this image<br>
-	    		<span class="glyphicon glyphicon glyphicon-share-alt"></span> share this post to your social media</p>
-	    <% end %>
-
-	</div>
-
-	<div class="col-md-9 col-sm-12">
-	  <% if @campaign %>
-  	  	<%= link_to @campaign do %>
-  	  		<p class="campaign_tag"><span class="glyphicon glyphicon-flag"></span> This post is part of the <em>"<%= @campaign.name %>"</em> campaign.</p>
-  	  	<% end %>
-  	  <% end %>
-
-  	  <div>
-      	<p style="font-size: 1.3em;">"<%= @micropost.content %>" 
-      		<% if @micropost.external_url.present? %>
-      			<br><span class="go-to-external-link"><span class="glyphicon glyphicon-link"></span><%=link_to('go to link',"http://#{@micropost.external_url}", :target=>"_blank") %></span>
-      		<% end %>
-      	</p>
-        <img style="max-width: 100%; max-height: 150vh;" src="<%= @micropost.picture.url %>", alt="promo post picture" />
-        <div class="row">
-        	<div class="col-md-6 col-sm-12">
-		        <% if @micropost.category %>
-			    	<% if Rails.env.production? %>
-		        		<% image = MiniMagick::Image.open(@micropost.picture.url) %>
-		        	<% else %> 
-		        		<% pic_url = "#{request.protocol}#{request.subdomain}.#{request.domain}#{@micropost.picture.url}" %>
-		        		<% image = MiniMagick::Image.open(pic_url) %>
-		        	<% end %>
-		    		<p><%= @micropost.category.titlecase.tr("_", " ") %><br><%= image[:width] %> x <%= image[:height] %> px</p>
-		    	<% end %>
-	    	</div>
-	    	<div class="col-md-6 col-sm-12">
-		    	<% if current_user == @micropost.user %>
+		  	<% if current_user == @micropost.user %>
 					<p>Shares: <%= @micropost.shares %> | Downloads: <%= @micropost.downloads %></p>
 				<% end %>
 			</div>
 		</div>
-      </div>
-      <div style="margin-top: 10px;">
-	      <% if current_user %>
-			<%= render 'shared/comment_form' %>
-		  <% end %>
-		  <%= render @comments %>
-	  </div>
-
-
 	</div>
+
 </div>
-
-<script>
-	show_tooltips();
-
-	var profileWidth = $("#profile_pic").width();
-  	$("#profile_pic").height(profileWidth);
-
-	$( ".accordion" ).click(function() {
-	  $(this).next(".sub-accordion").toggle();
-	});
-</script>

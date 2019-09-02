@@ -2,7 +2,7 @@
 <% platform_posts = @campaign.microposts.where(:category => "#{platform.downcase}_post") %>
 
 <div class="row" style="margin-top: 10px;">
-	<h4 class="social-login <%= platform.downcase %>-bg">
+	<h4 class="social-button <%= platform.downcase %>-bg">
 		<%= image_tag "#{platform.downcase}.svg", :style => "margin-right: 10px;" %>Share to <%= platform %>: </h4>
 	<div class="col-md-7 col-sm-12">
 		<div class="post_carousel" >

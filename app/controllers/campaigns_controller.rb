@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-  before_action :logged_in_user, only: [:new, :edit, :create, :share_campaign, :submit_share_campaign, :update, :download_assets]
+  before_action :logged_in_user, only: [:new, :edit, :create, :share_campaign, :submit_share_campaign, :update, :download_campaign_page, :download_assets]
   before_action :correct_or_admin_user, only: [:destroy, :edit, :update]
 
   # GET /campaigns

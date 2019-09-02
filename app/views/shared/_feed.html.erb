@@ -1,24 +1,117 @@
 <div class="feed">
-  <ol id="postsContainer" class="microposts microposts-grid" style="padding: 0px;">
-    <% if @feed_items %>
+  <% if @feed_items %>
+    <div class="masonry" >
+      <div class="grid-col grid-col-1" ></div>
+      <div class="grid-col grid-col-2" ></div>
+      <div class="grid-col grid-col-3" ></div>
+      <!-- items -->
       <% @feed_items.each do |item| %>
-        <% user = item.user %>
         <%= render item %>
       <% end %>
-
-    <% end %>
-  </ol>
+    </div>
+  <% end %>
 
   <div id="infinite-scrolling">
 	 <% if @feed_items && @feed_items.any? %>
   	  <%= will_paginate @feed_items %>
   	<% else %>
-  	  <h4>There are no posts here! (Follow some people or create a post!)</h4>
+  	  <h4>There are no posts with those criteria.</h4>
   	<% end %>
   </div>
 
 </div>
+<% if @feed_items.total_pages <= 1 %>
+  <div id="end">
+    <hr><h3>no more posts</h3>
+  </div>
+<% end %>
 
 <script>
-  show_tooltips();
+  var masonry_container = document.getElementsByClassName("masonry")[0];
+  var masonry_items = document.getElementsByClassName("masonry-item");
+  var columns_count = 1;
+  var column_heights = [0,0,0];
+  var item_count = 0;
+  var columns_obj = document.getElementsByClassName("grid-col");
+
+  function get_proper_column_count(){
+    columns_count = 1;
+    if(window.innerWidth >= 768){
+      columns_count = 2;
+    }
+    if(window.innerWidth >= 1080){
+      columns_count = 3;
+    }
+    return columns_count
+  }
+
+  function onLoad(){
+    //get proper number of columns
+    get_proper_column_count()
+
+    for( let i = item_count; i < masonry_items.length; i++ ){
+      let item = masonry_items[i];
+
+      //wait for image to load
+      var img = new Image();
+      img.addEventListener("load", function () {
+        // when finished loading, allocate the item
+        allocate_item(item);
+      });
+      img.src = item.firstElementChild.getAttribute("src");
+    }
+
+  }
+
+  function onResize(){
+    //get proper number of columns
+    get_proper_column_count();
+    //reset column heights
+    column_heights = [0,0,0];
+    item_recount = item_count;
+    item_count = 0;
+    for( let i = 0; i < item_recount; i++ ){
+      allocate_item(document.getElementById("item-".concat(i)));
+    }
+  }
+
+  function allocate_item(item){
+    // get shortest column
+    let column_num = 0;
+    let smallest = column_heights[0];
+    for (let i = 1; i < columns_count; i++) {
+      if (column_heights[i] < smallest) {
+        smallest = column_heights[i];
+        column_num = i;
+      }
+    }
+
+    //append the item
+    columns_obj[column_num].appendChild(item);
+
+    //adjust column heights
+    column_heights[column_num] += item.firstElementChild.offsetHeight;
+    
+    //track item count for resizing
+    item.setAttribute("id", "item-".concat(item_count));
+    item_count ++;
+  }
+
+  function append_feed(array){
+    for( let i = 0; i < array.length; i++ ){
+      let item = array[i];
+
+      //wait for image to load
+      var img = new Image();
+      img.addEventListener("load", function () {
+        // when finished loading, allocate the item
+        allocate_item(item);
+      });
+      img.src = item.firstElementChild.getAttribute("src");
+    }
+  }
+
+  onLoad();
+  window.addEventListener('resize', onResize);
+
 </script>

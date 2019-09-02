@@ -1,0 +1,12 @@
+<!-- params: text, glyphicon, goto, confirm_prompt, method -->
+
+<% method ||= "get" %>
+<% confirmation = { confirm: confirm_prompt } rescue nil %>
+<%= link_to goto, method: method, data: confirmation, class: "btn-large" do %>
+	<div class="icon">
+		<span class="glyphicon glyphicon-<%= glyphicon %>"></span>
+	</div>
+	<div class="text">
+		<%= text %>
+	</div>
+<% end %>

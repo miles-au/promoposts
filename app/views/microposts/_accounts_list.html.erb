@@ -1,7 +1,7 @@
 <% platform_accounts = current_user.accounts.where( :platform => platform.downcase ) %>
 
 <div class="row" style="margin-top: 10px;">
-	<h4 class="social-login <%= platform.downcase %>-bg">
+	<h4 class="social-button <%= platform.downcase %>-bg">
 		<%= image_tag "#{platform.downcase}.svg", :style => "margin-right: 10px;" %>Share to <%= platform %> <span style="font-size: 0.8em; color: inherit;"><%= @micropost.category == "#{platform.downcase}_post" ? "(recommended for this post)" : "" %></span></h4>
 	<div class="col-md-7 col-sm-12">
 		<% if platform_accounts.empty? %>

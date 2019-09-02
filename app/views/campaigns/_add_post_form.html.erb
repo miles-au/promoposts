@@ -1,80 +1,29 @@
-<div class="sidebar-form">
-  <%= form_for @campaign, :remote => true do |f| %>
+<div class="container" id="add_post_container">
+  <h4>Add Post to Campaign</h4>
+  <%= form_for @campaign, :remote => true, :html => {onsubmit: "document.getElementById('postingMsg').style.display = 'block';"} do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
 
-  <div id="campaign-add-post-container">
-
     <%= f.fields_for :microposts, Micropost.new do |micropost| %>
-      <%= micropost.label :category, "What digital asset category is this?" %>
-      <%= micropost.select :category, options_for_select(Micropost.category_array), { :prompt => "" }, { :id => "postInputSelect" } %>
-
-      <div class="picture">
+      <div class="select-background post_category_select"">
+        <%= micropost.select :category, options_for_select(Micropost.category_array.unshift(['Campaign', 'campaign'])), prompt: "What digital asset category is this?", id: "postInputSelect", required: true %>
+      </div>
+      <div style="margin-top: 10px;">
         <span style="display: inline-block; font-size: 1.2em;" class="glyphicon glyphicon-picture"></span>
         <p style="display: inline-block; text-align: top;">Add Picture (10mb max):</p>
-        <%= micropost.file_field :picture, :id => "postInputPic", accept: 'image/jpeg,image/gif,image/png' %>
+        <%= micropost.file_field :picture, :id => "postInputPic", accept: 'image/jpeg,image/gif,image/png', required: true %>
       </div>
-      <div class="field" style="">
+      <div>
         <p style="display: inline-block; text-align: top;">Add Caption:</p>
-        <div class="pop-button" style="margin-bottom: 10px;" id="useOriginalText" onclick="use_campaign_text();">Use campaign caption</div>
-        <%= micropost.text_area :content, :id => 'postInputContent' , placeholder: "Tell us about your campaign...", maxlength: 500 %>
+        <div class="btn-submit" id="useOriginalText" onclick="document.getElementById('postInputContent').value = '<%= escape_javascript(raw(@campaign.content)) %>';" >
+          Use campaign caption
+        </div>
+        <%= micropost.text_area :content, id: 'postInputContent' , placeholder: "Tell us about your campaign...", maxlength: 500, required: true %>
       </div>
     <% end %>
-  </div>
 
-  <p id="missing-fields-msg">Missing required fields.</p>
-  <div id="post-missing-fields" class="pop-button pop-button-grey" style="display: block; margin: 5px 0;">Add to campaign</div>
-  <%= f.submit "Add to campaign", class: "pop-button hidden", id: "add-post-to-campaign-btn" %>
-    <div id="add-post-to-campaign-btn-grey" class="pop-button pop-button-grey" style="display: none; text-align: center;">Adding post...</div>
-    <p id="large-pics-may-take-a-while" style="margin-top: 10px; display: none;">(large pictures may take a while to upload)</p>
+    <div style="text-align: center;">
+      <%= f.submit "Add to campaign", class: "btn-submit" %>
+      <p id="postingMsg" style="margin-top: 10px; display: none;">posting...(large pictures may take a while to upload)</p>
+    </div>
   <% end %>
-
 </div>
-
-<script>
-  $("#add-post-to-campaign-btn").click(function(){
-    $(this).hide();
-    $("#add-post-to-campaign-btn-grey").show();
-    $("#large-pics-may-take-a-while").show();
-  });
-
-  $("#postInputSelect").change(function(){
-    check_fields();
-  });
-
-  $("#postInputPic").change(function(){
-    check_fields();
-  });
-
-  $("#postInputContent").on("change keyup paste", function(){
-    check_fields();
-  })
-
-  function use_campaign_text(){
-    $( "#postInputContent" ).val("<%= escape_javascript(raw(@campaign.content)) %>");
-    check_fields();
-  };
-
-  function check_fields(){
-    var has_select = document.getElementById("postInputSelect").value;
-    var has_picture = document.getElementById("postInputPic").files.length > 0;
-    var has_text = document.getElementById("postInputContent").value.length;
-
-    if( has_select && has_picture && has_text > 0 ){
-      all_fields();
-    }else{
-      missing_fields();
-    }
-  }
-
-  function missing_fields(){
-    $('#missing-fields').removeClass('hidden');
-    $('#add-post-to-campaign-btn').addClass('hidden');
-    $('#post-missing-fields-msg').removeClass('hidden');
-  }
-  function all_fields(){
-    $('#missing-fields-msg').addClass('hidden');
-    $('#add-post-to-campaign-btn').removeClass('hidden');
-    $('#post-missing-fields').addClass('hidden');
-  }
-  
-</script>

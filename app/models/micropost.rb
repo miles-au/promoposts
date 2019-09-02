@@ -20,7 +20,7 @@ class Micropost < ActiveRecord::Base
 
   #attr_accessor :external_url
 
-  self.per_page = 10
+  self.per_page = 30
 
   before_destroy :delete_notifications
 

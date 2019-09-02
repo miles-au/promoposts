@@ -1,107 +1,31 @@
-<header class="navbar navbar-fixed-top navbar-inverse" >
-  <div class="container">
-    
-    <%= link_to root_path, id: "logo", style: 'display: inline-block;' do %>
-      <%= image_tag asset_path('logo.svg'), id: 'logo-pic', style: "width: 40px; display: inline-block;" %>
-      <h3 style="display: inline-block;">promo posts <span style="font-size: 0.5em; color: #ffffff;">beta</span></h3>
+<header>
+  <div id="logo" >
+    <%= link_to root_path do %>
+      <%= image_tag asset_path('logo.svg') %>
+      <h3>promo posts <span>beta</span></h3>
     <% end %>
-    <nav id="mainNav">
-      <ul class="nav navbar-nav navbar-right">
-        <!--<li><%= link_to "Help",   help_path %></li>-->
-        <% if logged_in? %>
-          <!--notifications-->
-          <li>
-            <%= link_to url_for({:controller => "notifications", :action => "mark_read", :user_id => current_user.id}), :remote => true, class: 'dropdown-toggle', 'data-toggle' => 'dropdown', :onclick => 'bellColor()' do %>
-              <span style="font-size: 1.2em;" id="notif-bell" class="glyphicon glyphicon-bell <%= logged_in? && current_user.unread_notifications.count > 0 ? 'has_notifications' : '' %>" ></span>
-            <% end %>
-            <ul class="dropdown-menu">
-              <!-- render notifications -->
-              <li class="notification-bullet" style="text-align: center;"><%= link_to 'see all notifications', notifications_all_path, :style => "width: 100%; font-weight: 700;" %></li>
-              <% if current_user.display_notifications.count > 0 %>
-                <%= render partial: 'shared/display_notifications', locals: {notifs: current_user.display_notifications} %>
-              <% else %>
-                <li class="notification-bullet" style="text-align: center;"><p>You have no notifications!</p></li>
-              <% end %>
-              
-            </ul>
-          </li>
-
-          <% if current_user.admin %>
-            <li><%= link_to "Users", users_path %></li>
-            <li><%= link_to "Admin", admin_panel_path %></li>
-          <% end %>
-
-          <!--profile-->
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <%=current_user.name%> <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-              <li><%= link_to "Profile", current_user %></li>
-              <li><%= link_to "Edit Profile", edit_user_path(current_user) %></li>
-              <li><%= link_to "Accounts", accounts_edit_path(:id => current_user) %></li>
-              <li><%= link_to "Overlays", overlays_path %></li>
-              <li><%= link_to "Settings", user_settings_path(:id => current_user) %></li>
-              <li>
-                <%= link_to "Log out", logout_path, method: :delete %>
-              </li>
-            </ul>
-          </li>
-        <% else %>
-          <li><%= link_to "Log in", social_login_path %></li>
-        <% end %>
-      </ul>
-    </nav>
-
-    <nav id="mobileNav">
-      <div style="position: relative; text-align: right;">
-        <% if logged_in? %>
-          <div class="btn-group">
-            <%= link_to url_for({:controller => "notifications", :action => "mark_read", :user_id => current_user.id}), :remote => true, class: 'dropdown-toggle', 'data-toggle' => 'dropdown', 'aria-haspopup' => true, 'aria-expanded' => 'false', :onclick => 'bellColor()' do %>
-              <span style="font-size: 1.2em; color: white;" id="notif-bell" class="glyphicon glyphicon-bell <%= logged_in? && current_user.unread_notifications.count > 0 ? 'has_notifications' : '' %>" ></span>
-            <% end %>
-
-            <div class="dropdown-menu" style="left: 0;">
-                <li class="notification-bullet" style="text-align: center;"><strong><%= link_to 'See all notifications', notifications_all_path%></strong></li>
-                <% if current_user.display_notifications %>
-                  <%= render partial: 'shared/display_notifications', locals: {notifs: current_user.display_notifications} %>
-                <% else %>
-                  <li class="notification-bullet" style="text-align: center;"><p>You have no notifications!</p></li>
-                <% end %>
-            </div>
-          </div>
-        <% end %>
-
-        <div class="btn-group">
-          <button type="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="glyphicon glyphicon-menu-hamburger" style="font-size: 1.2em; color: white;"></span>
-          </button>
-          <ul class="dropdown-menu" style="left: 0;">
-            <!--<li><%= link_to "Help",   help_path %></li>-->
-              <% if logged_in? %>
-                <% if current_user.admin %>
-                  <li><%= link_to "Users", users_path %></li>
-                <% end %>
-                <li><%= link_to "Profile", current_user %></li>
-                <li><%= link_to "Settings", edit_user_path(current_user) %></li>
-                <li><%= link_to "Accounts", accounts_edit_path(:id => current_user) %></li>
-                <li>
-                  <%= link_to "Log out", logout_path, method: :delete %>
-                </li>
-              <% else %>
-                <li><%= link_to "Log in", social_login_path %></li>
-              <% end %>
-          </ul>
-        </div>
-      </div>
-
-    </nav>
-
   </div>
+  <nav>
+    <% if current_user %>
+      <!--<%= link_to "#", "data-toggle": "tooltip", "data-placement": "bottom", "title": "Post Schedule" do %><span class="glyphicon glyphicon-calendar"></span><% end %>-->
+      <%= link_to current_user, "data-toggle": "tooltip", "data-placement": "bottom", "title": "Profile" do %><span class="glyphicon glyphicon-user"></span><% end %>
+      <%= link_to edit_user_path(current_user), "data-toggle": "tooltip", "data-placement": "bottom", "title": "Settings" do %><span class="glyphicon glyphicon-cog"></span><% end %>
+      <%= link_to logout_path, method: :delete, "data-toggle": "tooltip", "data-placement": "bottom", "title": "Log Out" do %><span class="glyphicon glyphicon-log-out"></span><% end %>
+    <% else %>
+      <%= link_to new_user_path, style: "grid-column: span 2" do %>Sign Up<% end %>
+      <%= link_to login_path, style: "grid-column: span 2" do %>Log In<% end %>
+    <% end %>
+  </nav>
+
 </header>
 
-<script>
-  function bellColor(){
-    $("#notif-bell").removeClass("has_notifications");
-  } 
+<script type="text/javascript">
+  function set_body_padding(){
+    let header_height = document.querySelector('header').offsetHeight;
+    document.querySelector('body').style.paddingTop = header_height + "px";
+  }
+
+  set_body_padding();
+
+  window.addEventListener('resize', set_body_padding);
 </script>

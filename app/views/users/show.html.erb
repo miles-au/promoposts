@@ -1,117 +1,48 @@
 <% provide(:title, @user.name) %>
 
-<div class="row">
-  <div class="col-md-3 col-sm-12 sidebar">
-    <div id="mobile_cover_photo" class="mobile-show" style="margin-bottom: 15px;">
-      <img id="mobile_cover_photo_img" style="width: 100%;" src='<%= @user.cover_photo? ? @user.cover_photo : "/assets/default-cover-photo.png" %>' />
+<div class="row dashboard">
+  <% if current_user == @user %>
+    <div class="col col-md-3 col-sm-12">
+      <%= render partial: "shared/action_button", locals: { text: "edit my profile", glyphicon: "user", goto: edit_user_path } %>
     </div>
-    <div class="profile_user_display">
-        <div>
-          <img src="<%= @user.avatar %>" id="profile_pic" style="width: 50%; object-fit: cover; object-position: center; display: inline-block; vertical-align: top;" />
-          <div style="width: 45%; display: inline-block; float: right; text-align: center;">
-            <strong>
-              <a href="<%= following_user_path(@user) %>">
-                <p><%= @user.following.count %><br>following</p>
-              </a>
-            <hr>
-              <a href="<%= followers_user_path(@user) %>">
-                <p><%= @user.followers.count %><br>followers</p>
-              </a>
-            <strong>
-          </div>
-        </div>
-        <div style="display: inline-block; vertical-align: top;">
-          <h1><%= @user.name %></h1>
-          <h4><%= @user.company %></h4>
-          <%= render :partial => 'shared/accolades', :locals => {:user => @user} %>       
-        </div>
-      </div>
-  </div>
-
-  <div class="col-md-9 col-sm-12">
-    <div id="cover_photo" class="mobile-hide">
-      <img id="cover_photo_img" src='<%= @user.cover_photo? ? @user.cover_photo : "/assets/default-cover-photo.png" %>' />
+    <div class="col col-md-3 col-sm-12">
+      <%= render partial: "shared/action_button", locals: { text: "create post", glyphicon: "pencil", goto: microposts_new_path } %>
     </div>
-  </div>
-
+    <div class="col col-md-3 col-sm-12">
+      <%= render partial: "shared/action_button", locals: { text: "create campaign", glyphicon: "flag", goto: new_campaign_path } %>
+    </div>
+  <% end %>
+  <% if current_user.admin? %>
+    <div class="col col-md-3 col-sm-12">
+      <%= render partial: "shared/action_button", locals: { text: "delete user", glyphicon: "trash", goto: @user, confirm_prompt: "Are you sure?", method: "delete" } %>
+    </div>
+  <% end %>
 </div>
 
-<div class="row">
-  <div class="col-md-3 col-sm-12 sidebar" style="">
-    <div class="follow_user">
-      <%= render 'follow_form' if logged_in? %>
-    </div>
-
-    <% if @user == current_user %>
-      <%= link_to edit_user_path, :class => "side_button" do%>
-        <div class="pop-button">
-          <span class="glyphicon glyphicon-user"></span>
-          <h3 class = "top_icons">edit my profile</h3>
-        </div>
-      <% end %>
-
-      <%= link_to microposts_new_path, :class => "side_button" do%>
-        <div class="pop-button">
-          <span class="glyphicon glyphicon-pencil"></span>
-          <h3 class = "top_icons">create post</h3>
-        </div>
-      <% end %>
-
-      <%= link_to new_campaign_path, :class => "side_button" do%>
-        <div class="pop-button">
-          <span class="glyphicon glyphicon-flag"></span>
-          <h3 class = "top_icons">create campaign</h3>
-        </div>
-      <% end %>
-
-    <% end %>
-
-    <% if current_user && current_user.admin? %>
-      <%= link_to @user, :method => :delete, data: { confirm: "You sure?" }, :class => "side_button" do%>
-        <div class="pop-button admin-button">
-          <span class="glyphicon glyphicon-trash"></span>
-          <h3 class = "top_icons">delete user</h3>
-        </div>
-      <% end %>
-    <% end %>
-  </div>
-
-  <div class="col-md-9 col-sm-12">
-      <div style=" padding-left: 10px; ">
-        
-        <% if @feed_type == "user" %>
-          <h3 style="text-align: left;">Activity</h3>
-        <% else %>
-          <h3 style="text-align: left;"><%= @feed_type.titlecase.tr("_", " ") %><%= 's' unless (@feed_type == "digital_assets" ) %></h3>
-        <% end %>
-
-        <%= link_to user_path(:id => @user.id, :feed => "user") do%>
-          <h5 id="userFeed" class="tab <%= 'tab-active' if @feed_type == 'user' %>">User Activity</h5>
-        <% end %>
-
-        <div style="margin-top: 5px;">
-          <p>Get Digital Assets by type:</p>
-          <% digital_assets_array = Micropost.category_array.unshift(['All Digital Assets', 'digital_assets']) %>
-          <% digital_assets_array = Micropost.category_array.unshift(['Campaign', 'campaign']) %>
-
-          <%= form_tag @user, :method => 'get' do %>
-            <%= select_tag "feed", options_for_select(digital_assets_array), onchange: 'this.form.submit();', :prompt => "Select a category" %>
-          <% end %>
-        </div>
-
-        <div class="feed">
-          <ol id="microPostsContainer" class="microposts microposts-full" style="padding: 0px;">
-            <%= render @feed_items %>
-          </ol>
-          <div id="infinite-scrolling">
-            <% if @feed_items.any? %>
-              <%= will_paginate @feed_items %>
-            <% else %>
-              <p>No posts were found.</p>
-            <% end %>
-          </div>
-        </div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <%= render partial: "shared/user_info", locals: { user: @user, thumbnail_width: 150, font_multiply: 1.7 } %>
+      <div class="follow_user">
+        <%#= render 'shared/follow_form' if logged_in? %>
       </div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+      <%= form_tag @user, :method => 'get' do %>
+        <%= render partial: "/shared/post_category_select", locals: {
+          prompt: "Get digital assets by category...",
+          include_all: true,
+          input_name: 'feed',
+          submits: true
+        } %>
+      <% end %>
+    </div>
+  </div>
+  <hr>
+  <%= render 'shared/feed' %>
+  <div id="end" class="hide">
+    <hr><h3>end</h3>
+  </div>
 
 </div>
 
@@ -123,39 +54,9 @@
     
     history.pushState(null, '<%= :title %>', '/users/<%= @user.slug %>');
 
-    var coverWidth = $("#mobile_cover_photo_img").width();
-    $("#mobile_cover_photo_img").height(coverWidth * 0.35);
-
-    var coverWidth = $("#cover_photo_img").width();
-    $("#cover_photo_img").height(coverWidth * 0.35);
-
     var profileWidth = $("#profile_pic").width();
     $("#profile_pic").height(profileWidth);
 
   });
-
-  show_tooltips();
-
-  $( "#feed-names" ).click(function() {
-    if($("#feeds-slide").hasClass("slide-close")){
-      $("#feeds-slide").show('slow');
-      $("#feeds-slide").removeClass("slide-close");
-      $("#feeds-slide").addClass("slide-open");
-      $("#slide-glyph").removeClass("glyphicon-triangle-right");
-      $("#slide-glyph").addClass("glyphicon-triangle-bottom");
-    }else{
-      $("#feeds-slide").hide('slow');
-      $("#feeds-slide").addClass("slide-close");
-      $("#feeds-slide").removeClass("slide-open");
-      $("#slide-glyph").removeClass("glyphicon-triangle-bottom");
-      $("#slide-glyph").addClass("glyphicon-triangle-right");
-    } 
-  });
-
-  //set cover photo to 3:1 aspect ratio
-  var img = $('#cover_photo_img');
-  var width = img.width();
-  
-  img.css('height', width/3);
   
 </script>

@@ -1,12 +1,21 @@
 <% provide(:title, "Edit user") %>
 <% provide(:button_text, "Save Changes") %>
-<h1>update your profile</h1>
 
-<div class="row">
-	<div class="col-md-3">
-		<img class="avatar" src="<%= current_user.avatar %>" style="height: 150px; width: 150px;"/>
-	</div>
-	<div class="col-md-6">
+<div class="row dashboard">
+  <div class="col col-md-3 col-sm-12">
+  	<%= render partial: "shared/action_button", locals: { text: "profile info", glyphicon: "user", goto: edit_user_path(current_user) } %>
+  </div>
+  <div class="col col-md-3 col-sm-12">
+  	<%= render partial: "shared/action_button", locals: { text: "overlays", glyphicon: "modal-window", goto: overlays_path } %>
+  </div>
+  <div class="col col-md-3 col-sm-12">
+  	<%= render partial: "shared/action_button", locals: { text: "social media accounts", glyphicon: "comment", goto: accounts_edit_path } %>
+  </div>
+</div>
+
+<div class="container" >
+	<div style="max-width: 500px;" >
+		<h2>Update profile info</h2>
 		<%= render 'form' %>
 	</div>
 </div>

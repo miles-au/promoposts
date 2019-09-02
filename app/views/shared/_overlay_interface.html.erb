@@ -1,0 +1,14 @@
+<div style="margin: 15px; text-align: center;">
+	<p><strong>Overlays (logos and banners):</strong></p>
+	<div style="max-width: 500px; margin: 0 auto; display: flex; justify-content: space-between;">
+		<span class="arrow glyphicon glyphicon-chevron-left" id="arrow-prev-overlay"></span>
+		<p id="overlay-name" style="display: inline-block;"></p>
+		<span class="arrow glyphicon glyphicon-chevron-right" id="arrow-next-overlay"></span>
+	</div>
+	<div>
+		<% if @overlays.count <= 1 %>
+			<span class="mini-error" >You don't have any overlays set up yet!</span>
+		<% end %>
+		<%= link_to "manage overlays", "/overlays" %>
+	</div>
+</div>

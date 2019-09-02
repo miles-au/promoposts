@@ -43,14 +43,9 @@ class UsersController < ApplicationController
     @feed_type = params[:feed] || "digital_assets"
 
     if @feed_type
-      
       case @feed_type
-        when "user"
-          @feed_items = @user.events.paginate(:page => params[:page], :per_page => Micropost.per_page)
-
         when 'digital_assets'
-          merged_items = (@user.campaigns.all + @user.microposts.where(:campaign_id => nil)).sort_by {|obj| obj.created_at}.reverse
-          @feed_items = merged_items.paginate(:page => params[:page], :per_page => Micropost.per_page)
+          @feed_items = @user.microposts.paginate(:page => params[:page], :per_page => Micropost.per_page)
 
         when 'campaign'
           @feed_items = @user.campaigns.all.reverse.paginate(:page => params[:page], :per_page => Micropost.per_page)
@@ -58,12 +53,16 @@ class UsersController < ApplicationController
         else
           @feed_items = @user.microposts.where(:category => params[:feed]).paginate(:page => params[:page], :per_page => Micropost.per_page)
       end
-
     else
-      @feed_items = merged_items.paginate(:page => params[:page], :per_page => Micropost.per_page)
+      @feed_items = @user.microposts.paginate(:page => params[:page], :per_page => Micropost.per_page)
     end
 
     redirect_to root_url and return unless @user.activated == true
+
+    respond_to do |format|
+      format.html
+      format.js { render '/shared/feed.js.erb' }
+    end
 
   end
 
