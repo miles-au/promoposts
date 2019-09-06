@@ -43,7 +43,8 @@ gem 'rack-attack'
 gem 'rubyzip'
 gem 'zip-zip'
 
-gem 'whenever'
+# using heroku scheduler. Whenever doesn't work on heroku
+#gem 'whenever'
 
 # Use PG as DB
 gem 'pg', '0.18.4'

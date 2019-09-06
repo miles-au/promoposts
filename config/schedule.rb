@@ -25,8 +25,8 @@
 
 # Learn more: http://github.com/javan/whenever
 
-set :output, {:error => "log/cron.log", :standard => "log/cron.log"}
+# set :output, {:error => "log/cron.log", :standard => "log/cron.log"}
 
-every 30.minutes do
-  runner "Micropost.post_schedule"
-end
+# every 30.minutes do
+#   runner "Micropost.post_schedule"
+# end
