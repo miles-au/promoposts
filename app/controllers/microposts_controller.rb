@@ -233,12 +233,8 @@ class MicropostsController < ApplicationController
     track = Track.new(user_id: current_user.id, category: micropost.category, asset_num: micropost.id, act: "download")
     track.save
 
-    if Rails.env.production?
-      send_data(open(picture_url).read.force_encoding('BINARY'), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
-    else
-      send_data(open(picture_url).read.force_encoding('BINARY'), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
-    end
-
+    send_data(open(picture_url).read.force_encoding('BINARY'), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
+    
   end
 
   private

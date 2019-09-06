@@ -422,38 +422,6 @@ class User < ApplicationRecord
     results = User.where("name LIKE ?", "%#{query}%" ).reorder("name LIKE #{safe_query} DESC ")
   end
 
-  def display_notifications
-    if self.unread_notifications.count > 0
-      return self.unread_notifications
-    elsif self.notifications_today.count > 0
-      return self.notifications_today
-    elsif self.notifications.count > 0
-      return self.notifications
-    else
-      return Notification.none
-    end
-  end
-
-  def notifications_today
-    if Rails.env.production?
-      notifications = Notification.where( "user_id = '?' AND created_at > ?", self.id, 1.day.ago)
-    else
-      notifications = Notification.where( "user_id = ? AND created_at > ?", self.id, 1.day.ago)
-    end 
-
-    return notifications
-  end
-
-  def unread_notifications
-    if Rails.env.production?
-      notifications = Notification.where( "user_id = '?' AND read = ?", self.id, false)
-    else
-      notifications = Notification.where( "user_id = ? AND read = ?", self.id, false)
-    end 
-    
-    return notifications
-  end
-
   def check_accounts
     providers = self.accounts.pluck("provider").uniq
     accounts = []

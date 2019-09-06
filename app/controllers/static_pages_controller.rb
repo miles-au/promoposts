@@ -17,13 +17,8 @@ class StaticPagesController < ApplicationController
         when 'search'
           query = params[:search]
 
-          if Rails.env.production?
-            safe_query = ActiveRecord::Base.connection.quote("#{query}%")
-            @feed_items = Micropost.where("content ILIKE ?", "%#{query}%").paginate(:page => params[:page], :per_page => Micropost.per_page)
-          else
-            safe_query = ActiveRecord::Base.connection.quote("#{query}%")
-            @feed_items = Micropost.where("content LIKE ?", "%#{query}%").paginate(:page => params[:page], :per_page => Micropost.per_page)
-          end 
+          safe_query = ActiveRecord::Base.connection.quote("#{query}%")
+          @feed_items = Micropost.where("content ILIKE ?", "%#{query}%").paginate(:page => params[:page], :per_page => Micropost.per_page)
 
         else
           @feed_items = Micropost.where(:category => params[:feed]).paginate(:page => params[:page], :per_page => Micropost.per_page)

@@ -13,29 +13,12 @@ class UsersController < ApplicationController
   end
 
   def index
-    if Rails.env.production?
-      @search = params[:search]
-
-      if @search.present?
-        @users = User.search(@search).paginate(:page => params[:page], :per_page => 60)
-      else
-        @users = User.where(activated: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => 60)
-      end
-
+    @search = ActiveRecord::Base::sanitize_sql(params[:search])
+    if @search
+      @users = User.find_user(@search).paginate(:page => params[:page], :per_page => 60)
     else
-      @search = ActiveRecord::Base::sanitize_sql(params[:search])
-
-      if @search
-
-        @users = User.find_user(@search).paginate(:page => params[:page], :per_page => 60)
-
-      else
-        
-        @users = User.where(activated: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => 60)
-      end
-
-    end
-    
+      @users = User.where(activated: true).order(created_at: :desc).paginate(:page => params[:page], :per_page => 60)
+    end    
   end
 
   def show
