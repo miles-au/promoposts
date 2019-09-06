@@ -1,5 +1,6 @@
 class Account < ApplicationRecord
   belongs_to :user
+  has_many :scheduled_posts, dependent: :destroy
 
   def self.set_token(val)
   	encrypt_value(val)
@@ -36,6 +37,22 @@ class Account < ApplicationRecord
 
   def self.check_account_pinterest(user)
   	boards = user.pinterest.get_boards.data.pluck("id") rescue []
+  end
+
+  def self.best_post_time(platform, post_date)
+    case platform
+      when "facebook"
+        post_time = post_date.change({ hour: 13 })
+      when "linkedin"
+        post_time = post_date.change({ hour: 12 })
+      when "twitter"
+        post_time = post_date.change({ hour: 14 })
+      when "instagram"
+        post_time = post_date.change({ hour: 12 })
+      when "pinterest"
+        post_time = post_date.change({ hour: 21 })
+      else
+    end
   end
   	
   private

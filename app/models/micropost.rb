@@ -46,13 +46,12 @@ class Micropost < ActiveRecord::Base
               ['Other', 'other']]
   end
 
-  def self.share_to_facebook(micropost, page, message, picture_url, current_user)
+  def self.share_to_facebook(external_url, page, message, picture_url, current_user)
     fb_page = Koala::Facebook::API.new(page.user.facebook.get_page_access_token(page.account_id))
 
-    puts "PICTURE_URL : #{picture_url}"
     begin
-        if micropost.external_url?
-          graph_post = fb_page.put_picture(picture_url, 'image' ,{:message => message, :link => micropost.external_url})
+        if external_url
+          graph_post = fb_page.put_picture(picture_url, 'image' ,{:message => message, :link => external_url})
         else
           graph_post = fb_page.put_picture(picture_url, 'image' ,{:message => message})
         end
@@ -65,18 +64,18 @@ class Micropost < ActiveRecord::Base
 
   end
 
-  def self.share_to_linkedin(micropost, page, message, picture_url, current_user)
+  def self.share_to_linkedin(external_url, page, message, picture_url, current_user)
     client = current_user.linkedin
     decrypted_token = User.get_token(current_user.linkedin_oauth_token)
 
     #create share
-    if micropost.external_url
+    if external_url
       #article with picture
       share = {
           "content": {
               "contentEntities": [
                   {
-                      "entityLocation": micropost.external_url,
+                      "entityLocation": external_url,
                       "thumbnails": [
                           { 
                               "imageSpecificContent": {},
@@ -182,7 +181,7 @@ class Micropost < ActiveRecord::Base
 
   end
 
-  def self.share_to_twitter(micropost, page, message, picture_url, current_user)
+  def self.share_to_twitter(external_url, page, message, picture_url, current_user)
     #get permissions
 
     client = current_user.twitter
@@ -198,13 +197,13 @@ class Micropost < ActiveRecord::Base
     end
   end
 
-  def self.share_to_buffer(micropost, page, message, picture_url, current_user)
+  def self.share_to_buffer(external_url, page, message, picture_url, current_user)
     #get permissions
 
     client = current_user.buffer
 
-    if micropost.external_url
-      response = client.create_update(:body => {:profile_ids => [page.account_id], :text => message, :now => true, :media => {:photo => picture_url, :link => micropost.external_url}})
+    if external_url
+      response = client.create_update(:body => {:profile_ids => [page.account_id], :text => message, :now => true, :media => {:photo => picture_url, :link => external_url}})
     else
       response = client.create_update(:body => {:profile_ids => [page.account_id], :text => message, :now => true, :media => {:photo => picture_url}})
     end
@@ -218,7 +217,7 @@ class Micropost < ActiveRecord::Base
     end
   end
 
-  def self.share_to_pinterest(micropost, page, message, picture_url, current_user)
+  def self.share_to_pinterest(external_url, page, message, picture_url, current_user)
     #get permissions
 
     response = current_user.pinterest.create_pin({
@@ -262,6 +261,50 @@ class Micropost < ActiveRecord::Base
     result.write(path)
 
     return path
+  end
+
+  def self.post_schedule
+    #get posts from a minute ago to next 30 minutes
+    scheduled_posts = ScheduledPost.where("post_time >= ? AND post_time < ?", (DateTime.now.in_time_zone("UTC") - 1.minute), (DateTime.now.in_time_zone("UTC") + 30.minutes))
+    scheduled_posts.each do |scheduled_post|
+      post_scheduled_post(scheduled_post)
+    end
+  end
+
+  def self.post_scheduled_post(scheduled_post)
+    page = scheduled_post.account
+    puts "Picture URL: #{scheduled_post.picture_url}"
+    case page.provider
+      when "facebook"
+        resp = Micropost.share_to_facebook( nil, scheduled_post.account, scheduled_post.caption, scheduled_post.picture_url, scheduled_post.user)
+      when "linkedin"
+        resp = Micropost.share_to_linkedin( nil, scheduled_post.account, scheduled_post.caption, scheduled_post.picture_url, scheduled_post.user)
+      when "twitter"
+        resp = Micropost.share_to_twitter( nil, scheduled_post.account, scheduled_post.caption, scheduled_post.picture_url, scheduled_post.user)
+      when "buffer"
+        post_to_buffer = true
+        resp = Micropost.share_to_buffer( nil, scheduled_post.account, scheduled_post.caption, scheduled_post.picture_url, scheduled_post.user)
+      when "pinterest"
+        resp = Micropost.share_to_pinterest( nil, scheduled_post.account, scheduled_post.caption, scheduled_post.picture_url, scheduled_post.user)
+      else
+    end
+    if resp == "success"
+      if scheduled_post.user != micropost.user_id
+        if micropost.shares
+          micropost.shares += 1
+        else 
+          micropost.shares = 1
+        end
+        micropost.save
+        track = Track.new(user_id: current_user.id, category: micropost.category, asset_num: micropost.id, act: "share")
+        track.save
+      end
+      scheduled_post.status = "posted"
+    else
+      scheduled_post.status = "failed";
+    end
+    scheduled_post.save
+    puts "response: #{resp}"
   end
 
   private

@@ -12,7 +12,7 @@
       <%= render partial: "shared/action_button", locals: { text: "create campaign", glyphicon: "flag", goto: new_campaign_path } %>
     </div>
   <% end %>
-  <% if current_user.admin? %>
+  <% if current_user && current_user.admin? %>
     <div class="col col-md-3 col-sm-12">
       <%= render partial: "shared/action_button", locals: { text: "delete user", glyphicon: "trash", goto: @user, confirm_prompt: "Are you sure?", method: "delete" } %>
     </div>

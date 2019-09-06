@@ -37,4 +37,4 @@
 /public/uploads
 
 # Ignore db seed images
-/assets/images/travel
+/app/assets/images/travel

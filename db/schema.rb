@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_22_233945) do
+ActiveRecord::Schema.define(version: 2019_09_05_022642) do
 
   create_table "accolades", force: :cascade do |t|
     t.integer "user_id"
@@ -60,6 +60,21 @@ ActiveRecord::Schema.define(version: 2019_08_22_233945) do
     t.string "email"
     t.string "subject"
     t.string "message"
+  end
+
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer "priority", default: 0, null: false
+    t.integer "attempts", default: 0, null: false
+    t.text "handler", null: false
+    t.text "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string "locked_by"
+    t.string "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
   create_table "events", force: :cascade do |t|
@@ -136,6 +151,18 @@ ActiveRecord::Schema.define(version: 2019_08_22_233945) do
     t.index ["followed_id"], name: "index_relationships_on_followed_id"
     t.index ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true
     t.index ["follower_id"], name: "index_relationships_on_follower_id"
+  end
+
+  create_table "scheduled_posts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.integer "account_id"
+    t.string "picture_url"
+    t.string "caption"
+    t.datetime "post_time"
+    t.integer "micropost_id"
+    t.string "status", default: "waiting"
   end
 
   create_table "settings", force: :cascade do |t|

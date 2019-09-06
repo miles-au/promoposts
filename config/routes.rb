@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   get '/microposts/:id/share_micropost', to: 'microposts#share_post', as: 'share_post'
   post '/microposts/:id/share_micropost', to: 'microposts#submit_share_post'
 
-  get 'microposts/new'
+  get '/microposts/new'
 
   # post '/webhooks_facebook' => 'webhooks#facebook', as: :facebook_webhooks
   # get '/webhooks_facebook' => 'webhooks#challenge', as: :challenge_webhooks
@@ -47,17 +47,16 @@ Rails.application.routes.draw do
   # get 'users/:id/settings', to: 'users#settings', as: :user_settings
   # post 'users/:id/settings', to: 'settings#update_settings', as: :update_user_settings
 
-  get 'unsubscribe_email', to: 'users#unsubscribe_email'
-  post 'unsubscribe_email', to: 'users#unsubscribe_email_action'
+  get '/unsubscribe_email', to: 'users#unsubscribe_email'
+  post '/unsubscribe_email', to: 'users#unsubscribe_email_action'
 
-  post 'delete_data', to: 'webhooks#delete_data'
-  post 'unauthorize_facebook', to: 'webhooks#unauthorize_facebook'
+  get '/resend_activation', to: 'sessions#resend_activation',  as: :sessions_resend_activation
 
-  get  "accounts/disconnect", to: "accounts#disconnect"
-  get "accounts/remove_page", to: "accounts#remove_page"
+  post '/delete_data', to: 'webhooks#delete_data'
+  post '/unauthorize_facebook', to: 'webhooks#unauthorize_facebook'
 
-  get 'comments/reply', to: 'comments#reply'
-  get 'comments/mark_top_comment', to: 'microposts#mark_top_comment', as: :mark_top_comment
+  get  "/accounts/disconnect", to: "accounts#disconnect"
+  get "/accounts/remove_page", to: "accounts#remove_page"
 
   get '/account_activations/:id/update', to: 'account_activations#update_email', as: 'update_email'
 
@@ -73,6 +72,9 @@ Rails.application.routes.draw do
   post '/overlays', to: "overlays#create"
   delete '/overlays', to: "overlays#destroy"
   post '/overlays_default', to: "overlays#default_overlay"
+
+  get '/prev_week', to: "scheduled_posts#prev_week"
+  get '/next_week', to: "scheduled_posts#next_week"
 
   get '/how_does_it_work', to: "static_pages#how_does_it_work"
 
@@ -90,5 +92,6 @@ Rails.application.routes.draw do
   resources :tickets,             only: [:create, :destroy, :show]
   resources :comments
   resources :campaigns
+  resources :scheduled_posts
 
 end

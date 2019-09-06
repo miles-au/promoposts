@@ -30,11 +30,19 @@
 			<%= render :partial => 'accounts_list', locals: { platform: platform }%>
 		<% end %>
 
-	  	<div style="max-width: 500px; margin: 5px auto;">
-	  		<%= submit_tag "Share", class: "btn-submit btn-disable", id: "share-button", disabled: true %>
+		<div style="max-width: 500px; margin: 5px auto;">
+			<div>
+				<input type="checkbox" id="schedule_check" style="display: inline-block; width: auto; margin-right: 10px;" /><span> schedule this post</span>
+			</div>
+			<%= date_field("", "post_date", value: Time.now.strftime("%Y-%m-%d"), min: Time.now.strftime("%Y-%m-%d"), id: "datepicker", style: "display: none;" ) %>
+		</div>
+
+		<div style="max-width: 500px; margin: 5px auto;">
+			<%= submit_tag "Share", class: "btn-submit btn-disable", id: "share-button", disabled: true %>
 			<ul style="text-align: left;">
 				<li id="missing-text">Missing text</li>
 				<li id="missing-pages">Missing pages to share to</li>
+				<li id="invalid-date" class="hidden">Please choose a date after today</li>
 			</ul>
 		</div>
 	<% end %>
@@ -47,54 +55,156 @@
 	  check_fields();
 	});
 
+	$( "input[type='checkbox']" ).change(function() {
+	  check_fields();
+	});
+
 	$("#inputText").on("change keyup paste", function(){
 		check_fields();
 	})
 
+	$('#datepicker').change( function() {
+	  check_fields();
+	});
+
+	$("#schedule_check").click(function(){
+		$('#datepicker').toggle();
+		let checked = $("#schedule_check").is(':checked');
+		if(checked){
+			$('#datepicker').attr("min", "<%= (Time.now + 1.day ).strftime("%Y-%m-%d") %>");
+			$('#datepicker').attr("value", "<%= (Time.now + 1.day ).strftime("%Y-%m-%d") %>");
+		}else{
+			$('#datepicker').attr("min", "<%= Time.now.strftime("%Y-%m-%d") %>");
+			$('#datepicker').attr("value", "<%= Time.now.strftime("%Y-%m-%d") %>");
+		}
+
+	});
+
 	function check_fields(){
-		text = document.getElementById("inputText");
-		var str_length = text.value.length;
+		//check if caption is valid
+		let str_length = document.getElementById("inputText").value.length;
+		let str_pass = false;
+		if(str_length > 0){
+			str_pass = true;
+		}
 
-		var checkboxes = document.getElementsByName('pages[]');
-		var pageChecked = false;
-
-		for(var i = 0; i < checkboxes.length; i++) {
-		    if(checkboxes[i].type.toLowerCase() == 'checkbox') {
-		        if(checkboxes[i].checked == true){
-		        	pageChecked = true;
-		        }
+		//check if a page has been selected
+		let pages = document.getElementsByName('pages[]');
+		let pages_pass = false;
+		for(var i = 0; i < pages.length; i++) {
+		    if(pages[i].type.toLowerCase() == 'checkbox' && pages[i].checked == true) {
+		        pages_pass = true;
 		    }
 		}
 
-		if(str_length > 0 && pageChecked == true){
-			all_fields();
-		}else{
-			missing_fields(str_length, pageChecked);
-		}
+		//check if date picked is valid
+		var date_pass = false;
+		var selectedDate = new Date(document.getElementById("datepicker").value);
+	  var now = new Date();
+	  var schedule_chosen = $("#schedule_check").is(':checked');
+	  now.setHours(0,0,0,0);
+	  if(schedule_chosen){
+	  	if (selectedDate <= now) {
+		    date_pass = false;
+		  } else {
+		    date_pass = true;
+		  }
+	  }else{
+	  	date_pass = true;
+	  }	  
+
+	  update_validation(str_pass, pages_pass, date_pass);
 	}
 
-	function missing_fields(str_length, pageChecked){
-		if(str_length > 0){
+	function update_validation(str_pass, pages_pass, date_pass){
+		// caption passed
+		if(str_pass){
 			$('#missing-text').addClass('hidden');
 		}else{
 			$('#missing-text').removeClass('hidden');
 		}
 
-		if(pageChecked){
+		// pages passed
+		if(pages_pass){
 			$('#missing-pages').addClass('hidden');
 		}else{
 			$('#missing-pages').removeClass('hidden');
 		}
 
-		$('#share-button').addClass('btn-disable');
-		$('#share-button').prop('disabled', true);
+		// date passed
+		if(date_pass){
+			$('#invalid-date').addClass('hidden');
+		}else{
+			$('#invalid-date').removeClass('hidden');
+		}
+
+		//check all inputs
+		if(date_pass && pages_pass && date_pass){
+			$('#missing-text').addClass('hidden');
+			$('#missing-pages').addClass('hidden');
+			$('#share-button').removeClass('btn-disable');
+			$('#share-button').prop('disabled', false);
+		}else{
+			$('#share-button').addClass('btn-disable');
+			$('#share-button').prop('disabled', true);
+		}
+
 	}
-	function all_fields(){
-		$('#missing-text').addClass('hidden');
-		$('#missing-pages').addClass('hidden');
-		$('#share-button').removeClass('btn-disable');
-		$('#share-button').prop('disabled', false);
-	}
+
+
+	// $('#useOriginalText').click(function() {
+	//   $( "#inputText" ).val("<%= escape_javascript(raw(@campaign.content)) %>");
+	//   check_fields();
+	// });
+
+	// $("#inputText").on("change keyup paste", function(){
+	// 	check_fields();
+	// })
+
+	// function check_fields(){
+	// 	text = document.getElementById("inputText");
+	// 	var str_length = text.value.length;
+
+	// 	var checkboxes = document.getElementsByName('pages[]');
+	// 	var pageChecked = false;
+
+	// 	for(var i = 0; i < checkboxes.length; i++) {
+	// 	    if(checkboxes[i].type.toLowerCase() == 'checkbox') {
+	// 	        if(checkboxes[i].checked == true){
+	// 	        	pageChecked = true;
+	// 	        }
+	// 	    }
+	// 	}
+
+	// 	if(str_length > 0 && pageChecked == true){
+	// 		all_fields();
+	// 	}else{
+	// 		missing_fields(str_length, pageChecked);
+	// 	}
+	// }
+
+	// function missing_fields(str_length, pageChecked){
+	// 	if(str_length > 0){
+	// 		$('#missing-text').addClass('hidden');
+	// 	}else{
+	// 		$('#missing-text').removeClass('hidden');
+	// 	}
+
+	// 	if(pageChecked){
+	// 		$('#missing-pages').addClass('hidden');
+	// 	}else{
+	// 		$('#missing-pages').removeClass('hidden');
+	// 	}
+
+	// 	$('#share-button').addClass('btn-disable');
+	// 	$('#share-button').prop('disabled', true);
+	// }
+	// function all_fields(){
+	// 	$('#missing-text').addClass('hidden');
+	// 	$('#missing-pages').addClass('hidden');
+	// 	$('#share-button').removeClass('btn-disable');
+	// 	$('#share-button').prop('disabled', false);
+	// }
 
 	//Overlay + Carousel
 	var overlay_arr = <%= raw @overlays.to_json %>;

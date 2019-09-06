@@ -481,6 +481,29 @@ header{
   }
 }
 
+/* Calendar */
+.day{
+  padding: 5px;
+  h4{
+    border-bottom: 2px solid $grey4;
+  }
+  .listed_post{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3px;
+    img{
+      height: 30px;
+    }
+    span{
+      white-space: nowrap;
+    }
+  }
+}
+
+.today{
+  background-color: $blue6;
+}
+
 /* FOOTER */
 
 footer{

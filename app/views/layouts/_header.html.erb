@@ -7,7 +7,7 @@
   </div>
   <nav>
     <% if current_user %>
-      <!--<%= link_to "#", "data-toggle": "tooltip", "data-placement": "bottom", "title": "Post Schedule" do %><span class="glyphicon glyphicon-calendar"></span><% end %>-->
+      <%= link_to scheduled_posts_path, "data-toggle": "tooltip", "data-placement": "bottom", "title": "Post Schedule" do %><span class="glyphicon glyphicon-calendar"></span><% end %>
       <%= link_to current_user, "data-toggle": "tooltip", "data-placement": "bottom", "title": "Profile" do %><span class="glyphicon glyphicon-user"></span><% end %>
       <%= link_to edit_user_path(current_user), "data-toggle": "tooltip", "data-placement": "bottom", "title": "Settings" do %><span class="glyphicon glyphicon-cog"></span><% end %>
       <%= link_to logout_path, method: :delete, "data-toggle": "tooltip", "data-placement": "bottom", "title": "Log Out" do %><span class="glyphicon glyphicon-log-out"></span><% end %>

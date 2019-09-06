@@ -1,0 +1,23 @@
+<% @user_posts.where("post_time > ?", day).where("post_time < ?", (day + 1.day)).each do |post| %>
+	<% post_account = post.account %>
+	<div class="listed_post">
+		<div>
+			<img src="<%= post.picture_url %>">
+			<span class="glyphicon glyphicon-arrow-right" ></span>
+			<% if post.status == "waiting" %>
+				<span class="glyphicon glyphicon-hourglass"></span>
+			<% elsif post.status == "posted" %>
+				<span class="glyphicon glyphicon-ok"></span>
+			<% else %>
+				<span class="glyphicon glyphicon-remove"></span>
+			<% end %>
+			<img src="<%= post_account.picture %>">
+			<span><%= post_account.name %></span>
+		</div>
+		<div>
+			<%=link_to post, method: :delete do %>
+				<span class="glyphicon glyphicon-trash" ></span>
+			<% end %>
+		</div>
+	</div>
+<% end %>

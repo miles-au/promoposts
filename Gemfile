@@ -14,7 +14,6 @@ gem 'bootstrap-will_paginate'
 gem 'carrierwave'
 gem 'fog', '~> 2.0.0'
 gem "fog-google"
-#gem "google-api-client"
 gem 'carrierwave-google-storage'
 gem "mime-types"
 gem 'dotenv-rails'
@@ -43,6 +42,8 @@ gem "pg_search"
 gem 'rack-attack'
 gem 'rubyzip'
 gem 'zip-zip'
+
+gem 'whenever'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.11'

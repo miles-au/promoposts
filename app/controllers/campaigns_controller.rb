@@ -206,8 +206,8 @@ class CampaignsController < ApplicationController
     campaign = Campaign.find(params[:id])
     message = params['message']
     accounts = current_user.accounts.where('id IN (?)', params[:pages])
+    post_date = params["post_date"] rescue Date.today
     @success_string = []
-    @create_share_event = false
     @post_to_buffer = false
 
     if Rails.env.production?
@@ -232,40 +232,59 @@ class CampaignsController < ApplicationController
       else
         picture_url = base_url + micropost.picture.url
       end
-      case page.provider
-      when "facebook"
-        resp = Micropost.share_to_facebook(micropost, page, message, picture_url, current_user)
-      when "linkedin"
-        resp = Micropost.share_to_linkedin(micropost, page, message, picture_url, current_user)
-      when "twitter"
-        resp = Micropost.share_to_twitter(micropost, page, message, picture_url, current_user)
-      when "buffer"
-        post_to_buffer = true
-        resp = Micropost.share_to_buffer(micropost, page, message, picture_url, current_user)
-      when "pinterest"
-        resp = Micropost.share_to_pinterest(micropost, page, message, picture_url, current_user)
+
+      #scheduled post?
+      if Date.parse(post_date) > Date.today
+        accounts.each do |page|
+          new_scheduled_post = ScheduledPost.new()
+          new_scheduled_post.user_id = current_user.id
+          new_scheduled_post.account_id = page.id
+          new_scheduled_post.micropost_id = micropost.id
+          new_scheduled_post.picture_url = picture_url
+          new_scheduled_post.caption = message
+          best_post_time = Account.best_post_time(page.platform, DateTime.parse(post_date) )
+          utf_offset_s = Time.zone_offset(Time.now.zone)
+          new_scheduled_post.post_time = (best_post_time.to_time - utf_offset_s).to_datetime
+          new_scheduled_post.save
+        end
       else
+        #not scheduled post
+        case page.provider
+        when "facebook"
+          resp = Micropost.share_to_facebook(nil, page, message, picture_url, current_user)
+        when "linkedin"
+          resp = Micropost.share_to_linkedin(nil, page, message, picture_url, current_user)
+        when "twitter"
+          resp = Micropost.share_to_twitter(nil, page, message, picture_url, current_user)
+        when "buffer"
+          post_to_buffer = true
+          resp = Micropost.share_to_buffer(nil, page, message, picture_url, current_user)
+        when "pinterest"
+          resp = Micropost.share_to_pinterest(nil, page, message, picture_url, current_user)
+        else
+        end
+
+        if resp == "success"
+          @success_string << "<span class='glyphicon glyphicon-ok'></span> #{page.name} - Success"
+          if micropost.shares
+            micropost.shares += 1
+          else 
+            micropost.shares = 1
+          end
+          micropost.save
+        else
+          @success_string << "<span class='glyphicon glyphicon-remove'></span> #{page.name} - Failed"
+        end
       end
 
-      if resp == "success"
-        @success_string << "<span class='glyphicon glyphicon-ok'></span> #{page.name} - Success"
-        @create_share_event = true
-        if micropost.shares
-          micropost.shares += 1
-        else 
-          micropost.shares = 1
-        end
-        micropost.save
-      else
-        @success_string << "<span class='glyphicon glyphicon-remove'></span> #{page.name} - Failed"
-      end
     end
 
-    if @create_share_event && current_user != campaign.user_id
-      #create event
-      @event = Event.new(user_id: current_user.id, passive_user_id: campaign.user.id, campaign_id: campaign.id, contribution: 'share')
-      @event.save!
+    if Date.parse(post_date) > Date.today
+      flash[:success] = "Your post schedule has been updated"
+      redirect_to scheduled_posts_path and return
+    end
 
+    if current_user != campaign.user_id
       #create notification
       @notification = Notification.new(:user_id => campaign.user_id, :message => "#{current_user.name} shared your campaign.", :category => "share", :destination_id => campaign.id, :obj => "campaign" )
       @notification.save!

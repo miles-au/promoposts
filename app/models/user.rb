@@ -15,7 +15,8 @@ class User < ApplicationRecord
   has_many :notifications, dependent: :destroy
   has_many :campaigns, dependent: :destroy
   has_many :tracks
-  has_many :overlays
+  has_many :overlays, dependent: :destroy
+  has_many :scheduled_posts, dependent: :destroy
   has_one :accolade, dependent: :destroy
   has_one :setting, dependent: :destroy
 

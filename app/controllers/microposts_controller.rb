@@ -98,6 +98,7 @@ class MicropostsController < ApplicationController
     micropost = Micropost.find(params[:id])
     overlay = Overlay.find(params[:overlay][:id]) rescue nil
     message = params['message']
+    post_date = params["post_date"] rescue Date.today
     accounts = current_user.accounts.where('id IN (?)', params[:pages])
     @success_string = []
     @create_share_event = false
@@ -118,21 +119,39 @@ class MicropostsController < ApplicationController
     else
       picture_url = root_url + micropost.picture.url
     end
+
+    #scheduled post?
+    if Date.parse(post_date) > Date.today
+      accounts.each do |page|
+        new_scheduled_post = ScheduledPost.new()
+        new_scheduled_post.user_id = current_user.id
+        new_scheduled_post.account_id = page.id
+        new_scheduled_post.micropost_id = micropost.id
+        new_scheduled_post.picture_url = picture_url
+        new_scheduled_post.caption = message
+        best_post_time = Account.best_post_time(page.platform, DateTime.parse(post_date) )
+        utf_offset_s = Time.zone_offset(Time.now.zone)
+        new_scheduled_post.post_time = (best_post_time.to_time - utf_offset_s).to_datetime
+        new_scheduled_post.save
+      end
+      flash[:success] = "Your post schedule has been updated"
+      redirect_to scheduled_posts_path and return
+    end
     
     accounts.each do |page|
       case page.provider
-      when "facebook"
-        resp = Micropost.share_to_facebook(micropost, page, message, picture_url, current_user)
-      when "linkedin"
-        resp = Micropost.share_to_linkedin(micropost, page, message, picture_url, current_user)
-      when "twitter"
-        resp = Micropost.share_to_twitter(micropost, page, message, picture_url, current_user)
-      when "buffer"
-        post_to_buffer = true
-        resp = Micropost.share_to_buffer(micropost, page, message, picture_url, current_user)
-      when "pinterest"
-        resp = Micropost.share_to_pinterest(micropost, page, message, picture_url, current_user)
-      else
+        when "facebook"
+          resp = Micropost.share_to_facebook(nil, page, message, picture_url, current_user)
+        when "linkedin"
+          resp = Micropost.share_to_linkedin(nil, page, message, picture_url, current_user)
+        when "twitter"
+          resp = Micropost.share_to_twitter(nil, page, message, picture_url, current_user)
+        when "buffer"
+          post_to_buffer = true
+          resp = Micropost.share_to_buffer(nil, page, message, picture_url, current_user)
+        when "pinterest"
+          resp = Micropost.share_to_pinterest(nil, page, message, picture_url, current_user)
+        else
       end
 
       if resp == "success"
@@ -143,15 +162,7 @@ class MicropostsController < ApplicationController
       end
     end
 
-    if @create_share_event && current_user != micropost.user_id
-      #create event
-      @event = Event.new(user_id: current_user.id, passive_user_id: micropost.user.id, micropost_id: micropost.id, contribution: 'share')
-      @event.save!
-
-      #create notification
-      @notification = Notification.new(:user_id => micropost.user_id, :message => "#{current_user.name} shared your post.", :category => "share", :destination_id => micropost.id, :obj => "micropost" )
-      @notification.save!
-
+    if current_user != micropost.user_id
       if micropost.shares
         micropost.shares += 1
       else 
@@ -168,15 +179,6 @@ class MicropostsController < ApplicationController
     end
     flash[:success] = @success_string.join("<br/>").html_safe
 
-    redirect_to micropost
-  end
-
-  def mark_top_comment
-    micropost = Micropost.find(params['micropost_id'])
-    micropost.top_comment = params['comment_id']
-    micropost.save
-
-    flash[:success] = "Thank you for marking a top comment!"
     redirect_to micropost
   end
 
