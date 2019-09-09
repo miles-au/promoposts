@@ -1,7 +1,6 @@
 class User < ApplicationRecord
   has_many :microposts, dependent: :destroy
   has_many :accounts, dependent: :destroy
-  has_many :events, dependent: :destroy
   has_many :comments
   has_many :votes, dependent: :destroy
   has_many :active_relationships, class_name:  "Relationship",
@@ -12,11 +11,13 @@ class User < ApplicationRecord
                                    dependent:   :destroy
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
-  has_many :notifications, dependent: :destroy
   has_many :campaigns, dependent: :destroy
   has_many :tracks
   has_many :overlays, dependent: :destroy
   has_many :scheduled_posts, dependent: :destroy
+  has_many :followed_topics, class_name:  "TopicRelationship",
+                                   foreign_key: "user_id"
+  has_many :topics, through: :followed_topics
   has_one :accolade, dependent: :destroy
   has_one :setting, dependent: :destroy
 
@@ -27,9 +28,6 @@ class User < ApplicationRecord
   after_create :create_accolades
   after_create :create_setting
   after_create :follow_promo_posts
-
-  before_destroy :delete_notifications
-
 
   validates :name,  presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -43,11 +41,6 @@ class User < ApplicationRecord
   mount_uploader :picture, PictureUploader
   mount_uploader :cover_photo, PictureUploader
   validate  :picture_size
-
-  include PgSearch
-  pg_search_scope :search, against: [:name, :company]
-
-  require 'rubygems'
 
   # Returns the hash digest of the given string.
   def User.digest(string)
@@ -139,13 +132,6 @@ class User < ApplicationRecord
   # Returns true if a password reset has expired.
   def password_reset_expired?
     reset_sent_at < 2.hours.ago
-  end
-
-  # Returns a user's feed.
-  def feed
-    following_ids = Relationship.where(:follower_id => id).pluck(:followed_id)
-    relevant = Event.where("events.user_id IN (?)", following_ids).or(Event.where(:user_id => id))
-    #relevant.joins(:micropost).where("campaign_id is null OR category = 'campaign'")
   end
 
   # Follows a user.
@@ -431,6 +417,30 @@ class User < ApplicationRecord
     return accounts
   end
 
+  # Follows a topic.
+  def add_topic(topic)
+    topics << topic
+  end
+
+  # Unfollows a topic.
+  def delete_topic(topic)
+    topics.delete(topic)
+  end
+
+  def current_offset
+    tz = TZInfo::Timezone.get(timezone)
+    current = tz.current_period
+    # current.utc_offset gives utc offset without including dst
+    # current.std_offset gives offset from standard time during dst
+    return current.utc_total_offset
+  end
+
+  # def scheduled_and_subscribed_posts
+  #   topics = self.topics.pluck(:id)
+  #   posts = ScheduledPost.where(topic_id: topics).or(ScheduledPost.where(user_id: self.id))
+  #   return posts
+  # end
+
   private
 
     # Converts email to all lower-case.
@@ -486,10 +496,6 @@ class User < ApplicationRecord
     def create_setting
       settings = Setting.new(user_id: self.id)
       settings.save!
-    end
-
-    def delete_notifications
-      Notification.where("notifications.category = 'follow' AND notifications.destination_id = ?", self.id).destroy_all
     end
 
     def follow_promo_posts

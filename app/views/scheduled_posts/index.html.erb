@@ -1,6 +1,10 @@
 <div class="container">
 
-  <h2>Scheduled Posts</h2>
+	<% if current_user.admin %>
+		<h2>Global Post Schedule</h2>
+	<% else %>
+  	<h2>Scheduled Posts</h2>
+  <% end %>
 
   <div id="calendar_container">
     <%= render partial: 'week', locals: { starting_time: @time } %>

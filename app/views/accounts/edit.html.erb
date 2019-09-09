@@ -1,19 +1,14 @@
-<% provide(:title, "Social Acccounts") %>
+<% provide(:title, "Social Media Settings") %>
 
-<div class="row dashboard">
-  <div class="col col-md-3 col-sm-12">
-    <%= render partial: "shared/action_button", locals: { text: "profile info", glyphicon: "user", goto: edit_user_path(current_user) } %>
-  </div>
-  <div class="col col-md-3 col-sm-12">
-    <%= render partial: "shared/action_button", locals: { text: "overlays", glyphicon: "modal-window", goto: overlays_path } %>
-  </div>
-  <div class="col col-md-3 col-sm-12">
-    <%= render partial: "shared/action_button", locals: { text: "social media accounts", glyphicon: "comment", goto: accounts_edit_path } %>
-  </div>
-</div>
+<%= render partial: '/shared/settings_dashboard' %>
 
 <div class="container">
-  <h2 style="margin-top: 0px;">your connected social networks:</h2>
+
+  <div id="zone_update_form">
+    <%= render '/users/zone_update_form' %>
+  </div>
+
+  <h2>your connected social networks:</h2>
 
   <p>To get the most out of Promo Posts, connect a Buffer account. <a href="https://buffer.com/" target="_blank">What the heck is Buffer?</a></p>
 
@@ -58,4 +53,11 @@
       <% end %>
 
   <% end %>
+
+  <h2>your subscribed topics:</h2>
+  <p>pick <%= Setting.topics_limit %> topics</p>
+  <div class="topics_layout" id="topics_container">
+    <%= render "/shared/topics_layout" %>
+  </div>
+
 </div>

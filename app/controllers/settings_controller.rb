@@ -14,6 +14,22 @@ class SettingsController < ApplicationController
   #   end
   # end
 
+  def update_topics
+    topic = Topic.find(params[:topic])
+
+    if current_user.topics.include?(topic) && current_user.topics.count <= Setting.topics_limit
+      #unsubscribe from this topic
+      current_user.delete_topic(topic)
+    else
+      current_user.add_topic(topic)
+    end
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
   private
 
   	def settings_params

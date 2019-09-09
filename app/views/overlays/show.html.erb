@@ -1,14 +1,4 @@
-<div class="row dashboard">
-  <div class="col col-md-3 col-sm-12">
-    <%= render partial: "shared/action_button", locals: { text: "profile info", glyphicon: "user", goto: edit_user_path(current_user) } %>
-  </div>
-  <div class="col col-md-3 col-sm-12">
-    <%= render partial: "shared/action_button", locals: { text: "overlays", glyphicon: "modal-window", goto: overlays_path } %>
-  </div>
-  <div class="col col-md-3 col-sm-12">
-    <%= render partial: "shared/action_button", locals: { text: "social media accounts", glyphicon: "comment", goto: accounts_edit_path } %>
-  </div>
-</div>
+<%= render partial: '/shared/settings_dashboard' %>
 
 <div class="container">
   <p class="btn-submit" id="add_overlay_btn">Add overlay</p>

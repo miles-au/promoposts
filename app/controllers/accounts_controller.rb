@@ -5,6 +5,10 @@ class AccountsController < ApplicationController
   	#list all available accounts
   	@account = Account.new
   	@user = current_user
+    # if !current_user.timezone
+    #   current_user.timezone = Time.zone_offset(Time.now.zone)
+    #   current_user.save
+    # end
 
   	@providers = Account.provider_array
   	@data = {}

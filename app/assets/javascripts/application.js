@@ -13,6 +13,7 @@
 //= require bindWithDelay
 //= require popper
 //= require bootstrap
+//= require jsTimezoneDetect
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
@@ -22,7 +23,6 @@ $(document).ready(function () {
 	if (window.location.href.indexOf('#_=_') > 0) {
 		window.history.replaceState('', document.title, window.location.pathname);
 	}
-	 
 });
 
 function show_tooltips(){
@@ -37,3 +37,15 @@ function escapeHtml(unsafe) {
          .replace(/"/g, "&quot;")
          .replace(/'/g, "&#039;");
 }
+
+var profileWidth = $("#profile_pic").width();
+$("#profile_pic").height(profileWidth);
+
+//infinite scroll
+$(window).on( 'scroll', function(){
+ more_posts_url = $('.pagination .next_page a').attr('href');
+ if(more_posts_url && $(window).scrollTop() > $(document).height() - $(window).height() - 60){
+    $('.pagination').html('<img src="/assets/loading.gif" alt="Loading..." title="Loading..." width="50px" style="display: inline-block;"/><h3 style="display: inline-block; margin-left: 20px;">loading</h3>');
+    $.getScript(more_posts_url);
+  }
+});

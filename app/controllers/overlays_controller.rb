@@ -33,8 +33,8 @@ class OverlaysController < ApplicationController
 	def destroy
 		@overlay = Overlay.find(params[:id])
 		@overlay.destroy
-	    flash[:success] = "Overlay deleted"
-	    redirect_to overlays_path
+    flash[:success] = "Overlay deleted"
+    redirect_to overlays_path
 	end
 
 	def default_overlay
@@ -53,4 +53,5 @@ class OverlaysController < ApplicationController
   	def overlay_params
       params.require(:overlay).permit(:picture, :category, :name, :location)
     end
+    
 end

@@ -12,10 +12,9 @@ class Micropost < ActiveRecord::Base
   validate :content_exists
   validate :valid_url
   validate :digital_asset_has_picture
-  has_many :events, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :scheduled_posts
   before_save
-  after_create :create_event
   after_create :set_stats_to_zero
 
   #attr_accessor :external_url
@@ -264,15 +263,20 @@ class Micropost < ActiveRecord::Base
   end
 
   def self.post_schedule
-    #get posts from a minute ago to next 30 minutes
-    scheduled_posts = ScheduledPost.where("post_time >= ? AND post_time < ?", (DateTime.now.in_time_zone("UTC") - 1.minute), (DateTime.now.in_time_zone("UTC") + 30.minutes))
+    #get posts from a minute ago to next 10 minutes
+    scheduled_posts = ScheduledPost.where("post_time >= ? AND post_time < ?", (DateTime.now.in_time_zone("UTC") - 1.minute), (DateTime.now.in_time_zone("UTC") + 10.minutes))
     scheduled_posts.each do |scheduled_post|
-      post_scheduled_post(scheduled_post)
+      if scheduled_post.status != "posted"
+        post_scheduled_post(scheduled_post)
+      end
     end
   end
 
   def self.post_scheduled_post(scheduled_post)
+    #check to see if this post has a topic. If it has a topic, it should be posted to all accounts who's users are subscribed to that topic
+
     page = scheduled_post.account
+    
     puts "Picture URL: #{scheduled_post.picture_url}"
     case page.provider
       when "facebook"
@@ -388,11 +392,6 @@ class Micropost < ActiveRecord::Base
           end
         end
       end
-    end
-
-    def create_event
-      event = Event.new(user_id: user_id, micropost_id: id, contribution: 'create')
-      event.save
     end
 
     def set_stats_to_zero

@@ -1,0 +1,1 @@
+<%= select_tag "timezone", options_for_select( ScheduledPost.timezone_select_arr , current_user.timezone || "Europe/London" ), style: "display: inline-block; width: 500px; height: 40px;" %>

@@ -12,11 +12,7 @@
   <%= f.text_field :name, maxlength: 50 %>
   
   <%= f.label :email %>
-  <% if @user.verify_email %>
-    <%= f.email_field :email %>
-  <% else %>
-    <%= f.email_field :email, value: '' %>
-  <% end %>
+  <%= f.email_field :email %>
 
   <%= f.label :password %>
   <%= f.password_field :password %>
@@ -49,6 +45,7 @@
       <%= f.text_field :slug, readonly: true, id: "real-slug", style: 'display: inline-block; width: auto;' %>
     </div>
   <% else %>
+    <%= f.hidden_field :timezone, :value => "", id: "user_time_zone" %>
     <%= f.hidden_field :slug, :value => "" %>
   <% end %>
   <%= f.submit yield(:button_text), class: "pop-button" %>
@@ -66,4 +63,6 @@
       $("#real-slug").val(result);
     })
   <% end %>
+
+  document.getElementById('user_time_zone').value = jstz.determine().name();
 </script>

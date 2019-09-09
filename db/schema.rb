@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_06_102020) do
+ActiveRecord::Schema.define(version: 2019_09_09_001155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -166,6 +166,8 @@ ActiveRecord::Schema.define(version: 2019_09_06_102020) do
     t.datetime "post_time"
     t.integer "micropost_id"
     t.string "status", default: "waiting"
+    t.integer "topic_id"
+    t.string "platform"
   end
 
   create_table "settings", force: :cascade do |t|
@@ -181,6 +183,19 @@ ActiveRecord::Schema.define(version: 2019_09_06_102020) do
     t.string "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "topic_relationships", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "topic_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["topic_id"], name: "index_topic_relationships_on_topic_id"
+    t.index ["user_id"], name: "index_topic_relationships_on_user_id"
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.string "name"
   end
 
   create_table "tracks", force: :cascade do |t|
@@ -222,6 +237,7 @@ ActiveRecord::Schema.define(version: 2019_09_06_102020) do
     t.string "twitter_uid"
     t.string "pinterest_oauth_token"
     t.string "pinterest_uid"
+    t.string "timezone"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

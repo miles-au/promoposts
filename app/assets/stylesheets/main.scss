@@ -504,6 +504,35 @@ header{
   background-color: $blue6;
 }
 
+/* Topics */
+.topics_layout{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-rows: 1fr;
+  grid-gap: 10px;
+  a, div{
+    background-color: $blue1;
+    height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    p{
+      color: $grey5;
+    }
+  }
+  .picked{
+    background-color: $blue4;
+    p{
+      color: $blue1;
+    }
+  }
+  .maxed-out{
+    background-color: $grey3;
+    color: $grey5;
+  }
+}
+
 /* FOOTER */
 
 footer{
@@ -546,6 +575,7 @@ footer{
 
 @media (max-width: 768px){
   footer{
+    margin-top: 20px;
     position: static;
   }
 }

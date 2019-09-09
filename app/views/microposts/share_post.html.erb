@@ -53,6 +53,18 @@
 		</div>
 	<% end %>
 
+	<% if current_user.admin %>
+		<div style="max-width: 500px; margin: 5px auto;">
+			<h3>Share as a global post</h3>
+			<%= form_tag( global_post_path( micropost_id: @micropost.id), method: :post) do %>
+				<%= select_tag "topic_id", options_for_select(Topic.all.pluck(:name, :id)) %>
+				<%= date_field("", "post_time", value: (Time.now + 1.day).strftime("%Y-%m-%d"), min: (Time.now + 1.day).strftime("%Y-%m-%d") ) %>
+				<%= select_tag "platform", options_for_select(Account.platform_array) %>
+				<%= submit_tag "create global post", class: "btn-submit" %>
+			<% end %>
+		</div>
+	<% end %>
+
 </div>
 
 <script>

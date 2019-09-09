@@ -1,19 +1,30 @@
-<% @user_posts.where("post_time > ?", day).where("post_time < ?", (day + 1.day)).each do |post| %>
-	<% post_account = post.account %>
-	<div class="listed_post">
+<% @scheduled_posts.where("post_time >= ? AND post_time < ?", day, (day + 1.day)).each do |post| %>
+	<div class="listed_post">			
 		<div>
-			<img src="<%= post.picture_url %>">
-			<span class="glyphicon glyphicon-arrow-right" ></span>
 			<% if post.status == "waiting" %>
-				<span class="glyphicon glyphicon-hourglass"></span>
+				<span class="glyphicon glyphicon-hourglass" data-toggle="tooltip" data-placement="top" data-original-title="Waiting" ></span>
 			<% elsif post.status == "posted" %>
-				<span class="glyphicon glyphicon-ok"></span>
+				<span class="glyphicon glyphicon-ok"  data-toggle="tooltip" data-placement="top" data-original-title="Post Successful"></span>
 			<% else %>
-				<span class="glyphicon glyphicon-remove"></span>
+				<span class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="top" data-original-title="Post Failed"></span>
 			<% end %>
-			<img src="<%= post_account.picture %>">
-			<span><%= post_account.name %></span>
+
+			<% if post.topic %>
+				<span>-<%= post.topic.name %>-</span>
+			<% end %>
+
+			<% post_account = post.account %>
+			<img src="<%= post.picture_url %>" />
+
+			<span class="glyphicon glyphicon-arrow-right" ></span>
+
+			<img class="<%= post_account.platform %>-bg" style="padding: 3px;" src="/assets/<%= post_account.platform %>.svg" />
+			:
+			<img src="<%= post_account.picture %>" data-toggle="tooltip" data-placement="top" data-original-title="<%= post_account.name %>"  />
+
+			<% if current_user.admin %><p>user: <%= post.user.name %></p><% end %>
 		</div>
+
 		<div>
 			<%=link_to post, method: :delete do %>
 				<span class="glyphicon glyphicon-trash" ></span>
@@ -21,3 +32,7 @@
 		</div>
 	</div>
 <% end %>
+
+<script>
+	show_tooltips();
+</script>

@@ -1,0 +1,10 @@
+<%= form_tag(update_timezone_path(current_user.id), method: :post, remote: true) do %>
+	<div>
+		<h4 style="margin-top: 0px; display: inline-block;">Timezone: </h4>
+	  <%= render partial: "/shared/timezone_select" %>
+	  <% if !current_user.timezone %>
+	  	<p class="mini-error">You don't have a timezone set!</p>
+	  <% end %>
+	</div>
+  <%= submit_tag 'update timezone', class: 'btn-submit' %>
+<% end %>

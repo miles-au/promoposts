@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source "https://rails-assets.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.5.1'
@@ -45,6 +46,9 @@ gem 'zip-zip'
 
 # using heroku scheduler. Whenever doesn't work on heroku
 #gem 'whenever'
+
+gem 'tzinfo'
+gem "rails-assets-jsTimezoneDetect"
 
 # Use PG as DB
 gem 'pg', '0.18.4'

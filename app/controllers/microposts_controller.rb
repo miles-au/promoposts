@@ -60,7 +60,6 @@ class MicropostsController < ApplicationController
   end
 
   def show
-    @event = Event.new
     @micropost = Micropost.find(params[:id])
     if @micropost.campaign_id
       @campaign = Campaign.find(@micropost.campaign_id)
@@ -79,7 +78,6 @@ class MicropostsController < ApplicationController
   end
 
   def share_post
-    @event = Event.new
     @micropost = Micropost.find(params[:id])
     @check_accounts = current_user.check_accounts
 
@@ -101,7 +99,6 @@ class MicropostsController < ApplicationController
     post_date = params["post_date"] rescue Date.today
     accounts = current_user.accounts.where('id IN (?)', params[:pages])
     @success_string = []
-    @create_share_event = false
     post_to_buffer = false
 
     if overlay.present?
@@ -130,8 +127,7 @@ class MicropostsController < ApplicationController
         new_scheduled_post.picture_url = picture_url
         new_scheduled_post.caption = message
         best_post_time = Account.best_post_time(page.platform, DateTime.parse(post_date) )
-        utf_offset_s = Time.zone_offset(Time.now.zone)
-        new_scheduled_post.post_time = (best_post_time.to_time - utf_offset_s).to_datetime
+        new_scheduled_post.post_time = (best_post_time.to_time - current_user.current_offset).to_datetime
         new_scheduled_post.save
       end
       flash[:success] = "Your post schedule has been updated"
@@ -156,7 +152,6 @@ class MicropostsController < ApplicationController
 
       if resp == "success"
         @success_string << "<span class='glyphicon glyphicon-ok'></span> #{page.name} - Success"
-        @create_share_event = true
       else
         @success_string << "<span class='glyphicon glyphicon-remove'></span> #{page.name} - Failed"
       end

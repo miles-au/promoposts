@@ -1,6 +1,5 @@
 class Campaign < ApplicationRecord
   has_many :microposts, dependent: :destroy
-  has_many :events
   belongs_to :user
   validates :name, presence: true, length: { maximum: 75 }
   validates :content, presence: true, length: { maximum: 400 }

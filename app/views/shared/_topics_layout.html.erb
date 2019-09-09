@@ -1,0 +1,9 @@
+<% Topic.all.each do |topic| %>
+  <% if current_user.topics.include?(topic) %>
+    <%= link_to update_topics_path(topic: topic), remote: true, class: "picked" do %><p><%= topic.name %></p><% end %>
+  <% elsif current_user.topics.count < 3 %>
+    <%= link_to update_topics_path(topic: topic), remote: true do %><p><%= topic.name %></p><% end %>
+  <% else %>
+    <div class="maxed-out"><p><%= topic.name %></p></div>
+  <% end %>
+<% end %>

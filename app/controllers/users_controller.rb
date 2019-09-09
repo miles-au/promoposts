@@ -153,11 +153,23 @@ class UsersController < ApplicationController
     redirect_to root_url
   end
 
+  def update_timezone
+    user = User.find(params[:id])
+    user.timezone = params[:timezone]
+    if user.save
+      flash[:success] = "Updated timezone."
+    else
+      flash[:danger] = "Unable to update timezone."
+    end
+
+    redirect_to accounts_edit_path
+  end
+
   private
 
     def user_params
       params.require(:user).permit(:name, :company, :email, :password,
-                                   :password_confirmation, :category, :picture, :cover_photo, :verify_email, :slug)
+                                   :password_confirmation, :category, :picture, :cover_photo, :verify_email, :slug, :timezone)
     end
 
     # Before filters

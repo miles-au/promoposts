@@ -47,6 +47,17 @@
 		</div>
 	<% end %>
 
+	<% if current_user.admin %>
+		<div style="max-width: 500px; margin: 5px auto;">
+			<h3>Share as a global campaign</h3>
+			<%= form_tag( global_campaign_path( campaign_id: @campaign.id), method: :post) do %>
+				<%= select_tag "topic_id", options_for_select(Topic.all.pluck(:name, :id)) %>
+				<%= date_field("", "post_time", value: (Time.now + 1.day).strftime("%Y-%m-%d"), min: (Time.now + 1.day).strftime("%Y-%m-%d") ) %>
+				<%= submit_tag "create global post", class: "btn-submit" %>
+			<% end %>
+		</div>
+	<% end %>
+
 </div>
 
 <script>

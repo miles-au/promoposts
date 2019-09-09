@@ -1,5 +1,5 @@
 <% date = starting_time.to_date.beginning_of_week(:sunday) %>
-<% delta = date < starting_time ? 0 : 7 %>
+<% delta = date <= starting_time ? 0 : 7 %>
 <% week_start = date + delta %>
 
 <div>

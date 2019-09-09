@@ -33,9 +33,6 @@ Rails.application.routes.draw do
 
   get '/microposts/new'
 
-  # post '/webhooks_facebook' => 'webhooks#facebook', as: :facebook_webhooks
-  # get '/webhooks_facebook' => 'webhooks#challenge', as: :challenge_webhooks
-
   get '/accounts/edit'
   post '/accounts/edit' => 'accounts#update'
 
@@ -76,6 +73,12 @@ Rails.application.routes.draw do
   get '/prev_week', to: "scheduled_posts#prev_week"
   get '/next_week', to: "scheduled_posts#next_week"
 
+  get '/update_topics', to: "settings#update_topics", as: "update_topics"
+  post '/global_post', to: "scheduled_posts#create_global_post"
+  post '/global_campaign', to: "scheduled_posts#create_global_campaign"
+
+  post '/users/:id/update_timezone', to: "users#update_timezone", as: "update_timezone"
+
   get '/how_does_it_work', to: "static_pages#how_does_it_work"
 
   resources :users do
@@ -88,7 +91,6 @@ Rails.application.routes.draw do
   resources :password_resets,     only: [:new, :create, :edit, :update]
   resources :microposts,          only: [:create, :destroy, :show, :update]
   resources :relationships,       only: [:create, :destroy]
-  #resources :events,              only: [:destroy]
   resources :tickets,             only: [:create, :destroy, :show]
   resources :comments
   resources :campaigns

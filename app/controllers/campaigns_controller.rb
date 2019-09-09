@@ -235,18 +235,15 @@ class CampaignsController < ApplicationController
 
       #scheduled post?
       if Date.parse(post_date) > Date.today
-        accounts.each do |page|
-          new_scheduled_post = ScheduledPost.new()
-          new_scheduled_post.user_id = current_user.id
-          new_scheduled_post.account_id = page.id
-          new_scheduled_post.micropost_id = micropost.id
-          new_scheduled_post.picture_url = picture_url
-          new_scheduled_post.caption = message
-          best_post_time = Account.best_post_time(page.platform, DateTime.parse(post_date) )
-          utf_offset_s = Time.zone_offset(Time.now.zone)
-          new_scheduled_post.post_time = (best_post_time.to_time - utf_offset_s).to_datetime
-          new_scheduled_post.save
-        end
+        new_scheduled_post = ScheduledPost.new()
+        new_scheduled_post.user_id = current_user.id
+        new_scheduled_post.account_id = page.id
+        new_scheduled_post.micropost_id = micropost.id
+        new_scheduled_post.picture_url = picture_url
+        new_scheduled_post.caption = message
+        best_post_time = Account.best_post_time(page.platform, DateTime.parse(post_date) )
+        new_scheduled_post.post_time = (best_post_time.to_time - current_user.current_offset).to_datetime
+        new_scheduled_post.save
       else
         #not scheduled post
         case page.provider

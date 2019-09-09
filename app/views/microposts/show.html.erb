@@ -35,7 +35,7 @@
 		    	<% if Rails.env.production? %>
 	      		<% image = MiniMagick::Image.open(@micropost.picture.url) %>
 	      	<% else %> 
-	      		<% pic_url = "#{request.protocol}#{request.subdomain}.#{request.domain}#{@micropost.picture.url}" %>
+	      		<% pic_url = @micropost.picture.path %>
 	      		<% image = MiniMagick::Image.open(pic_url) %>
 	      	<% end %>
 	  			<p><%= @micropost.category.titlecase.tr("_", " ") %><br><%= image[:width] %> x <%= image[:height] %> px</p>
