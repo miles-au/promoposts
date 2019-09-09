@@ -9,7 +9,7 @@ class ScheduledPostsController < ApplicationController
     @time = Time.now
     @topics = current_user.topics
     if current_user.admin
-      @scheduled_posts = ScheduledPost.all.where.not(topic_id: nil)
+      @scheduled_posts = ScheduledPost.all.where.not(topic_id: nil).or(ScheduledPost.where(user_id: current_user.id))
     else
       @scheduled_posts = current_user.scheduled_posts
     end

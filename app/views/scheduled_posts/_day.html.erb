@@ -22,7 +22,13 @@
 			:
 			<img src="<%= post_account.picture %>" data-toggle="tooltip" data-placement="top" data-original-title="<%= post_account.name %>"  />
 
-			<% if current_user.admin %><p>user: <%= post.user.name %></p><% end %>
+			<% if current_user.admin %>
+				<p>user: <%= post.user.name %></p>
+				<% if !post.topic %>
+					<p class="mini-error">This isn't global</p>
+				<% end %>
+			<% end %>
+
 		</div>
 
 		<div>
