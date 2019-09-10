@@ -253,9 +253,9 @@ class Micropost < ActiveRecord::Base
     #save picture
     pipeline_directory = "uploads/overlayed"
     local_directory = "public/#{pipeline_directory}"
-    Dir.mkdir local_directory unless File.exists?(local_directory)
+    Dir.mkdir_p local_directory unless File.exists?(local_directory)
     file_name = "#{delete_by_date}_#{Time.now.to_i}_#{rand(1000..9999)}.jpg"
-    path = "#{local_directory}#{file_name}"
+    path = "#{local_directory}/#{file_name}"
     result.write(path)
     final_url = "#{pipeline_directory}/#{file_name}"
     
