@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_09_001155) do
+ActiveRecord::Schema.define(version: 2019_09_10_194631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -163,11 +163,11 @@ ActiveRecord::Schema.define(version: 2019_09_09_001155) do
     t.integer "account_id"
     t.string "picture_url"
     t.string "caption"
-    t.datetime "post_time"
     t.integer "micropost_id"
     t.string "status", default: "waiting"
     t.integer "topic_id"
     t.string "platform"
+    t.datetime "post_time"
   end
 
   create_table "settings", force: :cascade do |t|
