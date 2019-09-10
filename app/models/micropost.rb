@@ -252,11 +252,7 @@ class Micropost < ActiveRecord::Base
 
     #save picture
     pipeline_directory = "uploads/overlayed/"
-    if Rails.env.production?
-      local_directory = pipeline_directory
-    else
-      local_directory = "public/#{pipeline_directory}"
-    end
+    local_directory = "public/#{pipeline_directory}"
     Dir.mkdir local_directory unless File.exists?(local_directory)
     file_name = "#{delete_by_date}_#{Time.now.to_i}_#{rand(1000..9999)}.jpg"
     path = "#{local_directory}#{file_name}"
