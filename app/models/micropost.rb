@@ -317,18 +317,23 @@ class Micropost < ActiveRecord::Base
     end
     if resp == "success"
       if scheduled_post.user != micropost.user_id
-        if micropost.shares
-          micropost.shares += 1
-        else 
-          micropost.shares = 1
+        micropost = scheduled_post.micropost rescue nil
+        if micropost
+          if micropost.shares
+            micropost.shares += 1
+          else 
+            micropost.shares = 1
+          end
+          micropost.save
+          track = Track.new(user_id: current_user.id, category: micropost.category, asset_num: micropost.id, act: "share")
+          track.save
         end
-        micropost.save
-        track = Track.new(user_id: current_user.id, category: micropost.category, asset_num: micropost.id, act: "share")
-        track.save
       end
       scheduled_post.status = "posted"
+      puts "POSTED"
     else
       scheduled_post.status = "failed";
+      puts "FAILED"
     end
     scheduled_post.save
     puts "response: #{resp}"
