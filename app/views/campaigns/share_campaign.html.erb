@@ -162,61 +162,6 @@
 
 	}
 
-
-	// $('#useOriginalText').click(function() {
-	//   $( "#inputText" ).val("<%= escape_javascript(raw(@campaign.content)) %>");
-	//   check_fields();
-	// });
-
-	// $("#inputText").on("change keyup paste", function(){
-	// 	check_fields();
-	// })
-
-	// function check_fields(){
-	// 	text = document.getElementById("inputText");
-	// 	var str_length = text.value.length;
-
-	// 	var checkboxes = document.getElementsByName('pages[]');
-	// 	var pageChecked = false;
-
-	// 	for(var i = 0; i < checkboxes.length; i++) {
-	// 	    if(checkboxes[i].type.toLowerCase() == 'checkbox') {
-	// 	        if(checkboxes[i].checked == true){
-	// 	        	pageChecked = true;
-	// 	        }
-	// 	    }
-	// 	}
-
-	// 	if(str_length > 0 && pageChecked == true){
-	// 		all_fields();
-	// 	}else{
-	// 		missing_fields(str_length, pageChecked);
-	// 	}
-	// }
-
-	// function missing_fields(str_length, pageChecked){
-	// 	if(str_length > 0){
-	// 		$('#missing-text').addClass('hidden');
-	// 	}else{
-	// 		$('#missing-text').removeClass('hidden');
-	// 	}
-
-	// 	if(pageChecked){
-	// 		$('#missing-pages').addClass('hidden');
-	// 	}else{
-	// 		$('#missing-pages').removeClass('hidden');
-	// 	}
-
-	// 	$('#share-button').addClass('btn-disable');
-	// 	$('#share-button').prop('disabled', true);
-	// }
-	// function all_fields(){
-	// 	$('#missing-text').addClass('hidden');
-	// 	$('#missing-pages').addClass('hidden');
-	// 	$('#share-button').removeClass('btn-disable');
-	// 	$('#share-button').prop('disabled', false);
-	// }
-
 	//Overlay + Carousel
 	var overlay_arr = <%= raw @overlays.to_json %>;
 	var platform_types = <%= raw Account.platform_array.map(&:downcase).to_json %>;
@@ -501,6 +446,7 @@
 		};
 
 		overlay_obj_arr.push(overlay);
+		updateOverlayDimensions(overlay);
 	}
 
 	function load_bg_image(item, index){

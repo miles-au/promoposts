@@ -93,18 +93,18 @@ class CampaignsController < ApplicationController
   end
 
   def download_assets
-    #delete current zip file if it exists
-    File.delete("#{Rails.root}/public/#{current_user.id}.zip") if File.exist?("#{Rails.root}/public/#{current_user.id}.zip")
-    #delete current user's downloads folder if it exists
-    FileUtils.remove_dir("#{Rails.root}/public/downloads/#{current_user.id}") if Dir.exist?("#{Rails.root}/public/downloads/#{current_user.id}/")
-    #recreate the user's download folder
-    FileUtils.mkdir_p("#{Rails.root}/public/downloads/#{current_user.id}")
-
     campaign = Campaign.find(params[:id])
-    #destination zip file
-    zipfile_name = "#{Rails.root}/public/#{current_user.id}.zip"
     #working folder
-    folder_path = "#{Rails.root}/public/downloads/#{current_user.id}/"
+    folder_path = "#{Rails.root}/public/campaign_zips/#{current_user.id}"
+    #destination zip file
+    zipfile_path = "#{folder_path}/#{current_user.id}.zip"
+
+    #delete current zip file if it exists
+    File.delete(zipfile_path) if File.exist?(zipfile_path)
+    #delete current user's downloads folder if it exists
+    FileUtils.remove_dir(folder_path) if Dir.exist?(folder_path)
+    #recreate the user's download folder
+    FileUtils.mkdir_p(folder_path)
 
     if Rails.env.production?
       campaign.microposts.each do |post|
@@ -115,12 +115,11 @@ class CampaignsController < ApplicationController
       end
     end
 
-    Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
+    Zip::File.open(zipfile_path, Zip::File::CREATE) do |zipfile|
       files_added = []
       campaign.microposts.each do |asset|
-        overlay = Overlay.find(params[:microposts][:"#{asset.id}"][:overlay][:id]) rescue ""
-        puts "OVERLAY ID: #{overlay.id}" rescue "NO OVERLAY"
-        puts "ASSET URL: #{asset.picture.url}"
+        overlay = Overlay.find(campaign_microposts_params[:"#{asset.id}"][:overlay][:id]) rescue ""
+        # puts "OVERLAY ID: #{overlay.id}" rescue "NO OVERLAY"
 
         #track downloads
         if current_user.id != asset.user_id
@@ -148,34 +147,35 @@ class CampaignsController < ApplicationController
 
         if overlay.present?
           picture_url = Micropost.create_overlay_picture(
-          asset.picture.url,
-          overlay,
-          params[:microposts][:"#{asset.id}"][:overlay][:left],
-          params[:microposts][:"#{asset.id}"][:overlay][:top],
-          params[:microposts][:"#{asset.id}"][:overlay][:width],
-          params[:microposts][:"#{asset.id}"][:overlay][:height])
-          file_name = picture_url.split('/').last
-          zipfile.add(new_file_name, picture_url)
-        elsif Rails.env.production?
-          file_name = asset.picture.url.split('/').last
-          zipfile.add(new_file_name, File.join(folder_path,file_name))
+            asset.picture.url,
+            overlay,
+            campaign_microposts_params[:"#{asset.id}"][:overlay][:left],
+            campaign_microposts_params[:"#{asset.id}"][:overlay][:top],
+            campaign_microposts_params[:"#{asset.id}"][:overlay][:width],
+            campaign_microposts_params[:"#{asset.id}"][:overlay][:height],
+            Date.tomorrow)
+          if Rails.env.development?
+            picture_url = "public/#{picture_url}"
+          end
         else
-          zipfile.add(new_file_name, asset.picture.path)
+          if Rails.env.production?
+            picture_url = File.join(folder_path,file_name)
+          else
+            picture_url = asset.picture.path
+          end
         end
+        zipfile.add(new_file_name, picture_url)
         files_added << new_file_name
 
       end
     end
 
-    send_data( open("#{Rails.root}/public/#{current_user.id}.zip").read.force_encoding('BINARY'), :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
+    send_data( open(zipfile_path).read.force_encoding('BINARY'), :type => 'application/zip', :filename => "campaign_#{campaign.name}.zip", disposition: 'attachment')
 
     track = Track.new(user_id: current_user.id, category: "campaign", asset_num: campaign.id, act: "download")
     track.save
 
-    if Rails.env.production?
-      File.delete("#{Rails.root}/public/#{current_user.id}.zip") if File.exist?("#{Rails.root}/public/#{current_user.id}.zip")
-      FileUtils.rm_rf("#{Rails.root}/public/downloads/#{current_user.id}") if File.exist?("#{Rails.root}/public/downloads/#{current_user.id}")
-    end
+    FileUtils.rm_rf(folder_path) if File.exist?(folder_path)
 
   end
 
@@ -209,11 +209,10 @@ class CampaignsController < ApplicationController
     post_date = params["post_date"] rescue Date.today
     @success_string = []
     @post_to_buffer = false
-
-    if Rails.env.production?
-      base_url = ""
+    if Date.parse(post_date) > Date.today
+      is_scheduled_post = true
     else
-      base_url = root_url
+      is_scheduled_post = false
     end
 
     accounts.each do |page|
@@ -226,15 +225,20 @@ class CampaignsController < ApplicationController
           params[:microposts]["#{page.platform}"][:overlay][:left],
           params[:microposts]["#{page.platform}"][:overlay][:top],
           params[:microposts]["#{page.platform}"][:overlay][:width],
-          params[:microposts]["#{page.platform}"][:overlay][:height])
-        file_name = file_url.split('/').last
-        picture_url = "#{root_url}filters/#{file_name}"
+          params[:microposts]["#{page.platform}"][:overlay][:height],
+          delete_by_date)
+        picture_url = file_url
       else
+        if Rails.env.production?
+          base_url = ""
+        else
+          base_url = root_url
+        end
         picture_url = base_url + micropost.picture.url
       end
 
       #scheduled post?
-      if Date.parse(post_date) > Date.today
+      if is_scheduled_post
         new_scheduled_post = ScheduledPost.new()
         new_scheduled_post.user_id = current_user.id
         new_scheduled_post.account_id = page.id
@@ -304,6 +308,10 @@ class CampaignsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def campaign_params
       params.require(:campaign).permit(:name, :content, microposts_attributes: [ :content, :picture, :category ])
+    end
+
+    def campaign_microposts_params
+      params.require(:microposts).permit!
     end
 
     def correct_or_admin_user

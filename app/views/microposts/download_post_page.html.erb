@@ -144,6 +144,23 @@
 			overlay.mouse_offset_left = e.clientX;
 			overlay.mouse_offset_top = e.clientY;
 		}, true);
+		// on clicking arrows
+		overlay.prev_arrow.addEventListener('click', function(e) {
+			if(overlay_index > 0){
+				overlay_index -= 1;
+			}else{
+				overlay_index = overlay_arr.length - 1;
+			}
+			change_overlay();
+		}, true);
+		overlay.next_arrow.addEventListener('click', function(e) {
+			if(overlay_index < overlay_arr.length - 1){
+				overlay_index += 1;
+			}else{
+				overlay_index = 0;
+			}
+			change_overlay();
+		}, true);
 		
 		// on touch start
 		overlay.elem.ontouchstart = function(e){
@@ -181,23 +198,7 @@
 			release();
 		};
 
-		// on clicking arrows
-		overlay.prev_arrow.addEventListener('click', function(e) {
-			if(overlay_index > 0){
-				overlay_index -= 1;
-			}else{
-				overlay_index = overlay_arr.length - 1;
-			}
-			change_overlay();
-		}, true);
-		overlay.next_arrow.addEventListener('click', function(e) {
-			if(overlay_index < overlay_arr.length - 1){
-				overlay_index += 1;
-			}else{
-				overlay_index = 0;
-			}
-			change_overlay();
-		}, true);
+		updateOverlayDimensions();
 	}
 
 	function change_overlay(){

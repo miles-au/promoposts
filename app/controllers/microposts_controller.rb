@@ -100,6 +100,17 @@ class MicropostsController < ApplicationController
     accounts = current_user.accounts.where('id IN (?)', params[:pages])
     @success_string = []
     post_to_buffer = false
+    if Date.parse(post_date) > Date.today
+      is_scheduled_post = true
+    else
+      is_scheduled_post = false
+    end
+
+    if is_scheduled_post
+      delete_by_date = Date.parse(post_date) + 3.months
+    else
+      delete_by_date = Date.today + 2.days
+    end
 
     if overlay.present?
       file_url = Micropost.create_overlay_picture(
@@ -108,9 +119,9 @@ class MicropostsController < ApplicationController
         params[:overlay][:left],
         params[:overlay][:top],
         params[:overlay][:width],
-        params[:overlay][:height])
-      file_name = file_url.split('/').last
-      picture_url = "#{root_url}filters/#{file_name}"
+        params[:overlay][:height],
+        delete_by_date)
+      picture_url = file_url
     elsif Rails.env.production?
       picture_url = "" + micropost.picture.url
     else
@@ -118,7 +129,7 @@ class MicropostsController < ApplicationController
     end
 
     #scheduled post?
-    if Date.parse(post_date) > Date.today
+    if is_scheduled_post
       accounts.each do |page|
         new_scheduled_post = ScheduledPost.new()
         new_scheduled_post.user_id = current_user.id
@@ -201,15 +212,14 @@ class MicropostsController < ApplicationController
     overlay = Overlay.find(params[:overlay][:id]) rescue nil
 
     if overlay.present?
-      file_url = Micropost.create_overlay_picture(
+      picture_url = Micropost.create_overlay_picture(
         micropost.picture.url,
         overlay,
         params[:overlay][:left],
         params[:overlay][:top],
         params[:overlay][:width],
-        params[:overlay][:height])
-      file_name = file_url.split('/').last
-      picture_url = "#{root_url}filters/#{file_name}"
+        params[:overlay][:height],
+        Date.tomorrow)
     elsif Rails.env.production?
       picture_url = "" + micropost.picture.url
     else
@@ -228,7 +238,11 @@ class MicropostsController < ApplicationController
     track = Track.new(user_id: current_user.id, category: micropost.category, asset_num: micropost.id, act: "download")
     track.save
 
-    send_data(open(picture_url).read.force_encoding('BINARY'), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
+    if Rails.env.production?
+      send_data(open(picture_url).read.force_encoding('BINARY'), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
+    else
+      send_data(open("#{request.protocol}#{request.host_with_port}/#{picture_url}").read.force_encoding('BINARY'), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
+    end
     
   end
 

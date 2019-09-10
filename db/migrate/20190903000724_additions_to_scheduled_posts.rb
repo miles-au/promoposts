@@ -4,6 +4,6 @@ class AdditionsToScheduledPosts < ActiveRecord::Migration[5.2]
   	add_column :scheduled_posts, :account_id, :integer
   	add_column :scheduled_posts, :picture_url, :string
   	add_column :scheduled_posts, :caption, :string
-  	add_column :scheduled_posts, :post_time, :string
+  	add_column :scheduled_posts, :post_time, :datetime
   end
 end

@@ -10,7 +10,6 @@ class Micropost < ActiveRecord::Base
   validates :picture, presence: true
   validate  :picture_size
   validate :content_exists
-  validate :valid_url
   validate :digital_asset_has_picture
   has_many :comments, dependent: :destroy
   has_many :scheduled_posts
@@ -20,8 +19,6 @@ class Micropost < ActiveRecord::Base
   #attr_accessor :external_url
 
   self.per_page = 30
-
-  before_destroy :delete_notifications
 
   def self.category_array
     array = [ ['Facebook Cover Photo','facebook_cover_photo'],
@@ -236,7 +233,7 @@ class Micropost < ActiveRecord::Base
     end
   end
 
-  def self.create_overlay_picture(bg_url, overlay, left, top, width, height)
+  def self.create_overlay_picture(bg_url, overlay, left, top, width, height, delete_by_date)
     #create overlay
     if Rails.env.production?
       filter = MiniMagick::Image.open(overlay.picture_url)
@@ -246,20 +243,46 @@ class Micropost < ActiveRecord::Base
       img = MiniMagick::Image.open("public#{bg_url}")
     end
 
+    #create overlayed image
     filter.resize "#{width}x#{height}"
     result = img.composite(filter) do |c|
       c.compose "Over"
       c.geometry "+#{left}+#{top}"
     end
 
-    directory = "public/filters"
-    Dir.mkdir directory unless File.exists?(directory)
-
-    time = Time.now.to_i
-    path = "#{directory}/#{time}-#{rand(1000..9999)}.jpg"
+    #save picture
+    local_directory = "public/uploads/overlayed/"
+    pipeline_directory = "uploads/overlayed/"
+    Dir.mkdir local_directory unless File.exists?(local_directory)
+    file_name = "#{delete_by_date}_#{Time.now.to_i}_#{rand(1000..9999)}.jpg"
+    path = "#{local_directory}#{file_name}"
     result.write(path)
+    final_url = "#{pipeline_directory}#{file_name}"
+    
+    if Rails.env.production?
+      connection = Fog::Storage.new({
+        :provider                         => 'Google',
+        :google_storage_access_key_id     => ENV["google_storage_access_key_id"],
+        :google_storage_secret_access_key => ENV["google_storage_secret_access_key"]
+      })
+      directory = connection.directories.get("promoposts")
+      file = directory.files.create(
+        :key    => "#{pipeline_directory}#{file_name}",
+        :body   => File.open(path),
+        :public => true
+      )
 
-    return path
+      puts "FILE: #{file}"
+
+      if file
+        File.delete(path) if File.exist?(path)
+        final_url = file.public_url
+      end
+
+    end
+
+    return final_url
+    
   end
 
   def self.post_schedule
@@ -326,33 +349,6 @@ class Micropost < ActiveRecord::Base
         end
     end
 
-    def valid_url
-=begin
-      if !external_url || external_url.empty?
-        self.update_attribute('external_url', nil)
-        return
-      else
-        puts "EXTERNAL: #{external_url}"
-        if test_link(external_url).present?
-          valid_link = test_link(external_url)
-        elsif test_link("http://www.#{external_url}")
-          valid_link = test_link("http://www.#{external_url}")
-        elsif test_link("https://www.#{external_url}")
-          valid_link = test_link("https://www.#{external_url}")
-        elsif test_link("http://#{external_url}")
-          valid_link = test_link("http://#{external_url}")
-        end
-
-        if valid_link
-          self.update_attribute('external_url', valid_link)
-        else
-          errors[:base] << "Please include a full valid link."
-        end
-      end
-=end
-
-    end
-
     def test_link(link)
       http_errors = [
         Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, Errno::ECONNREFUSED, EOFError,
@@ -374,11 +370,6 @@ class Micropost < ActiveRecord::Base
         return nil
       end
 
-    end
-
-    def delete_notifications
-      Notification.where("notifications.category = 'comment' AND notifications.destination_id = ?", self.id).destroy_all
-      Notification.where("notifications.category = 'share' AND notifications.destination_id = ?", self.id).destroy_all
     end
 
     def digital_asset_has_picture
