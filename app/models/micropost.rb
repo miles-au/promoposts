@@ -316,9 +316,9 @@ class Micropost < ActiveRecord::Base
       else
     end
     if resp == "success"
-      if scheduled_post.user != micropost.user_id
-        micropost = scheduled_post.micropost rescue nil
-        if micropost
+      micropost = scheduled_post.micropost rescue nil
+      if micropost
+        if scheduled_post.user != micropost.user_id
           if micropost.shares
             micropost.shares += 1
           else 
