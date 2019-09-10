@@ -121,11 +121,17 @@ class MicropostsController < ApplicationController
         params[:overlay][:width],
         params[:overlay][:height],
         delete_by_date)
-      picture_url = file_url
-    elsif Rails.env.production?
-      picture_url = "" + micropost.picture.url
+      if Rails.env.production?
+        picture_url = file_url
+      else
+        picture_url = root_url + file_url
+      end
     else
-      picture_url = root_url + micropost.picture.url
+      if Rails.env.production?
+        picture_url = micropost.picture.url
+      else
+        picture_url = root_url + micropost.picture.url
+      end
     end
 
     #scheduled post?

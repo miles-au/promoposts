@@ -208,7 +208,7 @@ class CampaignsController < ApplicationController
     accounts = current_user.accounts.where('id IN (?)', params[:pages])
     post_date = params["post_date"] rescue Date.today
     @success_string = []
-    @post_to_buffer = false
+    post_to_buffer = false
     if Date.parse(post_date) > Date.today
       is_scheduled_post = true
     else
@@ -219,22 +219,23 @@ class CampaignsController < ApplicationController
       micropost = Micropost.find(params[:microposts]["#{page.platform}"][:post_id])
       overlay = Overlay.find(params[:microposts]["#{page.platform}"][:overlay][:id]) rescue nil
       if overlay
-        file_url = Micropost.create_overlay_picture(
+        picture_url = Micropost.create_overlay_picture(
           micropost.picture.url,
           overlay,
           params[:microposts]["#{page.platform}"][:overlay][:left],
           params[:microposts]["#{page.platform}"][:overlay][:top],
           params[:microposts]["#{page.platform}"][:overlay][:width],
           params[:microposts]["#{page.platform}"][:overlay][:height],
-          delete_by_date)
-        picture_url = file_url
+          Date.today + 2.days)
+        if Rails.env.development?
+          picture_url = root_url + picture_url
+        end
       else
         if Rails.env.production?
-          base_url = ""
+          picture_url = micropost.picture.url
         else
-          base_url = root_url
+          picture_url = root_url + micropost.picture.url
         end
-        picture_url = base_url + micropost.picture.url
       end
 
       #scheduled post?

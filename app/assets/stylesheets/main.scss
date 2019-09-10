@@ -586,11 +586,14 @@ footer{
   font-weight: 700;
   padding: 10px 20px;
   margin: 0px;
+  color: $grey5;
+  a,span{
+    color: $grey5;
+  }
 }
 
 .alert-danger, .alert-warning{
   background-color: $red3;
-  color: $grey5;
   border: 5px solid $red3;
 }
 
@@ -602,7 +605,6 @@ footer{
 
 .alert-success, .alert-info{
   background-color: $blue3;
-  color: $grey5;
   border: 5px solid $blue3;
 }
 
