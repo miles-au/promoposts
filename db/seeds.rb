@@ -102,7 +102,7 @@ campaign_users.each do |user|
     
     rand(3..8).times do
       category = cat_array.sample
-      picture = File.open(Rails.root + "app/assets/images/travel/#{rand(60)}.jpg")
+      picture = File.open(Rails.root + "ignore/travel/#{rand(60)}.jpg")
       user.microposts.create!(content: content, picture: picture, category: category, campaign_id: new_campaign.id)
     end
     
