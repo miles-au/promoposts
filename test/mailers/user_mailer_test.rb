@@ -10,11 +10,4 @@ class UserMailerTest < ActionMailer::TestCase
     @commenter = users(:archer)
   end
 
-  test "comment" do
-    mail = UserMailer.comment(@user, @micropost, @message, @category, @commenter)
-    assert_equal "Promo Posts - Somebody commented on your #{@category}!", mail.subject
-    assert_equal [users(:michael).email], mail.to
-    assert_equal ['noreply@promoposts.net'], mail.from
-  end
-
 end

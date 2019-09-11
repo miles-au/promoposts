@@ -46,51 +46,12 @@ ActiveRecord::Schema.define(version: 2019_09_10_194631) do
     t.index ["user_id"], name: "index_campaigns_on_user_id"
   end
 
-  create_table "comments", force: :cascade do |t|
-    t.string "message"
-    t.integer "head"
-    t.integer "tail"
-    t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "score"
-    t.integer "micropost_id"
-  end
-
   create_table "contacts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email"
     t.string "subject"
     t.string "message"
-  end
-
-  create_table "delayed_jobs", force: :cascade do |t|
-    t.integer "priority", default: 0, null: false
-    t.integer "attempts", default: 0, null: false
-    t.text "handler", null: false
-    t.text "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string "locked_by"
-    t.string "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
-  end
-
-  create_table "events", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "passive_user_id"
-    t.integer "micropost_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "contribution"
-    t.integer "campaign_id"
-    t.index ["passive_user_id"], name: "index_events_on_passive_user_id"
-    t.index ["user_id", "passive_user_id"], name: "index_events_on_user_id_and_passive_user_id"
-    t.index ["user_id"], name: "index_events_on_user_id"
   end
 
   create_table "microposts", force: :cascade do |t|
@@ -109,18 +70,6 @@ ActiveRecord::Schema.define(version: 2019_09_10_194631) do
     t.integer "campaign_id"
     t.index ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_microposts_on_user_id"
-  end
-
-  create_table "notifications", force: :cascade do |t|
-    t.string "user_id"
-    t.string "message"
-    t.string "url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "read", default: false
-    t.string "category"
-    t.integer "destination_id"
-    t.string "obj"
   end
 
   create_table "oauth_accounts", force: :cascade do |t|
@@ -239,14 +188,6 @@ ActiveRecord::Schema.define(version: 2019_09_10_194631) do
     t.string "pinterest_uid"
     t.string "timezone"
     t.index ["email"], name: "index_users_on_email", unique: true
-  end
-
-  create_table "votes", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "comment_id"
-    t.integer "points", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
 end

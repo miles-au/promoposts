@@ -11,15 +11,6 @@ class UserMailer < ApplicationMailer
     mail to: user.email, subject: "Promo Posts - Password reset"
   end
 
-  def comment(user, micropost, message, category, commenter)
-  	@user = user
-  	@category = category
-  	@micropost = micropost
-  	@message = message
-  	@commenter = commenter
-  	mail to: user.email, subject: "Promo Posts - Somebody commented on your #{category}!"
-  end
-
   def subscribe(user)
   end
 
@@ -39,12 +30,6 @@ class UserMailer < ApplicationMailer
     @user = recipient
     @follower = follower
     mail to: recipient.email, subject: "Promo Posts - You have a new follower!"
-  end
-
-  def community_question_notification(recipient, micropost)
-    @user = recipient
-    @micropost = micropost
-    mail to: @user.email, subject: "Promo Posts - Can you answer this question?"
   end
 
 end

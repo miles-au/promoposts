@@ -16,18 +16,7 @@ class UserMailerPreview < ActionMailer::Preview
     user.reset_token = User.new_token
     UserMailer.password_reset(user)
   end
-
-  # Preview this email at
-  # http://localhost:3000/rails/mailers/user_mailer/comment
-  def comment
-    user = User.first
-    micropost = Micropost.first
-    message = 'test comment'
-    category = "comment"
-    commenter = User.second
-    UserMailer.comment(user, micropost, message, category, commenter)
-  end
-
+  
   # Preview this email at
   # http://localhost:3000/rails/mailers/user_mailer/contacted
   def contacted
@@ -52,14 +41,6 @@ class UserMailerPreview < ActionMailer::Preview
     recipient = User.first
     follower = User.second
     UserMailer.followed_email(recipient, follower)
-  end
-
-  # Preview this email at
-  # http://localhost:3000/rails/mailers/user_mailer/community_question_notification
-  def community_question_notification
-    recipient = User.first
-    micropost = Micropost.first
-    UserMailer.community_question_notification(recipient, micropost)
   end
 
 end
