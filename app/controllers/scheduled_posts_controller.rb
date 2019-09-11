@@ -46,6 +46,10 @@ class ScheduledPostsController < ApplicationController
   # GET /scheduled_posts/1
   # GET /scheduled_posts/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /scheduled_posts/new

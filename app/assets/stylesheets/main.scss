@@ -504,6 +504,26 @@ header{
   background-color: $blue6;
 }
 
+/* scheduled post modal */
+.scheduled_post_content{
+  width: 100%;
+  height: 100%;
+  .account{
+    margin: 10px;
+    div{
+      height: 50px;
+      img{
+        margin: 5px;
+        max-height: 100%;
+      }
+    }
+  }
+  img{
+    max-width: 100%;
+    max-width: 100%;
+  }
+}
+
 /* Topics */
 .topics_layout{
   width: 100%;
@@ -879,15 +899,6 @@ footer{
   }
   .tooltip-arrow{
     border-top-color: $yellow1 !important;
-  }
-}
-
-.accolades{
-  height: 30px;
-  div{
-    img{
-      height: 100%;
-    }
   }
 }
 

@@ -1,0 +1,17 @@
+<div class="modal-header">
+  <h4 class="modal-title">Scheduled for <%= @scheduled_post.post_time.to_date.strftime("%B %-d") %></h4>
+</div>
+<div class="modal-body">
+	<div class="scheduled_post_content">
+		<div class="account" >to be posted to: 
+			<div>
+				<img src="<%= scheduled_post.account.picture %>" /><%= scheduled_post.account.name %>
+			</div>
+		</div>
+		<img src="<%= @scheduled_post.picture_url %>"/>
+		<p>caption: "<%= @scheduled_post.caption %>"</p>
+	</div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn-large" style="padding: 10px 20px;" data-dismiss="modal">close</button>
+</div>

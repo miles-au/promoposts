@@ -14,7 +14,9 @@
 			<% end %>
 
 			<% post_account = post.account %>
-			<img src="<%= post.picture_url %>" />
+			<%= link_to post, remote: :true do %>
+				<img src="<%= post.picture_url %>" />
+			<% end %>
 
 			<span class="glyphicon glyphicon-arrow-right" ></span>
 
