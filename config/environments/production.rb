@@ -27,7 +27,7 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  config.assets.compile = true
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
@@ -105,7 +105,6 @@ Rails.application.configure do
     :enable_starttls_auto => true
   }
   config.serve_static_assets = true
-  config.assets.compile = true
 
   config.action_mailer.default_url_options = {
     host: 'https://www.promoposts.net'
