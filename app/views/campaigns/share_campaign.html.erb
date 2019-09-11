@@ -34,7 +34,7 @@
 			<div>
 				<input type="checkbox" id="schedule_check" style="display: inline-block; width: auto; margin-right: 10px;" /><span> schedule this post</span>
 			</div>
-			<%= date_field("", "post_date", value: Time.now.strftime("%Y-%m-%d"), min: Time.now.strftime("%Y-%m-%d"), id: "datepicker", style: "display: none;" ) %>
+			<%= date_field("", "post_date", value: @users_time.strftime("%Y-%m-%d"), min: @users_time.strftime("%Y-%m-%d"), id: "datepicker", style: "display: none;" ) %>
 		</div>
 
 		<div style="max-width: 500px; margin: 5px auto;">
@@ -52,7 +52,7 @@
 			<h3>Share as a global campaign</h3>
 			<%= form_tag( global_campaign_path( campaign_id: @campaign.id), method: :post) do %>
 				<%= select_tag "topic_id", options_for_select(Topic.all.pluck(:name, :id)) %>
-				<%= date_field("", "post_time", value: (Time.now + 1.day).strftime("%Y-%m-%d"), min: (Time.now + 1.day).strftime("%Y-%m-%d") ) %>
+				<%= date_field("", "post_time", value: (@users_time + 1.day).strftime("%Y-%m-%d"), min: (@users_time + 1.day).strftime("%Y-%m-%d") ) %>
 				<%= submit_tag "create global post", class: "btn-submit" %>
 			<% end %>
 		</div>
@@ -82,11 +82,11 @@
 		$('#datepicker').toggle();
 		let checked = $("#schedule_check").is(':checked');
 		if(checked){
-			$('#datepicker').attr("min", "<%= (Time.now + 1.day ).strftime("%Y-%m-%d") %>");
-			$('#datepicker').attr("value", "<%= (Time.now + 1.day ).strftime("%Y-%m-%d") %>");
+			$('#datepicker').attr("min", "<%= (@users_time + 1.day ).strftime("%Y-%m-%d") %>");
+			$('#datepicker').attr("value", "<%= (@users_time + 1.day ).strftime("%Y-%m-%d") %>");
 		}else{
-			$('#datepicker').attr("min", "<%= Time.now.strftime("%Y-%m-%d") %>");
-			$('#datepicker').attr("value", "<%= Time.now.strftime("%Y-%m-%d") %>");
+			$('#datepicker').attr("min", "<%= @users_time.strftime("%Y-%m-%d") %>");
+			$('#datepicker').attr("value", "<%= @users_time.strftime("%Y-%m-%d") %>");
 		}
 		check_fields();
 	});

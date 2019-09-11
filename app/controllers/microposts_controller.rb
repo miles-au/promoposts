@@ -89,7 +89,7 @@ class MicropostsController < ApplicationController
     if default_overlay
       @overlays.unshift( [ default_overlay.name, default_overlay.picture.url, default_overlay.id ] )
     end
-
+    @users_time = current_user.users_time(Time.zone.now)
   end
 
   def submit_share_post

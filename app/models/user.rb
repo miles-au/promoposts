@@ -427,6 +427,10 @@ class User < ApplicationRecord
     topics.delete(topic)
   end
 
+  def users_time(time)
+    return time + self.current_offset
+  end
+
   def current_offset
     tz = TZInfo::Timezone.get(timezone)
     current = tz.current_period
