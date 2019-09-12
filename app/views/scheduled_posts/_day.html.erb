@@ -20,9 +20,9 @@
 
 			<span class="glyphicon glyphicon-arrow-right" ></span>
 
-			<img class="<%= post_account.platform %>-bg" style="padding: 3px;" src="/assets/<%= post_account.platform %>.svg" />
+			<%= image_tag "#{post_account.platform}.svg", class: "#{post_account.platform}-bg", style: "padding: 3px;" %>
 			:
-			<img src="<%= post_account.picture %>" data-toggle="tooltip" data-placement="top" data-original-title="<%= post_account.name %>"  />
+			<%= image_tag post_account.picture, "data-toggle": "tooltip", "data-placement": "top", "data-original-title": post_account.name %>
 
 			<% if current_user.admin %>
 				<p>user: <%= post.user.name %></p>
