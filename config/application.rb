@@ -25,6 +25,7 @@ module PromoPosts
     config.middleware.use Rack::Attack
 
     config.assets.enabled = true
+    config.serve_static_files = true
     
   end
 end
