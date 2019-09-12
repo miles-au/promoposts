@@ -24,6 +24,7 @@ module PromoPosts
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
     config.middleware.use Rack::Attack
 
+    config.serve_static_assets = true
     config.assets.enabled = true
     config.assets.version = '1.0'
     
