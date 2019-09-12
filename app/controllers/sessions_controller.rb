@@ -7,9 +7,6 @@ class SessionsController < ApplicationController
   def new
   end
 
-  def social_new
-  end
-
   def create
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
@@ -61,7 +58,7 @@ class SessionsController < ApplicationController
       puts "Login Error"
       puts "Request: #{request.env['omniauth.params']}"
       flash[:danger] = "There was an error while authenticating your account, we apologize for the inconvenience."
-      redirect_to root_url
+      redirect_back_or root_url
     end
 
   end
@@ -98,13 +95,13 @@ class SessionsController < ApplicationController
         @user = User.connect_accounts_oauth2(provider, code, current_user.id)
         create_accounts(provider)
         flash[:success] = "Your #{@provider} account has been connected, #{@user.name}."
-        redirect_to '/accounts/edit'
+        redirect_back_or '/accounts/edit'
       else
         @user = User.create_with_oauth2(provider, code)
         create_accounts(provider)
         log_in @user
         flash[:success] = "Welcome to Promo Posts, #{@user.name}."
-        redirect_to root_url
+        redirect_back_or root_url
       end
     end
     

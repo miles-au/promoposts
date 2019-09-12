@@ -1,0 +1,5 @@
+<% if @errors %>
+	$("#onboarding-errors").html("<%= j render 'shared/error_messages', object: current_user %>")
+<% else %>
+	update_stage(<%= @step %>);
+<% end %>

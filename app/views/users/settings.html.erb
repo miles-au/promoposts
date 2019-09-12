@@ -15,6 +15,4 @@
 <% end %>
 
 
-<%= link_to(current_user, method: :delete, data: { confirm: "Are you sure you want to delete your account?" })do %>
-	<button class="pop-button-grey" style="width: 100%; margin-top: 50px;">Delete Your Account</button>
-<% end %>
+<%= link_to "Delete Your Account", (current_user, method: :delete, data: { confirm: "Are you sure you want to delete your account?" }, class: "btn-submit")%>

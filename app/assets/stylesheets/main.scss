@@ -47,47 +47,6 @@ textarea {
   resize: vertical;
 }
 
-.pop-button{
-  text-align: center;
-  border-radius: 5px;
-  background-color: $yellow1;
-  color: $blue1;
-  padding: 10px 20px;
-  font-weight: 700;
-
-  p, h3, span{
-    margin: 0px;
-  }
-
-  &:hover{
-    background-color: $yellow3;
-    text-decoration: none !important;
-    color: $blue1;
-    cursor: pointer;
-    p, h3, span{
-      color: $blue1;
-      margin-bottom: 0px;
-    }
-  }
-
-  a:hover{
-    text-decoration: none !important;
-  }
-}
-
-.pop-button-grey{
-  text-align: center;
-  border: none;
-  background-color: $grey3;
-  color: $grey5;
-  padding: 10px 20px;
-  font-weight: 700;
-
-  &:hover{
-    background-color: $grey4;
-  }
-}
-
 .btn-large{
   border: none;
   display: block;
@@ -119,9 +78,23 @@ textarea {
   border-radius: 0px;
 }
 
+.btn-submit-full-width{
+  max-width: none;
+}
+
 .btn-disable{
   background-color: $grey3;
   color: $grey5;
+}
+
+.btn-discourage{
+  background-color: $grey2;
+  color: $grey5;
+}
+
+.link{
+  color: $teal3;
+  cursor: pointer;
 }
 
 /* forms */
@@ -135,7 +108,7 @@ input, textarea, select {
   }
 }
 
-input[type="text"], input[type="email"], input[type="password"], input[type="textbox"], textarea {
+input[type="text"], input[type="email"], input[type="password"], input[type="textbox"], input[type="url"], textarea {
   border-top: none;
   border-left: none;
   border-right: none;
@@ -144,7 +117,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="tex
   padding-left: 5px;
 }
 
-input[type="text"], input[type="email"], input[type="password"]{
+input[type="text"], input[type="email"], input[type="password"], input[type="url"]{
   height: 30px;
 }
 
@@ -330,6 +303,10 @@ header{
     padding: 10px 30px;
     font-size: 1.5em;
   }
+}
+
+.short-splash{
+  height: auto;
 }
 
 /* Front Forms */
@@ -593,6 +570,34 @@ footer{
   }
 }
 
+/* Onboarding */
+.onboarding_page{
+  .connect-container{
+    .social-button{
+      padding: 10px;
+      img{
+        max-height: 40px;
+        margin-right: 10px;
+      }
+      &:hover{
+        color: $grey5;
+      }
+    }
+  }
+  .footer{
+    text-align: right;
+    .btn-next{
+      display: inline-block;
+      background-color: $yellow1;
+      margin: 10px;
+      padding: 10px 25px;
+      a{
+        color: $blue1;
+      }
+    }
+  }
+}
+
 @media (max-width: 768px){
   footer{
     margin-top: 20px;
@@ -798,6 +803,42 @@ footer{
   bottom: 0;
 }
 
+.default_location_options{
+  display: none;
+  position: absolute;
+  background-color: $yellow1;
+  padding: 10px;
+  .header{
+    font-size: 1.3em;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+    span{
+      padding: 0px 5px;
+    }
+  }
+  .demo-box{
+    background-color: $grey5;
+    height: 100px;
+    width: 200px;
+    padding: 5px;
+    display: flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    a{
+      display:flex;
+      flex: 0 1 50%;
+      flex-direction:column;
+    }
+    a:nth-child(3), a:last-child{
+      align-self:flex-end;
+    }
+    a:nth-child(2) span, a:last-child span{
+      align-self:flex-end;
+    }
+  }
+}
+
 @media ( max-width: 768px ){
   .overlay_handle {
     margin-right: -25px;
@@ -831,7 +872,7 @@ footer{
   display: none;
 }
 
-//social login
+//social buttons
 .social-button{
   color: white;
   display: block; 
@@ -848,6 +889,10 @@ footer{
     color: white;
     display: inline-block;
   }
+}
+
+.social-button-short{
+  display: inline-block;
 }
 
 .facebook-bg{
@@ -870,6 +915,9 @@ footer{
 }
 .email-bg{
   background-color: $teal3;
+}
+.greyed-out-bg{
+  background-color: $grey3;
 }
 
 //attach avatars to image

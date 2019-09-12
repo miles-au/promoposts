@@ -1,27 +1,29 @@
-<%= form_for(@micropost) do |f| %>
-  <%= render 'shared/error_messages', object: f.object %>
+<div style="max-width: 500px;">
+  <%= form_for(@micropost) do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
 
-  <%= render partial: "/shared/post_category_select", locals: {
-    prompt: "What type of digital asset is this?",
-    include_all: false,
-    input_name: "#{f.object.class.to_s.downcase}[category]",
-    submits: false
-  } %>
+    <%= render partial: "/shared/post_category_select", locals: {
+      prompt: "What type of digital asset is this?",
+      include_all: false,
+      input_name: "#{f.object.class.to_s.downcase}[category]",
+      submits: false
+    } %>
 
-  <div class="field">
-    <%= f.text_area :content, placeholder: "Compose new post...", maxlength: 400 %>
-  </div>
-  <div class="picture">
-    <span style="display: inline-block; font-size: 1.2em;" class="glyphicon glyphicon-picture"></span>
-    <p style="display: inline-block; text-align: top;">Add an image (10mb max)</p>
-    <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
-  </div>
-  <div class="external_url">
-    <%#= f.label :external_url, "Include a link:"%>
-    <%#= f.text_field :external_url, placeholder: "Include a website url here:", maxlength: 500 %>
-  </div>
-  <%= f.submit "submit post", class: "pop-button" %>
-<% end %>
+    <div class="field">
+      <%= f.text_area :content, placeholder: "Compose new post...", maxlength: 400 %>
+    </div>
+    <div class="picture">
+      <span style="display: inline-block; font-size: 1.2em;" class="glyphicon glyphicon-picture"></span>
+      <p style="display: inline-block; text-align: top;">Add an image (10mb max)</p>
+      <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
+    </div>
+    <div class="external_url">
+      <%#= f.label :external_url, "Include a link:"%>
+      <%#= f.text_field :external_url, placeholder: "Include a website url here:", maxlength: 500 %>
+    </div>
+    <%= f.submit "submit post", class: "btn-submit" %>
+  <% end %>
+</div>
 
 <script type="text/javascript">
   $('#micropost_picture').bind('change', function() {

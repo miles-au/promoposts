@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AccoladeTest < ActiveSupport::TestCase
+class OnboardingControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

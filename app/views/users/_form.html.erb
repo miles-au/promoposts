@@ -11,44 +11,50 @@
   <%= f.label :name, "Name"%>
   <%= f.text_field :name, maxlength: 50 %>
   
-  <%= f.label :email %>
+  <%= f.label :email, "Email" %>
   <%= f.email_field :email %>
 
-  <%= f.label :password %>
-  <%= f.password_field :password %>
-
-  <%= f.label :password_confirmation %>
-  <%= f.password_field :password_confirmation %>
-
   <% if current_user %>
+
+    <%= f.label :password %>
+    <%= f.password_field :password, placeholder: "••••••••••••••••••••" %>
+
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation, placeholder: "••••••••••••••••••••" %>
+
     <%= f.label :company, "Organization"%>
     <%= f.text_field :company, maxlength: 50  %>
 
-    <%= f.label :category, "Category: I am a..." %><br />
-    <div class="categoryLabel">
-    <%= f.label :category, "distributor" %>
-    <%= f.radio_button :category, "distributor", :checked => logged_in? && @user.category == "distributor" %>
-    </div>
-    <div class="categoryLabel">
-    <%= f.label :category, "vendor" %>
-    <%= f.radio_button :category, "vendor", :checked => logged_in? && @user.category == "vendor" %>
-    </div>
-    <div class="categoryLabel">
-    <%= f.label :category, "neither" %>
-    <%= f.radio_button :category, "none", :checked => logged_in? && @user.category == "none" %>
-    </div><br />
+    <%= f.label :website, "Company Website" %>
+    <%= f.url_field :website, maxlength: 50 %>
 
-    <%= f.label :slug, "Profile Url" %>
+    <%= f.label :color, "Main Company Color (HEX)" %>
+    <div>
+      <%= f.color_field :color , id: "color-picker", style: "display: inline-block; width: 40px; height: 40px; padding: 0px; margin: 0px;", onchange: "$('#color-input').val($(this).val());" %>
+      <input type="text" id="color-input" maxlength='7' style="display: inline-block; width: auto; vertical-align: top;" onclick="$('#color-picker').click();" value="<%= current_user.color %>" />
+    </div>
+
+    <!-- <h5>Upload a new cover photo (10mb max)</h5> -->
+    <%#= f.file_field :cover_photo, accept: 'image/jpeg,image/gif,image/png' %>
+
+    <%= f.label :slug, "Username/Profile Url" %>
     <input type="textbox" placeholder="<%= @user.slug %>" id="slug-input" maxlength='75' />
     <div>
       <p style="display: inline-block; ">www.promoposts.net/users/</p>
       <%= f.text_field :slug, readonly: true, id: "real-slug", style: 'display: inline-block; width: auto;' %>
     </div>
   <% else %>
+
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation %>
+
     <%= f.hidden_field :timezone, :value => "", id: "user_time_zone" %>
     <%= f.hidden_field :slug, :value => "" %>
   <% end %>
-  <%= f.submit yield(:button_text), class: "pop-button" %>
+  <%= f.submit yield(:button_text), class: "btn-submit btn-submit-full-width" %>
 <% end %>
 
 <script>
@@ -58,11 +64,15 @@
       if(result == ""){
         result = "<%= @user.slug %>";
       }else{
-        result = result.replace( /[^\w]/g, '_' );
+        result = result.replace(/[^a-zA-Z0-9]/g, "_")
       }
       $("#real-slug").val(result);
     })
   <% end %>
+
+  $("#color-input").on("change keyup paste", function(){
+    $('#color-picker').val($(this).val());
+  });
 
   document.getElementById('user_time_zone').value = jstz.determine().name();
 </script>

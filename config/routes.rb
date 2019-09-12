@@ -62,13 +62,13 @@ Rails.application.routes.draw do
   get '/campaigns/:id/download_assets', to: "campaigns#download_campaign_page", as: 'download_campaign_page'
   post '/campaigns/:id/download_assets', to: "campaigns#download_assets", as: 'download_assets'
 
-  get '/admin_panel', to: "static_pages#admin_panel"
-  get '/tracking', to: "static_pages#tracking"
-
   get '/overlays', to: "overlays#show"
   post '/overlays', to: "overlays#create"
   delete '/overlays', to: "overlays#destroy"
   post '/overlays_default', to: "overlays#default_overlay"
+
+  get '/admin_panel', to: "static_pages#admin_panel"
+  get '/tracking', to: "static_pages#tracking"
 
   get '/prev_week', to: "scheduled_posts#prev_week"
   get '/next_week', to: "scheduled_posts#next_week"
@@ -78,6 +78,10 @@ Rails.application.routes.draw do
   post '/global_campaign', to: "scheduled_posts#create_global_campaign"
 
   post '/users/:id/update_timezone', to: "users#update_timezone", as: "update_timezone"
+
+  get '/users/:id/onboarding', to: "onboarding#show", as: "show_onboarding"
+  get '/users/:id/onboarding/next_stage', to: "onboarding#next_stage", as: "onboarding_next_stage"
+  post '/users/:id/onboarding/update_user', to: "onboarding#update_user", as: "onboarding_update_user"
 
   get '/how_does_it_work', to: "static_pages#how_does_it_work"
 
@@ -92,7 +96,6 @@ Rails.application.routes.draw do
   resources :microposts,          only: [:create, :destroy, :show, :update]
   resources :relationships,       only: [:create, :destroy]
   resources :tickets,             only: [:create, :destroy, :show]
-  resources :comments
   resources :campaigns
   resources :scheduled_posts
 

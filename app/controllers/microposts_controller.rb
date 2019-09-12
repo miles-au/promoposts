@@ -64,9 +64,6 @@ class MicropostsController < ApplicationController
     if @micropost.campaign_id
       @campaign = Campaign.find(@micropost.campaign_id)
     end
-    @comment = Comment.new
-    @comments = Comment.where(:micropost_id => @micropost.id, :head => nil)
-    @comments = @comments.all.order(created_at: :desc).sort_by {|x| x.points }.reverse
     @user = @micropost.user
 
     if logged_in?

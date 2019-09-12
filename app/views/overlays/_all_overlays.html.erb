@@ -1,0 +1,33 @@
+<% @overlays.each_with_index do |overlay| %>
+  <% if overlay.id %>
+    <div style="margin-bottom: 10px; display: inline-block; vertical-align: top;">
+      <h3 style="text-align: left; display: inline-block;"><%= overlay.name %></h3>
+      <%= link_to overlays_path( id: overlay.id), method: :delete, remote: :true, "data-confirm": 'Delete this overlay?', style: "display: inline-block;" do %>
+        <span class="glyphicon glyphicon-trash" ></span>
+      <% end %><br>
+      <% if overlay.id == current_user.setting.default_overlay_id %>
+        <p>(default - <%= Overlay.location_to_text(current_user.setting.default_overlay_location) %>) <%= link_to "clear default", overlays_default_path(id: "none", location: nil), method: :post, remote: :true %></p>
+      <% else %>
+        <p class="link" onclick="$(this).next().toggle();" >make default</p>
+        <div class="default_location_options">
+          <p class="header"><span>default location</span><span onclick="$(this).parent().parent().toggle();" style="cursor: pointer;" class='glyphicon glyphicon-remove' ></span></p>
+          <div class="demo-box">
+            <%= link_to overlays_default_path(id: overlay.id, location: "nw"), method: :post, remote: :true do %>
+              <span>Top Left</span>
+            <% end %>
+            <%= link_to overlays_default_path(id: overlay.id, location: "ne"), method: :post, remote: :true do %>
+              <span>Top Right</span>
+            <% end %>
+            <%= link_to overlays_default_path(id: overlay.id, location: "sw"), method: :post, remote: :true do %>
+              <span>Bottom Left</span>
+            <% end %>
+            <%= link_to overlays_default_path(id: overlay.id, location: "se"), method: :post, remote: :true do %>
+              <span>Bottom Right</span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <img src="<%= overlay.picture.url %>" style="max-height: 300px; max-width: 100%;" />
+    </div>
+  <% end %>
+<% end %>

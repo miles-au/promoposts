@@ -1,0 +1,70 @@
+<% store_location %>
+<h3>(2/4) Connect your social accounts</h3>
+
+<% if current_user.buffer_uid %>
+	<div class="row connect-container" >
+		<div class="col-md-4 col-sm-12">
+			<div class="social-button greyed-out-bg">
+				<img src="/assets/buffer.svg" /> Buffer Connected
+			</div>
+		</div>
+	</div>
+	
+<% else %>
+	<p>To get the most out of Promo Posts, we recommend connecting a Buffer account. <span class="link" onclick="$('#buffer_explanation').show();">Why Buffer, and what is it?</span></p>
+
+	<div id="buffer_explanation" style="display: none;">
+		<p><a href="https://buffer.com" target="_blank">Buffer</a> let's you post to all the major social platforms. Some platforms such as Instagram and LinkedIn have locked down some or all developer tools with the exception of select partners like Buffer. If you would like Promo Posts to automate posting to Instagram or a LinkedIn company page, you will need to connect them via Buffer.</p>
+	</div>
+
+	<div class="row connect-container" >
+		<div class="col-md-4 col-sm-12">
+			<a href="/auth/buffer?intent=connect" class="social-button buffer-bg">
+				<img src="/assets/buffer.svg" />Connect Buffer Account
+			</a>
+		</div>
+		<div class="col-md-4 col-sm-12">
+			<a href="https://login.buffer.com/signup" class="social-button buffer-bg" >
+				<img src="/assets/buffer.svg" />Create Buffer Account
+			</a>
+		</div>
+	</div>
+	&nbsp;
+<% end %>
+
+<div class="row connect-container">
+	<div class="col-md-4 col-sm-12">
+		<% if current_user.fb_uid %>
+			<div class="social-button greyed-out-bg">
+				<img src="/assets/facebook.svg" /> Facebook Connected
+			</div>
+		<% else %>
+			<a href="/auth/facebook?intent=connect" class="social-button facebook-bg">
+				<img src="/assets/facebook.svg" />Connect Facebook Account
+			</a>
+		<% end %>
+	</div>
+	<div class="col-md-4 col-sm-12">
+		<% if current_user.twitter_uid %>
+			<div class="social-button greyed-out-bg">
+				<img src="/assets/twitter.svg" /> Twitter Connected
+			</div>
+		<% else %>
+			<a href="/auth/twitter?intent=connect" class="social-button twitter-bg">
+				<img src="/assets/twitter.svg" />Connect Twitter Account
+			</a>
+		<% end %>
+	</div>
+	<div class="col-md-4 col-sm-12">
+		<% if current_user.linkedin_uid %>
+			<div class="social-button greyed-out-bg">
+				<img src="/assets/linkedin.svg" /> LinkedIn Connected
+			</div>
+		<% else %>
+			<a href="/auth/linkedin?intent=connect" class="social-button linkedin-bg">
+				<img src="/assets/linkedin.svg" />Connect LinkedIn Account
+			</a>
+		<% end %>
+		<span>Currently limited to LinkedIn user profiles</span>
+	</div>
+</div>

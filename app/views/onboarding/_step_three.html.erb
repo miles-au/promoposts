@@ -1,0 +1,20 @@
+<h3>(3/4) Set up overlays</h3>
+<p>Promo Posts can automatically put your logo in the corner of all your posts. Add an overlay below and set it's default location, or click 'next' to skip.</p>
+
+<% @new_overlay = Overlay.new %>
+<% @overlays = current_user.overlays %>
+<% @overlay_select = @overlays.pluck(:name, :id) %>
+<% @overlay_locations = Overlay.location_array %>
+<% @default_select_overlay = nil %>
+
+<div id="onboarding-new-overlays">
+	<%= render '/overlays/new_overlay' %>
+</div>
+
+<div>
+	<p>Your overlays:</p>
+	<div id="overlays-container">
+	  	<%= render '/overlays/all_overlays' %>
+	</div>
+</div>
+

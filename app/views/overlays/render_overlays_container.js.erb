@@ -1,0 +1,7 @@
+$("#overlays-container").html("<%= j render 'all_overlays' %>");
+if($('#form_container').length > 0){
+	$("#form_container").html("");
+}
+if($('#onboarding-new-overlays').length > 0){
+	$("#form_container").html("<%= j render '/overlays/new_overlay' %>");
+}

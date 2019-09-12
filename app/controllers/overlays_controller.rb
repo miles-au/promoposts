@@ -4,49 +4,55 @@ class OverlaysController < ApplicationController
 	def show
 		@overlays = current_user.overlays
 	  @new_overlay = current_user.overlays.build
-	  @overlay_locations = [ 	[ "Top Left" , "nw" ],
-	  												[ "Top Right" , "ne" ],
-	  												[ "Bottom Left" , "sw" ],
-	  												[ "Bottom Right" , "se" ]
-	  											]
-	  @overlay_locations.unshift(["Select location" , nil])
-	  @overlay_select = @overlays.pluck(:name, :id)
-	  @overlay_select.unshift(["none" , nil])
-	  if @overlays.pluck(:id).include?(current_user.setting.default_overlay_id)
-	  	@default_select_overlay = current_user.setting.default_overlay_id
-	  else
-	  	@default_select_overlay = nil
-	  end
 	end
 
 	def create
 		@overlay = current_user.overlays.build(overlay_params)
 		@overlay.permissions = "private"
     if @overlay.save
-      flash[:success] = "Overlay created"
+      flash.now[:success] = "Overlay created"
     else
-    	flash[:danger] = "Unable to create overlay"
+    	flash.now[:danger] = "Unable to create overlay"
     end
-	  redirect_to '/overlays'
+    @overlays = current_user.overlays
+    @new_overlay = current_user.overlays.build
+	  respond_to do |format|
+      format.html
+      format.js { render 'render_overlays_container.js.erb' }
+    end
 	end
 
 	def destroy
 		@overlay = Overlay.find(params[:id])
 		@overlay.destroy
-    flash[:success] = "Overlay deleted"
-    redirect_to overlays_path
+    flash.now[:success] = "Overlay deleted"
+    @overlays = current_user.overlays
+    @new_overlay = current_user.overlays.build
+    respond_to do |format|
+      format.html
+      format.js { render 'render_overlays_container.js.erb' }
+    end
 	end
 
 	def default_overlay
-		current_user.setting.default_overlay_id = params[:id]
-		current_user.setting.default_overlay_location = params[:location]
-		if current_user.setting.save
-			flash[:success] = "Default overlay updated"
-		else
-			flash[:danger] = "Unable to update default overlay"
+		if params[:id] == "none"
+			current_user.setting.default_overlay_id = nil
+			current_user.setting.default_overlay_location = nil
+		elsif current_user.overlays.find(params[:id])
+			current_user.setting.default_overlay_id = params[:id]
+			current_user.setting.default_overlay_location = params[:location]
 		end
-
-		redirect_to overlays_path
+		if current_user.setting.save
+			flash.now[:success] = "Default overlay updated"
+		else
+			flash.now[:danger] = "Unable to update default overlay"
+		end
+		@overlays = current_user.overlays
+		@new_overlay = current_user.overlays.build
+		respond_to do |format|
+      format.html
+      format.js { render 'render_overlays_container.js.erb' }
+    end
 	end
 
 	private

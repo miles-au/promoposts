@@ -1,8 +1,6 @@
 class User < ApplicationRecord
   has_many :microposts, dependent: :destroy
   has_many :accounts, dependent: :destroy
-  has_many :comments
-  has_many :votes, dependent: :destroy
   has_many :active_relationships, class_name:  "Relationship",
                                   foreign_key: "follower_id",
                                   dependent:   :destroy
@@ -18,25 +16,28 @@ class User < ApplicationRecord
   has_many :followed_topics, class_name:  "TopicRelationship",
                                    foreign_key: "user_id"
   has_many :topics, through: :followed_topics
-  has_one :accolade, dependent: :destroy
   has_one :setting, dependent: :destroy
 
+  has_secure_password
+
   attr_accessor :remember_token, :activation_token, :reset_token
+
   before_save   :downcase_email
   before_create :create_activation_digest
-  after_create :set_slug_default
-  after_create :create_accolades
   after_create :create_setting
   after_create :follow_promo_posts
 
   validates :name,  presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
-  #VALID_SLUG_REGEX = /\A[-\w.]+\z/i
+  validate :valid_slug
   validates :slug, uniqueness: { case_sensitive: false }, length: { maximum: 75 }
-  has_secure_password
+  #VALID_COLOR_REGEX = /\A#(?:[A-F0-9]{6})\z/i
+  #validates :color, format: { with: VALID_COLOR_REGEX }
+  
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   validates :company, length: { maximum: 50 }
+  validates :website, length: { maximum: 50 }
 
   mount_uploader :picture, PictureUploader
   mount_uploader :cover_photo, PictureUploader
@@ -100,21 +101,9 @@ class User < ApplicationRecord
   end
 
   #notification emails
-  def send_comment_mailer(user, micropost, message, category, commenter)
-    if self.verify_email
-      UserMailer.comment(user, micropost, message, category, commenter).deliver_now
-    end
-  end
-
   def send_followed_email(follower)
     if self.verify_email
       UserMailer.followed_email(self, follower).deliver_now
-    end
-  end
-
-  def send_community_question_email(micropost)
-    if self.verify_email
-      UserMailer.community_question_notification(self, micropost).deliver_now
     end
   end
 
@@ -487,14 +476,13 @@ class User < ApplicationRecord
       decrypted_data
     end
 
-    def set_slug_default
-      self.slug = self.id
-      self.save!
-    end
-
-    def create_accolades
-      accolades = Accolade.new(user_id: self.id)
-      accolades.save!
+    def valid_slug
+      # make sure slug is not just a number so it doesn't clash with IDs
+      if self.slug && self.slug.match('(?!^\d+$)^.+$')
+        self.slug = self.slug.gsub(/[^a-zA-Z0-9]/, "_")
+      else
+        self.slug = self.id
+      end
     end
 
     def create_setting

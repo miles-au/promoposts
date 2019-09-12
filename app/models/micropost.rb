@@ -11,7 +11,6 @@ class Micropost < ActiveRecord::Base
   validate  :picture_size
   validate :content_exists
   validate :digital_asset_has_picture
-  has_many :comments, dependent: :destroy
   has_many :scheduled_posts
   before_save
   after_create :set_stats_to_zero

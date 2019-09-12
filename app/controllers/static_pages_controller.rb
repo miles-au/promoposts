@@ -2,6 +2,10 @@ class StaticPagesController < ApplicationController
   before_action :admin_user,   only: [:admin_panel, :tracking]
 
   def home
+    if current_user && current_user.onboarding_stage == 0 
+      redirect_to show_onboarding_path(id: current_user.id)
+    end
+
     @digital_asset_types = ['general_update', 'cover_photo', 'email_banner', 'infographic', 'meme']
 
     @feed_type = params[:feed]

@@ -1,9 +1,0 @@
-<%= form_for(current_user.active_relationships.build, remote: true) do |f| %>
-  <div><%= hidden_field_tag :followed_id, @user.id %></div>
-  <%= button_tag(type: 'submit', :class => "side_button") do %>
-  	<div class="pop-button">
-      <span class="glyphicon glyphicon-plus"></span>
-      <h3 class = "top_icons">follow</h3>
-    </div>
-  <% end %>
-<% end %>

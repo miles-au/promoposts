@@ -1,0 +1,55 @@
+<div style="max-width: 500px;">
+
+	<h3>(4/4) You're almost done</h3>
+
+	<p>Just a few more things to personalize your experience.</p>
+
+	<%= form_tag(onboarding_update_user_path(id: current_user.id), remote: :true) do %>
+
+		<div id="onboarding-errors">
+			
+		</div>
+
+		<%= label_tag "Username/Profile Url" %>
+		<input type="textbox" id="slug-input" maxlength='75' />
+		<div>
+		<p style="display: inline-block; ">www.promoposts.net/users/</p>
+		<%= text_field_tag "slug", nil, readonly: true, id: "real-slug", placeholder: "", style: 'display: inline-block; width: auto;' %>
+		</div>
+
+		<%= label_tag "Organization"%>
+		<%= text_field_tag "company", nil, maxlength: 50  %>
+
+		<%= label_tag "Company Website" %>
+		<%= url_field_tag "website", nil, maxlength: 50 %>
+
+		<%= label_tag "Main Company Color (HEX)" %>
+		<div>
+			<%= color_field("color", nil, id: "color-picker", style: "display: inline-block; width: 40px; height: 40px; padding: 0px; margin: 0px;", onchange: "$('#color-input').val($(this).val());") %>
+			<input type="text" id="color-input" maxlength='7' style="display: inline-block; width: auto; vertical-align: top;" onclick="$('#color-picker').click();" value="<%= current_user.color %>" />
+		</div>
+
+		<%= submit_tag "Finish", class: "btn-submit btn-submit-full-width" %>
+	<% end %>
+
+</div>
+
+<script>
+  <% if current_user %>
+    $("#slug-input").on("change keyup paste", function(){
+      result = $("#slug-input").val();
+      if(result == ""){
+        result = "<%= @user.slug %>";
+      }else{
+        result = result.replace( /[^\w]/g, '_' );
+      }
+      $("#real-slug").val(result);
+    })
+  <% end %>
+
+  $("#color-input").on("change keyup paste", function(){
+  	$('#color-picker').val($(this).val());
+  });
+
+  document.getElementsByClassName('btn-next')[0].style.display = 'none';
+</script>

@@ -41,4 +41,27 @@ class Overlay < ApplicationRecord
 		return [ left, top, width, height]
 	end
 
+	def self.location_array
+		arr = [ 	[ "Top Left" , "nw" ],
+							[ "Top Right" , "ne" ],
+							[ "Bottom Left" , "sw" ],
+							[ "Bottom Right" , "se" ]
+			] 
+	end
+
+	def self.location_to_text(location)
+		case location
+			when "nw"
+				return "top left"
+			when "ne"
+				return "top right"
+			when "sw"
+				return "bottom left"
+			when "se"
+				return "bottom right"
+			else
+				return "top left"
+		end
+	end
+
 end
