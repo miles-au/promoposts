@@ -104,7 +104,7 @@ Rails.application.configure do
     :domain         => 'heroku.com',
     :enable_starttls_auto => true
   }
-  config.serve_static_files = false
+  config.serve_static_files = true
 
   config.action_mailer.default_url_options = {
     host: 'https://www.promoposts.net'
