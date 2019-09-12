@@ -109,5 +109,8 @@ Rails.application.configure do
     host: 'https://www.promoposts.net'
   }
   config.action_mailer.asset_host = 'https://www.promoposts.net'
+
+  config.serve_static_files = true
+  config.assets.digest = true
   
 end
