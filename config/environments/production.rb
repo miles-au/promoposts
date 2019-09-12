@@ -105,7 +105,7 @@ Rails.application.configure do
     :enable_starttls_auto => true
   }
   config.serve_static_files = false
-  config.public_file_server.enabled = true
+  #config.public_file_server.enabled = true
 
   config.action_mailer.default_url_options = {
     host: 'https://www.promoposts.net'
