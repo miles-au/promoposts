@@ -384,7 +384,7 @@ class User < ApplicationRecord
     if self.picture.url
       self.picture.url
     else
-      return "/assets/avatar.png"
+      return nil
     end
   end
 

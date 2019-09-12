@@ -1,3 +1,7 @@
- <%= yield %>
-- The Promo Posts Team  <%= link_to 'www.promoposts.net', 'https://www.promoposts.net', target: "_blank" %> 
-Promo Posts is a social media tool made specifically for the promotional products industry. Automate your social media with the scheduling tool and our free promotional products content. Check out what other features Promo Posts has to offer at <%= link_to 'www.promoposts.net', 'https://www.promoposts.net', target: "_blank", style: 'color: #f6f6f6' %>  <% if content_for?(:user) %> <%= link_to "Update email preferences", user_settings_url(:id => yield(:user)), target: "_blank", style: 'color: #f6f6f6' %>  <%= link_to "Unsubscribe", unsubscribe_email_url(:id => yield(:user), :code => yield(:digest)), target: "_blank", style: 'color: #f6f6f6' %> <% end %> 
+<div style="width: 640px">
+	<%= image_tag 'email-logo.png', style: "width: 640px;" %>
+	<%= yield %>
+	- The Promo Posts Team  <%= link_to 'www.promoposts.net', 'https://www.promoposts.net', target: "_blank" %> 
+	Promo Posts is a social media tool made specifically for the promotional products industry. Automate your social media with the scheduling tool and our free promotional products content. Check out what other features Promo Posts has to offer at <%= link_to 'www.promoposts.net', 'https://www.promoposts.net', target: "_blank", style: 'color: #f6f6f6' %>  <% if content_for?(:user) %> <%#= link_to "Update email preferences", user_settings_url(:id => yield(:user)), target: "_blank", style: 'color: #f6f6f6' %> 
+	<%#= link_to "Unsubscribe", unsubscribe_email_url(:id => yield(:user), :code => yield(:digest)), target: "_blank", style: 'color: #f6f6f6' %> <% end %> 
+</div>

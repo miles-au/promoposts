@@ -1,7 +1,7 @@
 <% font_multiply ||= 1.2 %>
 <div class="user_info">
 	<%= link_to user do %>
-	  <img src="<%= user.avatar %>" style="width: <%= thumbnail_width %>px;" />
+	  <img src="<%= user.avatar || image_path('avatar.png') %>" style="width: <%= thumbnail_width %>px;" />
 	  <div class="text-info">
 	    <h3 style="font-size: <%= font_multiply %>em;" ><%= user.name %></h3>
 	    <p style="font-size: <%= font_multiply-0.2 %>em;" ><%= user.company %></p>      

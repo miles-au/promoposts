@@ -1,5 +1,5 @@
 <div class="user-block">
-  <img class="avatar avatar-thumbnail" src="<%= user.avatar %>"/>
+  <img class="avatar avatar-thumbnail" src="<%= user.avatar || image_path('avatar.png') %>"/>
   <%= link_to(user.name, user, :style => "width: 200px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: block;") %>
   <% if current_user.admin? && !current_user?(user) %>
     | <%= link_to "delete", user, method: :delete,
