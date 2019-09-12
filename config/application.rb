@@ -24,7 +24,8 @@ module PromoPosts
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
     config.middleware.use Rack::Attack
 
-    config.assets.paths << Rails.root.join("vendor","assets", "fonts")
+    #config.assets.paths << Rails.root.join("vendor","assets", "fonts")
+    config.assets.enabled = true
     
   end
 end
