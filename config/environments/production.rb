@@ -110,6 +110,6 @@ Rails.application.configure do
   }
   config.action_mailer.asset_host = 'https://www.promoposts.net'
 
-  config.assets.digest = false
+  config.assets.digest = true
   
 end
