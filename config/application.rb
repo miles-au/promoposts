@@ -26,7 +26,7 @@ module PromoPosts
 
     config.serve_static_assets = true
     config.assets.enabled = true
-    config.assets.version = '1.0'
+    config.assets.version = '1.1'
     
   end
 end
