@@ -130,7 +130,8 @@ class ScheduledPostsController < ApplicationController
           specs[0],
           specs[1],
           specs[2],
-          specs[3]
+          specs[3],
+          Date.parse(post_date) + 3.months
           )
         file_name = file_url.split('/').last
         picture_url = "#{root_url}filters/#{file_name}"
