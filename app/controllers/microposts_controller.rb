@@ -97,7 +97,7 @@ class MicropostsController < ApplicationController
     accounts = current_user.accounts.where('id IN (?)', params[:pages])
     @success_string = []
     post_to_buffer = false
-    if Date.parse(post_date) > Date.today
+    if Date.parse(post_date) > DateTime.now.in_time_zone(current_user.timezone).to_date
       is_scheduled_post = true
     else
       is_scheduled_post = false
@@ -146,28 +146,28 @@ class MicropostsController < ApplicationController
       end
       flash[:success] = "Your post schedule has been updated"
       redirect_to scheduled_posts_path and return
-    end
-    
-    accounts.each do |page|
-      case page.provider
-        when "facebook"
-          resp = Micropost.share_to_facebook(nil, page, message, picture_url, current_user)
-        when "linkedin"
-          resp = Micropost.share_to_linkedin(nil, page, message, picture_url, current_user)
-        when "twitter"
-          resp = Micropost.share_to_twitter(nil, page, message, picture_url, current_user)
-        when "buffer"
-          post_to_buffer = true
-          resp = Micropost.share_to_buffer(nil, page, message, picture_url, current_user)
-        when "pinterest"
-          resp = Micropost.share_to_pinterest(nil, page, message, picture_url, current_user)
-        else
-      end
+    else
+      accounts.each do |page|
+        case page.provider
+          when "facebook"
+            resp = Micropost.share_to_facebook(nil, page, message, picture_url, current_user)
+          when "linkedin"
+            resp = Micropost.share_to_linkedin(nil, page, message, picture_url, current_user)
+          when "twitter"
+            resp = Micropost.share_to_twitter(nil, page, message, picture_url, current_user)
+          when "buffer"
+            post_to_buffer = true
+            resp = Micropost.share_to_buffer(nil, page, message, picture_url, current_user)
+          when "pinterest"
+            resp = Micropost.share_to_pinterest(nil, page, message, picture_url, current_user)
+          else
+        end
 
-      if resp == "success"
-        @success_string << "<span class='glyphicon glyphicon-ok'></span> #{page.name} - Success"
-      else
-        @success_string << "<span class='glyphicon glyphicon-remove'></span> #{page.name} - Failed"
+        if resp == "success"
+          @success_string << "<span class='glyphicon glyphicon-ok'></span> #{page.name} - Success"
+        else
+          @success_string << "<span class='glyphicon glyphicon-remove'></span> #{page.name} - Failed"
+        end
       end
     end
 

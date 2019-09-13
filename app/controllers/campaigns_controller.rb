@@ -208,7 +208,7 @@ class CampaignsController < ApplicationController
     post_date = params["post_date"] rescue Date.today
     @success_string = []
     post_to_buffer = false
-    if Date.parse(post_date) > Date.today
+    if Date.parse(post_date) > DateTime.now.in_time_zone(current_user.timezone).to_date
       is_scheduled_post = true
     else
       is_scheduled_post = false
