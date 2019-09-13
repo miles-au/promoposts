@@ -133,10 +133,17 @@ class ScheduledPostsController < ApplicationController
           specs[3],
           Date.parse(post_date) + 3.months
           )
-        file_name = file_url.split('/').last
-        picture_url = "#{root_url}filters/#{file_name}"
+        if Rails.env.production?
+          picture_url = file_url
+        else
+          picture_url = root_url + file_url
+        end
       else
-        picture_url = micropost.picture_url
+        if Rails.env.production?
+          picture_url = micropost.picture.url
+        else
+          picture_url = root_url + micropost.picture.url
+        end
       end
 
       user.accounts.where(platform: platform.downcase).each do |account|
