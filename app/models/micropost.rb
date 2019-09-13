@@ -335,7 +335,7 @@ class Micropost < ActiveRecord::Base
       puts "FAILED"
     end
     scheduled_post.save
-    puts "response: #{resp}"
+    puts "scheduled_post_response: #{resp}"
   end
 
   private
