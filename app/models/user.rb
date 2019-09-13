@@ -32,8 +32,7 @@ class User < ApplicationRecord
   validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
   validate :valid_slug
   validates :slug, uniqueness: { case_sensitive: false }, length: { maximum: 75 }
-  #VALID_COLOR_REGEX = /\A#(?:[A-F0-9]{6})\z/i
-  #validates :color, format: { with: VALID_COLOR_REGEX }
+  validate :valid_color
   
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   validates :company, length: { maximum: 50 }
@@ -482,6 +481,17 @@ class User < ApplicationRecord
         self.slug = self.slug.gsub(/[^a-zA-Z0-9]/, "_")
       else
         self.slug = self.id
+      end
+    end
+
+    def valid_color
+      #REGEX:     /\A#(?:[A-F0-9]{6})\z/i
+      hex_start = self.color.index('#')
+      valid_hex = self.color[hex_start..hex_start+6]
+      if valid_hex.match(/\A#(?:[A-F0-9]{6})\z/i)
+        return
+      else
+        errors.add(:color, "Please enter a valid hex color with the # symbol")
       end
     end
 
