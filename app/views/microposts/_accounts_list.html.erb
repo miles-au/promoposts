@@ -11,7 +11,7 @@
 			<%#= text_area_tag "event[microposts][#{platform.downcase}][post_caption]", nil, :class => "captionText", :maxlength => 240, :val => "" %>
 			<% platform_accounts.each do |page| %>
 				<div class="page-wrapper">
-					<%= check_box_tag("pages[]", value = page.id, checked = false )%>
+					<%= check_box_tag("pages[]", page.id, false, { onchange: "check_fields()", disabled: @check_accounts.exclude?(page.account_id)} )%>
 
 					<div class="img-holder">
 						<%= image_tag "#{page.provider}.svg", :class => "thumbnail-page #{page.provider}-bg", :style => "padding: 2px;" %>
@@ -19,7 +19,7 @@
 					</div>
 					<h6 class="page-name"><%= page.name %></h6>
 					<% if @check_accounts.exclude?(page.account_id) %>
-					  <p class="mini-error">Unable to access this account. <%= link_to "Click here to manage accounts", '/accounts/edit' %></p>
+					  <p class="mini-error">Unable to access this account. <%= link_to "Refresh the account.", accounts_edit_path %></p>
 					<% end %>
 				</div>
 			<% end %>

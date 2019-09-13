@@ -19,13 +19,13 @@
       <% if @data[provider].count > 0 %>
         <% accounts = @data[provider] %>
         <% active_accounts = Account.send("check_account_#{provider.downcase}", current_user) %>
-        <%= link_to "/auth/#{provider}?intent=connect", class: 'connect_link' do%>
+        <%= link_to "/auth/#{provider}", class: 'connect_link' do%>
           <span class="glyphicon glyphicon-refresh" style="display: inline-block;"></span><h5 style="display: inline-block; margin-left: 5px;">Refresh <%= provider %> accounts </h5>
         <% end %>
         <% accounts.each do |page| %>
           <div class="social-accounts-wrap">
             <div class="img-holder">
-              <img class="thumbnail-page" src="<%= page.picture %>"/>
+              <img class="thumbnail-page" src="<%= page.picture || image_path('page.svg') %>"/>
             </div>
             <h5 class="page-name"><%= page['name'] %></h5>
             <%= link_to accounts_remove_page_path(:id => page.id), data: { confirm: "You sure?" } do %>

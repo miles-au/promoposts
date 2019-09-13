@@ -137,171 +137,46 @@ class User < ApplicationRecord
     following.include?(other_user)
   end
 
-  def self.create_with_omniauth(auth)
-    #figure out which provider and create user
-
+  def connect_accounts(auth)
+    puts "AUTH: #{auth}"
     encrypted_token = User.encrypt_value(auth.credentials.token)
-
-    #find user by email first
-    user = User.find_by(:email => "#{auth['uid']}@#{auth['provider']}.com")
-
     case auth['provider']
       when "facebook"
-        graph = Koala::Facebook::API.new(auth.credentials.token)
-        if user
-          #user.fb_uid = auth['uid']
-          user.fb_uid = graph.get_object("me")['id']
-        else
-          user = User.find_or_initialize_by(fb_uid: graph.get_object("me")['id'])
-        end
-        if auth['uid'] == graph.get_object("me")['id']
-          user.fb_oauth_token = encrypted_token
-        else
-          return nil
-        end
+        self.fb_oauth_token = encrypted_token
+        self.fb_uid = auth.uid
       when "linkedin"
-        if user
-          user.linkedin_uid = auth['uid']
-        else
-          user = User.find_or_initialize_by(linkedin_uid: auth['uid'])
-        end
-        user.linkedin_oauth_token = encrypted_token
-      when "instagram"
-        if user
-          user.instagram_uid = auth['uid']
-        else
-          user = User.find_or_initialize_by(instagram_uid: auth['uid'])
-        end
-        user.instagram_oauth_token = encrypted_token
-      when "buffer"
-        if user
-          user.buffer_uid = auth['uid']
-        else
-          user = User.find_or_initialize_by(buffer_uid: auth['uid'])
-        end
-        user.buffer_oauth_token = encrypted_token
-        user.name = auth.extra.raw_info.name
-    end
-
-    user.password ||= self.new_token
-    user.name ||= auth['info']['name']
-    user.activated = true
-    user.activated_at ||= Time.zone.now
-    #user.oauth_token = auth.credentials.token
-
-    #save/return the user
-    if user.new_record?
-      user.email = "#{auth['uid']}@#{auth['provider']}.com"
-      user.category = "none"
-    end
-
-    user.save!
-    user
-
-  end
-
-  def self.connect_accounts(auth, id)
-
-    encrypted_token = User.encrypt_value(auth.credentials.token)
-
-    user = User.find(id)
-    case auth['provider']
-      when "facebook"
-        user.fb_oauth_token = encrypted_token
-        user.fb_uid = auth.uid
-      when "linkedin"
-        user.linkedin_oauth_token = encrypted_token
-        user.linkedin_uid = auth.uid
+        self.linkedin_oauth_token = encrypted_token
+        self.linkedin_uid = auth.uid
       when "twitter"
         encrypted_token = User.encrypt_value(auth.credentials.secret)
-        user.twitter_oauth_token = encrypted_token
-        user.twitter_uid = auth.credentials.token
-      when "instagram"
-        user.instagram_oauth_token = encrypted_token
-        user.instagram_uid = auth.uid
+        self.twitter_oauth_token = encrypted_token
+        self.twitter_uid = auth.credentials.token
       when "buffer"
-        user.buffer_oauth_token = encrypted_token
-        user.buffer_uid = auth.uid
+        self.buffer_oauth_token = encrypted_token
+        self.buffer_uid = auth.uid
       when "pinterest"
-        user.pinterest_oauth_token = encrypted_token
-        user.pinterest_uid = auth.uid
+        self.pinterest_oauth_token = encrypted_token
+        self.pinterest_uid = auth.uid
     end
-    user.save
-    user
-  end
-
-  def self.connect_accounts_oauth2(provider, code, id)
-    case provider
-      when "linkedin"
-        oauth = LinkedIn::OAuth2.new
-        access_token = oauth.get_access_token(code)
-        encrypted_token = User.encrypt_value(access_token)
-        api = LinkedIn::API.new(access_token)
-        uid = api.profile.id
-
-        user = User.find(id)
-        user.linkedin_uid = uid
-        user.linkedin_oauth_token = encrypted_token
-      when "buffer"
-        
+    if self.save
+      puts "SAVED"
+      return true
+    else
+      puts "FAILED TO SAVE"
+      return false
     end
-
-    user.save
-    user
-  end
-
-  def self.create_with_oauth2(provider, code)
-    #find user by email first
-    #user = User.find_by(:email => "#{auth['uid']}@#{provider}.com")
-
-    case provider
-      when "linkedin"
-        oauth = LinkedIn::OAuth2.new
-        access_token = oauth.get_access_token(code)
-        encrypted_token = User.encrypt_value(access_token)
-        api = LinkedIn::API.new(access_token)
-        uid = api.profile.id
-
-        user = User.find_by(:email => "#{uid}@#{provider}.com")
-
-        if user
-          user.linkedin_uid = uid
-        else
-          user = User.find_or_initialize_by(linkedin_uid: uid)
-        end
-        user.linkedin_oauth_token = encrypted_token
-      when "buffer"
-
-    end
-
-    user.password ||= self.new_token
-    user.name ||= "#{api.profile.first_name} #{api.profile.last_name}"
-    user.activated = true
-    user.activated_at ||= Time.zone.now
-    #user.oauth_token = auth.credentials.token
-
-    #save/return the user
-    if user.new_record?
-      user.email = "#{uid}@#{provider}.com"
-      user.category = "none"
-    end
-
-    user.save!
-    user
   end
 
   def facebook
-    decrypted_token = User.decrypt_value(self.fb_oauth_token)
-    @facebook ||= Koala::Facebook::API.new(decrypted_token)
+    puts "VAL: #{fb_oauth_token}"
+    decrypted_token = User.decrypt_value(fb_oauth_token)
+    facebook ||= Koala::Facebook::API.new(decrypted_token)
   end
 
-  def self.unauthorize_facebook(user)
+  def unauthorize_facebook
     #user.facebook.delete_object("me/permissions")
-    user.fb_uid = nil
-    user.fb_oauth_token = nil
-    accounts = Account.where(:user_id => user.id, :provider => 'facebook')
-    accounts.destroy_all
-    user.save!
+    resp = delete_social_accounts("facebook")
+    return resp
   end
 
   def linkedin
@@ -309,18 +184,15 @@ class User < ApplicationRecord
     @linkedin = HTTParty.get("https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))&oauth2_access_token=#{decrypted_token}")
   end
 
-  def linkedin_companies
-    decrypted_token = User.decrypt_value(self.linkedin_oauth_token)
-    @accounts = HTTParty.get("https://api.linkedin.com/v2/organizationalEntityAcls?q=roleAssignee&oauth2_access_token=#{decrypted_token}")
-  end
+  # def linkedin_companies
+  #   decrypted_token = User.decrypt_value(self.linkedin_oauth_token)
+  #   @accounts = HTTParty.get("https://api.linkedin.com/v2/organizationalEntityAcls?q=roleAssignee&oauth2_access_token=#{decrypted_token}")
+  # end
 
-  def self.unauthorize_linkedin(user)
+  def unauthorize_linkedin
     #disconnect linkedin
-    user.linkedin_uid = nil
-    user.linkedin_oauth_token = nil
-    accounts = Account.where(:user_id => user.id, :provider => 'linkedin')
-    accounts.destroy_all
-    user.save!
+    resp = delete_social_accounts("linkedin")
+    return resp
   end
 
   def twitter
@@ -334,13 +206,10 @@ class User < ApplicationRecord
     @twitter = client
   end
 
-  def self.unauthorize_twitter(user)
+  def unauthorize_twitter
     #disconnect twitter
-    user.twitter_uid = nil
-    user.twitter_oauth_token = nil
-    accounts = Account.where(:user_id => user.id, :provider => 'twitter')
-    accounts.destroy_all
-    user.save!
+    resp = delete_social_accounts("twitter")
+    return resp
   end
 
   def pinterest
@@ -348,21 +217,9 @@ class User < ApplicationRecord
     @pinterest = Pinterest::Client.new(decrypted_token)
   end
 
-  def self.unauthorize_pinterest(user)
-    user.pinterest_uid = nil
-    user.pinterest_oauth_token = nil
-    accounts = Account.where(:user_id => user.id, :provider => 'pinterest')
-    accounts.destroy_all
-    user.save!
-  end
-
-  def instagram
-    decrypted_token = User.decrypt_value(self.instagram_oauth_token)
-    client = Instagram.client(:access_token => decrypted_token)
-  end
-
-  def self.unauthorize_instagram
-    
+  def unauthorize_pinterest
+    resp = delete_social_accounts("pinterest")
+    return resp
   end
 
   def buffer
@@ -370,13 +227,24 @@ class User < ApplicationRecord
     @buffer = Buffer::Client.new(decrypted_token)
   end
 
-  def self.unauthorize_buffer(user)
+  def unauthorize_buffer
     #POST https://api.bufferapp.com/1/user/deauthorize.json
-    user.buffer_uid = nil
-    user.buffer_oauth_token = nil
-    accounts = Account.where(:user_id => user.id, :provider => 'buffer')
-    accounts.destroy_all
-    user.save!
+    resp = delete_social_accounts("buffer")
+    return resp
+  end
+
+  def delete_social_accounts(provider)
+    accounts = self.accounts.where(:provider => provider)
+    if provider == "facebook"
+      provider = "fb"
+    end
+    self["#{provider}_uid"] = nil
+    self["#{provider}_oauth_token"] = nil
+    if self.save && accounts.destroy_all
+      return true
+    else
+      return false
+    end
   end
 
   def avatar
@@ -426,12 +294,6 @@ class User < ApplicationRecord
     # current.std_offset gives offset from standard time during dst
     return current.utc_total_offset
   end
-
-  # def scheduled_and_subscribed_posts
-  #   topics = self.topics.pluck(:id)
-  #   posts = ScheduledPost.where(topic_id: topics).or(ScheduledPost.where(user_id: self.id))
-  #   return posts
-  # end
 
   private
 
@@ -501,7 +363,7 @@ class User < ApplicationRecord
     end
 
     def follow_promo_posts
-      self.follow(User.find(1))
+      self.follow(User.first)
     end
 
 end

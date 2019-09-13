@@ -2,13 +2,11 @@ class AccountsController < ApplicationController
   before_action :logged_in_user
 
   def edit
+    clear_location
+    
   	#list all available accounts
   	@account = Account.new
   	@user = current_user
-    # if !current_user.timezone
-    #   current_user.timezone = Time.zone_offset(Time.now.zone)
-    #   current_user.save
-    # end
 
   	@providers = Account.provider_array
   	@data = {}
@@ -35,23 +33,8 @@ class AccountsController < ApplicationController
   end
 
   def disconnect
-  	provider = params['provider']
-  	user = current_user
-
-  	case provider
-  	  when "facebook"
-        User.unauthorize_facebook(user)
-      when "linkedin"
-        User.unauthorize_linkedin(user)
-      when "twitter"
-        User.unauthorize_twitter(user)
-      when "buffer"
-  		  User.unauthorize_buffer(user)
-      when "pinterest"
-        User.unauthorize_pinterest(user)
-  	end
-
-  	flash[:success] = "Disconnected #{provider} account."
+    current_user.send("unauthorize_#{params['provider']}")
+  	flash[:success] = "Disconnected #{params['provider']} account."
   	redirect_to '/accounts/edit'
   end
 

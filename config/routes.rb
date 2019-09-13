@@ -19,12 +19,12 @@ Rails.application.routes.draw do
   post   '/login',   to: 'sessions#create'
 
   #oauth 1
-  get '/auth/:provider/callback', to: 'sessions#callback', as: 'sessions_callback'
-  get '/auth/failure', to: 'oauth#failure', as: 'oauth_failure'
+  get '/auth/:provider/callback', to: 'oauth#callback'
+  get '/auth/failure', to: 'oauth#failure'
 
   #oauth 2
-  get '/sessions/oauth2', to: 'sessions#oauth2'
-  get '/oauth2/:provider', to: 'sessions#outh2_callback'
+  # get '/sessions/oauth2', to: 'sessions#oauth2'
+  # get '/oauth2/:provider', to: 'sessions#outh2_callback'
   
   delete '/logout',  to: 'sessions#destroy'
 
