@@ -296,7 +296,8 @@ class Micropost < ActiveRecord::Base
 
   def self.post_scheduled_post(scheduled_post)
     #check to see if this post has a topic. If it has a topic, it should be posted to all accounts who's users are subscribed to that topic
-
+    scheduled_post.status = "failed";
+    
     page = scheduled_post.account
     
     puts "Picture URL: #{scheduled_post.picture_url}"
@@ -324,14 +325,13 @@ class Micropost < ActiveRecord::Base
             micropost.shares = 1
           end
           micropost.save
-          track = Track.new(user_id: current_user.id, category: micropost.category, asset_num: micropost.id, act: "share")
+          track = Track.new(user_id: scheduled_post.user_id, category: micropost.category, asset_num: micropost.id, act: "share")
           track.save
         end
       end
       scheduled_post.status = "posted"
       puts "POSTED"
     else
-      scheduled_post.status = "failed";
       puts "FAILED"
     end
     scheduled_post.save
