@@ -86,7 +86,7 @@ class MicropostsController < ApplicationController
     if default_overlay
       @overlays.unshift( [ default_overlay.name, default_overlay.picture.url, default_overlay.id ] )
     end
-    @users_time = current_user.users_time(Time.zone.now)
+    @users_time = current_user.utc_to_user_time(Time.now.getutc)
   end
 
   def submit_share_post
@@ -127,10 +127,11 @@ class MicropostsController < ApplicationController
       if Rails.env.production?
         picture_url = micropost.picture.url
       else
-        picture_url = root_url + micropost.picture.url
+        picture_url = root_url.chop + micropost.picture.url
       end
     end
-
+    puts "PICTURE_URL: #{picture_url}"
+    
     #scheduled post?
     if is_scheduled_post
       accounts.each do |page|

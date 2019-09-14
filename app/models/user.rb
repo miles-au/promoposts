@@ -283,8 +283,12 @@ class User < ApplicationRecord
     topics.delete(topic)
   end
 
-  def users_time(time)
+  def utc_to_user_time(time)
     return time + self.current_offset
+  end
+
+  def user_time_to_utc(time)
+    return time - self.current_offset
   end
 
   def current_offset

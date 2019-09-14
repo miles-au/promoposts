@@ -198,7 +198,7 @@ class CampaignsController < ApplicationController
                           ]
     @overlay_select = current_user.overlays.pluck(:name, :id)
     @overlay_select.unshift(["none" , nil])
-    @users_time = current_user.users_time(Time.zone.now)
+    @users_time = current_user.utc_to_user_time(Time.now.getutc)
   end
 
   def submit_share_campaign

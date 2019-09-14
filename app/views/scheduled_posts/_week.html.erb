@@ -14,7 +14,7 @@
 </div>
 
 <% (week_start..week_start+6).each do |day_of_week| %>
-	<div class="day <%= "today" if day_of_week == DateTime.now.in_time_zone(current_user.timezone).to_date %>" >
+	<div class="day <%= "today" if day_of_week == current_user.utc_to_user_time(Time.now.getutc).to_date %>" >
 	  <h4><%= day_of_week.strftime("%B %-d") %></h4>
     <%= render partial: "day", locals: { day: day_of_week } %>
 	</div>
