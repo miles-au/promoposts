@@ -4,46 +4,116 @@
   <title>We're sorry, but something went wrong (500)</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-      @import url('https://fonts.googleapis.com/css?family=Bai+Jamjuree');
+    @import url('https://fonts.googleapis.com/css?family=Bai+Jamjuree');
+      
+    h1, h2, h3, h4, h5, h6, ul, li, p, div, span, body{
+      font-family: 'Bai Jamjuree', sans-serif;
+      color: #f6f6f6;
+    }
 
-        h1, h2, h3, h4, h5, h6, ul, li, p, div, span, body{
-          font-family: 'Bai Jamjuree', sans-serif;
-          color: #2d4059;
-        }
+    body{
+      padding: 0px;
+      margin: 0px;
+       overflow: hidden;
+    }
 
-        body{
-          background-color: #ceddea;
-        }
+    .container{
+      background: linear-gradient( rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2) ), url(500.jpg);
+      background-size: cover;
+      background-position: center center;
+      height: 100vh;
+      width: 100vw;
+      display: grid;
+      grid-template-columns: 5% auto 5%;
+      grid-template-rows: 30% auto 30%;
+      justify-content: center;
+      align-items: center;
+    }
 
-        #backtohome a{
-          text-decoration: none;
-          background-color: #ffb400;
-          text-align: center;
-          padding: 10px;
-          box-shadow: 5px 5px #48565e;
-          display: inline-block;
-          color: #283642;
-        }
+    .hero{
+      grid-column-start: 2;
+      text-align: center;
+    }
 
-        #backtohome a:hover{
-          box-shadow: 10px 10px #9aa9b7;
-          margin-left: -5px;
-          margin-top: -5px;
-        }
+    .hero h1{
+      font-size: 10em;
+      color: #f6f6f6;
+      margin: 0px;
+    }
+
+    .hero h2{
+      color: #f6f6f6;
+      margin: 0px;
+    }
+
+    .footer{
+      text-align: center;
+      grid-column-start: 2;
+      grid-row-start: 3;
+    }
+
+    .btn{
+      padding: 10px 15px;
+      background-color: #2d4059;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 5px;
+    }
+
+    .btn p{
+      display: inline-block;
+      color: #ffb400;
+    }
+
+    .btn img{
+      height: 30px;
+      margin-right: 20px;
+    }
+
+    //Color Palette:
+    /*$yellow0: #f4af0c;
+    $yellow1: #ffb400;
+    $yellow2: #ffc95c;
+    $yellow3: #ffe4ae;
+    $yellow4: #f9eed7;
+    $blue1: #2d4059;
+    $blue2: #3d5875;
+    $blue3: #54799b;
+    $blue4: #97c2dd;
+    $blue5: #ceddea;
+    $blue6: #dae5f7;
+    $grey1: #283642;
+    $grey2: #48565e;
+    $grey3: #9aa9b7;
+    $grey4: #d7dde2;
+    $grey5: #f6f6f6;
+    $grey6: #ffffff;
+    $teal1: #053b4c;
+    $teal2: #1a5d72;
+    $teal3: #437f97;
+    $teal4: #66b4cc;
+    $teal5: #a1d6e2;
+    $teal6: #d7ebf2;
+    $red1: #6b262c;
+    $red2: #b72e35;
+    $red3: #ea5455;
+    $red4: #ef9297;*/
       
   </style>
 </head>
 
 <body>
-  <!-- This file lives in public/500.html -->
-  <div style="text-align: center;">
-    <h1>Uh oh, looks like something went wrong.</h1>
-     <p>sorry!</p>
-  </div>
-    <div id="backtohome" style="text-align: center; display: block; margin: 0 auto;">
-      <a href="/" style="">
-          take me to the homepage!
-      </a>
+  <!-- This file lives in public/404.html -->
+  <div class="container" >
+    <div class="hero">
+      <h1>:(</h1>
+      <h2>Something went wrong</h2>
+    </div>
+    <div class="footer">
+      <a href="/" class="btn"><img src="logo_300.png" /><p>Back to Promo Posts</p></a>
+      <a href="/contact" class="btn"><p>Contact Us</p></a>
+    </div>
   </div>
 </body>
 </html>
