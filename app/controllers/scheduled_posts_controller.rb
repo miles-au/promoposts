@@ -6,7 +6,7 @@ class ScheduledPostsController < ApplicationController
   # GET /scheduled_posts
   # GET /scheduled_posts.json
   def index
-    @time = Time.now
+    @time = current_user.users_time(Time.zone.now)
     @topics = current_user.topics
     if current_user.admin
       @scheduled_posts = ScheduledPost.all.where.not(topic_id: nil).or(ScheduledPost.where(user_id: current_user.id))
@@ -22,7 +22,6 @@ class ScheduledPostsController < ApplicationController
     else
       @scheduled_posts = current_user.scheduled_posts
     end
-    puts "time_controller: #{@time}"
     respond_to do |format|
       format.html
       format.js
