@@ -369,8 +369,22 @@ header{
     display: none;
   }
   .masonry-item{
+    display: inline-block;
+    position: relative;
+    width: 100%;
     img{
-    padding: 5px;
+      padding: 5px;
+    }
+    p{
+      position: absolute;
+      top: 0px;
+      left: 5px;
+      z-index: 10;
+      background-color: $grey5;
+      padding: 3px 5px;
+    }
+    &:hover p{
+      display: none;
     }
   }
 }
