@@ -351,8 +351,18 @@ header{
       display: inline-block;
       height: 100%;
       margin-right: 20px;
+      position: relative;
       img{
         height: calc(100% - 20px);
+      }
+      p{
+        position: absolute;
+        top: 0px;
+        background-color: $grey5;
+        padding: 3px 5px;
+      }
+      &:hover p{
+        display: none;
       }
     }
 }
