@@ -1,5 +1,5 @@
 <% @scheduled_posts.where("post_time >= ? AND post_time < ?",  current_user.user_time_to_utc(day.to_time), current_user.user_time_to_utc( (day + 1.day).to_time) ).each do |post| %>
-	<div class="listed_post">			
+	<div class="listed_post">
 		<div>
 			<% if post.status == "waiting" %>
 				<span class="glyphicon glyphicon-hourglass" data-toggle="tooltip" data-placement="top" data-original-title="Waiting" ></span>
@@ -9,33 +9,31 @@
 				<span class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="top" data-original-title="Post Failed"></span>
 			<% end %>
 
-			<% if post.topic %>
-				<span>-<%= post.topic.name %>-</span>
-			<% end %>
-
-			<% post_account = post.account %>
 			<%= link_to post, remote: :true do %>
-				<img src="<%= post.picture_url %>" />
+				<%= image_tag post.picture_url, class: "post-image" %>
 			<% end %>
 
 			<span class="glyphicon glyphicon-arrow-right" ></span>
 
-			<%= image_tag "#{post_account.platform}.svg", class: "#{post_account.platform}-bg", style: "padding: 3px;" %>
+			<%= image_tag "#{post.account.platform}.svg", class: "#{post.account.platform}-bg", style: "padding: 3px;" %>
 			:
-			<%= image_tag post_account.picture, "data-toggle": "tooltip", "data-placement": "top", "data-original-title": post_account.name %>
+			<%= image_tag post.account.picture || image_path('page.svg'), "data-toggle": "tooltip", "data-placement": "top", "data-original-title": post.account.name %>
 
-			<% if current_user.admin %>
-				<p>user: <%= post.user.name %></p>
-				<% if !post.topic %>
-					<p class="mini-error">This isn't global</p>
-				<% end %>
+			<%=link_to post, method: :delete, style: "margin-left: 10px;" do %>
+				<span class="glyphicon glyphicon-trash" ></span>
 			<% end %>
-
 		</div>
 
 		<div>
-			<%=link_to post, method: :delete do %>
-				<span class="glyphicon glyphicon-trash" ></span>
+			<% if post.topic %>
+				<span>from '<%= post.topic.name %>'</span>
+			<% end %>
+			<% if current_user.admin %>
+				<% if post.topic %>
+				<span> | users: <%= post.topic.users.count %></span>
+				<% else %>
+					<span class="mini-error">This isn't global</span>
+				<% end %>
 			<% end %>
 		</div>
 	</div>

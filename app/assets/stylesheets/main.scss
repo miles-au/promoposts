@@ -489,11 +489,12 @@ header{
     border-bottom: 2px solid $grey4;
   }
   .listed_post{
-    display: flex;
-    justify-content: space-between;
     margin-bottom: 3px;
     img{
       height: 30px;
+    }
+    .post-image{
+      height: 75px;
     }
     span{
       white-space: nowrap;
@@ -506,6 +507,15 @@ header{
 }
 
 /* scheduled post modal */
+.modal-content{
+  background-color: $grey5;
+}
+
+.btn-modal{
+  padding: 10px 20px;
+  display: inline-block;
+}
+
 .scheduled_post_content{
   width: 100%;
   height: 100%;

@@ -9,9 +9,11 @@
 			</div>
 		</div>
 		<img class="main-image" src="<%= @scheduled_post.picture_url %>"/>
-		<p>caption: "<%= @scheduled_post.caption %>"</p>
+		<div id="post-caption-container" >
+			<%= render "form" %>
+		</div>
 	</div>
 </div>
-<div class="modal-footer">
-  <button type="button" class="btn-large" style="padding: 10px 20px;" data-dismiss="modal">close</button>
+<div class="modal-footer" style="text-align: right;">
+  <button class="btn-large btn-modal" data-dismiss="modal">close</button>
 </div>

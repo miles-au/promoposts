@@ -76,6 +76,7 @@ class MicropostsController < ApplicationController
 
   def share_post
     @micropost = Micropost.find(params[:id])
+    @scheduled_post = ScheduledPost.new()
     @check_accounts = current_user.check_accounts
 
     default_overlay = Overlay.find(current_user.setting.default_overlay_id) rescue nil

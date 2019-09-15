@@ -16,9 +16,9 @@ class ScheduledPostsController < ApplicationController
   end
 
   def prev_week
-    @time = params[:time].to_time.advance( days: -7 ).to_date
+    @time = params[:time].to_time.advance( days: -7 )
     if current_user.admin
-      @scheduled_posts = ScheduledPost.all.where.not(topic_id: nil)
+      @scheduled_posts = ScheduledPost.all.where.not(topic_id: nil).or(ScheduledPost.where(user_id: current_user.id))
     else
       @scheduled_posts = current_user.scheduled_posts
     end
@@ -29,9 +29,9 @@ class ScheduledPostsController < ApplicationController
   end
 
   def next_week
-    @time = params[:time].to_time.advance( days: 7 ).to_date
+    @time = params[:time].to_time.advance( days: 7 )
     if current_user.admin
-      @scheduled_posts = ScheduledPost.all.where.not(topic_id: nil)
+      @scheduled_posts = ScheduledPost.all.where.not(topic_id: nil).or(ScheduledPost.where(user_id: current_user.id))
     else
       @scheduled_posts = current_user.scheduled_posts
     end
@@ -175,6 +175,11 @@ class ScheduledPostsController < ApplicationController
 
   # GET /scheduled_posts/1/edit
   def edit
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # POST /scheduled_posts
@@ -194,14 +199,16 @@ class ScheduledPostsController < ApplicationController
   # PATCH/PUT /scheduled_posts/1
   # PATCH/PUT /scheduled_posts/1.json
   def update
+    @scheduled_post.update_attributes(scheduled_post_params)
+    if @scheduled_post.save
+      @status = "Caption updated."
+    else
+      @status = "There was an issue updating the caption."
+    end
+
     respond_to do |format|
-      if @scheduled_post.update(scheduled_post_params)
-        format.html { redirect_to @scheduled_post, notice: 'Scheduled post was successfully updated.' }
-        format.json { render :show, status: :ok, location: @scheduled_post }
-      else
-        format.html { render :edit }
-        format.json { render json: @scheduled_post.errors, status: :unprocessable_entity }
-      end
+      format.html
+      format.js
     end
   end
 
@@ -221,7 +228,7 @@ class ScheduledPostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def scheduled_post_params
-      params.permit( :topic_id, :platform, :picture_url, :micropost_id, :campaign_id, :post_time )
+      params.require(:scheduled_post).permit( :topic_id, :platform, :picture_url, :account_id, :micropost_id, :campaign_id, :post_time, :caption )
     end
 
     def admin_user

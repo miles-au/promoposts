@@ -1,17 +1,12 @@
-<%= form_with(model: scheduled_post, local: true) do |form| %>
-  <% if scheduled_post.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(scheduled_post.errors.count, "error") %> prohibited this scheduled_post from being saved:</h2>
+<%= form_for @scheduled_post, remote: :true do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
 
-      <ul>
-      <% scheduled_post.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="actions">
-    <%= form.submit %>
+  <%= f.label :caption, "Post caption:" %>
+  <%= f.text_area :caption, placeholder: @scheduled_post.caption, maxlength: 400 %>
+  <div style="text-align: center;">
+    <%= f.submit "update caption", class: "btn-submit" %>
+    <% if @status %>
+      <p><%= @status %></p>
+    <% end %>
   </div>
 <% end %>
