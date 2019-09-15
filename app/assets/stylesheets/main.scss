@@ -848,6 +848,23 @@ footer{
   }
 }
 
+/* Info pages */
+.info-section{
+  width: 100%;
+  margin: 0px;
+  padding: 15px 30px;
+  display: flex;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+  .col{
+    align-self: center;
+    img{
+      max-height: 350px;
+      max-width: 100%;
+    }
+  }
+}
+
 /* miscellaneous */
 
 .debug_dump {
