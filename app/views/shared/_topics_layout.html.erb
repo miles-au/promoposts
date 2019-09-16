@@ -2,7 +2,7 @@
   <% if current_user.topics.include?(topic) %>
   	<% link_class = "picked" %>
   	<% link_disable = false %>
-  <% elsif current_user.topics.count >= 3 %>
+  <% elsif current_user.topics.count >= Topic.topics_limit %>
     <% link_class = "maxed-out" %>
     <% link_disable = true %>
   <% end %>

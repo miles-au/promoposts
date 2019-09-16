@@ -115,9 +115,12 @@ class ScheduledPostsController < ApplicationController
 
     topic.users.each do |user|
       # do the picture first so you can share the picture across accounts on the same platform
-      picture_url = user.get_picture_with_default_overlay(  micropost.picture.url, Date.parse(post_date) + 3.months)
+      accounts = user.accounts.where(platform: platform.downcase)
+      if accounts.count > 0
+        picture_url = user.get_picture_with_default_overlay(  micropost.picture.url, Date.parse(post_date) + 3.months)
+      end
 
-      user.accounts.where(platform: platform.downcase).each do |account|
+      accounts.each do |account|
         count += 1
         post = user.scheduled_posts.build(topic_id: topic_id,
                                           micropost_id: micropost.id,

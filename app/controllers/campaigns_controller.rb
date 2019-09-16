@@ -264,10 +264,6 @@ class CampaignsController < ApplicationController
     end
 
     if current_user != campaign.user_id
-      #create notification
-      @notification = Notification.new(:user_id => campaign.user_id, :message => "#{current_user.name} shared your campaign.", :category => "share", :destination_id => campaign.id, :obj => "campaign" )
-      @notification.save!
-
       track = Track.new(user_id: current_user.id, category: "campaign", asset_num: campaign.id, act: "share")
       track.save
     end

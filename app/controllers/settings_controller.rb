@@ -20,7 +20,7 @@ class SettingsController < ApplicationController
     if current_user.topics.include?(topic)
       #unsubscribe from this topic
       current_user.delete_topic(topic)
-    elsif current_user.topics.count < Setting.topics_limit
+    elsif current_user.topics.count < Topic.topics_limit
       current_user.add_topic(topic)
     end
 

@@ -3,4 +3,8 @@ class Topic < ApplicationRecord
 	has_many :subscribed_users, class_name:  "TopicRelationship",
                                   foreign_key: "topic_id"
 	has_many :users, through: :subscribed_users
+
+	def self.topics_limit
+		return 3
+	end
 end
