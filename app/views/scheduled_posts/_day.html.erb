@@ -10,14 +10,14 @@
 			<% end %>
 
 			<%= link_to post, remote: :true do %>
-				<%= image_tag post.picture_url, class: "post-image" %>
+				<img src="<%= post.picture_url %>" class= "post-image" />
 			<% end %>
 
 			<span class="glyphicon glyphicon-arrow-right" ></span>
 
-			<%= image_tag "#{post.account.platform}.svg", class: "#{post.account.platform}-bg", style: "padding: 3px;" %>
+			<%= image_tag "#{post.platform}.svg", class: "#{post.platform}-bg", style: "padding: 3px;" %>
 			:
-			<%= image_tag post.account.picture || image_path('page.svg'), "data-toggle": "tooltip", "data-placement": "top", "data-original-title": post.account.name %>
+			<%= image_tag (post.account.picture rescue image_path('page.svg') ), "data-toggle": "tooltip", "data-placement": "top", "data-original-title": post.account.name rescue "global post" %>
 
 			<%=link_to post, method: :delete, style: "margin-left: 10px;" do %>
 				<span class="glyphicon glyphicon-trash" ></span>
@@ -30,7 +30,7 @@
 			<% end %>
 			<% if current_user.admin %>
 				<% if post.topic %>
-				<span> | users: <%= post.topic.users.count %></span>
+				<span> | outgoing: <%= ScheduledPost.where( micropost_id: post.micropost_id, topic_id: post.topic.id ).count %></span>
 				<% else %>
 					<span class="mini-error">This isn't global</span>
 				<% end %>

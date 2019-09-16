@@ -273,14 +273,41 @@ class User < ApplicationRecord
     return accounts
   end
 
+  def get_picture_with_default_overlay(bg_image, delete_by)
+    overlay_id = self.setting.default_overlay_id
+    return bg_image unless overlay_id
+    overlay = Overlay.find(overlay_id)
+    overlay_location = self.setting.default_overlay_location
+    specs = Overlay.get_specs(overlay_location, overlay.picture.url, bg_image)
+    file_url = Micropost.create_overlay_picture( bg_image, overlay, specs[0], specs[1], specs[2], specs[3], delete_by )
+    return file_url  
+  end
+
   # Follows a topic.
   def add_topic(topic)
     topics << topic
+    # get scheduled posts from admin
+
+    posts = User.first.scheduled_posts.where("post_time > ? AND topic_id = ?", Time.now.getutc, topic.id)
+    posts.each do |post|
+      self.accounts.where(platform: post.platform).each do |account|
+        new_scheduled_post = ScheduledPost.new( user_id: self.id,
+                                                account_id: account.id,
+                                                micropost_id: post.micropost_id,
+                                                picture_url: get_picture_with_default_overlay(post.picture_url, post.post_time + 3.months),
+                                                caption: post.caption,
+                                                platform: post.platform,
+                                                post_time: (post.post_time - self.current_offset) )
+        new_scheduled_post.save
+      end
+    end
   end
 
   # Unfollows a topic.
   def delete_topic(topic)
     topics.delete(topic)
+    posts = self.scheduled_posts.where("post_time > ? AND topic_id = ?", Time.now.getutc, topic.id)
+    posts.destroy_all
   end
 
   def utc_to_user_time(time)

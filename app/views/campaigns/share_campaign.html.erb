@@ -612,7 +612,8 @@
 	    for(var i = 0; i < overlay_obj_arr.length; i++){
 	    	var overlay = overlay_obj_arr[i];
 	    	overlay.overlay_index = new_index;
-	    	update_over_change(overlay, update_location);		  
+	    	update_over_change(overlay, update_location);
+	    	updateOverlayDimensions(overlay);		  
 	    }
 	}
 

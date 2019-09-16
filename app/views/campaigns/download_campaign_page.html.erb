@@ -488,21 +488,22 @@
 	}
 
 	function updateOverlays(){
-    var update_overlay_id = document.getElementById("update_overlay_id");
-    var update_overlay_location = document.getElementById("update_overlay_location");
-    var update_id = update_overlay_id.options[update_overlay_id.selectedIndex].value;
-    var update_location = update_overlay_location.options[update_overlay_location.selectedIndex].value;
-    for(var j = 0; j < overlay_arr.length; j++){
-    		if(overlay_arr[j][2] == update_id){
-    			var new_index = j;
-    			break;
-    		}
-    	}
-    for(var i = 0; i < overlay_obj_arr.length; i++){
-    	var overlay = overlay_obj_arr[i];
-    	overlay.overlay_index = new_index;
-    	update_over_change(overlay, update_location);		  
-    }
+	    var update_overlay_id = document.getElementById("update_overlay_id");
+	    var update_overlay_location = document.getElementById("update_overlay_location");
+	    var update_id = update_overlay_id.options[update_overlay_id.selectedIndex].value;
+	    var update_location = update_overlay_location.options[update_overlay_location.selectedIndex].value;
+	    for(var j = 0; j < overlay_arr.length; j++){
+	    		if(overlay_arr[j][2] == update_id){
+	    			var new_index = j;
+	    			break;
+	    		}
+	    	}
+	    for(var i = 0; i < overlay_obj_arr.length; i++){
+	    	var overlay = overlay_obj_arr[i];
+	    	overlay.overlay_index = new_index;
+	    	update_over_change(overlay, update_location);
+	    	updateOverlayDimensions(overlay);		  
+	    }
 	}
 
 	function update_over_change(overlay, update_location){

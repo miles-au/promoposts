@@ -1,6 +1,6 @@
 class ScheduledPostsController < ApplicationController
   before_action :logged_in_user
-  before_action :admin_user, only: [:create_global_post]
+  before_action :admin_user, only: [:create_global_post, :create_global_campaign, :schedule_global_post]
   before_action :set_scheduled_post, only: [:show, :edit, :update, :destroy]
 
   # GET /scheduled_posts
@@ -57,7 +57,6 @@ class ScheduledPostsController < ApplicationController
   end
 
   def create_global_post
-    puts "global post params: #{params}"
     screened_params = scheduled_post_params
 
     resp = schedule_global_post(screened_params[:topic_id], screened_params[:platform], screened_params[:micropost_id], screened_params[:post_time] )
@@ -74,7 +73,6 @@ class ScheduledPostsController < ApplicationController
   end
 
   def create_global_campaign
-    puts "global post params: #{params}"
     screened_params = scheduled_post_params
     failed = false
     succeeded = false
@@ -108,42 +106,16 @@ class ScheduledPostsController < ApplicationController
     micropost = Micropost.find(micropost_id)
     post_time = Account.best_post_time(platform, DateTime.parse(post_date))
     failed = false
-    succeeded = false
+    succeeded = true
     count = 0
+
+    #create first post from admin
+    admin_record = User.first.scheduled_posts.build(topic_id: topic_id, micropost_id: micropost_id, post_time: post_time, picture_url: micropost.picture.url, caption: micropost.content, platform: platform)
+    admin_record.save
 
     topic.users.each do |user|
       # do the picture first so you can share the picture across accounts on the same platform
-      # check for user overlay
-      overlay_id = user.setting.default_overlay_id
-      if overlay_id
-        overlay = Overlay.find(overlay_id)
-        overlay_location = user.setting.default_overlay_location
-        if Rails.env.production?
-          specs = Overlay.get_specs(overlay_location, overlay.picture.url, micropost.picture.url)
-        else
-          specs = Overlay.get_specs(overlay_location, overlay.picture.path, micropost.picture.path)
-        end
-        file_url = Micropost.create_overlay_picture(
-          micropost.picture.url,
-          overlay,
-          specs[0],
-          specs[1],
-          specs[2],
-          specs[3],
-          Date.parse(post_date) + 3.months
-          )
-        if Rails.env.production?
-          picture_url = file_url
-        else
-          picture_url = root_url + file_url
-        end
-      else
-        if Rails.env.production?
-          picture_url = micropost.picture.url
-        else
-          picture_url = root_url + micropost.picture.url
-        end
-      end
+      picture_url = user.get_picture_with_default_overlay(  micropost.picture.url, Date.parse(post_date) + 3.months)
 
       user.accounts.where(platform: platform.downcase).each do |account|
         count += 1
@@ -153,8 +125,7 @@ class ScheduledPostsController < ApplicationController
                                           platform: platform,
                                           picture_url: picture_url,
                                           caption: micropost.content,
-                                          post_time: post_time)
-        puts "POST TIME: #{post_time}"
+                                          post_time: user.utc_to_user_time(post_time.to_time) )
         if post.save
           succeeded = true
         else
@@ -166,8 +137,6 @@ class ScheduledPostsController < ApplicationController
 
     if succeeded == true && failed == false
       return "success"
-    elsif count == 0
-      return "no accounts to post to"
     else
       return "failed"
     end

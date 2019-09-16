@@ -33,13 +33,13 @@
 		  <div>
 		  	<% if @micropost.category %>
 		    	<% if Rails.env.production? %>
-	      		<% image = MiniMagick::Image.open(@micropost.picture.url) %>
-	      	<% else %> 
-	      		<% pic_url = @micropost.picture.path %>
-	      		<% image = MiniMagick::Image.open(pic_url) %>
-	      	<% end %>
+	      			<% image = MiniMagick::Image.open(@micropost.picture.url) %>
+		      	<% else %> 
+		      		<% pic_url = @micropost.picture.path %>
+		      		<% image = MiniMagick::Image.open(pic_url) %>
+		      	<% end %>
 	  			<p><%= @micropost.category.titlecase.tr("_", " ") %><br><%= image[:width] %> x <%= image[:height] %> px</p>
-				<% end %>
+			<% end %>
 
 		  	<% if current_user == @micropost.user %>
 					<p>Shares: <%= @micropost.shares %> | Downloads: <%= @micropost.downloads %></p>

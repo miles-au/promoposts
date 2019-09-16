@@ -100,70 +100,46 @@ class MicropostsController < ApplicationController
     post_to_buffer = false
     if Date.parse(post_date) > DateTime.now.in_time_zone(current_user.timezone).to_date
       is_scheduled_post = true
-    else
-      is_scheduled_post = false
-    end
-
-    if is_scheduled_post
       delete_by_date = Date.parse(post_date) + 3.months
     else
+      is_scheduled_post = false
       delete_by_date = Date.today + 2.days
     end
 
     if overlay.present?
-      file_url = Micropost.create_overlay_picture(
-        micropost.picture.url,
-        overlay,
-        params[:overlay][:left],
-        params[:overlay][:top],
-        params[:overlay][:width],
-        params[:overlay][:height],
-        delete_by_date)
-      if Rails.env.production?
-        picture_url = file_url
-      else
-        picture_url = root_url + file_url
-      end
+      picture_url = Micropost.create_overlay_picture( micropost.picture.url,
+                                                      overlay,
+                                                      params[:overlay][:left],
+                                                      params[:overlay][:top],
+                                                      params[:overlay][:width],
+                                                      params[:overlay][:height],
+                                                      delete_by_date)
+      picture_url = root_url + picture_url unless Rails.env.production?
     else
-      if Rails.env.production?
-        picture_url = micropost.picture.url
-      else
-        picture_url = root_url.chop + micropost.picture.url
-      end
+      picture_url = micropost.picture.url
+      picture_url = root_url.chop + picture_url unless Rails.env.production?
     end
     puts "PICTURE_URL: #{picture_url}"
     
     #scheduled post?
     if is_scheduled_post
       accounts.each do |page|
-        new_scheduled_post = ScheduledPost.new()
-        new_scheduled_post.user_id = current_user.id
-        new_scheduled_post.account_id = page.id
-        new_scheduled_post.micropost_id = micropost.id
-        new_scheduled_post.picture_url = picture_url
-        new_scheduled_post.caption = message
-        best_post_time = Account.best_post_time(page.platform, DateTime.parse(post_date) )
-        new_scheduled_post.post_time = (best_post_time.to_time - current_user.current_offset).to_datetime
+        best_post_time = Account.best_post_time(page.platform, post_date.to_time )
+        new_scheduled_post = ScheduledPost.new( user_id: current_user.id,
+                                                account_id: page.id,
+                                                micropost_id: micropost.id,
+                                                picture_url: picture_url,
+                                                caption: message,
+                                                platform: page.platform,
+                                                post_time: (best_post_time - current_user.current_offset) )
         new_scheduled_post.save
       end
       flash[:success] = "Your post schedule has been updated"
       redirect_to scheduled_posts_path and return
     else
       accounts.each do |page|
-        case page.provider
-          when "facebook"
-            resp = Micropost.share_to_facebook(nil, page, message, picture_url, current_user)
-          when "linkedin"
-            resp = Micropost.share_to_linkedin(nil, page, message, picture_url, current_user)
-          when "twitter"
-            resp = Micropost.share_to_twitter(nil, page, message, picture_url, current_user)
-          when "buffer"
-            post_to_buffer = true
-            resp = Micropost.share_to_buffer(nil, page, message, picture_url, current_user)
-          when "pinterest"
-            resp = Micropost.share_to_pinterest(nil, page, message, picture_url, current_user)
-          else
-        end
+        post_to_buffer = true if page.provider == "buffer"
+        resp = Micropost.send("share_to_#{page.provider}", nil, page, message, picture_url, current_user)
 
         if resp == "success"
           @success_string << "<span class='glyphicon glyphicon-ok'></span> #{page.name} - Success"
@@ -174,11 +150,7 @@ class MicropostsController < ApplicationController
     end
 
     if current_user != micropost.user_id
-      if micropost.shares
-        micropost.shares += 1
-      else 
-        micropost.shares = 1
-      end
+      micropost.shares = micropost.shares + 1 rescue 1
       micropost.save
       track = Track.new(user_id: current_user.id, category: micropost.category, asset_num: micropost.id, act: "share")
       track.save
@@ -186,7 +158,7 @@ class MicropostsController < ApplicationController
 
     if post_to_buffer
       buffer_link = "https://publish.buffer.com/profile/#{current_user.buffer_uid}/tab/queue"
-      @success_string << "<a target='_blank' href='#{buffer_link}'>Go to your Buffer Queue</a>"
+      @success_string << "<a target='_blank' href='#{buffer_link}'>Click here to go to your Buffer Queue</a>"
     end
     flash[:success] = @success_string.join("<br/>").html_safe
 
@@ -225,10 +197,8 @@ class MicropostsController < ApplicationController
         params[:overlay][:width],
         params[:overlay][:height],
         Date.tomorrow)
-    elsif Rails.env.production?
-      picture_url = "" + micropost.picture.url
     else
-      picture_url = root_url+ micropost.picture.url
+      picture_url = micropost.picture.url
     end
 
     if current_user != micropost.user
@@ -243,11 +213,8 @@ class MicropostsController < ApplicationController
     track = Track.new(user_id: current_user.id, category: micropost.category, asset_num: micropost.id, act: "download")
     track.save
 
-    if Rails.env.production?
-      send_data(open(picture_url).read.force_encoding('BINARY'), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
-    else
-      send_data(open("#{request.protocol}#{request.host_with_port}/#{picture_url}").read.force_encoding('BINARY'), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
-    end
+    picture_url = root_url + picture_url unless Rails.env.production?
+    send_data(open(picture_url).read.force_encoding('BINARY'), filename: "#{category} - #{micropost.id}.png", type: 'image/png', disposition: 'attachment')
     
   end
 

@@ -1,9 +1,14 @@
-<% Topic.all.each do |topic| %>
+<% Topic.order("id ASC").all.each do |topic| %>
   <% if current_user.topics.include?(topic) %>
-    <%= link_to update_topics_path(topic: topic), remote: true, class: "picked" do %><p><%= topic.name %></p><% end %>
-  <% elsif current_user.topics.count < 3 %>
-    <%= link_to update_topics_path(topic: topic), remote: true do %><p><%= topic.name %></p><% end %>
-  <% else %>
-    <div class="maxed-out"><p><%= topic.name %></p></div>
+  	<% link_class = "picked" %>
+  	<% link_disable = false %>
+  <% elsif current_user.topics.count >= 3 %>
+    <% link_class = "maxed-out" %>
+    <% link_disable = true %>
+  <% end %>
+  <%= button_to update_topics_path(topic: topic), remote: true, disabled: link_disable, class: link_class, style: "background-image: url('#{topic.picture}'); " do %>
+	  <div>
+	  	<p><strong><%= topic.name %></strong></p>
+	  </div>
   <% end %>
 <% end %>

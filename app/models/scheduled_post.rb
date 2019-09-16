@@ -1,10 +1,13 @@
 class ScheduledPost < ApplicationRecord
 	belongs_to :user
-	belongs_to :account
+	belongs_to :account, optional: true
 	belongs_to :topic, optional: true
 	belongs_to :micropost, optional: true
 
 	validates :post_time, presence: true
+	validates :picture_url, presence: true
+	validates :caption, presence: true
+	validates :platform, presence: true
 
 	def self.timezone_select_arr
 		#arr = ActiveSupport::TimeZone::MAPPING.map { |key, value| [key, value] }

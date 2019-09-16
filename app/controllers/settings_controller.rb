@@ -17,10 +17,10 @@ class SettingsController < ApplicationController
   def update_topics
     topic = Topic.find(params[:topic])
 
-    if current_user.topics.include?(topic) && current_user.topics.count <= Setting.topics_limit
+    if current_user.topics.include?(topic)
       #unsubscribe from this topic
       current_user.delete_topic(topic)
-    else
+    elsif current_user.topics.count < Setting.topics_limit
       current_user.add_topic(topic)
     end
 

@@ -3,6 +3,9 @@ class Overlay < ApplicationRecord
 	mount_uploader :picture, PictureUploader
 
 	def self.get_specs(overlay_location, overlay_picture_url, bg_picture_url)
+		overlay_picture_url = "public" + overlay_picture_url unless Rails.env.production?
+		bg_picture_url = "public" + bg_picture_url unless Rails.env.production?
+		
 		overlay_image = MiniMagick::Image.open(overlay_picture_url)
 		bg_image = MiniMagick::Image.open(bg_picture_url)
 

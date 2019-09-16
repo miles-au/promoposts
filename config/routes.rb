@@ -73,7 +73,7 @@ Rails.application.routes.draw do
   get '/prev_week', to: "scheduled_posts#prev_week"
   get '/next_week', to: "scheduled_posts#next_week"
 
-  get '/update_topics', to: "settings#update_topics", as: "update_topics"
+  post '/update_topics', to: "settings#update_topics", as: "update_topics"
   post '/global_post', to: "scheduled_posts#create_global_post"
   post '/global_campaign', to: "scheduled_posts#create_global_campaign"
 

@@ -188,15 +188,12 @@ class CampaignsController < ApplicationController
 
     @overlays = current_user.overlays.map{ | k | k.id == current_user.setting.default_overlay_id ? nil : [k.name, k.picture.url, k.id] }.compact
     @overlays.unshift(["none", "", ""])
-    if default_overlay
-      @overlays.unshift( [ default_overlay.name, default_overlay.picture.url, default_overlay.id ] )
-    end
+    @overlays.unshift( [ default_overlay.name, default_overlay.picture.url, default_overlay.id ] ) if default_overlay
 
     @overlay_locations = [  [ "Top Left" , "nw" ],
                             [ "Top Right" , "ne" ],
                             [ "Bottom Left" , "sw" ],
-                            [ "Bottom Right" , "se" ]
-                          ]
+                            [ "Bottom Right" , "se" ]]
     @overlay_select = current_user.overlays.pluck(:name, :id)
     @overlay_select.unshift(["none" , nil])
     @users_time = current_user.utc_to_user_time(Time.now.getutc)
@@ -211,68 +208,48 @@ class CampaignsController < ApplicationController
     post_to_buffer = false
     if Date.parse(post_date) > DateTime.now.in_time_zone(current_user.timezone).to_date
       is_scheduled_post = true
+      delete_by_date = Date.parse(post_date) + 3.months
     else
       is_scheduled_post = false
+      delete_by_date = Date.today + 2.days
     end
 
     accounts.each do |page|
       micropost = Micropost.find(params[:microposts]["#{page.platform}"][:post_id])
       overlay = Overlay.find(params[:microposts]["#{page.platform}"][:overlay][:id]) rescue nil
       if overlay
-        picture_url = Micropost.create_overlay_picture(
-          micropost.picture.url,
-          overlay,
-          params[:microposts]["#{page.platform}"][:overlay][:left],
-          params[:microposts]["#{page.platform}"][:overlay][:top],
-          params[:microposts]["#{page.platform}"][:overlay][:width],
-          params[:microposts]["#{page.platform}"][:overlay][:height],
-          Date.today + 2.days)
-        if Rails.env.development?
-          picture_url = root_url + picture_url
-        end
+        picture_url = Micropost.create_overlay_picture( micropost.picture.url,
+                                                        overlay,
+                                                        params[:microposts]["#{page.platform}"][:overlay][:left],
+                                                        params[:microposts]["#{page.platform}"][:overlay][:top],
+                                                        params[:microposts]["#{page.platform}"][:overlay][:width],
+                                                        params[:microposts]["#{page.platform}"][:overlay][:height],
+                                                        delete_by_date)
+        picture_url = root_url + picture_url if Rails.env.development?
       else
-        if Rails.env.production?
-          picture_url = micropost.picture.url
-        else
-          picture_url = root_url + micropost.picture.url
-        end
+        picture_url = micropost.picture.url
+        picture_url = root_url + picture_url unless Rails.env.production?
       end
 
       #scheduled post?
       if is_scheduled_post
-        new_scheduled_post = ScheduledPost.new()
-        new_scheduled_post.user_id = current_user.id
-        new_scheduled_post.account_id = page.id
-        new_scheduled_post.micropost_id = micropost.id
-        new_scheduled_post.picture_url = picture_url
-        new_scheduled_post.caption = message
-        best_post_time = Account.best_post_time(page.platform, DateTime.parse(post_date) )
-        new_scheduled_post.post_time = (best_post_time.to_time - current_user.current_offset).to_datetime
+        best_post_time = Account.best_post_time(page.platform, post_date.to_time )
+        new_scheduled_post = ScheduledPost.new( user_id: current_user.id,
+                                                account_id: page.id,
+                                                micropost_id: micropost.id,
+                                                picture_url: picture_url,
+                                                caption: message,
+                                                platform: page.platform,
+                                                post_time: (best_post_time - current_user.current_offset) )
         new_scheduled_post.save
       else
         #not scheduled post
-        case page.provider
-        when "facebook"
-          resp = Micropost.share_to_facebook(nil, page, message, picture_url, current_user)
-        when "linkedin"
-          resp = Micropost.share_to_linkedin(nil, page, message, picture_url, current_user)
-        when "twitter"
-          resp = Micropost.share_to_twitter(nil, page, message, picture_url, current_user)
-        when "buffer"
-          post_to_buffer = true
-          resp = Micropost.share_to_buffer(nil, page, message, picture_url, current_user)
-        when "pinterest"
-          resp = Micropost.share_to_pinterest(nil, page, message, picture_url, current_user)
-        else
-        end
+        post_to_buffer = true if page.provider == "buffer"
+        resp = Micropost.send("share_to_#{page.provider}", nil, page, message, picture_url, current_user)
 
         if resp == "success"
           @success_string << "<span class='glyphicon glyphicon-ok'></span> #{page.name} - Success"
-          if micropost.shares
-            micropost.shares += 1
-          else 
-            micropost.shares = 1
-          end
+          micropost.shares = micropost.shares + 1 rescue 1
           micropost.save
         else
           @success_string << "<span class='glyphicon glyphicon-remove'></span> #{page.name} - Failed"
@@ -281,7 +258,7 @@ class CampaignsController < ApplicationController
 
     end
 
-    if Date.parse(post_date) > Date.today
+    if is_scheduled_post
       flash[:success] = "Your post schedule has been updated"
       redirect_to scheduled_posts_path and return
     end
