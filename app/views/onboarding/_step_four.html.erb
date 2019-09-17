@@ -24,7 +24,7 @@
 		<%= url_field_tag "website", nil, maxlength: 50 %>
 
 		<%#= f.label :color, "Main Company Color (HEX)" %>
-    	<%#= f.text_field :color, class: "jscolor", maxlength: "6", minlength: "6" %>
+	     <%#= f.text_field :color, id: "color_picker" %>
 
 		<%= submit_tag "Finish", class: "btn-submit btn-submit-full-width" %>
 	<% end %>
@@ -43,6 +43,12 @@
       $("#real-slug").val(result);
     })
   <% end %>
+
+  // $("#color_picker").spectrum({
+  //     preferredFormat: "hex",
+  //     showInput: true,
+  //     color: "#ffffff"
+  // });
 
   document.getElementsByClassName('btn-next')[0].style.display = 'none';
 </script>

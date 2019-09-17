@@ -29,7 +29,7 @@
     <%= f.url_field :website, maxlength: 50 %>
 
     <%= f.label :color, "Main Company Color (HEX)" %>
-    <%= f.text_field :color, class: "jscolor", maxlength: "6", minlength: "6" %>
+    <%= f.text_field :color, id: "color_picker" %>
 
     <!-- <h5>Upload a new cover photo (10mb max)</h5> -->
     <%#= f.file_field :cover_photo, accept: 'image/jpeg,image/gif,image/png' %>
@@ -66,6 +66,12 @@
       $("#real-slug").val(result);
     })
   <% end %>
+
+  $("#color_picker").spectrum({
+      preferredFormat: "hex",
+      showInput: true,
+      color: "<%= current_user.color %>"
+  });
 
   document.getElementById('user_time_zone').value = jstz.determine().name();
 </script>
