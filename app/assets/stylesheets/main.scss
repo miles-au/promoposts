@@ -490,11 +490,15 @@ header{
   }
   .listed_post{
     margin-bottom: 3px;
+    div{
+      margin: 2px 0px;
+    }
     img{
       height: 30px;
     }
     .post-image{
-      height: 75px;
+      height: 100%;
+      max-height: 75px;
     }
     span{
       white-space: nowrap;

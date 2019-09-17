@@ -156,6 +156,18 @@ class UsersController < ApplicationController
 
   def update_timezone
     user = User.find(params[:id])
+
+    #get offsets
+    old_timezone_offset = TZInfo::Timezone.get(user.timezone).current_period.utc_total_offset
+    new_timezone_offset = TZInfo::Timezone.get(params[:timezone]).current_period.utc_total_offset
+
+    #update offset difference
+    difference = new_timezone_offset - old_timezone_offset
+    current_user.scheduled_posts.each do |post|
+      post.post_time = post.post_time + difference unless post.account_id == nil
+      post.save
+    end
+
     user.timezone = params[:timezone]
     if user.save
       flash[:success] = "Updated timezone."

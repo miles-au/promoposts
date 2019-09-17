@@ -29,10 +29,7 @@
     <%= f.url_field :website, maxlength: 50 %>
 
     <%= f.label :color, "Main Company Color (HEX)" %>
-    <div>
-      <%= f.color_field :color , id: "color-picker", style: "display: inline-block; width: 40px; height: 40px; padding: 0px; margin: 0px;", onchange: "$('#color-input').val($(this).val());" %>
-      <input type="text" id="color-input" maxlength='7' style="display: inline-block; width: auto; vertical-align: top;" onclick="$('#color-picker').click();" value="<%= current_user.color %>" />
-    </div>
+    <%= f.text_field :color, class: "jscolor", maxlength: "6", minlength: "6" %>
 
     <!-- <h5>Upload a new cover photo (10mb max)</h5> -->
     <%#= f.file_field :cover_photo, accept: 'image/jpeg,image/gif,image/png' %>
@@ -69,10 +66,6 @@
       $("#real-slug").val(result);
     })
   <% end %>
-
-  $("#color-input").on("change keyup paste", function(){
-    $('#color-picker').val($(this).val());
-  });
 
   document.getElementById('user_time_zone').value = jstz.determine().name();
 </script>
