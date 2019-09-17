@@ -1,12 +1,9 @@
 class User < ApplicationRecord
-  encrypts :email, migrating: true
-  blind_index :email, migrating: true
-
-  # encrypts :email
-  # blind_index :email
+  encrypts :email
+  blind_index :email
 
   # remove this line after dropping email column
-  # self.ignored_columns = ["email"]
+  self.ignored_columns = ["email"]
 
   has_many :microposts, dependent: :destroy
   has_many :accounts, dependent: :destroy
