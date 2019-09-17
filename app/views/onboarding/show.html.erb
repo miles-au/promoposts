@@ -16,7 +16,6 @@
 
 <script>
 	update_stage(<%= @step %>);
-
 	function update_stage(step){
 		if( step == 0 ){
 			$("#onboarding_container").html("<%= j render 'step_one' %>");
