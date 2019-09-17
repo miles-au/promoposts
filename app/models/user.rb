@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   encrypts :email, migrating: true
+  blind_index :email, migrating: true
 
   # encrypts :email
   # blind_index :email
