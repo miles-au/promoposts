@@ -57,7 +57,7 @@
         <%= render partial: "shared/user_info", locals: { user:  @campaign.user, thumbnail_width: 50 } %>
         <hr>
         <h4><strong>caption:</strong></h4>
-        <p>"<%= @campaign.content %>" </p>
+        <p>"<%= @campaign.content.gsub("<WEBSITE>", current_user.website || "") %>" </p>
     </div>
 
   </div>

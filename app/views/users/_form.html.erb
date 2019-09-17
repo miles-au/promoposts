@@ -70,7 +70,7 @@
   $("#color_picker").spectrum({
       preferredFormat: "hex",
       showInput: true,
-      color: "<%= current_user.color %>"
+      color: "<%= current_user.color rescue '#ffffff' %>"
   });
 
   document.getElementById('user_time_zone').value = jstz.determine().name();

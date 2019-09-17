@@ -27,7 +27,7 @@ class User < ApplicationRecord
   validates :slug, uniqueness: { case_sensitive: false, allow_nil: true }, length: { maximum: 75 }
   after_validation :valid_slug
   VALID_COLOR_REGEX = /\A#(?:[A-F0-9]{6})\z/i
-  validates :color, length: { is: 7 }, format: { with: VALID_COLOR_REGEX }
+  validates :color, length: { is: 7 }, format: { with: VALID_COLOR_REGEX }, :allow_nil => true
   
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   validates :company, length: { maximum: 50 }

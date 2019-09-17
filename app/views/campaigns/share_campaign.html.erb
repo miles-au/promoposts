@@ -4,7 +4,7 @@
 
 	<%= form_tag(share_campaign_path(@campaign.id), method: :post, id: "shareContainer" ) do %>
 		<h3 style="text-align: left; margin-bottom: 0px;">Campaign caption: </h3>
-		<p>"<%= @campaign.content %>"</p>
+		<p>"<%= @campaign.content.gsub("<WEBSITE>", current_user.website || "") %>"</p>
 		<div class="btn-submit" style="margin-bottom: 10px;" id="useOriginalText">Use/edit original campaign text</div>
 		<%= text_area_tag :message, nil, :id => "inputText", :maxlength => 240 %>
 		<hr>
@@ -63,7 +63,7 @@
 
 <script>
 	$('#useOriginalText').click(function() {
-	  $( "#inputText" ).val("<%= escape_javascript(raw(@campaign.content)) %>");
+	  $( "#inputText" ).val("<%= escape_javascript(raw(@campaign.content.gsub("<WEBSITE>", current_user.website || ""))) %>");
 	  check_fields();
 	});
 

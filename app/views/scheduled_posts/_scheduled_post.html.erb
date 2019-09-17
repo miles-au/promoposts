@@ -5,7 +5,7 @@
 	<div class="scheduled_post_content">
 		<div class="account" >to be posted to: 
 			<div>
-				<img src="<%= scheduled_post.account.picture %>" /><%= scheduled_post.account.name %>
+				<img src="<%= scheduled_post.account.picture rescue nil %>" /><%= scheduled_post.account.name rescue "GLOBAL" %>
 			</div>
 		</div>
 		<img class="main-image" src="<%= @scheduled_post.picture_url %>"/>

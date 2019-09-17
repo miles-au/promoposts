@@ -127,7 +127,7 @@ class ScheduledPostsController < ApplicationController
                                           account_id: account.id,
                                           platform: platform,
                                           picture_url: picture_url,
-                                          caption: micropost.content,
+                                          caption: micropost.content.gsub("<WEBSITE>", user.website || ""),
                                           post_time: user.utc_to_user_time(post_time.to_time) )
         if post.save
           succeeded = true

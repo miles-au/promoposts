@@ -27,7 +27,7 @@
 		<%= text_field_tag "overlay[height]", "", :id => "overlay_input_height", style: "", class: "overlay_input" %>
 		
 		<h3 style="text-align: left; margin-bottom: 0px;">Post caption: </h3>
-		<p>"<%= @micropost.content %>"</p>
+		<p>"<%= @micropost.content.gsub("<WEBSITE>", current_user.website || "") %>"</p>
 		<div class="btn-submit" style="margin-bottom: 10px;" id="useOriginalText">Use/edit original caption</div>
 		<%= text_area_tag :message, nil, :id => "inputText", :maxlength => 240 %>
 		
@@ -70,7 +70,7 @@
 
 <script>
 	$('#useOriginalText').click(function() {
-	  $( "#inputText" ).val("<%= escape_javascript(raw(@micropost.content)) %>");
+	  $( "#inputText" ).val("<%= escape_javascript(raw(@micropost.content.gsub("<WEBSITE>", current_user.website || ""))) %>");
 	  check_fields();
 	});
 
