@@ -23,11 +23,8 @@
 		<%= label_tag "Company Website" %>
 		<%= url_field_tag "website", nil, maxlength: 50 %>
 
-		<%= label_tag "Main Company Color (HEX)" %>
-		<div>
-			<%= color_field("color", nil, id: "color-picker", style: "display: inline-block; width: 40px; height: 40px; padding: 0px; margin: 0px;", onchange: "$('#color-input').val($(this).val());") %>
-			<input type="text" id="color-input" maxlength='7' style="display: inline-block; width: auto; vertical-align: top;" onclick="$('#color-picker').click();" value="<%= current_user.color %>" />
-		</div>
+		<%#= f.label :color, "Main Company Color (HEX)" %>
+    	<%#= f.text_field :color, class: "jscolor", maxlength: "6", minlength: "6" %>
 
 		<%= submit_tag "Finish", class: "btn-submit btn-submit-full-width" %>
 	<% end %>
@@ -46,10 +43,6 @@
       $("#real-slug").val(result);
     })
   <% end %>
-
-  $("#color-input").on("change keyup paste", function(){
-  	$('#color-picker').val($(this).val());
-  });
 
   document.getElementsByClassName('btn-next')[0].style.display = 'none';
 </script>
