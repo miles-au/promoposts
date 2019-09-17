@@ -47,6 +47,9 @@ gem 'zip-zip'
 # using heroku scheduler. Whenever doesn't work on heroku
 #gem 'whenever'
 
+gem 'lockbox'
+gem 'blind_index'
+
 gem 'tzinfo'
 gem "rails-assets-jsTimezoneDetect"
 

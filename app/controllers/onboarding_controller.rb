@@ -2,10 +2,14 @@ class OnboardingController < ApplicationController
 	before_action :correct_user
 
 	def show
+		puts "onboarding_stage: #{current_user.onboarding_stage}"
 		@step = current_user.onboarding_stage
 	end
 
 	def next_stage
+		if current_user.onboarding_stage == -1
+			redirect_to root_url and return
+		end
 		current_user.onboarding_stage += 1
 		current_user.save
 		@step = current_user.onboarding_stage

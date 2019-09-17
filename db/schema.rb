@@ -10,15 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_15_085217) do
+ActiveRecord::Schema.define(version: 2019_09_17_000549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "accolades", force: :cascade do |t|
-    t.integer "user_id"
-    t.boolean "newcomer", default: true
-  end
 
   create_table "accounts", force: :cascade do |t|
     t.string "provider"
@@ -46,17 +41,6 @@ ActiveRecord::Schema.define(version: 2019_09_15_085217) do
     t.index ["user_id"], name: "index_campaigns_on_user_id"
   end
 
-  create_table "comments", force: :cascade do |t|
-    t.string "message"
-    t.integer "head"
-    t.integer "tail"
-    t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "score"
-    t.integer "micropost_id"
-  end
-
   create_table "contacts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -80,19 +64,6 @@ ActiveRecord::Schema.define(version: 2019_09_15_085217) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "events", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "passive_user_id"
-    t.integer "micropost_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "contribution"
-    t.integer "campaign_id"
-    t.index ["passive_user_id"], name: "index_events_on_passive_user_id"
-    t.index ["user_id", "passive_user_id"], name: "index_events_on_user_id_and_passive_user_id"
-    t.index ["user_id"], name: "index_events_on_user_id"
-  end
-
   create_table "microposts", force: :cascade do |t|
     t.text "content"
     t.integer "user_id"
@@ -109,18 +80,6 @@ ActiveRecord::Schema.define(version: 2019_09_15_085217) do
     t.integer "campaign_id"
     t.index ["user_id", "created_at"], name: "index_microposts_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_microposts_on_user_id"
-  end
-
-  create_table "notifications", force: :cascade do |t|
-    t.string "user_id"
-    t.string "message"
-    t.string "url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "read", default: false
-    t.string "category"
-    t.integer "destination_id"
-    t.string "obj"
   end
 
   create_table "oauth_accounts", force: :cascade do |t|
@@ -210,7 +169,6 @@ ActiveRecord::Schema.define(version: 2019_09_15_085217) do
 
   create_table "users", force: :cascade do |t|
     t.string "name"
-    t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"
@@ -242,15 +200,9 @@ ActiveRecord::Schema.define(version: 2019_09_15_085217) do
     t.integer "onboarding_stage", default: 0
     t.string "website"
     t.string "color", default: "#ffffff"
-    t.index ["email"], name: "index_users_on_email", unique: true
-  end
-
-  create_table "votes", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "comment_id"
-    t.integer "points", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "email_ciphertext"
+    t.string "email_bidx"
+    t.index ["email_bidx"], name: "index_users_on_email_bidx", unique: true
   end
 
 end

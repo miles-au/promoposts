@@ -64,11 +64,17 @@ GEM
     archive-zip (0.12.0)
       io-like (~> 0.3.0)
     arel (9.0.0)
+    argon2 (2.0.2)
+      ffi (~> 1.9)
+      ffi-compiler (>= 0.1)
     autoprefixer-rails (9.5.1)
       execjs
     bcrypt (3.1.12)
     benchmark-ips (2.7.2)
     bindex (0.7.0)
+    blind_index (1.0.1)
+      activesupport (>= 5)
+      argon2 (>= 2)
     bootsnap (1.4.3)
       msgpack (~> 1.0)
     bootstrap-sass (3.4.1)
@@ -141,6 +147,9 @@ GEM
     faraday_middleware (0.13.1)
       faraday (>= 0.7.4, < 1.0)
     ffi (1.10.0)
+    ffi-compiler (1.0.1)
+      ffi (>= 1.0.0)
+      rake
     fission (0.5.0)
       CFPropertyList (~> 2.2)
     fog (2.0.0)
@@ -374,6 +383,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
+    lockbox (0.2.4)
     loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -607,6 +617,7 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt
+  blind_index
   bootsnap (>= 1.1.0)
   bootstrap-sass
   bootstrap-will_paginate
@@ -630,6 +641,7 @@ DEPENDENCIES
   jquery-rails
   koala
   listen (>= 3.0.5, < 3.2)
+  lockbox
   mime-types
   mini_magick
   minitest

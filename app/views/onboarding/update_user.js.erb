@@ -3,3 +3,7 @@
 <% else %>
 	update_stage(<%= @step %>);
 <% end %>
+
+<% current_user.onboarding_stage = -1 %>
+<% current_user.save %>
+<% clear_location %>

@@ -1,4 +1,12 @@
 class User < ApplicationRecord
+  encrypts :email, migrating: true
+
+  # encrypts :email
+  # blind_index :email
+
+  # remove this line after dropping email column
+  # self.ignored_columns = ["email"]
+
   has_many :microposts, dependent: :destroy
   has_many :accounts, dependent: :destroy
   has_many :active_relationships, class_name:  "Relationship",
@@ -18,29 +26,29 @@ class User < ApplicationRecord
   has_many :topics, through: :followed_topics
   has_one :setting, dependent: :destroy
 
-  has_secure_password
-
-  attr_accessor :remember_token, :activation_token, :reset_token
+  validates :name,  presence: true, length: { maximum: 50 }
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
+  validates :slug, uniqueness: { case_sensitive: false, allow_nil: true }, length: { maximum: 75 }
+  after_validation :valid_slug
+  validate :valid_color
+  
+  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
+  validates :company, length: { maximum: 50 }
+  validates :website, length: { maximum: 50 }
+  validate  :picture_size
 
   before_save   :downcase_email
   before_create :create_activation_digest
   after_create :create_setting
   after_create :follow_promo_posts
 
-  validates :name,  presence: true, length: { maximum: 50 }
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email, presence: true, length: { maximum: 255 }, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
-  validate :valid_slug
-  validates :slug, uniqueness: { case_sensitive: false }, length: { maximum: 75 }
-  validate :valid_color
-  
-  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
-  validates :company, length: { maximum: 50 }
-  validates :website, length: { maximum: 50 }
-
   mount_uploader :picture, PictureUploader
   mount_uploader :cover_photo, PictureUploader
-  validate  :picture_size
+
+  attr_accessor :remember_token, :activation_token, :reset_token
+
+  has_secure_password
 
   # Returns the hash digest of the given string.
   def User.digest(string)

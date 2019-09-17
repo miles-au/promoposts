@@ -5,7 +5,7 @@ class TopicRelationship < ApplicationRecord
 
   private
   	def maxed_out
-  		if self.user.topics > Topic.topics_limit
+  		if self.user.topics.count > Topic.topics_limit
   			errors[:base] << "You've hit the maximum number of topics."
   		end
   	end
