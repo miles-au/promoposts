@@ -2,9 +2,6 @@ class User < ApplicationRecord
   encrypts :email
   blind_index :email
 
-  # remove this line after dropping email column
-  self.ignored_columns = ["email"]
-
   has_many :microposts, dependent: :destroy
   has_many :accounts, dependent: :destroy
   has_many :active_relationships, class_name:  "Relationship",
