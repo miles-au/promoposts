@@ -158,7 +158,7 @@ class CampaignsController < ApplicationController
           end
         else
           if Rails.env.production?
-            picture_url = asset.picture.url #File.join(folder_path,file_name)
+            picture_url = URI.parse(asset.picture.url).read #File.join(folder_path,file_name)
           else
             picture_url = asset.picture.path
           end
