@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class CampaignsController < ApplicationController
   before_action :logged_in_user, only: [:new, :edit, :create, :share_campaign, :submit_share_campaign, :update, :download_campaign_page, :download_assets]
   before_action :correct_or_admin_user, only: [:destroy, :edit, :update]
@@ -105,14 +107,14 @@ class CampaignsController < ApplicationController
     #recreate the user's download folder
     FileUtils.mkdir_p(folder_path)
 
-    if Rails.env.production?
-      campaign.microposts.each do |post|
-        file_name = post.picture.url.split('/').last
-        open(folder_path + "#{file_name}", 'wb') do |file|
-           file << open(post.picture.url).read
-        end
-      end
-    end
+    # if Rails.env.production?
+    #   campaign.microposts.each do |post|
+    #     file_name = post.picture.url.split('/').last
+    #     open(folder_path + "#{file_name}", 'wb') do |file|
+    #        file << open(post.picture.url).read
+    #     end
+    #   end
+    # end
 
     Zip::File.open(zipfile_path, Zip::File::CREATE) do |zipfile|
       files_added = []
@@ -144,30 +146,31 @@ class CampaignsController < ApplicationController
           new_file_name = new_name
         end
 
-        if overlay.present?
-          picture_url = Micropost.create_overlay_picture(
-            asset.picture.url,
-            overlay,
-            campaign_microposts_params[:"#{asset.id}"][:overlay][:left],
-            campaign_microposts_params[:"#{asset.id}"][:overlay][:top],
-            campaign_microposts_params[:"#{asset.id}"][:overlay][:width],
-            campaign_microposts_params[:"#{asset.id}"][:overlay][:height],
-            Date.tomorrow)
-          if Rails.env.development?
-            picture_url = "public/#{picture_url}"
+        if Rails.env.production?
+          #production
+          if overlay.present?
+            picture_url = Micropost.create_overlay_picture(
+              asset.picture.url,
+              overlay,
+              campaign_microposts_params[:"#{asset.id}"][:overlay][:left],
+              campaign_microposts_params[:"#{asset.id}"][:overlay][:top],
+              campaign_microposts_params[:"#{asset.id}"][:overlay][:width],
+              campaign_microposts_params[:"#{asset.id}"][:overlay][:height],
+              Date.tomorrow)
+          else
+            picture_url = asset.picture.url
           end
+          File.write "uploads/campaign_zips/#{asset.picture.url.split('/').last}", open(picture_url).read
+          picture_url = "uploads/campaign_zips/#{asset.picture.url.split('/').last}"
         else
-          if Rails.env.production?
-            pipeline_directory = "uploads/campaign_zips"
-            local_directory = "public/#{pipeline_directory}"
-            file_name = asset.picture.url.split('/').last
-            path = "#{local_directory}/#{file_name}"
-            result.write(path)
-            picture_url = "#{pipeline_directory}/#{file_name}"
+          #development
+          if overlay.present?
+            picture_url = "public/#{picture_url}"
           else
             picture_url = asset.picture.path
           end
         end
+
         zipfile.add(new_file_name, picture_url)
         files_added << new_file_name
 
