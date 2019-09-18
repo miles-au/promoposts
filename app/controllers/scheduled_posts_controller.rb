@@ -172,14 +172,17 @@ class ScheduledPostsController < ApplicationController
   # PATCH/PUT /scheduled_posts/1
   # PATCH/PUT /scheduled_posts/1.json
   def update
-    @scheduled_post.update_attributes(scheduled_post_params)
-    @scheduled_post.post_time = current_user.utc_to_user_time(@scheduled_post.post_time) unless !@scheduled_post.account_id
-    if @scheduled_post.save
-      @status = "Post updated."
+    if @scheduled_post.status == "POSTED"
+      @status = "This has already been posted."
     else
-      @status = "There was an issue updating this post."
+      @scheduled_post.update_attributes(scheduled_post_params)
+      @scheduled_post.post_time = current_user.utc_to_user_time(@scheduled_post.post_time) unless !@scheduled_post.account_id
+      if @scheduled_post.save
+        @status = "Post updated."
+      else
+        @status = "There was an issue updating this post."
+      end
     end
-
     respond_to do |format|
       format.html
       format.js

@@ -17,9 +17,13 @@
 			</div>
 
 			<div>
-				<%= link_to post, remote: :true do %>
-					<span class="glyphicon glyphicon-pencil" style="padding: 3px;"></span>
+				<% if post.status == "POSTED" %>
 					<img src="<%= post.picture_url %>" class= "post-image" />
+				<% else %>
+					<%= link_to post, remote: :true do %>
+						<span class="glyphicon glyphicon-pencil" style="padding: 3px;"></span>
+						<img src="<%= post.picture_url %>" class= "post-image" />
+					<% end %>
 				<% end %>
 			</div>
 
