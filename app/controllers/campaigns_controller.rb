@@ -160,7 +160,12 @@ class CampaignsController < ApplicationController
           else
             picture_url = asset.picture.url
           end
-          File.write "public/campaign_zips/#{asset.picture.url.split('/').last}", open(picture_url).read
+          
+          open("public/campaign_zips/#{asset.picture.url.split('/').last}", 'wb') do |file|
+            file << open(picture_url).read
+          end
+
+          # File.write "public/campaign_zips/#{asset.picture.url.split('/').last}", open(picture_url).read
           picture_url = "public/campaign_zips/#{asset.picture.url.split('/').last}"
         else
           #development
