@@ -160,8 +160,8 @@ class CampaignsController < ApplicationController
           else
             picture_url = asset.picture.url
           end
-          File.write "uploads/campaign_zips/#{asset.picture.url.split('/').last}", open(picture_url).read
-          picture_url = "uploads/campaign_zips/#{asset.picture.url.split('/').last}"
+          File.write "public/campaign_zips/#{asset.picture.url.split('/').last}", open(picture_url).read
+          picture_url = "public/campaign_zips/#{asset.picture.url.split('/').last}"
         else
           #development
           if overlay.present?
