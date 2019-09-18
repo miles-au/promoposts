@@ -185,14 +185,11 @@ class Micropost < ActiveRecord::Base
         :body   => File.open(path),
         :public => true
       )
-
+      
       puts "FILE: #{file}"
-
-      if file
-        File.delete(path) if File.exist?(path)
-        final_url = file.public_url
-      end
-
+      
+      File.delete(path) if File.exist?(path)
+      final_url = file.public_url
     end
 
     return final_url

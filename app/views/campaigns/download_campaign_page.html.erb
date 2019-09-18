@@ -262,15 +262,21 @@
 			<% case @default_location %>
 			<% when "nw" %>
 				//do nothing
+				overlay.left = 0;
+				overlay.top = 0;
 			<% when "ne" %>
 				overlay.left = overlay.bg_img.img_width - overlay.overlay_width
+				overlay.top = 0;
 			<% when "sw" %>
+				overlay.left = 0;
 				overlay.top = overlay.bg_img.img_height - overlay.overlay_height
 			<% when "se" %>
 				overlay.top = overlay.bg_img.img_height - overlay.overlay_height
 				overlay.left = overlay.bg_img.img_width - overlay.overlay_width
 			<% else %>
 				//do nothing
+				overlay.left = 0;
+				overlay.top = 0;
 			<% end %>
 			overlay.box.style.left = overlay.left + "px";
 			overlay.box.style.top = overlay.top + "px";
@@ -368,6 +374,7 @@
 	{
 	   radio_buttons[radio_buttons_i].firstElementChild.setAttribute( "checked", true );
 	}
+
 	bg_images_arr.forEach(load_bg_image);
 
 	function getImgSize(imgSrc) {
@@ -479,6 +486,10 @@
 	};
 
 	function updateOverlayDimensions(overlay){
+		// console.log("left", overlay.left);
+		// console.log("top", overlay.top);
+		// console.log("width", overlay.overlay_width);
+		// console.log("height", overlay.overlay_height);
 		var scale = overlay.bg_img.og_width / overlay.bg_img.img_width;
 		$("#overlay_input_id_".concat(overlay.micropost_id)).val(overlay_arr[overlay.overlay_index][2]);
 		$("#overlay_input_left_".concat(overlay.micropost_id)).val(Math.round(overlay.box.offsetLeft*scale));
@@ -502,7 +513,6 @@
 	    	var overlay = overlay_obj_arr[i];
 	    	overlay.overlay_index = new_index;
 	    	update_over_change(overlay, update_location);
-	    	updateOverlayDimensions(overlay);		  
 	    }
 	}
 
@@ -537,7 +547,7 @@
 				}
 			  overlay.box.style.left = overlay.left + "px";
 				overlay.box.style.top = overlay.top + "px";
-
+				updateOverlayDimensions(overlay);
 			});
 			newImg.src = overlay_arr[overlay.overlay_index][1];
 		}

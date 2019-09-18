@@ -613,7 +613,6 @@
 	    	var overlay = overlay_obj_arr[i];
 	    	overlay.overlay_index = new_index;
 	    	update_over_change(overlay, update_location);
-	    	updateOverlayDimensions(overlay);		  
 	    }
 	}
 
@@ -648,6 +647,7 @@
 				}
 			  overlay.box.style.left = overlay.left + "px";
 				overlay.box.style.top = overlay.top + "px";
+				updateOverlayDimensions(overlay);
 
 			});
 			newImg.src = overlay_arr[overlay.overlay_index][1];

@@ -158,8 +158,12 @@ class CampaignsController < ApplicationController
           end
         else
           if Rails.env.production?
+            pipeline_directory = "uploads/campaign_zips"
+            local_directory = "public/#{pipeline_directory}"
             file_name = asset.picture.url.split('/').last
-            picture_url = File.join(folder_path,file_name)
+            path = "#{local_directory}/#{file_name}"
+            result.write(path)
+            picture_url = "#{pipeline_directory}/#{file_name}"
           else
             picture_url = asset.picture.path
           end
