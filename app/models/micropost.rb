@@ -253,6 +253,26 @@ class Micropost < ActiveRecord::Base
     puts "scheduled_post_response: #{resp}"
   end
 
+  def overlayed_images_clean_up
+    connection = Fog::Storage.new({
+      :provider                         => 'Google',
+      :google_storage_access_key_id     => ENV["google_storage_access_key_id"],
+      :google_storage_secret_access_key => ENV["google_storage_secret_access_key"]
+    })
+    key_arr = []
+    connection.directories.get("promoposts", prefix: "uploads/overlayed" ).files.map do |file|
+      stripped_prefix = file.key.gsub("uploads/overlayed/","")
+      if stripped_prefix.present?
+        date = Date.parse(stripped_prefix.split("_").first)
+        now = Time.now.utc.to_date
+        if date < now
+          #date has passed
+          file.destroy
+        end
+      end
+    end
+  end
+
   private
 
     # Validates the size of an uploaded picture.

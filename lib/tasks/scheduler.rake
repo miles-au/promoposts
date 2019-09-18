@@ -9,6 +9,6 @@ end
 
 task :clean_up_overlayed_images => :environment do
   puts "run clean up of overlay images"
-  #Micropost.post_schedule
+  Micropost.overlayed_images_clean_up
   puts "done"
 end
