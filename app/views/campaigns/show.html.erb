@@ -43,7 +43,7 @@
   <div class="row base-layout">
 
     <div class="col-md-9 col-sm-12 left-panel">
-      <h3><%= @campaign.name %></h3>
+      <h3><%= @campaign.name %>(<%= @campaign.microposts.count %>)</h3>
       <% @campaign.microposts.reverse.each do | micropost | %>
         <%= link_to micropost, style: "display: inline-block;" do %>
           <p class="category-title" ><%= micropost.category.titlecase.tr("_", " ") %></p>

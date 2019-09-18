@@ -98,7 +98,7 @@ class MicropostsController < ApplicationController
     accounts = current_user.accounts.where('id IN (?)', params[:pages])
     @success_string = []
     post_to_buffer = false
-    if Date.parse(post_date) > DateTime.now.in_time_zone(current_user.timezone).to_date
+    if params[:to_schedule]
       is_scheduled_post = true
       delete_by_date = Date.parse(post_date) + 3.months
     else

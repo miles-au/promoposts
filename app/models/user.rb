@@ -173,7 +173,6 @@ class User < ApplicationRecord
   end
 
   def facebook
-    puts "VAL: #{fb_oauth_token}"
     decrypted_token = User.decrypt_value(fb_oauth_token)
     facebook ||= Koala::Facebook::API.new(decrypted_token)
   end

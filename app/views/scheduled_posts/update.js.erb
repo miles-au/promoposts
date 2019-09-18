@@ -1,1 +1,7 @@
 $("#post-caption-container").html("<%= j render 'form' %>");
+
+<% if @scheduled_post.account %>
+	$("#<%= @scheduled_post.id %>-post-time").html('<%= current_user.user_time_to_utc(@scheduled_post.post_time).strftime("%l:%M %p") %> (<%= current_user.timezone %>)')
+<% else %>
+	$("#<%= @scheduled_post.id %>-post-time").html("<%= @scheduled_post.post_time %>");
+<% end %>

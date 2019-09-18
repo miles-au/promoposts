@@ -107,15 +107,6 @@ class CampaignsController < ApplicationController
     #recreate the user's download folder
     FileUtils.mkdir_p(folder_path)
 
-    # if Rails.env.production?
-    #   campaign.microposts.each do |post|
-    #     file_name = post.picture.url.split('/').last
-    #     open(folder_path + "#{file_name}", 'wb') do |file|
-    #        file << open(post.picture.url).read
-    #     end
-    #   end
-    # end
-
     Zip::File.open(zipfile_path, Zip::File::CREATE) do |zipfile|
       files_added = []
       campaign.microposts.each do |asset|
@@ -160,12 +151,10 @@ class CampaignsController < ApplicationController
           else
             picture_url = asset.picture.url
           end
-          
+
           open("public/campaign_zips/#{asset.picture.url.split('/').last}", 'wb') do |file|
             file << open(picture_url).read
           end
-
-          # File.write "public/campaign_zips/#{asset.picture.url.split('/').last}", open(picture_url).read
           picture_url = "public/campaign_zips/#{asset.picture.url.split('/').last}"
         else
           #development
@@ -219,7 +208,7 @@ class CampaignsController < ApplicationController
     post_date = params["post_date"] rescue Date.today
     @success_string = []
     post_to_buffer = false
-    if Date.parse(post_date) > DateTime.now.in_time_zone(current_user.timezone).to_date
+    if params[:to_schedule]
       is_scheduled_post = true
       delete_by_date = Date.parse(post_date) + 3.months
     else

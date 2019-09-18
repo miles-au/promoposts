@@ -10,9 +10,9 @@
 					<span class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="top" data-original-title="Post Failed"></span>
 				<% end %>
 				<% if post.account %>
-					<span><%= current_user.user_time_to_utc(post.post_time).strftime("%l:%M %p") %> (<%= current_user.timezone %>)</span>
+					<span id="<%= post.id %>-post-time"><%= current_user.user_time_to_utc(post.post_time).strftime("%l:%M %p") %> (<%= current_user.timezone %>)</span>
 				<% else %>
-					<span><%= post.post_time %></span>
+					<span id="<%= post.id %>-post-time"><%= post.post_time %></span>
 				<% end %>
 			</div>
 

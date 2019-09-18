@@ -1,12 +1,27 @@
 <%= form_for @scheduled_post, remote: :true do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
+  <%= f.label :post_time, "Post time:" %>
+  <%= f.text_field "post_time", class: "flatpickr flatpickr-input", readonly: "readonly" %>
+
   <%= f.label :caption, "Post caption:" %>
   <%= f.text_area :caption, placeholder: @scheduled_post.caption, maxlength: 400 %>
   <div style="text-align: center;">
-    <%= f.submit "update caption", class: "btn-submit" %>
+    <%= f.submit "update", class: "btn-submit" %>
     <% if @status %>
       <p><%= @status %></p>
     <% end %>
   </div>
 <% end %>
+
+<script>
+	// datepicker
+	$(".flatpickr").flatpickr({
+		enableTime: true,
+		altInput: true,
+	    altFormat: "F j, Y - H:i ",
+	    dateFormat: "Y-m-d H:i",
+	    minDate: 'today',
+	    defaultDate: '<%= @scheduled_post.account_id ? current_user.user_time_to_utc(@scheduled_post.post_time).strftime("%Y-%m-%d %H:%M") : @scheduled_post.post_time.strftime("%Y-%m-%d %H:%M") %>',
+	});
+</script>

@@ -45,6 +45,7 @@ class ScheduledPostsController < ApplicationController
   # GET /scheduled_posts/1
   # GET /scheduled_posts/1.json
   def show
+    @users_time = current_user.utc_to_user_time(Time.now.getutc)
     respond_to do |format|
       format.html
       format.js
@@ -157,13 +158,13 @@ class ScheduledPostsController < ApplicationController
   # POST /scheduled_posts
   # POST /scheduled_posts.json
   def create
-    @scheduled_post = ScheduledPost.new(scheduled_post_params)
+    # @scheduled_post = ScheduledPost.new(scheduled_post_params)
 
-    if @scheduled_post.save
-      flash[:success] = "Post scheduled"
-    else
-      flash[:danger] = "unable to schedule post"
-    end
+    # if @scheduled_post.save
+    #   flash[:success] = "Post scheduled"
+    # else
+    #   flash[:danger] = "unable to schedule post"
+    # end
 
     redirect_to scheduled_posts_path
   end
@@ -172,10 +173,11 @@ class ScheduledPostsController < ApplicationController
   # PATCH/PUT /scheduled_posts/1.json
   def update
     @scheduled_post.update_attributes(scheduled_post_params)
+    @scheduled_post.post_time = current_user.utc_to_user_time(@scheduled_post.post_time) unless !@scheduled_post.account_id
     if @scheduled_post.save
-      @status = "Caption updated."
+      @status = "Post updated."
     else
-      @status = "There was an issue updating the caption."
+      @status = "There was an issue updating this post."
     end
 
     respond_to do |format|
@@ -200,7 +202,7 @@ class ScheduledPostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def scheduled_post_params
-      params.require(:scheduled_post).permit( :topic_id, :platform, :picture_url, :account_id, :micropost_id, :campaign_id, :post_time, :caption )
+      params.require(:scheduled_post).permit( :topic_id, :platform, :picture_url, :micropost_id, :campaign_id, :post_time, :caption )
     end
 
     def admin_user

@@ -32,9 +32,13 @@
 
 		<div style="max-width: 500px; margin: 5px auto;">
 			<div>
-				<input type="checkbox" id="schedule_check" style="display: inline-block; width: auto; margin-right: 10px;" /><span> schedule this post</span>
+				<%= check_box_tag "to_schedule", 1, false, options = { style: "display: inline-block; width: auto; margin-right: 10px;" } %>
+				<span> schedule this post</span>
 			</div>
-			<%= date_field("", "post_date", value: @users_time.strftime("%Y-%m-%d"), min: @users_time.strftime("%Y-%m-%d"), id: "datepicker", style: "display: none;" ) %>
+			<div id="datepickerContainer" style="display: none;" >
+				<%= text_field_tag "post_date", nil, class: "flatpickr flatpickr-input", readonly: "readonly" %>
+				<span style="font-size: 0.8em;">Time can be changed in the post schedule.</span>
+			</div>
 		</div>
 
 		<div style="max-width: 500px; margin: 5px auto;">
@@ -52,7 +56,7 @@
 			<h3>Share as a global campaign</h3>
 			<%= form_with( model: @scheduled_post, method: :post, url: global_campaign_path, format: nil ) do |f| %>
 				<%= f.select "topic_id", options_for_select(Topic.all.pluck(:name, :id)) %>
-				<%= f.date_field "post_time", value: (@users_time + 1.day).strftime("%Y-%m-%d"), min: (@users_time + 1.day).strftime("%Y-%m-%d") %>
+				<%= f.text_field :post_time, class: "flatpickr flatpickr-input", readonly: "readonly" %>
 				<%= f.hidden_field :campaign_id, value: @campaign.id %>
 				<%= f.submit "create global post", class: "btn-submit" %>
 			<% end %>
@@ -75,21 +79,30 @@
 		check_fields();
 	})
 
-	$('#datepicker').change( function() {
+	$('#post_date').change( function() {
 	  check_fields();
 	});
 
-	$("#schedule_check").click(function(){
-		$('#datepicker').toggle();
-		let checked = $("#schedule_check").is(':checked');
+	$("#to_schedule").click(function(){
+		$('#datepickerContainer').toggle();
+		let checked = $("#to_schedule").is(':checked');
 		if(checked){
-			$('#datepicker').attr("min", "<%= (@users_time + 1.day ).strftime("%Y-%m-%d") %>");
-			$('#datepicker').attr("value", "<%= (@users_time + 1.day ).strftime("%Y-%m-%d") %>");
+			$('#post_date').attr("min", "<%= (@users_time + 1.day ).strftime("%Y-%m-%d") %>");
+			$('#post_date').attr("value", "<%= (@users_time + 1.day ).strftime("%Y-%m-%d") %>");
 		}else{
-			$('#datepicker').attr("min", "<%= @users_time.strftime("%Y-%m-%d") %>");
-			$('#datepicker').attr("value", "<%= @users_time.strftime("%Y-%m-%d") %>");
+			$('#post_date').attr("min", "<%= @users_time.strftime("%Y-%m-%d") %>");
+			$('#post_date').attr("value", "<%= @users_time.strftime("%Y-%m-%d") %>");
 		}
 		check_fields();
+	});
+	
+	// datepicker
+	$(".flatpickr").flatpickr({
+		altInput: true,
+	    altFormat: "F j, Y",
+	    dateFormat: "Y-m-d",
+	    minDate: '<%= (@users_time + 1.day).strftime("%Y-%m-%d") %>',
+	    defaultDate: '<%= (@users_time + 1.day).strftime("%Y-%m-%d") %>',
 	});
 
 	function check_fields(){
@@ -111,9 +124,9 @@
 
 		//check if date picked is valid
 		var date_pass = false;
-		var selectedDate = new Date(document.getElementById("datepicker").value);
+		var selectedDate = new Date(document.getElementById("post_date").value);
 	  var now = new Date();
-	  var schedule_chosen = $("#schedule_check").is(':checked');
+	  var schedule_chosen = $("#to_schedule").is(':checked');
 	  now.setHours(0,0,0,0);
 	  if(schedule_chosen){
 	  	if (selectedDate <= now) {

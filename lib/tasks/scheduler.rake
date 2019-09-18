@@ -7,6 +7,7 @@ task :run_scheduled_posts => :environment do
   puts "done"
 end
 
+# heroku run rake clean_up_overlayed_images
 task :clean_up_overlayed_images => :environment do
   puts "run clean up of overlay images"
   Micropost.overlayed_images_clean_up
