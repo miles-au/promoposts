@@ -551,6 +551,7 @@ header{
     width: 100%;
     border: 0px;
     background-size: cover;
+    background-position: center center;
     height: 125px;
     div{
       background-color: rgba(0, 0, 0, 0.8);
@@ -569,6 +570,9 @@ header{
       background-color: rgba(0, 0, 0, 0.3);
       p{
         color: $grey6;
+      }
+      p::before {
+        content: " ✓ ";
       }
     }
   }
