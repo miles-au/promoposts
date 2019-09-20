@@ -58,7 +58,9 @@
         <hr>
         <h4><strong>caption:</strong></h4>
         <p>"<%= @campaign.content.gsub("<WEBSITE>", current_user.website || "") %>" </p>
-        <%= link_to "Delete this campaign", @micropost, method: :delete, "data-confirm": "Are you sure you want to delete this post?" %>
+        <% if current_user.admin || @campaign.user == current_user %>
+          <%= link_to "Delete this campaign", @campaign, method: :delete, "data-confirm": "Are you sure you want to delete this campaign?" %>
+        <% end %>
     </div>
 
   </div>
