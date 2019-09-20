@@ -5,7 +5,7 @@
 
     <%= f.fields_for :microposts, Micropost.new do |micropost| %>
       <div class="select-background post_category_select"">
-        <%= micropost.select :category, options_for_select(Micropost.category_array.unshift(['Campaign', 'campaign'])), prompt: "What digital asset category is this?", id: "postInputSelect", required: true %>
+        <%= micropost.select :category, options_for_select(Micropost.category_array), prompt: "What digital asset category is this?", id: "postInputSelect", required: true %>
       </div>
       <div style="margin-top: 10px;">
         <span style="display: inline-block; font-size: 1.2em;" class="glyphicon glyphicon-picture"></span>
