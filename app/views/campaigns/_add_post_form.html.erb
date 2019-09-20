@@ -14,7 +14,7 @@
       </div>
       <div>
         <p style="display: inline-block; text-align: top;">Add Caption:</p>
-        <div class="btn-submit" id="useOriginalText" onclick="document.getElementById('postInputContent').value = '<%= escape_javascript(raw(@campaign.content)) %>';" >
+        <div class="btn-submit" id="useOriginalText" onclick="document.getElementById('postInputContent').value = '<%= j @campaign.content %>';" >
           Use campaign caption
         </div>
         <%= micropost.text_area :content, id: 'postInputContent' , placeholder: "Tell us about your campaign...", maxlength: 500, required: true %>
