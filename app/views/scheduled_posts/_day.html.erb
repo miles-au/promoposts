@@ -40,7 +40,7 @@
 				<% end %>
 				<% if current_user.admin %>
 					<% if post.topic %>
-					<span> | outgoing: <%= ScheduledPost.where( micropost_id: post.micropost_id, topic_id: post.topic.id ).count %></span>
+					<span> | outgoing: <%= ScheduledPost.where( micropost_id: post.micropost_id, topic_id: post.topic.id, platform: post.platform ).count %></span>
 					<% else %>
 						<span class="mini-error">This isn't global</span>
 					<% end %>
