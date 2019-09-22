@@ -8,48 +8,59 @@
     <%= render '/users/zone_update_form' %>
   </div>
 
-  <h2>your connected social networks:</h2>
+  <h4>Social Platforms:</h4>
 
-  <p>To get the most out of Promo Posts, connect a Buffer account. <a href="https://buffer.com/" target="_blank">What the heck is Buffer?</a></p>
+  <p>To get the most out of Promo Posts, we recommend connecting a Buffer account. <span class="link" onclick="$('#buffer_explanation').show();">Why Buffer, and what is it?</span></p>
+
+  <div id="buffer_explanation" style="display: none;">
+    <p><a href="https://buffer.com" target="_blank">Buffer</a> let's you post to all the major social platforms. Some platforms such as Instagram and LinkedIn have locked down some or all developer tools with the exception of select partners like Buffer. If you would like Promo Posts to automate posting to Instagram or a LinkedIn company page, you will need to connect them via Buffer.</p>
+  </div>
 
   <% @providers.each do |provider| %>
-    <h4 class="<%= provider.downcase %>-bg social-button"><%= image_tag "#{provider.downcase}.svg" %> Your <%= provider %> accounts: </h4>
+      <h5 class="<%= provider.downcase %>-bg social-button"><%= image_tag "#{provider.downcase}.svg", style: "margin-right: 25px;" %><%= provider %> accounts: </h5>
 
       <!--accounts exist in user's name-->
-      <% if @data[provider].count > 0 %>
-        <% accounts = @data[provider] %>
+      <% accounts = @data[provider] %>
+      <% if accounts.count > 0 %>
         <% active_accounts = Account.send("check_account_#{provider.downcase}", current_user) %>
         <%= link_to "/auth/#{provider}", class: 'connect_link' do%>
-          <span class="glyphicon glyphicon-refresh" style="display: inline-block;"></span><h5 style="display: inline-block; margin-left: 5px;">Refresh <%= provider %> accounts </h5>
+          <span class="glyphicon glyphicon-refresh" style="display: inline-block;"></span><h5 style="display: inline-block; margin-left: 5px;"> Refresh </h5>
         <% end %>
-        <% accounts.each do |page| %>
-          <div class="social-accounts-wrap">
-            <div class="img-holder">
-              <img class="thumbnail-page" src="<%= page.picture || image_path('page.svg') %>"/>
-            </div>
-            <h5 class="page-name"><%= page['name'] %></h5>
-            <%= link_to accounts_remove_page_path(:id => page.id), data: { confirm: "You sure?" } do %>
-              <span class="glyphicon glyphicon-trash"></span>
-            <% end %>
-            <% if active_accounts.exclude?(page.account_id) %>
-              <span class="mini-error">Unable to access this account.</span>
-            <% end %>
-          </div>
-        <% end %>
-
         <%= link_to accounts_disconnect_path(:provider => "#{provider.downcase}"), :class => "connect_link" do %>
-          <h5><span class="glyphicon glyphicon-remove-sign"></span> Disconnect your <%= provider %> Account </h5>
+          <h5><span class="glyphicon glyphicon-remove-sign"></span> Disconnect </h5>
         <% end %>
 
       <% else %>
         <% if current_user.read_attribute("#{provider.downcase}_uid") %>
           <h6>No sharable pages available.</h6>
           <%= link_to accounts_disconnect_path(:provider => "#{provider.downcase}"), :class => "connect_link" do %>
-            <h5> Disconnect your <%= provider %> Account </h5>
+            <h5> Disconnect </h5>
           <% end %>
         <% else %>
           <%= render(:partial => 'shared/connect_account', :locals => { :provider => "#{provider.downcase}" }) %>
         <% end %>
+      <% end %>
+
+      <% accounts.each do |page| %>
+        <div class="social-accounts-wrap">
+            <div class="img-holder">
+            <img class="thumbnail-page" src="<%= page.picture || image_path('page.svg') %>"/>
+          </div>
+          <h5 class="page-name"><%= page['name'] %></h5>
+          <%= link_to accounts_remove_page_path(:id => page.id), data: { confirm: "You sure?" } do %>
+            <span class="glyphicon glyphicon-trash"></span>
+          <% end %>
+          <%= form_for page, url: update_on_schedule_path(id: page.id), method: :post, html: { id: "#{page.id}-form", remote: :true, style: "display: block; margin-left: 10px; margin-top: 5px;" } do |f| %>
+            <label class="switch switch-mini">
+              <%= f.check_box :on_schedule, checked: page.on_schedule, onchange: "$('##{page.id}-form').submit();" %>
+              <span class="toggle round" ></span>
+            </label>
+            <span>Post scheduled content on my behalf.</span>
+          <% end %>
+          <% if active_accounts.exclude?(page.account_id) %>
+            <span class="mini-error">Unable to access this account.</span>
+          <% end %>
+        </div>
       <% end %>
 
   <% end %>

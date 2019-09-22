@@ -1,16 +1,54 @@
-<h3>That's it!</h3>
+<div style="max-width: 500px;">
 
-<div class="row">
-	<div class="col-md-4 col-sm-12">
-		<p>Check out all the digital content available: </p>
-		<%= render partial: "shared/action_button", locals: { text: "Go Home", glyphicon: "home", goto: root_path } %>
-	</div>
-	<div class="col-md-4 col-sm-12">
-		<p>Check out what's next on your post schedule: </p>
-		<%= render partial: "shared/action_button", locals: { text: "Go to Post Schedule", glyphicon: "calendar", goto: scheduled_posts_path } %>
-	</div>
+	<h3>(4/5) You're almost done</h3>
+
+	<p>Just a few more things to personalize your experience.</p>
+
+	<%= form_tag(onboarding_update_user_path(id: current_user.id), remote: :true) do %>
+
+		<div id="onboarding-errors">
+			
+		</div>
+
+		<%= label_tag "Username/Profile Url" %>
+		<input type="textbox" id="slug-input" maxlength='75' />
+		<div>
+		<p style="display: inline-block; ">www.promoposts.net/users/</p>
+		<%= text_field_tag "slug", nil, readonly: true, id: "real-slug", placeholder: "", style: 'display: inline-block; width: auto;' %>
+		</div>
+
+		<%= label_tag "Organization"%>
+		<%= text_field_tag "company", nil, maxlength: 50  %>
+
+		<%= label_tag "Company Website" %>
+		<%= url_field_tag "website", nil, maxlength: 50 %>
+
+		<%#= f.label :color, "Main Company Color (HEX)" %>
+	     <%#= f.text_field :color, id: "color_picker" %>
+
+		<%= submit_tag "Finish", class: "btn-submit btn-submit-full-width" %>
+	<% end %>
+
 </div>
 
 <script>
+  <% if current_user %>
+    $("#slug-input").on("change keyup paste", function(){
+      result = $("#slug-input").val();
+      if(result == ""){
+        result = "<%= @user.slug %>";
+      }else{
+        result = result.replace( /[^\w]/g, '_' );
+      }
+      $("#real-slug").val(result);
+    })
+  <% end %>
+
+  // $("#color_picker").spectrum({
+  //     preferredFormat: "hex",
+  //     showInput: true,
+  //     color: "#ffffff"
+  // });
+
   document.getElementsByClassName('btn-next')[0].style.display = 'none';
 </script>

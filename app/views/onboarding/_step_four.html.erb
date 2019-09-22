@@ -1,54 +1,20 @@
-<div style="max-width: 500px;">
+<h3>(3/5) Set up overlays</h3>
+<p>Promo Posts can automatically put your logo in the corner of all your posts. Add an overlay below and set it's default location, or click 'next' to skip.</p>
 
-	<h3>(4/4) You're almost done</h3>
+<% @new_overlay = Overlay.new %>
+<% @overlays = current_user.overlays %>
+<% @overlay_select = @overlays.pluck(:name, :id) %>
+<% @overlay_locations = Overlay.location_array %>
+<% @default_select_overlay = nil %>
 
-	<p>Just a few more things to personalize your experience.</p>
-
-	<%= form_tag(onboarding_update_user_path(id: current_user.id), remote: :true) do %>
-
-		<div id="onboarding-errors">
-			
-		</div>
-
-		<%= label_tag "Username/Profile Url" %>
-		<input type="textbox" id="slug-input" maxlength='75' />
-		<div>
-		<p style="display: inline-block; ">www.promoposts.net/users/</p>
-		<%= text_field_tag "slug", nil, readonly: true, id: "real-slug", placeholder: "", style: 'display: inline-block; width: auto;' %>
-		</div>
-
-		<%= label_tag "Organization"%>
-		<%= text_field_tag "company", nil, maxlength: 50  %>
-
-		<%= label_tag "Company Website" %>
-		<%= url_field_tag "website", nil, maxlength: 50 %>
-
-		<%#= f.label :color, "Main Company Color (HEX)" %>
-	     <%#= f.text_field :color, id: "color_picker" %>
-
-		<%= submit_tag "Finish", class: "btn-submit btn-submit-full-width" %>
-	<% end %>
-
+<div id="onboarding-new-overlays">
+	<%= render '/overlays/new_overlay' %>
 </div>
 
-<script>
-  <% if current_user %>
-    $("#slug-input").on("change keyup paste", function(){
-      result = $("#slug-input").val();
-      if(result == ""){
-        result = "<%= @user.slug %>";
-      }else{
-        result = result.replace( /[^\w]/g, '_' );
-      }
-      $("#real-slug").val(result);
-    })
-  <% end %>
+<div>
+	<p>Your overlays:</p>
+	<div id="overlays-container">
+	  	<%= render '/overlays/all_overlays' %>
+	</div>
+</div>
 
-  // $("#color_picker").spectrum({
-  //     preferredFormat: "hex",
-  //     showInput: true,
-  //     color: "#ffffff"
-  // });
-
-  document.getElementsByClassName('btn-next')[0].style.display = 'none';
-</script>

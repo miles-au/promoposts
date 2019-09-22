@@ -1,20 +1,35 @@
-<h3>(3/4) Set up overlays</h3>
-<p>Promo Posts can automatically put your logo in the corner of all your posts. Add an overlay below and set it's default location, or click 'next' to skip.</p>
+<h3>(3/5) Automated post scheduling</h3>
 
-<% @new_overlay = Overlay.new %>
-<% @overlays = current_user.overlays %>
-<% @overlay_select = @overlays.pluck(:name, :id) %>
-<% @overlay_locations = Overlay.location_array %>
-<% @default_select_overlay = nil %>
+<p>Promo Posts can post scheduled relevant content to your social media. Based on the topics you chose, here are some upcoming posts: </p>
 
-<div id="onboarding-new-overlays">
-	<%= render '/overlays/new_overlay' %>
+<hr>
+
+<h4>scroll <span class="glyphicon glyphicon-arrow-right"></span></h4>
+<div class="slider">
+	<% scheduled_posts = current_user.scheduled_posts.joins(:topic => :scheduled_posts).where("scheduled_posts.post_time >= ? AND scheduled_posts.post_time < ? AND scheduled_posts.platform IN (?)",  current_user.user_time_to_utc(Time.now.getutc), current_user.user_time_to_utc( (Time.now.getutc + 13.days).to_time), current_user.accounts.pluck(:platform).uniq ).uniq.sort_by { |p| p.post_time } %>
+	<% scheduled_posts.each do |post| %>
+		<div class="slider-block" style="vertical-align: top; height: 300px; overflow: scroll;">			
+			<div>
+				<strong><%= post.post_time.strftime("%B %-d") %></strong>
+				<br>
+				<%= post.micropost.category.titlecase.tr("_", " ") %>
+			</div>
+			<img src="<%= post.picture_url %>" style="max-width: 100vw; height: auto; max-height: 300px;" />
+			<div><%= post.caption %></div>
+		</div>
+	<% end %>
 </div>
 
-<div>
-	<p>Your overlays:</p>
-	<div id="overlays-container">
-	  	<%= render '/overlays/all_overlays' %>
-	</div>
-</div>
+<hr>
 
+<h4>Would you like Promo Posts to post content on your behalf?</h4>
+
+<%= form_tag(update_on_schedule_all_path, remote: :true, method: :post, id: "update-onschedule-form", style: "display: block; margin-left: 10px; margin-top: 5px;" ) do %>
+	<label class="switch switch-jumbo">
+		<%= check_box_tag( "on_schedule", value = "1", checked = current_user.accounts.first.on_schedule, options = {onchange: "$('#update-onschedule-form').submit();"}) %>
+	  <span class="toggle round" ></span>
+	</label>
+<span>Post scheduled content on my behalf.</span>
+<% end %>
+
+<p>You can update this feature individually for each account in the settings.</p>

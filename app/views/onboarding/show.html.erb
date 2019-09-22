@@ -7,9 +7,7 @@
 		<div id="onboarding_container" >
 		</div>
 		<div class="footer">
-			<div class="btn-next">
-				<%= link_to "next", onboarding_next_stage_path(id: current_user.id), remote: :true %>
-			</div>
+			<%= link_to "next", onboarding_next_stage_path(id: current_user.id), remote: :true, class: "btn-next" %>
 		</div>
 	</div>
 </div>
@@ -25,9 +23,11 @@
 			$("#onboarding_container").html("<%= j render 'step_three' %>");
 		}else if( step == 3 ){
 			$("#onboarding_container").html("<%= j render 'step_four' %>");
+		}else if( step == 4 ){
+			$("#onboarding_container").html("<%= j render 'step_five' %>");
 		}else{
 			// you're done, render next steps page. hide next button
-			$("#onboarding_container").html("<%= j render 'step_five' %>");
+			$("#onboarding_container").html("<%= j render 'step_six' %>");
 		}
 
 		window.scrollTo(0,0);

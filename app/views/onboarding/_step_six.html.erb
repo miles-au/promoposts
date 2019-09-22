@@ -1,0 +1,16 @@
+<h3>That's it!</h3>
+
+<div class="row">
+	<div class="col-md-4 col-sm-12">
+		<p>Check out all the digital content available: </p>
+		<%= render partial: "shared/action_button", locals: { text: "Go Home", glyphicon: "home", goto: root_path } %>
+	</div>
+	<div class="col-md-4 col-sm-12">
+		<p>Check out what's next on your post schedule: </p>
+		<%= render partial: "shared/action_button", locals: { text: "Go to Post Schedule", glyphicon: "calendar", goto: scheduled_posts_path } %>
+	</div>
+</div>
+
+<script>
+  document.getElementsByClassName('btn-next')[0].style.display = 'none';
+</script>

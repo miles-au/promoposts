@@ -135,6 +135,108 @@ select{
   background-color: $grey6;
 }
 
+// toggle switches
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin-right: 5px;
+}
+
+.switch-mini{
+  width: 30px;
+  height: 18px;
+}
+
+.switch-jumbo{
+  width: 120px;
+  height: 64px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $grey4;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.toggle:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.switch-mini .toggle:before{
+  height: 10px;
+  width: 10px;
+}
+
+.switch-jumbo .toggle:before{
+  height: 56px;
+  width: 56px;
+}
+
+input:checked + .toggle {
+  background-color: $yellow1;
+}
+
+input:focus + .toggle {
+  box-shadow: 0 0 4px $blue3;
+}
+
+input:checked + .toggle:before{
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.switch-mini input:checked + .toggle:before {
+  -webkit-transform: translateX(12px);
+  -ms-transform: translateX(12px);
+  transform: translateX(12px);
+}
+
+.switch-jumbo input:checked + .toggle:before {
+  -webkit-transform: translateX(56px);
+  -ms-transform: translateX(56px);
+  transform: translateX(56px);
+}
+
+/* Rounded sliders */
+.toggle.round {
+  border-radius: 34px;
+}
+
+.switch-mini .toggle.round{
+  border-radius: 22px;
+}
+
+.switch-jumbo .toggle.round{
+  border-radius: 64px;
+}
+
+.toggle.round:before {
+  border-radius: 50%;
+}
+
 //action buttons
 .action_buttons_container, .post-filter{
   display: grid;
@@ -485,9 +587,8 @@ header{
 /* Calendar */
 .day{
   padding: 5px;
-  h4{
-    border-bottom: 2px solid $grey4;
-  }
+  border-bottom: 2px solid $grey4;
+
   .listed_post{
     margin-bottom: 3px;
     div{
@@ -649,9 +750,7 @@ footer{
       background-color: $yellow1;
       margin: 10px;
       padding: 10px 25px;
-      a{
-        color: $blue1;
-      }
+      color: $blue1;
     }
   }
 }
@@ -707,6 +806,7 @@ footer{
 .social-accounts-wrap{
   display: block;
   margin: 10px;
+  border-bottom: 2px solid $grey4;
 
   input, div, h6{
     display: inline-block;
@@ -753,15 +853,10 @@ footer{
 }
 
 .connect_link{
+  margin-right: 15px;
   span, h5{
     color: $teal3;
     display: inline-block;
-  }
-
-  &:hover{
-    span, h5{
-      color: $yellow1;
-    }
   }
 }
 

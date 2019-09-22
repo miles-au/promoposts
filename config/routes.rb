@@ -85,6 +85,9 @@ Rails.application.routes.draw do
 
   get '/how_does_it_work', to: "static_pages#how_does_it_work"
 
+  post '/accounts/:id/update_on_schedule', to: "accounts#update_on_schedule", as: "update_on_schedule"
+  post '/accounts/:id/update_on_schedule_all', to: "accounts#update_on_schedule_all", as: "update_on_schedule_all"
+
   resources :users do
     member do
       get :following, :followers

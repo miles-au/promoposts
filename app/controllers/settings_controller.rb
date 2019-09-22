@@ -21,6 +21,7 @@ class SettingsController < ApplicationController
       #unsubscribe from this topic
       current_user.delete_topic(topic)
     elsif current_user.topics.count < Topic.topics_limit
+      #subscribe to topic
       current_user.add_topic(topic)
     end
 
