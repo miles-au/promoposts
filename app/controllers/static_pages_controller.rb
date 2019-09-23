@@ -2,11 +2,13 @@ class StaticPagesController < ApplicationController
   before_action :admin_user,   only: [:admin_panel, :tracking]
 
   def home
-    if current_user && current_user.onboarding_stage >= 0 && current_user.onboarding_stage < 5
-      redirect_to show_onboarding_path(id: current_user.id)
-    elsif current_user.onboarding_stage == 5
-      current_user.onboarding_stage = -1
-      current_user.save
+    if current_user
+      if current_user.onboarding_stage >= 0 && current_user.onboarding_stage < 5
+        redirect_to show_onboarding_path(id: current_user.id)
+      elsif current_user.onboarding_stage == 5
+        current_user.onboarding_stage = -1
+        current_user.save
+      end
     end
       
 
