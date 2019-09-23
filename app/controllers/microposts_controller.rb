@@ -61,6 +61,7 @@ class MicropostsController < ApplicationController
 
   def show
     @micropost = Micropost.find(params[:id])
+    @topics = Topic.find(@micropost.scheduled_posts.pluck(:topic_id)).uniq
     if current_user
       @caption = @micropost.content.gsub("<WEBSITE>", current_user.website || "")
     else

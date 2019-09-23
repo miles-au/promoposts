@@ -39,14 +39,19 @@
 		      		<% image = MiniMagick::Image.open(pic_url) %>
 		      	<% end %>
 	  			<p><%= @micropost.category.titlecase.tr("_", " ") %><br><%= image[:width] %> x <%= image[:height] %> px</p>
-	  			<% if current_user && (current_user.admin || @micropost.user == current_user) %>
-	  				<%= link_to "Delete this post", @micropost, method: :delete, "data-confirm": "Are you sure you want to delete this post?" %>
-	  			<% end %>
 			<% end %>
 
 		  	<% if current_user == @micropost.user %>
-					<p>Shares: <%= @micropost.shares %> | Downloads: <%= @micropost.downloads %></p>
-				<% end %>
+				<p>Shares: <%= @micropost.shares %> | Downloads: <%= @micropost.downloads %></p>
+			<% end %>
+
+			<% if @topics.count > 0 %>
+				<p>Posts like this can be scheduled under "<%= @topics.first.name  %>" </p>
+			<% end %>
+
+			<% if current_user && (current_user.admin || @micropost.user == current_user) %>
+  				<%= link_to "Delete this post", @micropost, method: :delete, "data-confirm": "Are you sure you want to delete this post?" %>
+  			<% end %>
 			</div>
 		</div>
 	</div>
