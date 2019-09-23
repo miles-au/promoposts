@@ -1,0 +1,3 @@
+<%= link_to "See previous posts", prev_week_path(time: next_time, backtime: prev_time - 7.days), remote: true, id: "prev_week", style: "text-align: right; display: block;" %>
+<%= link_to next_week_path(time: next_time + 7.days, backtime: prev_time), remote: true, id: "next_week", style: "display: none;" do %>
+<% end %>

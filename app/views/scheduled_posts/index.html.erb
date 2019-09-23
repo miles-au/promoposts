@@ -1,5 +1,6 @@
 <%= render "/shared/modal" %>
 
+
 <div class="container">
 
 	<% if current_user.admin %>
@@ -8,9 +9,25 @@
   	<h2>Scheduled Posts</h2>
   <% end %>
 
+  <div id="calendar_controls">
+	  <%= render partial: "calendar_controls", locals: {next_time: @time, prev_time: @backtime} %>
+	</div>
   <div id="calendar_container">
-    <%= render partial: 'week', locals: { starting_time: @time } %>
+  	<%= render partial: 'week', locals: { starting_time: @time } %>
+  </div>
+  <div id="bottom_of_calendar">
   </div>
 
 </div>
 
+<script>
+	var loading = false;
+	$(window).on( 'scroll', function(){
+	   	if(loading == false && next_week && $(window).scrollTop() > $(document).height() - $(window).height() - 60){
+	   		loading = true;
+	   		console.log("trigger");
+	      $('#bottom_of_calendar').html('<img src="<%= asset_path('loading.gif') %>" alt="Loading..." title="Loading..." width="50px" style="display: inline-block;"/><h3 style="display: inline-block; margin-left: 20px;">loading</h3>');
+	      $.getScript(next_week);
+	    }
+	 });
+</script>

@@ -1,21 +1,6 @@
-<%# figure out which week to display %>
-<% date = starting_time.to_date.beginning_of_week(:sunday) %>
-<% delta = date <= starting_time ? 0 : 7 %>
-<% week_start = date + delta %>
-
-<div>
-  <%= link_to :controller => :scheduled_posts, :action => :prev_week, remote: true, time: @time do %>
-    <span class="glyphicon glyphicon-chevron-left"></span>
-  <% end %>
-  <span><%= week_start.strftime("%Y") %></span>
-  <%= link_to :controller => :scheduled_posts, :action => :next_week, remote: true, time: @time do %>
-    <span class="glyphicon glyphicon-chevron-right"></span>
-  <% end %>
-</div>
-
-<% (week_start..week_start+6).each do |day_of_week| %>
-	<div class="day <%= "today" if day_of_week == current_user.utc_to_user_time(Time.now.getutc).to_date %>" >
-	  <h4><%= day_of_week.strftime("%B %-d") %></h4>
+<% (starting_time.to_date..starting_time.to_date+6).each do |day_of_week| %>
+  <div class="day <%= "today" if day_of_week == current_user.utc_to_user_time(Time.now.getutc).to_date %>" >
+    <h4><strong><%= day_of_week == current_user.utc_to_user_time(Time.now.getutc).to_date ? "Today" : day_of_week.strftime("%B %-d, %Y") %></strong></h4>
     <%= render partial: "day", locals: { day: day_of_week } %>
-	</div>
+  </div>
 <% end %>

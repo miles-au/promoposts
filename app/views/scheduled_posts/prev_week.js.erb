@@ -1,1 +1,4 @@
-$("#calendar_container").html("<%= j render partial: 'week', locals: { starting_time: @time } %>");
+$("#calendar_container").prepend("<%= j render partial: 'week', locals: { starting_time: @backtime } %>");
+$("#calendar_controls").html("<%= j render partial: "calendar_controls", locals: { next_time: @time , prev_time: @backtime} %>");
+
+window.scrollTo(0, 0);

@@ -1,1 +1,4 @@
-$("#calendar_container").html("<%= j render partial: 'week', locals: { starting_time: @time } %>");
+$("#calendar_container").append("<%= j render partial: 'week', locals: { starting_time: @time } %>");
+$("#calendar_controls").html("<%= j render partial: "calendar_controls", locals: { next_time: @time , prev_time: @backtime} %>");
+
+loading = false;

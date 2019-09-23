@@ -7,6 +7,7 @@ class ScheduledPostsController < ApplicationController
   # GET /scheduled_posts.json
   def index
     @time = current_user.utc_to_user_time(Time.now.getutc)
+    @backtime = current_user.utc_to_user_time(Time.now.getutc)
     @topics = current_user.topics
     if current_user.admin
       @scheduled_posts = ScheduledPost.all.where.not(topic_id: nil).or(ScheduledPost.where(user_id: current_user.id))
@@ -16,7 +17,8 @@ class ScheduledPostsController < ApplicationController
   end
 
   def prev_week
-    @time = params[:time].to_time.advance( days: -7 )
+    @time = params[:time].to_time
+    @backtime = params[:backtime].to_time
     if current_user.admin
       @scheduled_posts = ScheduledPost.all.where.not(topic_id: nil).or(ScheduledPost.where(user_id: current_user.id))
     else
@@ -29,13 +31,13 @@ class ScheduledPostsController < ApplicationController
   end
 
   def next_week
-    @time = params[:time].to_time.advance( days: 7 )
+    @time = params[:time].to_time
+    @backtime = params[:backtime].to_time
     if current_user.admin
       @scheduled_posts = ScheduledPost.all.where.not(topic_id: nil).or(ScheduledPost.where(user_id: current_user.id))
     else
       @scheduled_posts = current_user.scheduled_posts
     end
-    puts "time_controller: #{@time}"
     respond_to do |format|
       format.html
       format.js
