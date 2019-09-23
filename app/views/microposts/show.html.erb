@@ -23,7 +23,7 @@
 				<%= render partial: "shared/user_info", locals: { user: @user, thumbnail_width: 50 } %>
 		    <hr>
 				<h4><strong>caption:</strong></h4>
-				<p>"<%= @caption %>"
+				<p>"<%= sanitize @caption %>"
 			  		<% if @micropost.external_url.present? %>
 			  			<br><span class="go-to-external-link"><span class="glyphicon glyphicon-link"></span><%=link_to('go to link',"http://#{@micropost.external_url}", :target=>"_blank") %></span>
 			  		<% end %>

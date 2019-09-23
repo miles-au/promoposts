@@ -15,9 +15,9 @@ class CampaignsController < ApplicationController
   def show
     @campaign = Campaign.find(params[:id])
     if current_user
-      @caption = sanitize @campaign.content.gsub("<WEBSITE>", current_user.website || "")
+      @caption = @campaign.content.gsub("<WEBSITE>", current_user.website || "")
     else
-      @caption = sanitize @campaign.content.gsub("<WEBSITE>", "")
+      @caption = @campaign.content.gsub("<WEBSITE>", "")
     end
   end
 

@@ -57,7 +57,7 @@
         <%= render partial: "shared/user_info", locals: { user:  @campaign.user, thumbnail_width: 50 } %>
         <hr>
         <h4><strong>caption:</strong></h4>
-        <p>"<%= @caption %>" </p>
+        <p>"<%= sanitize @caption %>" </p>
         <% if current_user.admin || @campaign.user == current_user %>
           <%= link_to "Delete this campaign", @campaign, method: :delete, "data-confirm": "Are you sure you want to delete this campaign?" %>
         <% end %>

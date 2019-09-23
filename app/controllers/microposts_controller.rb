@@ -62,9 +62,9 @@ class MicropostsController < ApplicationController
   def show
     @micropost = Micropost.find(params[:id])
     if current_user
-      @caption = sanitize @micropost.content.gsub("<WEBSITE>", current_user.website || "")
+      @caption = @micropost.content.gsub("<WEBSITE>", current_user.website || "")
     else
-      @caption = sanitize @micropost.content.gsub("<WEBSITE>", "")
+      @caption = @micropost.content.gsub("<WEBSITE>", "")
     end
     if @micropost.campaign_id
       @campaign = Campaign.find(@micropost.campaign_id)
