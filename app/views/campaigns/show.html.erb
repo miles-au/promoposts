@@ -46,7 +46,7 @@
 
   <% if @campaign.landing_page %>
     <div class="col col-md-3 col-sm-12">
-      <%= render partial: "shared/action_button", locals: { text: "preview landing page", glyphicon: "eye-open", goto: preview_landing_page_path(id: @campaign.landing_page.id), target: "_blank" } %>
+      <%= render partial: "shared/action_button", locals: { text: "preview landing page", glyphicon: "eye-open", goto: landing_page_path(id: @campaign.landing_page.id), target: "_blank" } %>
     </div>
   <% end %>
 
@@ -100,5 +100,9 @@
   edit_landing_page_button.onclick = function(){
     dash_sub.innerHTML = "<%= j render 'edit_landing_page_form' %>";
   };
+
+  function close_dash(){
+    dash_sub.innerHTML = "";
+  }
 
 </script>
