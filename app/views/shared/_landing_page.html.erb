@@ -1,5 +1,11 @@
 <%= render partial: 'shared/landing_page_header', locals: {user: user} %>
-<% (user.color[1..2].hex*0.299 + user.color[3..4].hex*0.587 + user.color[5..6].hex*0.114) > 150 ? @font_color = "#333333" : @font_color = "#ffffff" %>
+<% if user.color %>
+	<% user_bg_color = user.color %>
+	<% (user.color[1..2].hex*0.299 + user.color[3..4].hex*0.587 + user.color[5..6].hex*0.114) > 150 ? @font_color = "#333333" : @font_color = "#ffffff" %>
+<% else %>
+	<% user_bg_color = "#ffffff" %>
+	<% font_color = "#333333" %>
+<% end %>
 
 <% if landing_page.splash %>
 	<div class="splash-landing-page">
@@ -54,7 +60,7 @@
 			  <%= text_field_tag "email", nil, { maxlength: 255, disabled: true}  %>
 			  <%= label_tag(:message, "Message:") %>
 			  <%= text_area_tag "message", "Please tell me more about '#{landing_page.title}'", { maxlength: 1000, disabled: true}  %>
-			  <%= submit_tag "Send", class: 'btn-submit', style: "background: #{user.color}; color: #{@font_color}", disabled: true %>
+			  <%= submit_tag "Send", class: 'btn-submit', style: "background: #{user_bg_color}; color: #{@font_color}", disabled: true %>
 			<% else %>
 				<%= form_for @contact, url: send_lead_path(user: user.id, landing_page: landing_page.id), method: :post, html: {} do |f| %>
 
@@ -67,7 +73,7 @@
 				  <%= f.hidden_field(:campaign, :value => landing_page.campaign.id) %>
 				  <%= f.label(:message, "Message:") %>
 				  <%= f.text_area(:message, :maxlength => 1000)  %>
-				  <%= f.submit("Send", class: 'btn-submit', style: "background: #{user.color}; color: #{@font_color}") %>
+				  <%= f.submit("Send", class: 'btn-submit', style: "background: #{user_bg_color}; color: #{@font_color}") %>
 				<% end %>
 			<% end %>
 		</div>
