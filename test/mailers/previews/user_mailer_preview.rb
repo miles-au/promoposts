@@ -27,6 +27,17 @@ class UserMailerPreview < ActionMailer::Preview
   end
 
   # Preview this email at
+  # http://localhost:3000/rails/mailers/user_mailer/send_lead
+  def send_lead
+    email = "lead_email@lead_company.com"
+    campaign = Campaign.first
+    message = "Hi, I'm interested in your promotional products."
+    lead_name = "Test Lead"
+    user = User.first
+    UserMailer.send_lead(email, campaign, message, lead_name, user)
+  end
+
+  # Preview this email at
   # http://localhost:3000/rails/mailers/user_mailer/verify_email
   def verify_email
     user = User.first

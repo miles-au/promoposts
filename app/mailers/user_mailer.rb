@@ -20,6 +20,15 @@ class UserMailer < ApplicationMailer
     mail to: 'contact@promoposts.net', subject: subject
   end
 
+  def send_lead(email, campaign, message, lead_name, user)
+    @message = message
+    @campaign = Campaign.find(campaign)
+    @lead_email = email # this is the lead's email, not the user's email
+    @lead_name = lead_name
+    @user = user
+    mail to: user.email, subject: "New lead from the '#{@campaign.name}' campaign" 
+  end
+
   def verify_email(user, email)
     @user = user
     @email = email

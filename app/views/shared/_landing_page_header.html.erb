@@ -1,0 +1,19 @@
+<% (user.color[1..2].hex*0.299 + user.color[3..4].hex*0.587 + user.color[5..6].hex*0.114) > 150 ? @font_color = "#333333" : @font_color = "#ffffff" %>
+
+<div class="header-promodigi" style="background-color: <%= user.color %>">
+  <div id="logo" >
+      <img src="<%= user.avatar || image_path('avatar.png') %>" />
+      <h3 style="color: <%= @font_color %>;"><%= user.company %></h3>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function set_body_padding(){
+    let header_height = document.querySelector('header').offsetHeight;
+    document.querySelector('body').style.paddingTop = header_height + "px";
+  }
+
+  set_body_padding();
+
+  window.addEventListener('resize', set_body_padding);
+</script>

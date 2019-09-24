@@ -1,0 +1,2 @@
+module PromodigiHelper
+end

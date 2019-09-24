@@ -1,0 +1,7 @@
+<p>Hey <%= @user.name %>,</p>
+
+<p><strong><%= @lead_name %></strong> has sent you a message in response to your '<%= link_to @campaign.name, @campaign %>' campaign!</p>
+
+<p><strong>Message: </strong><%= @message %></p>
+
+<p>You can reply to them at their email: <strong><%= mail_to @lead_email, @lead_email %></strong></p>

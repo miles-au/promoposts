@@ -1,0 +1,76 @@
+<%= render partial: 'shared/landing_page_header', locals: {user: user} %>
+<% (user.color[1..2].hex*0.299 + user.color[3..4].hex*0.587 + user.color[5..6].hex*0.114) > 150 ? @font_color = "#333333" : @font_color = "#ffffff" %>
+
+<% if landing_page.splash %>
+	<div class="splash-landing-page">
+		<img src="<%= landing_page.splash.url %>" />
+	</div>
+<% end %>
+
+<div class="container">
+	<h1><%= landing_page.title %></h1>
+	<h4><%= landing_page.headline %></h4>
+	
+	<div class="row info-section">
+		<div class="col col-md-4 col-sm-12 col-sm-push-6">
+			<img src="<%= landing_page.pic_one %>" />
+		</div>
+		<div class="col col-md-4 col-md-offset-1 col-sm-12 col-sm-pull-4" >
+			<div>
+				<p><%= landing_page.text_one %></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="row info-section">
+		<div class="col col-md-4 col-md-offset-1 col-sm-12">
+			<img src="<%= landing_page.pic_two %>" />
+		</div>
+		<div class="col col-md-4 col-md-offset-1 col-sm-12" >
+			<div>
+				<p><%= landing_page.text_two %></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="row info-section">
+		<div class="col col-md-4 col-sm-12 col-sm-push-6">
+			<img src="<%= landing_page.pic_three %>" />
+		</div>
+		<div class="col col-md-4 col-md-offset-1 col-sm-12 col-sm-pull-4" >
+			<div>
+				<p><%= landing_page.text_three %></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="contact-form">
+		<div style="max-width: 500px; margin: 0 auto;" >
+			<h1>Reach out to find out more!</h1>
+			<% if preview %>
+			  <%= label_tag(:name, "Your Name:") %>
+			  <%= text_field_tag "name", nil, { maxlength: 100, disabled: true}  %>
+			  <%= label_tag(:email, "Your Email:") %>
+			  <%= text_field_tag "email", nil, { maxlength: 255, disabled: true}  %>
+			  <%= label_tag(:message, "Message:") %>
+			  <%= text_area_tag "message", "Please tell me more about '#{landing_page.title}'", { maxlength: 1000, disabled: true}  %>
+			  <%= submit_tag "Send", class: 'btn-submit', style: "background: #{user.color}; color: #{@font_color}", disabled: true %>
+			<% else %>
+				<%= form_for @contact, url: send_lead_path(user: user.id, landing_page: landing_page.id), method: :post, html: {} do |f| %>
+
+				  <%= render 'shared/error_messages', object: f.object %>
+
+				  <%= f.label(:name, "Your Name:") %>
+			  	  <%= f.text_field( :name, { maxlength: 100 } )  %>
+				  <%= f.label(:email, "Your Email:") %>
+				  <%= f.text_field(:email, :maxlength => 255)  %>
+				  <%= f.hidden_field(:campaign, :value => landing_page.campaign.id) %>
+				  <%= f.label(:message, "Message:") %>
+				  <%= f.text_area(:message, :maxlength => 1000)  %>
+				  <%= f.submit("Send", class: 'btn-submit', style: "background: #{user.color}; color: #{@font_color}") %>
+				<% end %>
+			<% end %>
+		</div>
+	</div>
+
+</div>

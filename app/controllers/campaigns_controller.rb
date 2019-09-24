@@ -14,6 +14,12 @@ class CampaignsController < ApplicationController
   # GET /campaigns/1.json
   def show
     @campaign = Campaign.find(params[:id])
+    if @campaign.landing_page
+      @landing_page = @campaign_landing_page
+    else
+      @landing_page = LandingPage.new
+    end
+    puts "landing_page #{@landing_page}"
     if current_user
       @caption = @campaign.content.gsub("<WEBSITE>", current_user.website || "")
     else
@@ -52,6 +58,7 @@ class CampaignsController < ApplicationController
   # PATCH/PUT /campaigns/1.json
   def update
     @campaign = current_user.campaigns.find(params[:id])
+    puts "PARAMS: #{campaign_params}"
     @campaign.update_attributes(campaign_params)
     @campaign.microposts.last.user_id = current_user.id
     @campaign.microposts.last.shareable = true
@@ -281,13 +288,12 @@ class CampaignsController < ApplicationController
     flash[:success] = @success_string.join("<br/>").html_safe 
 
     redirect_to campaign
-
   end
 
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def campaign_params
-      params.require(:campaign).permit(:name, :content, microposts_attributes: [ :content, :picture, :category ])
+      params.require(:campaign).permit(:name, :content, microposts_attributes: [ :content, :picture, :category ], landing_page_attributes: [ :splash, :title, :headline, :pic_one, :text_one, :pic_two, :text_two, :pic_three, :text_three ] )
     end
 
     def campaign_microposts_params

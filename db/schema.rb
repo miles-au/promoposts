@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_21_144707) do
+ActiveRecord::Schema.define(version: 2019_09_24_070314) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 2019_09_21_144707) do
     t.string "email"
     t.string "subject"
     t.string "message"
+    t.string "name"
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -63,6 +64,21 @@ ActiveRecord::Schema.define(version: 2019_09_21_144707) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "landing_pages", force: :cascade do |t|
+    t.integer "campaign_id"
+    t.string "splash"
+    t.string "title"
+    t.string "headline"
+    t.string "pic_one"
+    t.string "text_one"
+    t.string "pic_two"
+    t.string "text_two"
+    t.string "pic_three"
+    t.string "text_three"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "microposts", force: :cascade do |t|

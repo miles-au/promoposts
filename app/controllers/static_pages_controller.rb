@@ -10,7 +10,6 @@ class StaticPagesController < ApplicationController
         current_user.save
       end
     end
-      
 
     @digital_asset_types = ['general_update', 'cover_photo', 'email_banner', 'infographic', 'meme']
 

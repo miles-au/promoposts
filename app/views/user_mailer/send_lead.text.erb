@@ -1,0 +1,7 @@
+Hey <%= @user.name %>,
+
+<%= @lead_name %> has sent you a message in response to one of your campaigns!
+
+Message: <%= @message %>
+
+You can reply to them at their email: <%= mail_to @lead_email, @lead_email %>

@@ -23,7 +23,7 @@
   </head>
 
   <body>
-    <%= render 'layouts/header' %>
+    <%= render 'layouts/header' unless request.domain.match(/(promodigi.net|promodigi.test)/) %>
     
     <div id="flash_wrapper">
       <%= render 'shared/flash' %>

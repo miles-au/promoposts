@@ -31,6 +31,23 @@
       </div>
     </div>
 
+    <div class="col col-md-3 col-sm-12">
+      <div class="btn-large" id="edit_landing_page" style="cursor: pointer;">
+        <div class="icon">
+          <span class="glyphicon glyphicon-pencil"></span>
+        </div>
+        <div class="text">
+          add/edit landing page
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+
+  <% if @campaign.landing_page %>
+    <div class="col col-md-3 col-sm-12">
+      <%= render partial: "shared/action_button", locals: { text: "preview landing page", glyphicon: "eye-open", goto: preview_landing_page_path(id: @campaign.landing_page.id), target: "_blank" } %>
+    </div>
   <% end %>
 
 </div>
@@ -69,6 +86,7 @@
 <script>
   var edit_campaign_button = document.getElementById("edit_campaign_button");
   var add_post_button = document.getElementById("add_post_button");
+  var edit_landing_page_button = document.getElementById("edit_landing_page");
   var dash_sub = document.getElementById("dash-sub");
 
   edit_campaign_button.onclick = function(){
@@ -77,6 +95,10 @@
 
   add_post_button.onclick = function(){
     dash_sub.innerHTML = "<%= j render 'add_post_form' %>";
+  };
+
+  edit_landing_page_button.onclick = function(){
+    dash_sub.innerHTML = "<%= j render 'edit_landing_page_form' %>";
   };
 
 </script>

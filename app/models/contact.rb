@@ -5,6 +5,7 @@ class Contact < ApplicationRecord
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, length: { maximum: 255 }
   validates :subject, presence: true, length: { maximum: 255 }
   validates :message, presence: true, length: { maximum: 1000 }
+  validates :name, length: { maximum: 100 }
 
   attr_accessor :email, :subject, :message
 
@@ -26,6 +27,10 @@ class Contact < ApplicationRecord
 
   def send_mailer(email, subject, message)
   	UserMailer.contacted(email, subject, message).deliver_now
+  end
+
+  def send_lead(email, subject, message, name, user)
+    UserMailer.send_lead(email, subject, message, name, user).deliver_now
   end
 
   private

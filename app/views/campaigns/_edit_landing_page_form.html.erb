@@ -1,0 +1,51 @@
+<div id="edit_landing_page_container">
+  <%= form_for @campaign, :remote => true, :html => {onsubmit: "document.getElementById('postingMsg').style.display = 'block';"}  do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+
+    <div class="container">
+      <% if @campaign.landing_page %>
+        <h4>Edit Landing Page</h4>
+      <% else %>
+        <h4>Add Landing Page</h4>
+      <% end %>
+
+      <%= f.fields_for :landing_page, @landing_page do |landing_page| %>
+
+        <%= landing_page.label :splash, "Splash Banner (10mb): " %>
+        <%= landing_page.file_field :splash, accept: 'image/jpeg,image/gif,image/png' %>
+
+        <%= landing_page.label :title, "Header:" %>
+        <%= landing_page.text_field :title, placeholder: "Enter a header...", maxlength: 75 %>
+        <%= landing_page.label :headline, "Sub-Header:" %>
+        <%= landing_page.text_field :headline, placeholder: "Enter a sub-header...", maxlength: 200 %>
+
+        <hr>
+        <h4>section one</h4>
+        <%= landing_page.label :pic_one, "Picture (10mb): " %>
+        <%= landing_page.file_field :pic_one, accept: 'image/jpeg,image/gif,image/png' %>
+        <%= landing_page.label :text_one, "Text: " %>
+        <%= landing_page.text_field :text_one, placeholder: "Enter a description...", maxlength: 350 %>
+        <hr>
+        <h4>section two</h4>
+        <%= landing_page.label :pic_two, "Picture (10mb): " %>
+        <%= landing_page.file_field :pic_two, accept: 'image/jpeg,image/gif,image/png' %>
+        <%= landing_page.label :text_two, "Text: " %>
+        <%= landing_page.text_field :text_two, placeholder: "Enter a description...", maxlength: 350 %>
+        <hr>
+        <h4>section three</h4>
+        <%= landing_page.label :pic_three, "Picture (10mb): " %>
+        <%= landing_page.file_field :pic_three, accept: 'image/jpeg,image/gif,image/png' %>
+        <%= landing_page.label :text_three, "Text: " %>
+        <%= landing_page.text_field :text_three, placeholder: "Enter a description...", maxlength: 350 %>
+
+      <% end %>
+
+      <div style="text-align: center;">
+        <%= f.submit "Update Landing Page", class: "btn-submit" %>
+        <p id="postingMsg" style="margin-top: 10px; display: none;">updating...(large pictures may take a while to upload)</p>
+      </div>
+
+    </div>
+
+  <% end %>
+</div>

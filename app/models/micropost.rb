@@ -36,6 +36,7 @@ class Micropost < ActiveRecord::Base
               ['Email Banner', 'email_banner'],
               ['Meme', 'meme'],
               ['Infographic', 'infographic'],
+              ['Landing Page Banner', 'landing_page_banner'],
               ['Other', 'other']]
   end
 

@@ -4,6 +4,15 @@ Rails.application.routes.draw do
   get 'password_resets/edit'
   get 'sessions/new'
   get 'users/new'
+
+
+  # Catch Domains (promodigi.net or promodigi.test)
+  constraints domain: /(promodigi.net|promodigi.test)/ do
+    root "promodigi#home"
+    get '/landing_page', to: "promodigi#landing_page"
+    post '/landing_page', to: "promodigi#send_lead", as: "send_lead"
+  end
+
   root 'static_pages#home'
 
   get  '/help', to: 'static_pages#help'
@@ -88,6 +97,8 @@ Rails.application.routes.draw do
   post '/accounts/:id/update_on_schedule', to: "accounts#update_on_schedule", as: "update_on_schedule"
   post '/accounts/:id/update_on_schedule_all', to: "accounts#update_on_schedule_all", as: "update_on_schedule_all"
 
+  get '/landing_page_preview', to: "landing_page#preview", as: "preview_landing_page"
+
   resources :users do
     member do
       get :following, :followers
@@ -101,5 +112,6 @@ Rails.application.routes.draw do
   resources :tickets,             only: [:create, :destroy, :show]
   resources :campaigns
   resources :scheduled_posts
+  resources :landing_pages
 
 end
