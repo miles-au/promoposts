@@ -217,7 +217,7 @@ class CampaignsController < ApplicationController
     accounts = current_user.accounts.where('id IN (?)', params[:pages])
     post_date = params["post_date"] rescue Date.today
     if campaign.landing_page
-      external_url = campaign.landing_page.get_landing_page_url(user)
+      external_url = campaign.landing_page.get_landing_page_url(current_user)
     else
       external_url = nil
     end

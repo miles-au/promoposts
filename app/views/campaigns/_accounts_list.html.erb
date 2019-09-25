@@ -1,11 +1,6 @@
 <% platform_accounts = current_user.accounts.where( :platform => platform.downcase ) %>
-<% if @campaign.landing_page %>
-	<% platform_posts = @campaign.microposts.where(:category => "#{platform.downcase}_linked_post") %>
-<% end %>
-
-<% if platform_posts.empty? %>
-	<% platform_posts = @campaign.microposts.where(:category => "#{platform.downcase}_post") %>
-<% end %>
+<% platform_posts = @campaign.microposts.where(:category => "#{platform.downcase}_linked_post") if @campaign.landing_page %>
+<% platform_posts = @campaign.microposts.where(:category => "#{platform.downcase}_post") if !platform_posts || platform_posts.empty? %>
 
 <div class="row" style="margin-top: 10px;">
 	<h4 class="social-button <%= platform.downcase %>-bg">
