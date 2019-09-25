@@ -9,7 +9,7 @@ class PromodigiController < ApplicationController
 		@user = User.find(params[:user])
 		@landing_page = LandingPage.find(params[:landing_page])
 		@contact = Contact.new(:email => "", :subject => "", :message => "")
-		@og_image = @landing_page.campaign.microposts.where(category: "facebook_linked_post").first.picture.url
+		@og_image = @landing_page.campaign.microposts.where(category: "facebook_linked_post").first.picture.url rescue nil
 		@og_image = @landing_page.campaign.microposts.where(category: "facebook_post").first.picture.url unless @og_image
 	end
 
