@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <head>  
+    <title><%= request.domain.match(/(promodigi.net|promodigi.test)/) ? promodigi_title(yield(:title)) : full_title(yield(:title)) %></title>
     <%= yield(:open_graph) %>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= render 'layouts/rails_default' %>
+    <%= render 'layouts/shim' %>
+    <%= favicon_link_tag asset_path('favicon.png') %>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <link href="https://fonts.googleapis.com/css?family=Bai+Jamjuree:400,600&display=swap" rel="stylesheet" />
-    
     <% if Rails.env.production? %>
       <!-- Global site tag (gtag.js) - Google Analytics -->
       <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123139806-2"></script>
@@ -15,12 +20,6 @@
         gtag('config', 'UA-123139806-2');
       </script>
     <% end %>
-    <title><%= request.domain.match(/(promodigi.net|promodigi.test)/) ? promodigi_title(yield(:title)) : full_title(yield(:title)) %></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <%= render 'layouts/rails_default' %>
-    <%= render 'layouts/shim' %>
-    <%= favicon_link_tag asset_path('favicon.png') %>
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
   </head>
 
   <body>
