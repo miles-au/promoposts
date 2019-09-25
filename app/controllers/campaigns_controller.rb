@@ -245,8 +245,7 @@ class CampaignsController < ApplicationController
         picture_url = root_url + picture_url if Rails.env.development?
       else
         picture_url = micropost.picture.url
-        picture_url = "https://images.unsplash.com/photo-1504457047772-27faf1c00561?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1717&q=80"
-        #picture_url = root_url + picture_url.last(-1) unless Rails.env.production?
+        picture_url = root_url + picture_url.last(-1) unless Rails.env.production?
       end
 
       #scheduled post?
