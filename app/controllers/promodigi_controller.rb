@@ -10,7 +10,7 @@ class PromodigiController < ApplicationController
 		@landing_page = LandingPage.find(params[:landing_page])
 		@contact = Contact.new(:email => "", :subject => "", :message => "")
 		@og_image = @landing_page.campaign.microposts.where(category: "facebook_linked_post")
-		@og_image = @landing_page.campaign.microposts.where(category: "facebook_post") unless og_image
+		@og_image = @landing_page.campaign.microposts.where(category: "facebook_post") unless @og_image
 	end
 
 	def send_lead
