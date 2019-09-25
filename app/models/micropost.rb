@@ -20,7 +20,7 @@ class Micropost < ActiveRecord::Base
   def self.category_array
     array = [ ['Facebook Cover Photo','facebook_cover_photo'],
               ['Facebook Post', 'facebook_post'],
-              ['Facebook Linked Image', 'facebook_linked_image'],
+              ['Facebook Linked Image', 'facebook_linked_post'],
               ['LinkedIn Personal Cover Photo', 'linkedin_personal_cover_photo'],
               ['LinkedIn Business Cover Photo', 'linkedin_business_cover_photo'],
               ['LinkedIn Post', 'linkedin_post'],
@@ -112,7 +112,8 @@ class Micropost < ActiveRecord::Base
 
   def self.share_to_twitter(external_url, page, message, picture_url, current_user)
     client = current_user.twitter
-    response = client.update_with_media(message, open(picture_url))
+    share = message + external_url rescue message
+    response = client.update_with_media(share, open(picture_url))
     if response.id
       return "success"
     else
@@ -210,22 +211,22 @@ class Micropost < ActiveRecord::Base
   def self.post_scheduled_post(scheduled_post)
     #check to see if this post has a topic. If it has a topic, it should be posted to all accounts who's users are subscribed to that topic
     scheduled_post.status = "failed";
-    
+    external_url = scheduled_post.external_url rescue nil
     page = scheduled_post.account
     
     puts "Picture URL: #{scheduled_post.picture_url}"
     case page.provider
       when "facebook"
-        resp = Micropost.share_to_facebook( nil, scheduled_post.account, scheduled_post.caption, scheduled_post.picture_url, scheduled_post.user)
+        resp = Micropost.share_to_facebook( external_url, scheduled_post.account, scheduled_post.caption, scheduled_post.picture_url, scheduled_post.user)
       when "linkedin"
-        resp = Micropost.share_to_linkedin( nil, scheduled_post.account, scheduled_post.caption, scheduled_post.picture_url, scheduled_post.user)
+        resp = Micropost.share_to_linkedin( external_url, scheduled_post.account, scheduled_post.caption, scheduled_post.picture_url, scheduled_post.user)
       when "twitter"
-        resp = Micropost.share_to_twitter( nil, scheduled_post.account, scheduled_post.caption, scheduled_post.picture_url, scheduled_post.user)
+        resp = Micropost.share_to_twitter( external_url, scheduled_post.account, scheduled_post.caption, scheduled_post.picture_url, scheduled_post.user)
       when "buffer"
         post_to_buffer = true
-        resp = Micropost.share_to_buffer( nil, scheduled_post.account, scheduled_post.caption, scheduled_post.picture_url, scheduled_post.user)
+        resp = Micropost.share_to_buffer( external_url, scheduled_post.account, scheduled_post.caption, scheduled_post.picture_url, scheduled_post.user)
       when "pinterest"
-        resp = Micropost.share_to_pinterest( nil, scheduled_post.account, scheduled_post.caption, scheduled_post.picture_url, scheduled_post.user)
+        resp = Micropost.share_to_pinterest( external_url, scheduled_post.account, scheduled_post.caption, scheduled_post.picture_url, scheduled_post.user)
       else
     end
     if resp == "success"

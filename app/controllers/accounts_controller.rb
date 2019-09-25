@@ -66,13 +66,15 @@ class AccountsController < ApplicationController
       topic_ids = account.user.topics.pluck(:id)
       posts = User.first.scheduled_posts.where("post_time > ? AND platform = ? AND topic_id IN (?)", Time.now.getutc, account.platform, topic_ids)
       posts.each do |post|
+          external_url = post.micropost.campaign.landing_page.get_landing_page_url(account.user) rescue nil
           new_scheduled_post = ScheduledPost.new( user_id: account.user.id,
                                                   account_id: account.id,
                                                   micropost_id: post.micropost_id,
                                                   picture_url: account.user.get_picture_with_default_overlay(post.picture_url, post.post_time + 3.months),
                                                   caption: post.caption,
                                                   platform: post.platform,
-                                                  post_time: (post.post_time - account.user.current_offset) )
+                                                  post_time: (post.post_time - account.user.current_offset),
+                                                  external_url: external_url )
           new_scheduled_post.save
       end
     elsif value == "0"

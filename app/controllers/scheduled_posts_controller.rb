@@ -80,11 +80,12 @@ class ScheduledPostsController < ApplicationController
     failed = false
     succeeded = false
     campaign = Campaign.find(screened_params[:campaign_id])
-    platform_types = Account.platform_array.map(&:downcase)
 
-    campaign.microposts.each do |micropost|
-      platform = micropost.category.split('_').first
-      if platform_types.include?(platform)
+    Account.platform_array.map(&:downcase).each do |platform|
+      logger.info "PLATFORM: #{platform}"
+      micropost = campaign.microposts.where(category: "#{platform}_linked_post").first if campaign.landing_page
+      micropost = campaign.microposts.where(category: "#{platform}_post").first unless micropost
+      if micropost
         resp = schedule_global_post(screened_params[:topic_id], platform, micropost.id, screened_params[:post_time] )
         if resp == "success"
           succeeded = true
@@ -123,6 +124,7 @@ class ScheduledPostsController < ApplicationController
         picture_url = user.get_picture_with_default_overlay(  micropost.picture.url, Date.parse(post_date) + 3.months)
       end
 
+      external_url = micropost.campaign.landing_page.get_landing_page_url(user) rescue nil
       accounts.each do |account|
         count += 1
         post = user.scheduled_posts.build(topic_id: topic_id,
@@ -131,7 +133,8 @@ class ScheduledPostsController < ApplicationController
                                           platform: platform,
                                           picture_url: picture_url,
                                           caption: micropost.content.gsub("<WEBSITE>", user.website || ""),
-                                          post_time: user.utc_to_user_time(post_time.to_time) )
+                                          post_time: user.utc_to_user_time(post_time.to_time),
+                                          external_url: external_url )
         if post.save
           succeeded = true
         else
@@ -207,7 +210,7 @@ class ScheduledPostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def scheduled_post_params
-      params.require(:scheduled_post).permit( :topic_id, :platform, :picture_url, :micropost_id, :campaign_id, :post_time, :caption )
+      params.require(:scheduled_post).permit( :topic_id, :platform, :picture_url, :micropost_id, :campaign_id, :post_time, :caption, :external_url )
     end
 
     def admin_user

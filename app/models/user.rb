@@ -294,6 +294,8 @@ class User < ApplicationRecord
 
     posts = User.first.scheduled_posts.where("post_time > ? AND topic_id = ?", Time.now.getutc, topic.id)
     posts.each do |post|
+      puts "landing_page: #{post.micropost.campaign.landing_page.get_landing_page_url(self)}"
+      external_url = post.micropost.campaign.landing_page.get_landing_page_url(self) rescue nil
       self.accounts.where(platform: post.platform).each do |account|
         new_scheduled_post = ScheduledPost.new( user_id: self.id,
                                                 account_id: account.id,
@@ -301,7 +303,8 @@ class User < ApplicationRecord
                                                 picture_url: get_picture_with_default_overlay(post.picture_url, post.post_time + 3.months),
                                                 caption: post.caption,
                                                 platform: post.platform,
-                                                post_time: (post.post_time - self.current_offset) )
+                                                post_time: (post.post_time - self.current_offset),
+                                                external_url: external_url )
         new_scheduled_post.save
       end
     end

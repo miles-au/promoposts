@@ -19,7 +19,6 @@ class CampaignsController < ApplicationController
     else
       @landing_page = LandingPage.new
     end
-    puts "landing_page #{@landing_page}"
     if current_user
       @caption = @campaign.content.gsub("<WEBSITE>", current_user.website || "")
     else
@@ -217,6 +216,11 @@ class CampaignsController < ApplicationController
     message = params['message']
     accounts = current_user.accounts.where('id IN (?)', params[:pages])
     post_date = params["post_date"] rescue Date.today
+    if campaign.landing_page
+      external_url = campaign.landing_page.get_landing_page_url(user)
+    else
+      external_url = nil
+    end
     @success_string = []
     post_to_buffer = false
     if params[:to_schedule]
@@ -253,12 +257,13 @@ class CampaignsController < ApplicationController
                                                 picture_url: picture_url,
                                                 caption: message,
                                                 platform: page.platform,
-                                                post_time: (best_post_time - current_user.current_offset) )
+                                                post_time: (best_post_time - current_user.current_offset),
+                                                external_url: external_url )
         new_scheduled_post.save
       else
         #not scheduled post
         post_to_buffer = true if page.provider == "buffer"
-        resp = Micropost.send("share_to_#{page.provider}", nil, page, message, picture_url, current_user)
+        resp = Micropost.send("share_to_#{page.provider}", external_url, page, message, picture_url, current_user)
 
         if resp == "success"
           @success_string << "<span class='glyphicon glyphicon-ok'></span> #{page.name} - Success"
