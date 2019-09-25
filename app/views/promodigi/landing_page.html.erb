@@ -2,7 +2,7 @@
 
 <% content_for :open_graph do %>
 	
-	<meta property='og:title' content='<%= @user.company || 'PromoDigi' %> - <%= @landing_page.title %>' />
+	<meta property='og:title' content='<%= @user.company ? @user.company : "PromoDigi" %> - <%= @landing_page.title %>' />
 	<meta property='og:type' content='article' />
 	<meta property='og:url' content='http://www.promodigi.net/' />
 	<meta property='og:image' content='<%= @og_image %>' />

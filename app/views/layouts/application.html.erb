@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <%= yield(:open_graph) %>
     <link href="https://fonts.googleapis.com/css?family=Bai+Jamjuree:400,600&display=swap" rel="stylesheet" />
     
     <% if Rails.env.production? %>
@@ -15,7 +16,6 @@
       </script>
     <% end %>
     <title><%= request.domain.match(/(promodigi.net|promodigi.test)/) ? promodigi_title(yield(:title)) : full_title(yield(:title)) %></title>
-    <%= yield(:open_graph) %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= render 'layouts/rails_default' %>
     <%= render 'layouts/shim' %>
