@@ -45,13 +45,15 @@ class Micropost < ActiveRecord::Base
 
     begin
         if external_url
-          graph_post = fb_page.put_picture(picture_url, 'image' ,{:message => message, :link => external_url})
+          puts "PICTURE_URL: #{picture_url}"
+          graph_post = fb_page.put_connections("me", "feed", message: message, link: external_url )
+          #graph_post = fb_page.put_picture(picture_url, 'image' ,{:message => message, :link => external_url})
         else
           graph_post = fb_page.put_picture(picture_url, 'image' ,{:message => message})
         end
         return "success"
     rescue => e
-        puts e.message
+        puts "KOALA ERROR: #{e.message}"
         return "failed"
     end
 

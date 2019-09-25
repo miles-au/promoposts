@@ -14,7 +14,8 @@
         gtag('config', 'UA-123139806-2');
       </script>
     <% end %>
-    <title><%= full_title(yield(:title)) %></title>
+    <title><%= request.domain.match(/(promodigi.net|promodigi.test)/) ? current_user.company || "PromoDigi" : full_title(yield(:title)) %></title>
+    <%= yield(:open_graph) %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= render 'layouts/rails_default' %>
     <%= render 'layouts/shim' %>
