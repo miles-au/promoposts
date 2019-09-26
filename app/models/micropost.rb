@@ -114,8 +114,12 @@ class Micropost < ActiveRecord::Base
 
   def self.share_to_twitter(external_url, page, message, picture_url, current_user)
     client = current_user.twitter
-    share = message + external_url rescue message
-    response = client.update_with_media(share, open(picture_url))
+    if external_url
+      response = client.update("#{message} #{external_url}")
+    else
+      response = client.update_with_media(message, open(picture_url))
+    end
+    
     if response.id
       return "success"
     else
