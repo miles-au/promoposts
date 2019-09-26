@@ -468,6 +468,9 @@ GEM
       omniauth-oauth2 (~> 1.0)
     popper_js (1.14.5)
     possessive (1.0.1)
+    prerender_rails (1.6.1)
+      activesupport
+      rack
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -658,6 +661,7 @@ DEPENDENCIES
   pinterest-api
   popper_js
   possessive
+  prerender_rails
   puma (~> 3.11)
   rack-attack
   rails (~> 5.2.1)

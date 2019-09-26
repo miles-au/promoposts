@@ -52,6 +52,7 @@ gem 'blind_index'
 
 gem 'tzinfo'
 gem "rails-assets-jsTimezoneDetect"
+gem 'prerender_rails'
 
 # Use PG as DB
 gem 'pg', '0.18.4'

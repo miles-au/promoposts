@@ -2,6 +2,7 @@
 <html>
   <head>  
     <title><%= request.domain.match(/(promodigi.net|promodigi.test)/) ? promodigi_title(yield(:title)) : full_title(yield(:title)) %></title>
+    <meta name="fragment" content="!">
     <%= yield :opengraph_meta_tags %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= render 'layouts/rails_default' %>
