@@ -6,7 +6,7 @@
       <% og_image = @landing_page.campaign.microposts.where(category: "facebook_linked_post").first.picture.url rescue nil %>
       <% og_image = @landing_page.campaign.microposts.where(category: "facebook_post").first.picture.url unless og_image %>
       <meta property="fb:app_id" content="<%= ENV['FACEBOOK_KEY'] %>" />
-      <meta property='og:title' content='<%= "#{@user.company ? @user.company : 'PromoDigi'} - #{@landing_page ? @landing_page.title : Promotional Products}" %>' />
+      <meta property='og:title' content='<%= "#{@user.company ? @user.company : 'PromoDigi'} - #{@landing_page ? @landing_page.title : 'Promotional Products' } " %>' />
       <meta property='og:type' content='<%= @landing_page ? "website" : "article:#{@landing_page.created_at.to_date}" %>' />
       <meta property='og:url' content='https://www.promodigi.net' />
       <meta property='og:image' content='<%= og_image %>' />
