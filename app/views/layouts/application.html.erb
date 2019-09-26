@@ -2,7 +2,7 @@
 <html>
   <head>  
     <title><%= request.domain.match(/(promodigi.net|promodigi.test)/) ? promodigi_title(yield(:title)) : full_title(yield(:title)) %></title>
-    <% if request.domain.match(/(promodigi.net|promodigi.test)/) %>
+    <% if request.domain.match(/(promodigi.net|promodigi.test)/) && @landing_page %>
       <% og_image = @landing_page.campaign.microposts.where(category: "facebook_linked_post").first.picture.url rescue nil %>
       <% og_image = @landing_page.campaign.microposts.where(category: "facebook_post").first.picture.url unless og_image %>
       <meta property="fb:app_id" content="<%= ENV['FACEBOOK_KEY'] %>" />
