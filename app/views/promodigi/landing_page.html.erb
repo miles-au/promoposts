@@ -1,3 +1,16 @@
 <% provide(:title, @user.company ? "#{@user.company} " : "" ) %>
 
+<% og_image = @landing_page.campaign.microposts.where(category: "facebook_linked_post").first.picture.url rescue nil %>
+<% og_image = @landing_page.campaign.microposts.where(category: "facebook_post").first.picture.url unless og_image %>
+
+<% content_for :opengraph_meta_tags do %>
+  <%= tag :meta, property: "fb:app_id", content: ENV["FACEBOOK_APP_ID"] %>
+  <%= tag :meta, property: "og:site_name", content: "PromoDigi" %>
+  <%= tag :meta, property: "og:type", content: "article:#{@landing_page.created_at.to_date}" %>
+  <%= tag :meta, property: "og:title", content: "Promotional Products Custom Made For Your Brand" %>
+  <%= tag :meta, property: "og:url", content: "https://www.promodigi.net" %>
+  <%= tag :meta, property: "og:image", content: og_image %>
+  <%= tag :meta, property: "og:description", content: @landing_page.headline %>
+<% end %>
+
 <%= render partial: "shared/landing_page", locals: { landing_page: @landing_page, user: @user, preview: false } %>

@@ -2,7 +2,7 @@
 <html>
   <head>  
     <title><%= request.domain.match(/(promodigi.net|promodigi.test)/) ? promodigi_title(yield(:title)) : full_title(yield(:title)) %></title>
-    <%= render partial: 'promodigi/landing_page_open_graph', locals: { user: User.find(params[:user]), landing_page: LandingPage.find(params[:landing_page]) } if request.domain.match(/(promodigi.net|promodigi.test)/) %>
+    <%= yield :opengraph_meta_tags %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= render 'layouts/rails_default' %>
     <%= render 'layouts/shim' %>
