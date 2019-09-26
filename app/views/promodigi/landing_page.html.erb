@@ -3,11 +3,11 @@
 <% og_image = @landing_page.campaign.microposts.where(category: "facebook_linked_post").first.picture.url rescue nil %>
 <% og_image = @landing_page.campaign.microposts.where(category: "facebook_post").first.picture.url unless og_image %>
 <% twitter_image = @landing_page.campaign.microposts.where(category: "twitter_linked_post").first.picture.url rescue nil %>
-<% twitter_image = @landing_page.campaign.microposts.where(category: "twitter_post").first.picture.url unless og_image %>
+<% twitter_image = @landing_page.campaign.microposts.where(category: "twitter_post").first.picture.url unless twitter_image %>
 
 <% content_for :opengraph_meta_tags do %>
 	<!-- Open Graph -->
-  <%= tag :meta, property: "fb:app_id", content: "#{ENV['FACEBOOK_APP_ID']}" %>
+  <%= tag :meta, property: "fb:app_id", content: "245007386156823" %>
   <%= tag :meta, property: "og:site_name", content: "PromoDigi" %>
   <%= tag :meta, property: "og:type", content: "article" %>
   <%= tag :meta, property: "og:title", content: "#{@user.company} | Promotional Products Custom Made For Your Brand" %>
