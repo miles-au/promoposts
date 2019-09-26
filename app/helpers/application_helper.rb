@@ -18,5 +18,9 @@ module ApplicationHelper
       page_title + " | Custom Promotional Items"
     end
   end
+
+  def landing_page_og
+  	
+  end
   
 end
