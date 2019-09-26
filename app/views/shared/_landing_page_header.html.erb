@@ -14,12 +14,14 @@
 </div>
 
 <script type="text/javascript">
-  function set_body_padding(){
-    let header_height = document.querySelector('header').offsetHeight;
-    document.querySelector('body').style.paddingTop = header_height + "px";
-  }
+  <% unless request.domain.match(/(promodigi.net|promodigi.test)/) %>
+    function set_body_padding(){
+      let header_height = document.querySelector('header').offsetHeight;
+      document.querySelector('body').style.paddingTop = header_height + "px";
+    }
 
-  set_body_padding();
+    set_body_padding();
 
-  window.addEventListener('resize', set_body_padding);
+    window.addEventListener('resize', set_body_padding);
+  <% end %>
 </script>
