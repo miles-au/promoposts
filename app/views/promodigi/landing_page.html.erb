@@ -1,7 +1,9 @@
 <% provide(:title, "#{@user.company}") %>
 <% provide(:og_title, "#{@user.company ? @user.company : 'PromoDigi'} - #{@landing_page.title}") %>
-<% provide(:og_type, "article") %>
-<% provide(:og_url, "http://www.promodigi.net/") %>
+<% provide(:og_type, "article:#{@landing_page.created_at.to_date}") %>
+<% provide(:og_url, "https://www.promodigi.net/") %>
 <% provide(:og_image, "#{@og_image}") %>
+<% provide(:og_description, "#{@user.company} Promotional Products. #{@landing_page.title}. #{@landing_page.header}.") %>
+
 
 <%= render partial: "shared/landing_page", locals: { landing_page: @landing_page, user: @user, preview: false } %>
