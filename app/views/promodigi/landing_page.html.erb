@@ -10,13 +10,13 @@
   <%= tag :meta, property: "fb:app_id", content: "245007386156823" %>
   <%= tag :meta, property: "og:site_name", content: "PromoDigi" %>
   <%= tag :meta, property: "og:type", content: "article" %>
-  <%= tag :meta, property: "og:title", content: "#{@user.company} | Promotional Products Custom Made For Your Brand" %>
+  <%= tag :meta, property: "og:title", content: "#{@user.company} | #{@landing_page.title}" %>
   <%= tag :meta, property: "og:url", content: "https://www.promodigi.net/landing_page?landing_page=#{@landing_page.id}&user=#{@user.id}" %>
   <%= tag :meta, property: "og:image", content: og_image %>
   <%= tag :meta, property: "og:description", content: @landing_page.headline %>
   <!-- twitter -->
   <%= tag :meta, name: "twitter:card", content: "summary_large_image" %>
-  <%= tag :meta, name: "twitter:title", content: "#{@user.company} | Promotional Products Custom Made For Your Brand" %>
+  <%= tag :meta, name: "twitter:title", content: "#{@user.company} | #{@landing_page.title}" %>
   <%= tag :meta, name: "twitter:image", content: twitter_image %>
 <% end %>
 
