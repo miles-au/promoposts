@@ -8,7 +8,7 @@
   <%= tag :meta, property: "og:site_name", content: "PromoDigi" %>
   <%= tag :meta, property: "og:type", content: "article:#{@landing_page.created_at.to_date}" %>
   <%= tag :meta, property: "og:title", content: "Promotional Products Custom Made For Your Brand" %>
-  <%= tag :meta, property: "og:url", content: "https://www.promodigi.net" %>
+  <%= tag :meta, property: "og:url", content: "https://www.promodigi.net/landing_page?landing_page=#{@landing_page.id}&user=#{@user.id}" %>
   <%= tag :meta, property: "og:image", content: og_image %>
   <%= tag :meta, property: "og:description", content: @landing_page.headline %>
 <% end %>
