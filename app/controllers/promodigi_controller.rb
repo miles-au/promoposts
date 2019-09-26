@@ -1,4 +1,6 @@
 class PromodigiController < ApplicationController
+	protect_from_forgery with: :null_session
+	
 	def home
 		if params[:destination] == "landingpage"
 			redirect_to controller: "promodigi", action: "landing_page", params: request.query_parameters and return
@@ -15,18 +17,18 @@ class PromodigiController < ApplicationController
 		user = User.find(params[:user])
 		lead_name = params[:contact][:name]
 		email = params[:contact][:email]
-    campaign = params[:contact][:campaign]
-    message = params[:contact][:message]
+	    campaign = params[:contact][:campaign]
+	    message = params[:contact][:message]
 
-    contact = Contact.new( email: email, message: message, name: lead_name, subject: "You've received a lead!")
-    logger.info( "VALID: #{contact.valid?}")
-    if contact.valid?
-      contact.send_lead(email, campaign, message, lead_name, user)
-      flash[:success] = "Message sent, thank you for reaching out!"
-    else
-      flash[:danger] = "We're sorry, there was an issue sending out your message."
-    end
-    redirect_to landing_page_path(user: user.id, landing_page: params[:landing_page]) and return
+	    contact = Contact.new( email: email, message: message, name: lead_name, subject: "You've received a lead!")
+	    logger.info( "VALID: #{contact.valid?}")
+	    if contact.valid?
+	      contact.send_lead(email, campaign, message, lead_name, user)
+	      flash[:success] = "Message sent, thank you for reaching out!"
+	    else
+	      flash[:danger] = "We're sorry, there was an issue sending out your message."
+	    end
+	    redirect_to landing_page_path(user: user.id, landing_page: params[:landing_page]) and return
 	end
 
 end
