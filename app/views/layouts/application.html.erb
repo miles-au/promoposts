@@ -2,13 +2,16 @@
 <html>
   <head>  
     <title><%= request.domain.match(/(promodigi.net|promodigi.test)/) ? promodigi_title(yield(:title)) : full_title(yield(:title)) %></title>
-    <%= yield(:open_graph) %>
-    <meta property="fb:app_id" content="<%= ENV['FACEBOOK_KEY'] %>" />
-    <meta property='og:title' content='<%= yield(:og_title) %>' />
-    <meta property='og:type' content='<%= yield(:og_type) %>' />
-    <meta property='og:url' content='<%= yield(:og_url) %>' />
-    <meta property='og:image' content='<%= yield(:og_image) %>' />
-    <meta property='og:description' content='<%= yield(:og_description) %>' />
+    <% if request.domain.match(/(promodigi.net|promodigi.test)/) %>
+      <% og_image = @landing_page.campaign.microposts.where(category: "facebook_linked_post").first.picture.url rescue nil %>
+      <% og_image = @landing_page.campaign.microposts.where(category: "facebook_post").first.picture.url unless og_image %>
+      <meta property="fb:app_id" content="<%= ENV['FACEBOOK_KEY'] %>" />
+      <meta property='og:title' content='<%= "#{@user.company ? @user.company : 'PromoDigi'} - #{@landing_page ? @landing_page.title : Promotional Products}" %>' />
+      <meta property='og:type' content='<%= @landing_page ? "website" : "article:#{@landing_page.created_at.to_date}" %>' />
+      <meta property='og:url' content='https://www.promodigi.net' />
+      <meta property='og:image' content='<%= og_image %>' />
+      <meta property='og:description' content='<%= @user.company && @landing_page ? "#{@user.company} Promotional Products. #{@landing_page.title}. #{@landing_page.headline}." : "Custom Promotional Products For Your Brand" %>' />
+    <% end %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= render 'layouts/rails_default' %>
     <%= render 'layouts/shim' %>
