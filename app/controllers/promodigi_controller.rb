@@ -1,6 +1,5 @@
 class PromodigiController < ApplicationController
-	protect_from_forgery with: :null_session
-	
+
 	def home
 		if params[:destination] == "landingpage"
 			redirect_to controller: "promodigi", action: "landing_page", params: request.query_parameters and return
