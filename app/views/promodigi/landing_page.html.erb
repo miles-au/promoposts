@@ -1,13 +1,7 @@
 <% provide(:title, "#{@user.company}") %>
-
-<% content_for :open_graph do %>
-	
-	<meta property="fb:app_id" content="<%= ENV['FACEBOOK_KEY'] %>" />
-	<meta property='og:title' content='<%= @user.company ? @user.company : "PromoDigi" %> - <%= @landing_page.title %>' />
-	<meta property='og:type' content='article' />
-	<meta property='og:url' content='http://www.promodigi.net/' />
-	<meta property='og:image' content='<%= @og_image %>' />
-
-<% end %>
+<% provide(:og_title, "#{@user.company ? @user.company : 'PromoDigi'} - #{@landing_page.title}") %>
+<% provide(:og_type, "article") %>
+<% provide(:og_url, "http://www.promodigi.net/") %>
+<% provide(:og_image, "#{@og_image}") %>
 
 <%= render partial: "shared/landing_page", locals: { landing_page: @landing_page, user: @user, preview: false } %>
