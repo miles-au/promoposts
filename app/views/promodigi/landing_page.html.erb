@@ -7,7 +7,7 @@
 
 <% content_for :opengraph_meta_tags do %>
 	<!-- Open Graph -->
-  <%= tag :meta, property: "fb:app_id", content: 'ENV["FACEBOOK_APP_ID"]' %>
+  <%= tag :meta, property: "fb:app_id", content: "#{ENV['FACEBOOK_APP_ID']}" %>
   <%= tag :meta, property: "og:site_name", content: "PromoDigi" %>
   <%= tag :meta, property: "og:type", content: "article" %>
   <%= tag :meta, property: "og:title", content: "#{@user.company} | Promotional Products Custom Made For Your Brand" %>
