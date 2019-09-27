@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     root "promodigi#home"
     get '/landing_page', to: "promodigi#landing_page"
     post '/landing_page', to: "promodigi#send_lead", as: "send_lead"
+    get '/sent', to: "promodigi#message_sent", as: "message_sent"
   end
 
   root 'static_pages#home'

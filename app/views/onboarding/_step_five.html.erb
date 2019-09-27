@@ -23,8 +23,10 @@
 		<%= label_tag "Company Website" %>
 		<%= url_field_tag "website", nil, maxlength: 50 %>
 
-		<%#= f.label :color, "Main Company Color (HEX)" %>
-	     <%#= f.text_field :color, id: "color_picker" %>
+		<%= label_tag :color, "Main Company Color (HEX)" %>
+	    <%= text_field_tag :color, @user.color || "#ffffff", id: "color_picker" %>
+
+	    <%= link_to "preview landing page", landing_page_path(id: 1), target: "_blank" %>
 
 		<%= submit_tag "Finish", class: "btn-submit btn-submit-full-width" %>
 	<% end %>
@@ -44,11 +46,11 @@
     })
   <% end %>
 
-  // $("#color_picker").spectrum({
-  //     preferredFormat: "hex",
-  //     showInput: true,
-  //     color: "#ffffff"
-  // });
+  $("#color_picker").spectrum({
+      preferredFormat: "hex",
+      showInput: true,
+      color: "<%= current_user.color rescue '#ffffff' %>"
+  });
 
   document.getElementsByClassName('btn-next')[0].style.display = 'none';
 </script>

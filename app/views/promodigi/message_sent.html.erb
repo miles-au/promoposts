@@ -1,0 +1,8 @@
+<div style="width: 100%; height: 100vh; display: flex; justify-content: center;">
+	<div style="align-self: center;">
+		<h3>Thank you for reaching out! We'll be in touch shortly.</h3>
+		<% if @user.website && @user.website.present? %>
+			<%= link_to "Check out our website", @user.website %>
+		<% end %>
+	</div>
+</div>

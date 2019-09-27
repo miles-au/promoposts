@@ -23,11 +23,14 @@ class PromodigiController < ApplicationController
 	    logger.info( "VALID: #{contact.valid?}")
 	    if contact.valid?
 	      contact.send_lead(email, campaign, message, lead_name, user)
-	      flash[:success] = "Message sent, thank you for reaching out!"
+	      redirect_to message_sent_path(user: user.id) and return
 	    else
 	      flash[:danger] = "We're sorry, there was an issue sending out your message."
+	      redirect_to landing_page_path(user: user.id, landing_page: params[:landing_page]) and return
 	    end
-	    redirect_to landing_page_path(user: user.id, landing_page: params[:landing_page]) and return
 	end
 
+	def message_sent
+		@user = User.find(params[:user])
+	end
 end

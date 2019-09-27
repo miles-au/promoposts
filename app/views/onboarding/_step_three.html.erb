@@ -26,10 +26,23 @@
 
 <%= form_tag(update_on_schedule_all_path, remote: :true, method: :post, id: "update-onschedule-form", style: "display: block; margin-left: 10px; margin-top: 5px;" ) do %>
 	<label class="switch switch-jumbo">
-		<%= check_box_tag( "on_schedule", value = "1", checked = current_user.accounts.first.on_schedule, options = {onchange: "$('#update-onschedule-form').submit();"}) %>
+		<%= check_box_tag( "on_schedule", value = "1", checked = current_user.accounts.first.on_schedule, options = { id: "on_off_checkbox", onchange: "$('#update-onschedule-form').submit();"}) %>
 	  <span class="toggle round" ></span>
 	</label>
-<span>Post scheduled content on my behalf.</span>
+	<span style="font-size: 1.3em;" id="off_message">Don't post scheduled content on my behalf.</span><span style="display: none; font-size: 1.3em;" id="on_message">Post scheduled content on my behalf.</span>
 <% end %>
 
 <p>You can update this feature individually for each account in the settings.</p>
+
+<script>
+	$("#on_off_checkbox").change(function(){
+		if($(this).val() == 1){
+			$("#on_message").toggle();
+			$("#off_message").toggle();
+		}
+		else{
+			$("#on_message").toggle();
+			$("#off_message").toggle();
+		}
+	});
+</script>
