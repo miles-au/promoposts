@@ -52,7 +52,7 @@ class CampaignsController < ApplicationController
     @campaign = current_user.campaigns.find(params[:id])
     puts "PARAMS: #{campaign_params}"
     @campaign.update_attributes(campaign_params)
-    @campaign.microposts.last.user_id = current_user.id if @campaign.microposts.count > 0
+    @campaign.microposts.last.user_id
 
     if @campaign.save
       flash[:success] = "Your campaign has been updated."
