@@ -16,44 +16,60 @@
 <div class="container">
 	<h1><%= landing_page.title %></h1>
 	<h4><%= landing_page.headline %></h4>
+
+	<a href="#contact-form" class="btn-large" style="max-width: 500px; padding: 15px; margin: 0 auto; text-align: center; cursor: pointer;">
+		Contact
+	</a>
 	
-	<div class="row info-section">
-		<div class="col col-md-4 col-sm-12 col-sm-push-6">
-			<img src="<%= landing_page.pic_one %>" />
-		</div>
-		<div class="col col-md-4 col-md-offset-1 col-sm-12 col-sm-pull-4" >
-			<div>
-				<p><%= landing_page.text_one %></p>
+	<% if landing_page.pic_one.present? || landing_page.text_one.present? %>
+	<hr>
+		<div class="row info-section">
+			<div class="col col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-1 col-md-4 col-md-push-6">
+				<img src="<%= landing_page.pic_one %>" />
+			</div>
+			<div class="col col-xs-12 col-sm-8 col-sm-offset-2 col-md-4 col-md-pull-6" >
+				<div>
+					<p><%= landing_page.text_one %></p>
+				</div>
 			</div>
 		</div>
-	</div>
+	<% end %>
 
-	<div class="row info-section">
-		<div class="col col-md-4 col-md-offset-1 col-sm-12">
-			<img src="<%= landing_page.pic_two %>" />
-		</div>
-		<div class="col col-md-4 col-md-offset-1 col-sm-12" >
-			<div>
-				<p><%= landing_page.text_two %></p>
+	<% if landing_page.pic_two.present? || landing_page.text_two.present? %>
+	<hr>
+		<div class="row info-section">
+			<div class="col col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-1 col-md-4">
+				<img src="<%= landing_page.pic_two %>" />
+			</div>
+			<div class="col col-xs-12 col-sm-8 col-sm-offset-2 col-md-4" >
+				<div>
+					<p><%= landing_page.text_two %></p>
+				</div>
 			</div>
 		</div>
-	</div>
+	<% end %>
 
-	<div class="row info-section">
-		<div class="col col-md-4 col-sm-12 col-sm-push-6">
-			<img src="<%= landing_page.pic_three %>" />
-		</div>
-		<div class="col col-md-4 col-md-offset-1 col-sm-12 col-sm-pull-4" >
-			<div>
-				<p><%= landing_page.text_three %></p>
+	<% if landing_page.pic_three.present? || landing_page.text_three.present? %>
+	<hr>
+		<div class="row info-section">
+			<div class="col col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-1 col-md-4 col-md-push-6">
+				<img src="<%= landing_page.pic_three %>" />
+			</div>
+			<div class="col col-xs-12 col-sm-8 col-sm-offset-2 col-md-4 col-md-pull-6" >
+				<div>
+					<p><%= landing_page.text_three %></p>
+				</div>
 			</div>
 		</div>
-	</div>
+	<% end %>
 
-	<div class="contact-form">
+	<hr>
+	
+	<div class="contact-form" id="contact-form">
 		<div style="max-width: 500px; margin: 0 auto;" >
 			<h1>Reach out to find out more!</h1>
 			<% if preview %>
+				<p>(You are previewing this landing page, so this form is disabled. Messages in here would be sent to your email.)</p>
 			  <%= label_tag(:name, "Your Name:") %>
 			  <%= text_field_tag "name", nil, { maxlength: 100, disabled: true}  %>
 			  <%= label_tag(:email, "Your Email:") %>

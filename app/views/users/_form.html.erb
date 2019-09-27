@@ -25,11 +25,17 @@
     <%= f.label :company, "Organization"%>
     <%= f.text_field :company, maxlength: 50  %>
 
+    <hr>
+
     <%= f.label :website, "Company Website" %>
     <%= f.url_field :website, maxlength: 50 %>
 
     <%= f.label :color, "Main Company Color (HEX)" %>
     <%= f.text_field :color, id: "color_picker" %>
+
+    <%= link_to "preview landing page", landing_page_path(id: 1), target: "_blank" %>
+
+    <hr>
 
     <!-- <h5>Upload a new cover photo (10mb max)</h5> -->
     <%#= f.file_field :cover_photo, accept: 'image/jpeg,image/gif,image/png' %>

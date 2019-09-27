@@ -227,7 +227,7 @@ class MicropostsController < ApplicationController
   private
 
     def micropost_params
-      params.require(:micropost).permit(:content, :picture, :category, :shareable, :external_url, :campaign_id)
+      params.require(:micropost).permit(:content, :picture, :category, :external_url, :campaign_id)
     end
 
     def correct_or_admin_user

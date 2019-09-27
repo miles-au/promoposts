@@ -1,9 +1,9 @@
 <% provide(:title, @user.company ? "#{@user.company} " : "" ) %>
 
 <% og_image = @landing_page.campaign.microposts.where(category: "facebook_linked_post").first.picture.url rescue nil %>
-<% og_image = @landing_page.campaign.microposts.where(category: "facebook_post").first.picture.url unless og_image %>
+<% og_image = @landing_page.campaign.microposts.where(category: "facebook_post").first.picture.url unless og_image rescue nil %>
 <% twitter_image = @landing_page.campaign.microposts.where(category: "twitter_linked_post").first.picture.url rescue nil %>
-<% twitter_image = @landing_page.campaign.microposts.where(category: "twitter_post").first.picture.url unless twitter_image %>
+<% twitter_image = @landing_page.campaign.microposts.where(category: "twitter_post").first.picture.url unless twitter_image rescue nil %>
 
 <% content_for :opengraph_meta_tags do %>
 	<!-- Open Graph -->

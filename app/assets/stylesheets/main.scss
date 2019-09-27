@@ -379,17 +379,16 @@ header{
   padding: 0px 25px;
 
   #logo{
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: 1fr;
+    align-items: center;
     a{
     }
     h3{
+      margin-left: 20px;
       color: $yellow1;
-      margin: 10px;
       display: inline-block;
-      white-space: nowrap;
-      span{
-        font-size: 0.5em;
-        color: #ffffff;
-      }
     }
     img{
       width: auto;
@@ -412,6 +411,11 @@ header{
   }
 
   h1{
+    margin: 5px;
+    color: $grey6;
+    font-weight: 100;
+  }
+  h2{
     margin: 5px;
     color: $grey6;
     font-weight: 100;

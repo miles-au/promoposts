@@ -14,11 +14,6 @@ class CampaignsController < ApplicationController
   # GET /campaigns/1.json
   def show
     @campaign = Campaign.find(params[:id])
-    if @campaign.landing_page
-      @landing_page = @campaign_landing_page
-    else
-      @landing_page = LandingPage.new
-    end
     if current_user
       @caption = @campaign.content.gsub("<WEBSITE>", current_user.website || "")
     else
@@ -42,8 +37,6 @@ class CampaignsController < ApplicationController
 
   def create
     @campaign = current_user.campaigns.build(campaign_params)
-    #@campaign.microposts.first.user_id = current_user.id
-    #@campaign.microposts.first.shareable = true
 
     if @campaign.save
       flash[:success] = "Your campaign has been created."
@@ -59,8 +52,7 @@ class CampaignsController < ApplicationController
     @campaign = current_user.campaigns.find(params[:id])
     puts "PARAMS: #{campaign_params}"
     @campaign.update_attributes(campaign_params)
-    @campaign.microposts.last.user_id = current_user.id
-    @campaign.microposts.last.shareable = true
+    @campaign.microposts.last.user_id = current_user.id if @campaign.microposts.count > 0
 
     if @campaign.save
       flash[:success] = "Your campaign has been updated."
@@ -298,7 +290,7 @@ class CampaignsController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def campaign_params
-      params.require(:campaign).permit(:name, :content, microposts_attributes: [ :content, :picture, :category ], landing_page_attributes: [ :splash, :title, :headline, :pic_one, :text_one, :pic_two, :text_two, :pic_three, :text_three ] )
+      params.require(:campaign).permit(:name, :content, microposts_attributes: [ :content, :picture, :category ], landing_page_attributes: [ :id, :splash, :title, :headline, :pic_one, :text_one, :pic_two, :text_two, :pic_three, :text_three ] )
     end
 
     def campaign_microposts_params
