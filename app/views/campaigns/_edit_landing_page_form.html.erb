@@ -15,7 +15,7 @@
         <h4>Add Landing Page</h4>
       <% end %>
       
-      <%= f.fields_for :landing_page, @campaign.landing_page do |landing_page| %>
+      <%= f.fields_for :landing_page, @campaign.landing_page || LandingPage.new do |landing_page| %>
 
         <%= landing_page.label :splash, "Splash Banner (10mb): " %>
         <%= landing_page.file_field :splash, accept: 'image/jpeg,image/gif,image/png' %>
