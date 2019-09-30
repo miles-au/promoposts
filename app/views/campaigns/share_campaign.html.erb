@@ -54,7 +54,7 @@
 		<div style="max-width: 500px; margin: 5px auto;">
 			<h3>Share as a global campaign</h3>
 			<%= form_with( model: @scheduled_post, method: :post, url: global_campaign_path, format: nil ) do |f| %>
-				<%= f.select "topic_id", options_for_select(Topic.all.pluck(:name, :id)) %>
+				<%= f.select "topic_id", options_for_select(Topic.where(disabled: false).pluck(:name, :id)) %>
 				<%= f.text_field :post_time, class: "flatpickr flatpickr-input", readonly: "readonly" %>
 				<%= f.hidden_field :campaign_id, value: @campaign.id %>
 				<%= f.submit "create global post", class: "btn-submit" %>
