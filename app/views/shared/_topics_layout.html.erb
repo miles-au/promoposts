@@ -1,4 +1,4 @@
-<% Topic.order("id ASC").all.each do |topic| %>
+<% Topic.order("id ASC").where(disabled: false).each do |topic| %>
   <% if current_user.topics.include?(topic) %>
   	<% link_class = "picked" %>
   	<% link_disable = false %>
