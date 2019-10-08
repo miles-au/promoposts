@@ -73,7 +73,6 @@ class Micropost < ActiveRecord::Base
                       "resolvedUrl": picture_url
                     }]
                   }],
-                  # "title": message,
                   "shareMediaCategory": "ARTICLE"
                 },
                 "owner": "urn:li:person:#{page.account_id}",
@@ -81,30 +80,6 @@ class Micropost < ActiveRecord::Base
                     "text": message
                 }
               }.to_json
-      # share = {
-      #           "author": "urn:li:person:#{page.account_id}",
-      #           "lifecycleState": "PUBLISHED",
-      #           "specificContent": {
-      #               "com.linkedin.ugc.ShareContent": {
-      #                   "shareCommentary": {
-      #                       "text": message
-      #                   },
-      #                   "shareMediaCategory": "ARTICLE",
-      #                   "media": [
-      #                       {
-      #                           "status": "READY",
-      #                           "description": {
-      #                               "text": message
-      #                           },
-      #                           "originalUrl": external_url,
-      #                       }
-      #                   ]
-      #               }
-      #           },
-      #           "visibility": {
-      #               "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
-      #           }
-      #       }
     else
       share = { "content": {
                   "contentEntities": [{
@@ -114,7 +89,7 @@ class Micropost < ActiveRecord::Base
                       "resolvedUrl": picture_url
                     }]
                   }],
-                  "title": "Promotional products for your brand"
+                  "title": "Promotional products for you"
                 },
                 "owner": "urn:li:person:#{page.account_id}",
                 "text": {

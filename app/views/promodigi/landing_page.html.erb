@@ -1,4 +1,4 @@
-<% provide(:title, @user.company ? "#{@user.company} " : "" ) %>
+<% provide(:title, @user.company ? "#{@user.company} " : "Promotional Products" ) %>
 
 <% og_image = @landing_page.campaign.microposts.where(category: "facebook_linked_post").first.picture.url rescue nil %>
 <% og_image = @landing_page.campaign.microposts.where(category: "facebook_post").first.picture.url unless og_image rescue nil %>
