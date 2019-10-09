@@ -44,7 +44,7 @@
 
   <% end %>
 
-  <% if @campaign.landing_page %>
+  <% if @campaign.landing_page && current_user %>
     <div class="col col-md-3 col-sm-12">
       <%= render partial: "shared/action_button", locals: { text: "preview landing page", glyphicon: "eye-open", goto: landing_page_path(id: @campaign.landing_page.id), target: "_blank" } %>
     </div>
@@ -112,23 +112,22 @@
     dash_sub.innerHTML = "<%= j render 'edit_landing_page_form' %>";
   };
 
+  <% if current_user %>
   landing_page_link.onclick = function(){
     dash_sub.innerHTML = "<%= j render 'landing_page_link' %>";
   };
+  <% end %>
 
   function close_dash(){
     dash_sub.innerHTML = "";
   }
 
   function copylink() {
-    console.log("copied");
     var copyText = document.getElementById("linkText");
-    console.log("copytext");
+    copyText.disabled = false;
     copyText.select();
-    console.log("select");
     copyText.setSelectionRange(0, 99999)
-    console.log("select range");
     document.execCommand("copy");
-    console.log("execcommand");
+    copyText.disabled = true;
   }
 </script>
