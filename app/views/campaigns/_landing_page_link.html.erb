@@ -1,6 +1,6 @@
 <span id="close-dash" class="glyphicon glyphicon-remove" style="font-size: 1.3em; float: right; margin: 10px; cursor: pointer;" onclick="close_dash();"></span>
 
 <div style="padding: 25px;">
-  <input type="text" value="<%= @campaign.landing_page.get_landing_page_url(current_user) %>" id="linkText" disabled="true" >
+  <input type="text" value="<%= @campaign.landing_page.get_landing_page_url(current_user) rescue '' %>" id="linkText" disabled="true" >
   <button id="copylinkbtn" class="btn-submit" onclick="copylink()" ><span class="glyphicon glyphicon-copy"></span> copy to clipboard</button>
 </div>
