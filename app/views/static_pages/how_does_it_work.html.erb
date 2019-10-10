@@ -48,6 +48,24 @@
 	</div>
 </div>
 
+<div class="container">
+	<h4>Upcoming posts (scroll <span class="glyphicon glyphicon-arrow-right"></span>)</h4>
+	<div class="slider" style="border: 2px dotted #d7dde2;">
+		<% scheduled_posts = ScheduledPost.where("scheduled_posts.post_time >= ? AND scheduled_posts.post_time < ?", Time.now.getutc, (Time.now.getutc + 13.days).to_time)%>
+		<% scheduled_posts.each do |post| %>
+			<div class="slider-block" style="vertical-align: top; height: 300px; overflow: scroll;">			
+				<div>
+					<strong><%= post.post_time.strftime("%B %-d") %></strong>
+					<br>
+					<%= post.micropost.category.titlecase.tr("_", " ") %>
+				</div>
+				<img src="<%= post.picture_url %>" style="max-width: 100vw; height: auto; max-height: 300px;" />
+				<div><%= post.caption %></div>
+			</div>
+		<% end %>
+	</div>
+</div>
+
 <div style="text-align: center; margin-top: 15px;">
 	<%= button_to "Get Started", signup_path, method: :get, class: "btn-submit" %>
 </div>

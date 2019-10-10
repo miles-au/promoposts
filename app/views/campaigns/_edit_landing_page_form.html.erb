@@ -17,7 +17,7 @@
       
       <%= f.fields_for :landing_page, @campaign.landing_page || LandingPage.new do |landing_page| %>
 
-        <%= landing_page.label :splash, "Splash Banner (10mb): " %>
+        <%= landing_page.label :splash, "Splash Banner (10mb - 1200x400 recommended): " %>
         <%= landing_page.file_field :splash, accept: 'image/jpeg,image/gif,image/png' %>
 
         <%= landing_page.label :title, "Header:" %>
