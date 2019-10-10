@@ -509,6 +509,28 @@ header{
     }
 }
 
+.slider-block-captioned{
+  vertical-align: top;
+  height: 300px;
+  overflow: scroll;
+  .caption{
+    padding: 20px;
+    white-space: normal;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background-color: $grey5;
+    opacity: 0;
+    -webkit-transition: opacity 1s; /* For Safari 3.1 to 6.0 */
+    transition: opacity 1s;
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+}
+
 //feed layout
 .masonry{
   width: 100%;
