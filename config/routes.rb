@@ -17,8 +17,8 @@ Rails.application.routes.draw do
   root 'static_pages#home'
 
   get  '/help', to: 'static_pages#help'
-  get  '/contact', to: 'static_pages#contact'
-  post '/contact', to: 'static_pages#contacted', as: 'contacted'
+  #get  '/contact', to: 'static_pages#contact'
+  #post '/contact', to: 'static_pages#contacted', as: 'contacted'
   get '/privacy_policy', to: 'static_pages#privacy_policy'
   get '/cookie_policy', to: 'static_pages#cookie_policy'
   get '/terms', to: 'static_pages#terms'
